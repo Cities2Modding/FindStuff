@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using Game.UI;
 using System.Reflection;
 using Colossal.Entities;
+using Game.Companies;
+using Game.Buildings;
 
 namespace FindStuff.UI
 {
@@ -98,7 +100,11 @@ namespace FindStuff.UI
             {
                 return true;
             }
-            else if ( EntityManager.HasComponent<SpawnableBuildingData>( prefabEntity ) )
+            else if (EntityManager.HasComponent<ServiceCompanyData>(prefabEntity) && EntityManager.HasComponent<CommercialCompanyData>(prefabEntity))
+            {
+                return true;
+            }
+            else if ( EntityManager.HasComponent<SpawnableBuildingData>(prefabEntity) )
             {
                 return true;
             }
@@ -128,26 +134,14 @@ namespace FindStuff.UI
             {
                 return "Vehicle";
             }
-            else if ( EntityManager.TryGetComponent<SpawnableBuildingData>( prefabEntity, out var buildingData ) )
+            else if (EntityManager.HasComponent<ResidentialProperty>(prefabEntity))
             {
-                // Not working
-                if ( buildingData.m_ZonePrefab != Entity.Null &&
-                    EntityManager.TryGetComponent<ZoneData>( buildingData.m_ZonePrefab, out var zd ) )
-                {
-                    var areaType = zd.m_AreaType;
-
-                    switch ( areaType )
-                    {
-                        case Game.Zones.AreaType.Commercial:
-                            return "ZoneCommercial";
-
-                        case Game.Zones.AreaType.Residential:
-                            return "ZoneResidential";
-
-                        case Game.Zones.AreaType.Industrial:
-                            return "ZoneIndustrial";
-                    }
-                }
+                return "ZoneResidential";
+            }
+            else if (EntityManager.HasComponent<SpawnableBuildingData>(prefabEntity))
+            {
+                UnityEngine.Debug.Log("spawnable found.");
+                return "ZoneIndustrial";
             }
 
             return "Unknown";
@@ -186,6 +180,15 @@ namespace FindStuff.UI
             }
 
             return "";
+        }
+
+        private bool IsOffice(IndustrialProcessData industrialProcessData)
+        {
+            return industrialProcessData.m_Output.m_Resource switch
+            {
+                Game.Economy.Resource.Software or Game.Economy.Resource.Financial or Game.Economy.Resource.Media => true,
+                _ => false,
+            };
         }
 
         protected override void OnUpdate( )

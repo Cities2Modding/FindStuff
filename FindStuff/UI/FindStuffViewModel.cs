@@ -83,6 +83,7 @@ namespace FindStuff.UI
         SignatureBuilding = 5,
         ZoneResidential = 6,
         ZoneCommercial = 7,
-        ZoneIndustrial = 8, 
+        ZoneOffice = 8,
+        ZoneIndustrial = 9, 
     }
 }
