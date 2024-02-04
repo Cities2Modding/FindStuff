@@ -80,7 +80,7 @@ namespace FindStuff.UI
         Network = 2,
         Vehicle = 3,
         ServiceBuilding = 4,
-        Signature = 5,
+        SignatureBuilding = 5,
         ZoneResidential = 6,
         ZoneCommercial = 7,
         ZoneIndustrial = 8, 

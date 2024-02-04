@@ -122,7 +122,7 @@ namespace FindStuff.UI
             }
             else if ( EntityManager.HasComponent<SignatureBuildingData>( prefabEntity ) )
             {
-                return "Signature Building";
+                return "SignatureBuilding";
             }
             else if ( EntityManager.HasComponent<VehicleData>( prefabEntity ) )
             {

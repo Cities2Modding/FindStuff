@@ -173,8 +173,11 @@ const ToolWindow = ({ react, setupController }) => {
                             <Button className={"ml-1" + (model.Filter === "Foliage" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "Foliage")}>
                                 <Icon icon="Media/Game/Icons/Forest.svg" />
                             </Button>
-                            <Button className={"ml-1" + (model.Filter === "Roads" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "Roads")}>
+                            <Button className={"ml-1" + (model.Filter === "Network" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "Network")}>
                                 <Icon icon="Media/Game/Icons/Roads.svg" />
+                            </Button>
+                            <Button className={"ml-1" + (model.Filter === "ServiceBuilding" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "ServiceBuilding")}>
+                                <Icon icon="Media/Game/Icons/Services.svg" />
                             </Button>
                             <Button className={"ml-1" + (model.Filter === "Signature" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "Signature")}>
                                 <Icon icon="Media/Game/Icons/ZoneSignature.svg" />
@@ -184,6 +187,9 @@ const ToolWindow = ({ react, setupController }) => {
                             </Button>
                             <Button className={"ml-1" + (model.Filter === "ZoneCommercial" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "ZoneCommercial")}>
                                 <Icon icon="Media/Game/Icons/ZoneCommercial.svg" />
+                            </Button>
+                            <Button className={"ml-1" + (model.Filter === "Vehicle" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "Vehicle")}>
+                                <Icon icon="Media/Game/Icons/Traffic.svg" />
                             </Button>
                         </div>
                         <div className="d-flex flex-row flex-wrap align-items-center justify-content-end mt-1">
