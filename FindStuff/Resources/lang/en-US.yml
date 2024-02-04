@@ -1,0 +1,5 @@
+lang:
+ DucksInARow.DucksInARowSettings.ModName: Find Stuff
+ 
+ DucksInARowSettings.ChangeLog.Option: Show mod changelogs
+ DucksInARowSettings.ChangeLog.Option_desc: When mods configured to use Gooee changelogs are updated, a changelog window will popup.
