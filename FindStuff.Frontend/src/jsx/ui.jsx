@@ -57,10 +57,14 @@ const ToolWindow = ({ react, setupController }) => {
     const [search, setSearch] = react.useState("");
     
     const updateSearchFilter = () => {
-        const filtered = !search || search === "" ? model.Prefabs : model.Prefabs.filter(function (p) {
-            return p.Name && p.Name.toLowerCase().includes(search.toLowerCase()) ||
-                p.Type && p.Type.toLowerCase().includes(search.toLowerCase());
-        });
+        const filtered = ((!model.Filter || model.Filter.length == 0 || model.Filter === "None") && (!search || search === "") ? model.Prefabs :
+            model.Prefabs.filter(function (p) {
+                return (model.Filter && model.Filter.length > 0 ? p.Type === model.Filter : true) &&
+                    (search && search.length > 0 ?
+                        (p.Name && p.Name.toLowerCase().includes(search.toLowerCase()) || p.Type && p.Type.toLowerCase().includes(search.toLowerCase()))
+                    : true);
+            })
+        );
         setFilteredPrefabs(filtered);
     };
 
@@ -161,6 +165,9 @@ const ToolWindow = ({ react, setupController }) => {
                     <div className="flex-1">
                         Filter
                     </div>
+                    <Button className={"mr-1" + (model.Filter === "None" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "None")}>
+                        <Icon icon="solid-asterisk" fa />
+                    </Button>
                     <Button className={"mr-1" + (model.Filter === "Foliage" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "Foliage")}>
                         <Icon icon="Media/Game/Icons/Forest.svg" />
                     </Button>
