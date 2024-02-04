@@ -57,10 +57,14 @@ const ToolWindow = ({ react, setupController }) => {
     const [search, setSearch] = react.useState("");
     
     const updateSearchFilter = () => {
-        const filtered = !search || search === "" ? model.Prefabs : model.Prefabs.filter(function (p) {
-            return p.Name && p.Name.toLowerCase().includes(search.toLowerCase()) ||
-                p.Type && p.Type.toLowerCase().includes(search.toLowerCase());
-        });
+        const filtered = ((!model.Filter || model.Filter.length == 0 || model.Filter === "None") && (!search || search === "") ? model.Prefabs :
+            model.Prefabs.filter(function (p) {
+                return (model.Filter && model.Filter.length > 0 ? p.Type === model.Filter : true) &&
+                    (search && search.length > 0 ?
+                        (p.Name && p.Name.toLowerCase().includes(search.toLowerCase()) || p.Type && p.Type.toLowerCase().includes(search.toLowerCase()))
+                    : true);
+            })
+        );
         setFilteredPrefabs(filtered);
     };
 
@@ -127,7 +131,7 @@ const ToolWindow = ({ react, setupController }) => {
     };
 
     const onRenderItem = (p, index) => {
-        return <Button color={selectedPrefab.Name == p.Name ? "primary" : "light"} style={selectedPrefab.Name == p.Name ? "trans" : "trans-faded"} onMouseEnter={() => onMouseEnter(p)} className={"asset-menu-item auto flex-1 m-mini" + (selectedPrefab.Name == p.Name ? " text-dark" : " text-light") + (model.ViewMode === "Detailed" && selectedPrefab.Name !== p.Name ? " btn-transparent" : "")} onClick={() => onSelectPrefab(p)}>
+        return <Button color={selectedPrefab.Name == p.Name ? "primary" : "light"} style={selectedPrefab.Name == p.Name ? "trans" : "trans-faded"} onMouseEnter={() => onMouseEnter(p)} className={"asset-menu-item auto flex-1 m-mini" + (selectedPrefab.Name == p.Name ? " text-dark" : " text-light") + (model.ViewMode !== "IconGrid" && model.ViewMode !== "IconGridLarge" ? " flat" : "") + (model.ViewMode !== "IconGrid" && model.ViewMode !== "IconGridLarge" && selectedPrefab.Name !== p.Name ? " btn-transparent" : "")} onClick={() => onSelectPrefab(p)}>
             <div className={"d-flex align-items-center justify-content-center " + (model.ViewMode === "Columns" || model.ViewMode === "Rows" || model.ViewMode === "Detailed" ? " w-x flex-row " : " flex-column")}>
                 {renderItemContent(p)}
             </div>
@@ -150,7 +154,7 @@ const ToolWindow = ({ react, setupController }) => {
                     <Button className={"mr-1" + (model.ViewMode === "IconGrid" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("ViewMode", "IconGrid")}>
                         <Icon icon="solid-table-cells" fa />
                     </Button>
-                    <Button className={"" + (model.ViewMode === "IconGridLarge" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("ViewMode", "IconGridLarge")}>
+                    <Button className={"mr-1" + (model.ViewMode === "IconGridLarge" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("ViewMode", "IconGridLarge")}>
                         <Icon icon="solid-border-all" fa />
                     </Button>
                     <Button className={"" + (model.ViewMode === "Detailed" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("ViewMode", "Detailed")}>
@@ -161,6 +165,9 @@ const ToolWindow = ({ react, setupController }) => {
                     <div className="flex-1">
                         Filter
                     </div>
+                    <Button className={"mr-1" + (model.Filter === "None" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "None")}>
+                        <Icon icon="solid-asterisk" fa />
+                    </Button>
                     <Button className={"mr-1" + (model.Filter === "Foliage" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "Foliage")}>
                         <Icon icon="Media/Game/Icons/Forest.svg" />
                     </Button>
@@ -207,7 +214,7 @@ const ToolWindow = ({ react, setupController }) => {
             </>} onClose={closeModal}>
                 <div className="asset-menu-container" onMouseLeave={() => onMouseLeave()}>
                     <div className="flex-1">
-                        <VirtualList data={filteredPrefabs} onRenderItem={onRenderItem} columns={model.ViewMode === "Rows" || model.ViewMode === "Detailed" ? 1 : model.ViewMode === "Columns" ? 2 : model.ViewMode === "IconGrid" ? 13 : 9} rows={model.ViewMode === "Rows" || model.ViewMode === "Detailed" || model.ViewMode === "Columns" ? 4 : model.ViewMode === "IconGrid" ? 3 : 2} contentClassName="d-flex flex-row flex-wrap" size="sm" itemHeight={32}>
+                        <VirtualList border={model.ViewMode === "IconGrid" || model.ViewMode === "IconGridLarge" ? null : true} data={filteredPrefabs} onRenderItem={onRenderItem} columns={model.ViewMode === "Rows" || model.ViewMode === "Detailed" ? 1 : model.ViewMode === "Columns" ? 2 : model.ViewMode === "IconGrid" ? 13 : 9} rows={model.ViewMode === "Rows" || model.ViewMode === "Detailed" || model.ViewMode === "Columns" ? 4 : model.ViewMode === "IconGrid" ? 3 : 2} contentClassName="d-flex flex-row flex-wrap" size="sm" itemHeight={32}>
                         </VirtualList>
                     </div>
                 </div>
