@@ -10,6 +10,13 @@ using Game.UI;
 using System.Reflection;
 using Newtonsoft.Json;
 using Colossal.Entities;
+using Colossal.IO.AssetDatabase;
+using Game.Buildings;
+using Game.Citizens;
+using Game.Common;
+using Game.Creatures;
+using Game.Net;
+using Game.Objects;
 
 namespace FindStuff.UI
 {
@@ -44,13 +51,7 @@ namespace FindStuff.UI
             UnityEngine.Debug.Log( "Getting prefabs" );
             var prefabsList = new List<PrefabItem>( );
 
-            Func<PrefabBase, bool> hasAType = ( p ) =>
-            {
-                return EntityManager.HasComponent<TreeData>( _prefabSystem.GetEntity( p ) ) ||
-                    EntityManager.HasComponent<SpawnableBuildingData>( _prefabSystem.GetEntity( p ) );
-            };
-
-            foreach ( var prefabBase in prefabs.Where( p => hasAType( p ) ) )
+            foreach ( var prefabBase in prefabs.Where( p => IsValid( _prefabSystem.GetEntity( p ) ) ) )
             {
                 var entity = _prefabSystem.GetEntity( prefabBase );
 
@@ -58,12 +59,12 @@ namespace FindStuff.UI
 
                 //if ( objectPrefab == null )
                 //    continue;
-
+                var type = GetType( prefabBase, entity );
                 var isSpawnableBuilding = EntityManager.HasComponent<SpawnableBuildingData>( entity );
                 var prefabIcon = "";
 
                 var thumbnail = _imageSystem.GetThumbnail( entity );
-                var typeIcon = GetTypeIcon( entity );
+                var typeIcon = GetTypeIcon( type );
 
                 if ( thumbnail == null || thumbnail == "Media/Placeholder.svg" )
                     prefabIcon = typeIcon;
@@ -72,7 +73,7 @@ namespace FindStuff.UI
 
                 var prefabItem = new PrefabItem {
                     Name = prefabBase.name,
-                    Type = GetType( entity ),
+                    Type = type,
                     Thumbnail = prefabIcon, 
                     TypeIcon = typeIcon 
                 };
@@ -87,36 +88,98 @@ namespace FindStuff.UI
             return model;
         }
 
-        private string GetType( Entity prefabEntity )
+        private bool IsValid( Entity prefabEntity )
         {
-            if ( EntityManager.HasComponent<TreeData>( prefabEntity ) )
+            if ( EntityManager.HasComponent<TreeData>( prefabEntity ) || 
+                EntityManager.HasComponent<PlantData>( prefabEntity ) )
             {
-                return "Tree";
+                return true;
+            }
+            else if ( EntityManager.HasComponent<NetPieceData>( prefabEntity ) )
+            {
+                return true;
+            }
+            else if ( EntityManager.HasComponent<SignatureBuildingData>( prefabEntity ) )
+            {
+                return true;
+            }
+            else if ( EntityManager.HasComponent<SpawnableBuildingData>( prefabEntity ) )
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        private string GetType( PrefabBase prefab, Entity prefabEntity )
+        {
+            if ( EntityManager.HasComponent<TreeData>( prefabEntity ) || EntityManager.HasComponent<PlantData>( prefabEntity ) )
+            {
+                return "Foliage";
+            }
+            else if ( EntityManager.HasComponent<NetPieceData>( prefabEntity ) )
+            {
+                return "Network";
+            }
+            else if ( EntityManager.HasComponent<SignatureBuildingData>( prefabEntity ) )
+            {
+                return "Signature Building";
+            }
+            else if ( EntityManager.TryGetComponent<SpawnableBuildingData>( prefabEntity, out var buildingData ) )
+            {
+                // Not working
+                if ( buildingData.m_ZonePrefab != Entity.Null &&
+                    EntityManager.TryGetComponent<ZoneData>( buildingData.m_ZonePrefab, out var zd ) )
+                {
+                    var areaType = zd.m_AreaType;
+
+                    switch ( areaType )
+                    {
+                        case Game.Zones.AreaType.Commercial:
+                            return "ZoneCommercial";
+
+                        case Game.Zones.AreaType.Residential:
+                            return "ZoneResidential";
+
+                        case Game.Zones.AreaType.Industrial:
+                            return "ZoneIndustrial";
+                    }
+                }
             }
 
             return "Unknown";
         }
 
-        private string GetTypeIcon( Entity prefabEntity )
+        private string GetTypeIcon( string type )
         {
-            var typeIcon = "";
-
-            if ( EntityManager.TryGetComponent<SpawnableBuildingData>( prefabEntity, out var component ) )
+            switch ( type )
             {
-                string iconOrGroupIcon = _imageSystem.GetIconOrGroupIcon( component.m_ZonePrefab );
-                if ( iconOrGroupIcon != null )
-                {
-                    typeIcon = iconOrGroupIcon;
-                }
+                case "Foliage":
+                    return "Media/Game/Icons/Forest.svg";
+
+                case "Roads":
+                    return "Media/Game/Icons/Roads.svg";
+
+                case "Building":
+                    return "Media/Game/Icons/Roads.svg";
+
+                case "Signature":
+                    return "Media/Game/Icons/ZoneSignature.svg";
+
+                case "Zoneable":
+                    return "Media/Game/Icons/Zones.svg";
+
+                case "ZoneResidential":
+                    return "Media/Game/Icons/ZoneResidential.svg";
+
+                case "ZoneCommercial":
+                    return "Media/Game/Icons/ZoneCommercial.svg";
+
+                case "ZoneIndustrial":
+                    return "Media/Game/Icons/ZoneIndustrial.svg";
             }
 
-            string iconOrGroupIcon2 = _imageSystem.GetIconOrGroupIcon( prefabEntity );
-            if ( iconOrGroupIcon2 != null )
-            {
-                typeIcon = iconOrGroupIcon2;
-            }
-
-            return typeIcon;
+            return "";
         }
 
         protected override void OnUpdate( )

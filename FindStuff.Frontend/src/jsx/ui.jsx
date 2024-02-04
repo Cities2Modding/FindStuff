@@ -50,12 +50,16 @@ const ToolWindow = ({ react, setupController }) => {
     const [hoverPrefab, setHoverPrefab] = react.useState({ Name: "" });
     const [tm, setTm] = react.useState(null);
 
+    const { Button, Icon, VirtualList, Slider, List, Grid, FormGroup, FormCheckBox, Scrollable, ToolTip, TextBox, Dropdown, ToolTipContent, TabModal, Modal, MarkDown } = window.$_gooee.framework;
+
+    const { model, update, trigger } = setupController();
     const [filteredPrefabs, setFilteredPrefabs] = react.useState(model.Prefabs);
     const [search, setSearch] = react.useState("");
-
+    
     const updateSearchFilter = () => {
         const filtered = !search || search === "" ? model.Prefabs : model.Prefabs.filter(function (p) {
-            return p.Name && p.Name.toLowerCase().includes(search.toLowerCase());
+            return p.Name && p.Name.toLowerCase().includes(search.toLowerCase()) ||
+                p.Type && p.Type.toLowerCase().includes(search.toLowerCase());
         });
         setFilteredPrefabs(filtered);
     };
@@ -68,10 +72,6 @@ const ToolWindow = ({ react, setupController }) => {
         setSearch(val);
     };
 
-    const { Button, Icon, VirtualList, Slider, List, Grid, FormGroup, FormCheckBox, Scrollable, ToolTip, TextBox, Dropdown, ToolTipContent, TabModal, Modal, MarkDown } = window.$_gooee.framework;
-
-    const { model, update, trigger } = setupController();
-    
 
     const closeModal = () => {
         trigger("OnToggleVisible");
@@ -93,19 +93,43 @@ const ToolWindow = ({ react, setupController }) => {
     const onMouseLeave = () => {
         setHoverPrefab(null);
     }
+    
+    const highlightSearchTerm = (text, searchTerm) => {
+        const regex = new RegExp(`(${searchTerm})`, 'gi');
+        const splitText = text.split(regex);
 
-    const containsSearch = (p) => {
-        return p.Name.toLowerCase().includes(search.toLowerCase());
+        return (!searchTerm || searchTerm.length == 0) ? text : splitText.map((part, index) =>
+            regex.test(part) ? <span key={index}>
+                <b className={selectedPrefab.Name == text ? "text-dark bg-warning" : "text-dark bg-warning"}>{part}</b>
+            </span> : part
+        );
     };
 
-    const wrapSearchMatch = (p) => p.Name.replace(new RegExp(`(${search})`, 'gi'), `<span class="text-primary">$1</span>`);
-
+    const renderItemContent = (p) => {
+        return model.ViewMode == "Detailed" ? <>
+            <Grid>
+                <div className="col-5">
+                    <div className="d-flex flex-row">
+                        <img className="icon icon-sm ml-1 mr-1" src={p.Thumbnail} />
+                        <span className="fs-sm flex-1">{highlightSearchTerm(p.Name, search)}</span>
+                    </div>
+                </div>
+                <div className="col-2">
+                    <span className="fs-xs h-x">{highlightSearchTerm(p.Type, search)}</span>
+                </div>
+                <div className="col-5">
+                </div>
+            </Grid>
+        </> : <>            
+            <img className={model.ViewMode === "IconGrid" ? "icon icon-lg" : model.ViewMode === "IconGridLarge" ? "icon icon-xl" : "icon icon-sm ml-2"} src={p.Thumbnail} />
+            {model.ViewMode === "Rows" || model.ViewMode === "Columns" ? <span className="ml-1 fs-sm mr-4">{highlightSearchTerm(p.Name, search)}</span> : <span className="fs-xs ml-1 mr-4" style={{ maxWidth: '80%', textOverflow: 'ellipsis', overflowX: 'hidden' }}>{highlightSearchTerm(p.Name, search)}</span>}
+        </>;
+    };
 
     const onRenderItem = (p, index) => {
-        return <Button color={selectedPrefab.Name == p.Name ? "primary" : "light"} style={selectedPrefab.Name == p.Name ? "trans" : "trans-faded"} onMouseEnter={() => onMouseEnter(p)} className="asset-menu-item auto flex-1 m-mini" onClick={() => onSelectPrefab(p)}>
-            <div className={"d-flex align-items-center justify-content-center " + (model.ViewMode === "Columns" || model.ViewMode === "Rows" ? " w-x flex-row " : " flex-column")}>
-                <img className={model.ViewMode === "IconGrid" ? "icon icon-lg" : model.ViewMode === "IconGridLarge" ? "icon icon-xl" : "icon icon-sm ml-2"} src={p.Thumbnail} />
-                {model.ViewMode === "Rows" || model.ViewMode === "Columns" ? <span className="text-light ml-1 fs-sm mr-4">{wrapSearchMatch(p.Name)}</span> : <span className="text-light fs-xs ml-1 mr-4" style={{ maxWidth: '80%', textOverflow: 'ellipsis', overflowX: 'hidden' }}>{p.Name}</span>}
+        return <Button color={selectedPrefab.Name == p.Name ? "primary" : "light"} style={selectedPrefab.Name == p.Name ? "trans" : "trans-faded"} onMouseEnter={() => onMouseEnter(p)} className={"asset-menu-item auto flex-1 m-mini" + (selectedPrefab.Name == p.Name ? " text-dark" : " text-light") + (model.ViewMode === "Detailed" && selectedPrefab.Name !== p.Name ? " btn-transparent" : "")} onClick={() => onSelectPrefab(p)}>
+            <div className={"d-flex align-items-center justify-content-center " + (model.ViewMode === "Columns" || model.ViewMode === "Rows" || model.ViewMode === "Detailed" ? " w-x flex-row " : " flex-column")}>
+                {renderItemContent(p)}
             </div>
         </Button>;
     };
@@ -129,12 +153,15 @@ const ToolWindow = ({ react, setupController }) => {
                     <Button className={"" + (model.ViewMode === "IconGridLarge" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("ViewMode", "IconGridLarge")}>
                         <Icon icon="solid-border-all" fa />
                     </Button>
+                    <Button className={"" + (model.ViewMode === "Detailed" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("ViewMode", "Detailed")}>
+                        <Icon icon="solid-align-justify" fa />
+                    </Button>
                 </div>
                 <div className="d-flex flex-row align-items-center justify-content-center mt-4">
                     <div className="flex-1">
                         Filter
                     </div>
-                    <Button className={"mr-1" + (model.Filter === "Trees" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "Trees")}>
+                    <Button className={"mr-1" + (model.Filter === "Foliage" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "Foliage")}>
                         <Icon icon="Media/Game/Icons/Forest.svg" />
                     </Button>
                     <Button className={"mr-1" + (model.Filter === "Roads" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "Roads")}>
@@ -143,11 +170,14 @@ const ToolWindow = ({ react, setupController }) => {
                     <Button className={"mr-1" + (model.Filter === "Signature" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "Signature")}>
                         <Icon icon="Media/Game/Icons/ZoneSignature.svg" />
                     </Button>
-                    <Button className={"mr-1" + (model.Filter === "SignatureLandmarks" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "SignatureLandmarks")}>
-                        <Icon icon="Media/Game/Icons/ZoneSignatureLandmarks.svg" />
+                    <Button className={"mr-1" + (model.Filter === "ZoneResidential" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "ZoneResidential")}>
+                        <Icon icon="Media/Game/Icons/ZoneResidential.svg" />
                     </Button>
-                    <Button className={model.Filter === "Zoneable" ? " active" : ""} color="tool" size="sm" icon onClick={() => update("Filter", "Zoneable")}>
-                        <Icon icon="Media/Game/Icons/Zones.svg" />
+                    <Button className={"mr-1" +model.Filter === "ZoneCommercial" ? " active" : ""} color="tool" size="sm" icon onClick={() => update("Filter", "ZoneCommercial")}>
+                        <Icon icon="Media/Game/Icons/ZoneCommercial.svg" />
+                    </Button>
+                    <Button className={model.Filter === "ZoneIndustrial" ? " active" : ""} color="tool" size="sm" icon onClick={() => update("Filter", "ZoneIndustrial")}>
+                        <Icon icon="Media/Game/Icons/ZoneIndustrial.svg" />
                     </Button>
                 </div>
             </div>
@@ -177,7 +207,7 @@ const ToolWindow = ({ react, setupController }) => {
             </>} onClose={closeModal}>
                 <div className="asset-menu-container" onMouseLeave={() => onMouseLeave()}>
                     <div className="flex-1">
-                        <VirtualList data={filteredPrefabs} onRenderItem={onRenderItem} columns={model.ViewMode === "Rows" ? 1 : model.ViewMode === "Columns" ? 2 : model.ViewMode === "IconGrid" ? 9 : 9} rows={model.ViewMode === "Rows" || model.ViewMode === "Columns" ? 4 : model.ViewMode === "IconGrid" ? 3 : 2} contentClassName="d-flex flex-row flex-wrap" size="sm" itemHeight={32}>
+                        <VirtualList data={filteredPrefabs} onRenderItem={onRenderItem} columns={model.ViewMode === "Rows" || model.ViewMode === "Detailed" ? 1 : model.ViewMode === "Columns" ? 2 : model.ViewMode === "IconGrid" ? 13 : 9} rows={model.ViewMode === "Rows" || model.ViewMode === "Detailed" || model.ViewMode === "Columns" ? 4 : model.ViewMode === "IconGrid" ? 3 : 2} contentClassName="d-flex flex-row flex-wrap" size="sm" itemHeight={32}>
                         </VirtualList>
                     </div>
                 </div>

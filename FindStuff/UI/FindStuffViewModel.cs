@@ -69,16 +69,18 @@ namespace FindStuff.UI
         Rows = 0,
         Columns = 2,
         IconGrid = 3,
-        IconGridLarge = 4
+        IconGridLarge = 4,
+        Detailed = 5
     }
 
     public enum Filter
     {
         None = 0,
-        Trees = 1,
+        Foliage = 1,
         Roads = 2,
         Signature = 3,
-        SignatureLandmarks = 4,
-        Zoneable = 5
+        ZoneResidential = 4,
+        ZoneCommercial = 5,
+        ZoneIndustrial = 6
     }
 }
