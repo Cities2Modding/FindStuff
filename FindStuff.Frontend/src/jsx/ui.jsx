@@ -215,10 +215,10 @@ const ToolWindow = ({ react, setupController }) => {
                     <div>
                         <div className="d-flex flex-row flex-wrap align-items-center justify-content-end">
                             <Button className={(model.OrderByAscending === true ? " active" : "")} color="tool" size="sm" icon onClick={() => update("OrderByAscending", true)}>
-                                <Icon icon="solid-arrow-up-a-z" fa />
+                                <Icon icon="solid-arrow-down-a-z" fa />
                             </Button>
                             <Button className={"ml-1" + (model.OrderByAscending === false ? " active" : "")} color="tool" size="sm" icon onClick={() => update("OrderByAscending", false)}>
-                                <Icon icon="solid-arrow-down-a-z" fa />
+                                <Icon icon="solid-arrow-up-a-z" fa />
                             </Button>
                         </div>
                     </div>
