@@ -179,6 +179,11 @@ const ToolWindow = ({ react, setupController }) => {
                             <Button className={"ml-1" + (model.Filter === "ServiceBuilding" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "ServiceBuilding")}>
                                 <Icon icon="Media/Game/Icons/Services.svg" />
                             </Button>
+                            <Button className={"ml-1" + (model.Filter === "Vehicle" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "Vehicle")}>
+                                <Icon icon="Media/Game/Icons/Traffic.svg" />
+                            </Button>
+                        </div>
+                        <div className="d-flex flex-row flex-wrap align-items-center justify-content-end mt-1">
                             <Button className={"ml-1" + (model.Filter === "SignatureBuilding" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "SignatureBuilding")}>
                                 <Icon icon="Media/Game/Icons/ZoneSignature.svg" />
                             </Button>
@@ -188,11 +193,6 @@ const ToolWindow = ({ react, setupController }) => {
                             <Button className={"ml-1" + (model.Filter === "ZoneCommercial" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "ZoneCommercial")}>
                                 <Icon icon="Media/Game/Icons/ZoneCommercial.svg" />
                             </Button>
-                            <Button className={"ml-1" + (model.Filter === "Vehicle" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "Vehicle")}>
-                                <Icon icon="Media/Game/Icons/Traffic.svg" />
-                            </Button>
-                        </div>
-                        <div className="d-flex flex-row flex-wrap align-items-center justify-content-end mt-1">
                             <Button className={"ml-1" + (model.Filter === "ZoneIndustrial" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "ZoneIndustrial")}>
                                 <Icon icon="Media/Game/Icons/ZoneIndustrial.svg" />
                             </Button>
