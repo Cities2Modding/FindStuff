@@ -8,6 +8,9 @@ using System.Collections.Generic;
 using Game.UI;
 using System.Reflection;
 using Colossal.Entities;
+using Colossal.Serialization.Entities;
+using Game;
+using static Colossal.AssetPipeline.Diagnostic.Report;
 
 namespace FindStuff.UI
 {
@@ -38,45 +41,52 @@ namespace FindStuff.UI
 
             var model = new FindStuffViewModel( );
 
-            var prefabs = ( List<PrefabBase> ) _prefabsField.GetValue( _prefabSystem );
-            UnityEngine.Debug.Log( "Getting prefabs" );
-            var prefabsList = new List<PrefabItem>( );
-
-            foreach ( var prefabBase in prefabs.Where( p => IsValid( _prefabSystem.GetEntity( p ) ) ) )
-            {
-                var entity = _prefabSystem.GetEntity( prefabBase );
-
-                //var objectPrefab = _prefabSystem.GetPrefab<ObjectPrefab>( prefabEntity );
-
-                //if ( objectPrefab == null )
-                //    continue;
-                var type = GetType( prefabBase, entity );
-                var isSpawnableBuilding = EntityManager.HasComponent<SpawnableBuildingData>( entity );
-                var prefabIcon = "";
-
-                var thumbnail = _imageSystem.GetThumbnail( entity );
-                var typeIcon = GetTypeIcon( type );
-
-                if ( thumbnail == null || thumbnail == "Media/Placeholder.svg" )
-                    prefabIcon = typeIcon;
-                else
-                    prefabIcon = thumbnail;
-
-                var prefabItem = new PrefabItem {
-                    Name = prefabBase.name,
-                    Type = type,
-                    Thumbnail = prefabIcon, 
-                    TypeIcon = typeIcon 
-                };
-                prefabsList.Add( prefabItem );
-                //UnityEngine.Debug.Log( "Got? prefab: " + JsonConvert.SerializeObject( prefabItem ) );
-                // UnityEngine.Debug.Log( "Got prefab: " + prefabBase.name  + " icon: "+ icon );
-                _prefabInstances.Add( prefabBase.name, prefabBase );
-            }
-
-            model.Prefabs = prefabsList;
-
             return model;
+        }
+
+        protected override void OnGameLoadingComplete( Purpose purpose, GameMode mode )
+        {
+            base.OnGameLoadingComplete( purpose, mode );
+
+            if ( mode == GameMode.Game )
+            {
+                var prefabs = ( List<PrefabBase> ) _prefabsField.GetValue( _prefabSystem );
+                UnityEngine.Debug.Log( "Getting prefabs" );
+                var prefabsList = new List<PrefabItem>( );
+                foreach ( var prefabBase in prefabs.Where( p => IsValid( _prefabSystem.GetEntity( p ) ) ) )
+                {
+                    var entity = _prefabSystem.GetEntity( prefabBase );
+
+                    var type = GetType( prefabBase, entity );
+                    var isSpawnableBuilding = EntityManager.HasComponent<SpawnableBuildingData>( entity );
+                    var prefabIcon = "";
+
+                    var thumbnail = _imageSystem.GetThumbnail( entity );
+                    var typeIcon = GetTypeIcon( type );
+
+                    if ( thumbnail == null || thumbnail == "Media/Placeholder.svg" )
+                        prefabIcon = typeIcon;
+                    else
+                        prefabIcon = thumbnail;
+
+                    var prefabItem = new PrefabItem
+                    {
+                        Name = prefabBase.name,
+                        Type = type,
+                        Thumbnail = prefabIcon,
+                        TypeIcon = typeIcon
+                    };
+                    prefabsList.Add( prefabItem );
+
+                    if ( _prefabInstances.ContainsKey( prefabBase.name ) )
+                        _prefabInstances.Remove( prefabBase.name );
+
+                    _prefabInstances.Add( prefabBase.name, prefabBase );
+                }
+
+                Model.Prefabs = prefabsList;
+                TriggerUpdate( );
+            }
         }
 
         private bool IsValid( Entity prefabEntity )

@@ -207,7 +207,7 @@ const ToolWindow = ({ react, setupController }) => {
         <div className="col">
             {hoverPrefab && hoverPrefab.Name.length > 0 ?
                 <Modal className="mb-2" icon={<><Icon icon={hoverPrefab.TypeIcon} /></>} title={_L(`Assets.NAME[${hoverPrefab.Name}]`)} noClose>
-                    <Icon icon={hoverPrefab.Thumbnail} size="xxl" />                    
+                    <Icon icon={hoverPrefab.Thumbnail} size="xxl" />
                 </Modal> : null }
             <Modal bodyClassName="asset-menu" title={<div className="d-flex flex-row align-items-center">
                 <Icon icon="solid-magnifying-glass" fa className="bg-muted" />
