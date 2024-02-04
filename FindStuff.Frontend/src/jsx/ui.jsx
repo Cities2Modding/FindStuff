@@ -55,6 +55,7 @@ const ToolWindow = ({ react, setupController }) => {
     const { model, update, trigger, _L } = setupController();
     const [filteredPrefabs, setFilteredPrefabs] = react.useState(model.Prefabs);
     const [search, setSearch] = react.useState("");
+    const [expanded, setExpanded] = react.useState(false);
     
     const updateSearchFilter = () => {
         let filtered = ((!model.Filter || model.Filter.length == 0 || model.Filter === "None") && (!search || search === "") ? model.Prefabs :
@@ -196,11 +197,6 @@ const ToolWindow = ({ react, setupController }) => {
                             <Button className={(model.Filter === "SignatureBuilding" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "SignatureBuilding")}>
                                 <Icon icon="Media/Game/Icons/ZoneSignature.svg" />
                             </Button>
-                            <Button className={"ml-1" + (model.Filter === "Vehicle" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "Vehicle")}>
-                                <Icon icon="Media/Game/Icons/Traffic.svg" />
-                            </Button>
-                        </div>
-                        <div className="d-flex flex-row flex-wrap align-items-center justify-content-end mt-1">
                             <Button className={"ml-1" + (model.Filter === "ZoneResidential" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "ZoneResidential")}>
                                 <Icon icon="Media/Game/Icons/ZoneResidential.svg" />
                             </Button>
@@ -238,16 +234,19 @@ const ToolWindow = ({ react, setupController }) => {
                 <Modal className="mb-2" icon={<><Icon icon={hoverPrefab.TypeIcon} /></>} title={_L(`Assets.NAME[${hoverPrefab.Name}]`)} noClose>
                     <Icon icon={hoverPrefab.Thumbnail} size="xxl" />
                 </Modal> : null }
-            <Modal bodyClassName="asset-menu" title={<div className="d-flex flex-row align-items-center">
-                <Icon icon="solid-magnifying-glass" fa className="bg-muted" />
-                <TextBox size="sm" className="bg-dark-trans-less-faded w-50 mr-2 ml-4" placeholder="Search..." text={search} onChange={onSearchInputChanged} />
+            <Modal bodyClassName={"asset-menu" + (expanded ? " asset-menu-xl" : "")} title={<div className="d-flex flex-row align-items-center">
+                <Button circular icon style="trans-faded" onClick={() => setExpanded(!expanded)}>
+                    <Icon icon={expanded ? "solid-chevron-down" : "solid-chevron-up"} fa />
+                </Button>
+                <Icon icon="solid-magnifying-glass" fa className="bg-muted ml-2" />
+                <TextBox size="sm" className="bg-dark-trans-less-faded w-25 mr-2 ml-4" placeholder="Search..." text={search} onChange={onSearchInputChanged} />
                 {<Button circular icon style="trans-faded" disabled={search && search.length > 0 ? null : true} onClick={() => setSearch("")}>
                     <Icon icon="solid-eraser" fa />
                 </Button>}
             </div>} onClose={closeModal}>
                 <div className="asset-menu-container" onMouseLeave={() => onMouseLeave()}>
                     <div className="flex-1">
-                        <VirtualList border={model.ViewMode === "IconGrid" || model.ViewMode === "IconGridLarge" ? null : true} data={filteredPrefabs} onRenderItem={onRenderItem} columns={model.ViewMode === "Rows" || model.ViewMode === "Detailed" ? 1 : model.ViewMode === "Columns" ? 2 : model.ViewMode === "IconGrid" ? 13 : 9} rows={model.ViewMode === "Rows" || model.ViewMode === "Detailed" || model.ViewMode === "Columns" ? 4 : model.ViewMode === "IconGrid" ? 3 : 2} contentClassName="d-flex flex-row flex-wrap" size="sm" itemHeight={32}>
+                        <VirtualList border={model.ViewMode === "IconGrid" || model.ViewMode === "IconGridLarge" ? null : true} data={filteredPrefabs} onRenderItem={onRenderItem} columns={model.ViewMode === "Rows" || model.ViewMode === "Detailed" ? 1 : model.ViewMode === "Columns" ? 2 : model.ViewMode === "IconGrid" ? 13 : 9} rows={model.ViewMode === "Rows" || model.ViewMode === "Detailed" || model.ViewMode === "Columns" ? (expanded ? 8 : 4) : model.ViewMode === "IconGrid" ? (expanded ? 6 : 3) : ( expanded ? 4 : 2 )} contentClassName="d-flex flex-row flex-wrap" size="sm" itemHeight={32}>
                         </VirtualList>
                     </div>
                 </div>
