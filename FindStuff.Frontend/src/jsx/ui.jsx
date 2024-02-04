@@ -119,7 +119,10 @@ const ToolWindow = ({ react, setupController }) => {
                     </div>
                 </div>
                 <div className="col-2">
-                    <span className="fs-xs h-x">{highlightSearchTerm(p.Type, search)}</span>
+                    <span className="fs-xs h-x">
+                        <Icon icon={p.TypeIcon} size="sm" className="mr-1" />
+                        {highlightSearchTerm(p.Type, search)}
+                    </span>
                 </div>
                 <div className="col-5">
                 </div>
@@ -203,16 +206,15 @@ const ToolWindow = ({ react, setupController }) => {
         </div>
         <div className="col">
             {hoverPrefab && hoverPrefab.Name.length > 0 ?
-                <Modal className="mb-2" title={_L(`Assets.NAME[${hoverPrefab.Name}]`) } noClose>
-                    <Icon icon={hoverPrefab.Thumbnail} size="xxl" />
-                    <Icon icon={hoverPrefab.TypeIcon} size="xxl" />
+                <Modal className="mb-2" icon={<><Icon icon={hoverPrefab.TypeIcon} /></>} title={_L(`Assets.NAME[${hoverPrefab.Name}]`)} noClose>
+                    <Icon icon={hoverPrefab.Thumbnail} size="xxl" />                    
                 </Modal> : null }
             <Modal bodyClassName="asset-menu" title={<div className="d-flex flex-row align-items-center">
                 <Icon icon="solid-magnifying-glass" fa className="bg-muted" />
                 <TextBox size="sm" className="bg-dark-trans-less-faded w-50 mr-2 ml-4" placeholder="Search..." text={search} onChange={onSearchInputChanged} />
-                {search && search.length > 0 ? <Button circular icon style="trans-faded" onClick={() => setSearch("")}>
+                {<Button circular icon style="trans-faded" disabled={search && search.length > 0 ? null : true} onClick={() => setSearch("")}>
                     <Icon icon="solid-eraser" fa />
-                </Button> : null}
+                </Button>}
             </div>} onClose={closeModal}>
                 <div className="asset-menu-container" onMouseLeave={() => onMouseLeave()}>
                     <div className="flex-1">
