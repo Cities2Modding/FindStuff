@@ -104,7 +104,7 @@ const ToolWindow = ({ react, setupController }) => {
 
         return (!searchTerm || searchTerm.length == 0) ? text : splitText.map((part, index) =>
             regex.test(part) ? <span key={index}>
-                <b className={selectedPrefab.Name == text ? "text-dark bg-warning" : "text-dark bg-warning"}>{part}</b>
+                <b className={selectedPrefab.Name == text || _L(`Assets.NAME[${selectedPrefab.Name}]`) == text ? "text-dark bg-warning" : "text-dark bg-warning"}>{part}</b>
             </span> : part
         );
     };
