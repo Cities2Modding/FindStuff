@@ -7,10 +7,10 @@ using System.Linq;
 using System.Collections.Generic;
 using Game.UI;
 using System.Reflection;
-using Colossal.Entities;
 using Colossal.Serialization.Entities;
 using Game;
-using static Colossal.AssetPipeline.Diagnostic.Report;
+using Game.Companies;
+using Colossal.Entities;
 
 namespace FindStuff.UI
 {
@@ -142,14 +142,27 @@ namespace FindStuff.UI
             {
                 return "Vehicle";
             }
-            else if (EntityManager.HasComponent<ResidentialProperty>(prefabEntity))
+            else if (EntityManager.TryGetComponent<SpawnableBuildingData>(prefabEntity, out var spawnableBuildingData))
             {
-                return "ZoneResidential";
-            }
-            else if (EntityManager.HasComponent<SpawnableBuildingData>(prefabEntity))
-            {
-                UnityEngine.Debug.Log("spawnable found.");
-                return "ZoneIndustrial";
+                if (spawnableBuildingData.m_ZonePrefab != Entity.Null && EntityManager.TryGetComponent<ZoneData>(spawnableBuildingData.m_ZonePrefab, out var zoneData))
+                {
+                    var areaType = zoneData.m_AreaType;
+                    switch (areaType)
+                    {
+                        case Game.Zones.AreaType.Commercial:
+                            return "ZoneCommercial";
+
+                        case Game.Zones.AreaType.Residential:
+                            return "ZoneResidential";
+
+                        case Game.Zones.AreaType.Industrial:
+                            ZonePrefab zonePrefab = _prefabSystem.GetPrefab<ZonePrefab>(spawnableBuildingData.m_ZonePrefab);
+                            return zonePrefab.m_Office ? "ZoneOffice" : "ZoneIndustrial";
+
+                        default:
+                            return "Unknown";
+                    }
+                }
             }
 
             return "Unknown";
@@ -182,6 +195,9 @@ namespace FindStuff.UI
 
                 case "ZoneIndustrial":
                     return "Media/Game/Icons/ZoneIndustrial.svg";
+
+                case "ZoneOffice":
+                    return "Media/Game/Icons/ZoneOffice.svg";
 
                 case "Vehicle":
                     return "Media/Game/Icons/Traffic.svg";
