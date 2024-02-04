@@ -12,12 +12,6 @@ namespace FindStuff.UI
             set;
         }
 
-        public string Message
-        {
-            get;
-            set;
-        } = "Hello, world!";
-
         public List<PrefabItem> Prefabs
         {
             get;
@@ -40,6 +34,12 @@ namespace FindStuff.UI
     public class PrefabItem
     {
         public string Name
+        {
+            get;
+            set;
+        }
+
+        public string Type
         {
             get;
             set;

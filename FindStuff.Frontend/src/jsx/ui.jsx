@@ -50,6 +50,24 @@ const ToolWindow = ({ react, setupController }) => {
     const [hoverPrefab, setHoverPrefab] = react.useState({ Name: "" });
     const [tm, setTm] = react.useState(null);
 
+    const [filteredPrefabs, setFilteredPrefabs] = react.useState(model.Prefabs);
+    const [search, setSearch] = react.useState("");
+
+    const updateSearchFilter = () => {
+        const filtered = !search || search === "" ? model.Prefabs : model.Prefabs.filter(function (p) {
+            return p.Name && p.Name.toLowerCase().includes(search.toLowerCase());
+        });
+        setFilteredPrefabs(filtered);
+    };
+
+    react.useEffect(() => {
+        updateSearchFilter();
+    }, [model, search]);
+
+    const onSearchInputChanged = (val) => {
+        setSearch(val);
+    };
+
     const { Button, Icon, VirtualList, Slider, List, Grid, FormGroup, FormCheckBox, Scrollable, ToolTip, TextBox, Dropdown, ToolTipContent, TabModal, Modal, MarkDown } = window.$_gooee.framework;
 
     const { model, update, trigger } = setupController();
@@ -76,11 +94,18 @@ const ToolWindow = ({ react, setupController }) => {
         setHoverPrefab(null);
     }
 
+    const containsSearch = (p) => {
+        return p.Name.toLowerCase().includes(search.toLowerCase());
+    };
+
+    const wrapSearchMatch = (p) => p.Name.replace(new RegExp(`(${search})`, 'gi'), `<span class="text-primary">$1</span>`);
+
+
     const onRenderItem = (p, index) => {
         return <Button color={selectedPrefab.Name == p.Name ? "primary" : "light"} style={selectedPrefab.Name == p.Name ? "trans" : "trans-faded"} onMouseEnter={() => onMouseEnter(p)} className="asset-menu-item auto flex-1 m-mini" onClick={() => onSelectPrefab(p)}>
             <div className={"d-flex align-items-center justify-content-center " + (model.ViewMode === "Columns" || model.ViewMode === "Rows" ? " w-x flex-row " : " flex-column")}>
                 <img className={model.ViewMode === "IconGrid" ? "icon icon-lg" : model.ViewMode === "IconGridLarge" ? "icon icon-xl" : "icon icon-sm ml-2"} src={p.Thumbnail} />
-                {model.ViewMode === "Rows" || model.ViewMode === "Columns" ? <span className="text-light ml-1 fs-sm mr-4">{p.Name}</span> : <span className="text-light fs-xs ml-1 mr-4" style={{ maxWidth: '80%', textOverflow: 'ellipsis', overflowX: 'hidden' }}>{p.Name}</span>}
+                {model.ViewMode === "Rows" || model.ViewMode === "Columns" ? <span className="text-light ml-1 fs-sm mr-4">{wrapSearchMatch(p.Name)}</span> : <span className="text-light fs-xs ml-1 mr-4" style={{ maxWidth: '80%', textOverflow: 'ellipsis', overflowX: 'hidden' }}>{p.Name}</span>}
             </div>
         </Button>;
     };
@@ -134,7 +159,7 @@ const ToolWindow = ({ react, setupController }) => {
                     <Icon icon={hoverPrefab.TypeIcon} size="xxl" />
                 </Modal> : null }
             <Modal bodyClassName="asset-menu" title={<>
-                <TextBox size="sm" className="bg-dark-trans-less-faded w-50 mr-1" value="Search..." />
+                <TextBox size="sm" className="bg-dark-trans-less-faded w-50 mr-1" value={search} onChange={onSearchInputChanged} />
                 <Dropdown size="sm" className="w-25" toggleClassName="bg-dark-trans-less-faded" options={[
                     {
                         label: "Apple",
@@ -152,7 +177,7 @@ const ToolWindow = ({ react, setupController }) => {
             </>} onClose={closeModal}>
                 <div className="asset-menu-container" onMouseLeave={() => onMouseLeave()}>
                     <div className="flex-1">
-                        <VirtualList data={model.Prefabs} onRenderItem={onRenderItem} columns={model.ViewMode === "Rows" ? 1 : model.ViewMode === "Columns" ? 2 : model.ViewMode === "IconGrid" ? 9 : 9} rows={model.ViewMode === "Rows" || model.ViewMode === "Columns" ? 4 : model.ViewMode === "IconGrid" ? 3 : 2} contentClassName="d-flex flex-row flex-wrap" size="sm" itemHeight={32}>
+                        <VirtualList data={filteredPrefabs} onRenderItem={onRenderItem} columns={model.ViewMode === "Rows" ? 1 : model.ViewMode === "Columns" ? 2 : model.ViewMode === "IconGrid" ? 9 : 9} rows={model.ViewMode === "Rows" || model.ViewMode === "Columns" ? 4 : model.ViewMode === "IconGrid" ? 3 : 2} contentClassName="d-flex flex-row flex-wrap" size="sm" itemHeight={32}>
                         </VirtualList>
                     </div>
                 </div>

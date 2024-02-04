@@ -63,34 +63,19 @@ namespace FindStuff.UI
                 var prefabIcon = "";
 
                 var thumbnail = _imageSystem.GetThumbnail( entity );
-                var typeIcon = "";
-
-                if ( EntityManager.TryGetComponent<SpawnableBuildingData>( entity, out var component ) )
-                {
-                    string iconOrGroupIcon = _imageSystem.GetIconOrGroupIcon( component.m_ZonePrefab );
-                    if ( iconOrGroupIcon != null )
-                    {
-                        typeIcon = iconOrGroupIcon;
-                    }
-                }
-
-                string iconOrGroupIcon2 = _imageSystem.GetIconOrGroupIcon( entity );
-                if ( iconOrGroupIcon2 != null )
-                {
-                    typeIcon = iconOrGroupIcon2;
-                }
+                var typeIcon = GetTypeIcon( entity );
 
                 if ( thumbnail == null || thumbnail == "Media/Placeholder.svg" )
-                {
                     prefabIcon = typeIcon;
-                }
                 else
-                {
                     prefabIcon = thumbnail;
-                }
-     
-                var icon = prefabIcon;
-                var prefabItem = new PrefabItem { Name = prefabBase.name, Thumbnail = icon, TypeIcon = typeIcon };
+
+                var prefabItem = new PrefabItem {
+                    Name = prefabBase.name,
+                    Type = GetType( entity ),
+                    Thumbnail = prefabIcon, 
+                    TypeIcon = typeIcon 
+                };
                 prefabsList.Add( prefabItem );
                 //UnityEngine.Debug.Log( "Got? prefab: " + JsonConvert.SerializeObject( prefabItem ) );
                 // UnityEngine.Debug.Log( "Got prefab: " + prefabBase.name  + " icon: "+ icon );
@@ -102,6 +87,38 @@ namespace FindStuff.UI
             return model;
         }
 
+        private string GetType( Entity prefabEntity )
+        {
+            if ( EntityManager.HasComponent<TreeData>( prefabEntity ) )
+            {
+                return "Tree";
+            }
+
+            return "Unknown";
+        }
+
+        private string GetTypeIcon( Entity prefabEntity )
+        {
+            var typeIcon = "";
+
+            if ( EntityManager.TryGetComponent<SpawnableBuildingData>( prefabEntity, out var component ) )
+            {
+                string iconOrGroupIcon = _imageSystem.GetIconOrGroupIcon( component.m_ZonePrefab );
+                if ( iconOrGroupIcon != null )
+                {
+                    typeIcon = iconOrGroupIcon;
+                }
+            }
+
+            string iconOrGroupIcon2 = _imageSystem.GetIconOrGroupIcon( prefabEntity );
+            if ( iconOrGroupIcon2 != null )
+            {
+                typeIcon = iconOrGroupIcon2;
+            }
+
+            return typeIcon;
+        }
+
         protected override void OnUpdate( )
         {
             base.OnUpdate( );
@@ -110,8 +127,7 @@ namespace FindStuff.UI
         [OnTrigger]
         private void OnTestClick( )
         {
-            Model.Message = "An amended message! " + DateTime.Now;
-            TriggerUpdate( );
+            //TriggerUpdate( );
         }
 
         [OnTrigger]
