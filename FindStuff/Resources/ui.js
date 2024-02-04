@@ -1976,7 +1976,7 @@
       const regex = new RegExp(`(${searchTerm})`, "gi");
       const splitText = text.split(regex);
       return !searchTerm || searchTerm.length == 0 ? text : splitText.map(
-        (part, index) => regex.test(part) ? /* @__PURE__ */ import_react.default.createElement("span", { key: index }, /* @__PURE__ */ import_react.default.createElement("b", { className: selectedPrefab.Name == text ? "text-dark bg-warning" : "text-dark bg-warning" }, part)) : part
+        (part, index) => regex.test(part) ? /* @__PURE__ */ import_react.default.createElement("span", { key: index }, /* @__PURE__ */ import_react.default.createElement("b", { className: selectedPrefab.Name == text || _L(`Assets.NAME[${selectedPrefab.Name}]`) == text ? "text-dark bg-warning" : "text-dark bg-warning" }, part)) : part
       );
     };
     const renderItemContent = (p) => {
