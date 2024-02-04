@@ -57,14 +57,20 @@ const ToolWindow = ({ react, setupController }) => {
     const [search, setSearch] = react.useState("");
     
     const updateSearchFilter = () => {
-        const filtered = ((!model.Filter || model.Filter.length == 0 || model.Filter === "None") && (!search || search === "") ? model.Prefabs :
+        let filtered = ((!model.Filter || model.Filter.length == 0 || model.Filter === "None") && (!search || search === "") ? model.Prefabs :
             model.Prefabs.filter(function (p) {
                 return (model.Filter && model.Filter.length > 0 && model.Filter !== "None" ? p.Type === model.Filter : true) &&
                     (search && search.length > 0 ?
-                        (p.Name && p.Name.toLowerCase().includes(search.toLowerCase()) || p.Type && p.Type.toLowerCase().includes(search.toLowerCase()))
+                    (p.Name && _L(`Assets.NAME[${p.Name}]`).toLowerCase().includes(search.toLowerCase()) || p.Type && p.Type.toLowerCase().includes(search.toLowerCase()))
                     : true);
             })
         );
+
+        filtered.sort((a, b) => _L(`Assets.NAME[${a.Name}]`).toLowerCase().localeCompare(_L(`Assets.NAME[${b.Name}]`).toLowerCase()));
+
+        if (!model.OrderByAscending)
+            filtered.reverse();
+
         setFilteredPrefabs(filtered);
     };
 
@@ -187,7 +193,7 @@ const ToolWindow = ({ react, setupController }) => {
                             </Button>
                         </div>
                         <div className="d-flex flex-row flex-wrap align-items-center justify-content-end mt-1">
-                            <Button className={"ml-1" + (model.Filter === "SignatureBuilding" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "SignatureBuilding")}>
+                            <Button className={(model.Filter === "SignatureBuilding" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "SignatureBuilding")}>
                                 <Icon icon="Media/Game/Icons/ZoneSignature.svg" />
                             </Button>
                             <Button className={"ml-1" + (model.Filter === "Vehicle" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "Vehicle")}>
@@ -206,6 +212,21 @@ const ToolWindow = ({ react, setupController }) => {
                             </Button>
                             <Button className={"ml-1" + (model.Filter === "ZoneIndustrial" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "ZoneIndustrial")}>
                                 <Icon icon="Media/Game/Icons/ZoneIndustrial.svg" />
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+                <div className="d-flex flex-row align-items-center justify-content-center mt-4">
+                    <div className="flex-1">
+                        {_L("FindStuff.OrderBy")}
+                    </div>
+                    <div>
+                        <div className="d-flex flex-row flex-wrap align-items-center justify-content-end">
+                            <Button className={(model.OrderByAscending === true ? " active" : "")} color="tool" size="sm" icon onClick={() => update("OrderByAscending", true)}>
+                                <Icon icon="solid-arrow-up-a-z" fa />
+                            </Button>
+                            <Button className={"ml-1" + (model.OrderByAscending === false ? " active" : "")} color="tool" size="sm" icon onClick={() => update("OrderByAscending", false)}>
+                                <Icon icon="solid-arrow-down-a-z" fa />
                             </Button>
                         </div>
                     </div>
