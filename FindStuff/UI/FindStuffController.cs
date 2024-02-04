@@ -181,7 +181,7 @@ namespace FindStuff.UI
                 case "ServiceBuilding":
                     return "Media/Game/Icons/Services.svg";
 
-                case "Signature":
+                case "SignatureBuilding":
                     return "Media/Game/Icons/ZoneSignature.svg";
 
                 case "Zoneable":
