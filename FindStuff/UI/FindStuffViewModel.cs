@@ -18,6 +18,12 @@ namespace FindStuff.UI
             set;
         } = new List<PrefabItem>( );
 
+        public bool OrderByAscending
+        {
+            get;
+            set;
+        } = true;
+
         public ViewMode ViewMode
         {
             get;

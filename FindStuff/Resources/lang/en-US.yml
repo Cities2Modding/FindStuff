@@ -6,3 +6,4 @@ lang:
  
  FindStuff.View: View
  FindStuff.Filter: Filter
+ FindStuff.OrderBy: Order
