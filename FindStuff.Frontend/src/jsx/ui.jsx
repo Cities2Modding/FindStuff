@@ -179,7 +179,7 @@ const ToolWindow = ({ react, setupController }) => {
                             <Button className={"ml-1" + (model.Filter === "ServiceBuilding" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "ServiceBuilding")}>
                                 <Icon icon="Media/Game/Icons/Services.svg" />
                             </Button>
-                            <Button className={"ml-1" + (model.Filter === "Signature" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "Signature")}>
+                            <Button className={"ml-1" + (model.Filter === "SignatureBuilding" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "SignatureBuilding")}>
                                 <Icon icon="Media/Game/Icons/ZoneSignature.svg" />
                             </Button>
                             <Button className={"ml-1" + (model.Filter === "ZoneResidential" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "ZoneResidential")}>
