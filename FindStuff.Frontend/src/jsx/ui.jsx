@@ -175,10 +175,18 @@ const ToolWindow = ({ react, setupController }) => {
                         {_L("FindStuff.Filter")}
                     </div>
                     <div>
-                        <div className="d-flex flex-row flex-wrap align-items-center justify-content-end">
+                        <div className="d-flex flex-row flex-wrap align-items-center justify-content-end mt-1">
                             <Button className={(model.Filter === "None" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "None")}>
                                 <Icon icon="solid-asterisk" fa />
                             </Button>
+                            <Button className={"ml-1" + (model.Filter === "ServiceBuilding" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "ServiceBuilding")}>
+                                <Icon icon="Media/Game/Icons/Services.svg" />
+                            </Button>
+                            <Button className={"ml-1" + (model.Filter === "SignatureBuilding" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "SignatureBuilding")}>
+                                <Icon icon="Media/Game/Icons/ZoneSignature.svg" />
+                            </Button>
+                        </div>
+                        <div className="d-flex flex-row flex-wrap align-items-center justify-content-end">
                             <Button className={"ml-1" + (model.Filter === "Foliage" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "Foliage")}>
                                 <Icon icon="Media/Game/Icons/Forest.svg" />
                             </Button>
@@ -187,14 +195,6 @@ const ToolWindow = ({ react, setupController }) => {
                             </Button>
                             <Button className={"ml-1" + (model.Filter === "Vehicle" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "Vehicle")}>
                                 <Icon icon="Media/Game/Icons/Traffic.svg" />
-                            </Button>
-                        </div>
-                        <div className="d-flex flex-row flex-wrap align-items-center justify-content-end mt-1">
-                            <Button className={"ml-1" + (model.Filter === "ServiceBuilding" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "ServiceBuilding")}>
-                                <Icon icon="Media/Game/Icons/Services.svg" />
-                            </Button>
-                            <Button className={"ml-1" + (model.Filter === "SignatureBuilding" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "SignatureBuilding")}>
-                                <Icon icon="Media/Game/Icons/ZoneSignature.svg" />
                             </Button>
                         </div>
                         <div className="d-flex flex-row flex-wrap align-items-center justify-content-end mt-1">
