@@ -117,13 +117,17 @@ namespace FindStuff.UI
             {
                 return "Foliage";
             }
-            else if ( EntityManager.HasComponent<NetPieceData>( prefabEntity ) )
+            else if ( EntityManager.HasComponent<RoadData>( prefabEntity ) )
             {
                 return "Network";
             }
             else if ( EntityManager.HasComponent<SignatureBuildingData>( prefabEntity ) )
             {
                 return "Signature Building";
+            }
+            else if ( EntityManager.HasComponent<VehicleData>( prefabEntity ) )
+            {
+                return "Vehicle";
             }
             else if ( EntityManager.TryGetComponent<SpawnableBuildingData>( prefabEntity, out var buildingData ) )
             {
@@ -177,6 +181,9 @@ namespace FindStuff.UI
 
                 case "ZoneIndustrial":
                     return "Media/Game/Icons/ZoneIndustrial.svg";
+
+                case "Vehicle":
+                    return "Media/Game/Icons/Traffic.svg";
             }
 
             return "";
