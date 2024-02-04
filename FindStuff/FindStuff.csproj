@@ -20,7 +20,7 @@
 		<Configurations>Debug;Release;Debug - 89;Release - 89</Configurations>
 	</PropertyGroup> 
 	
-	<PropertyGroup Condition="'$(Configuration)' == 'Debug 89' or '$(Configuration)' == 'Release 89'">
+	<PropertyGroup Condition="'$(Configuration)' == 'Debug - 89' or '$(Configuration)' == 'Release - 89'">
 		<Cities2_Location>E:\Games\Cities Skylines II</Cities2_Location>
 		<UnstrippedUnity_Location>E:\Games\Cities Skylines II\unstripped</UnstrippedUnity_Location>
 		<BepInExVersion>5</BepInExVersion>
