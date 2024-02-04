@@ -1,22 +1,13 @@
 ﻿using Game.Tools;
 using Gooee.Plugins.Attributes;
 using Gooee.Plugins;
-using System;
 using Unity.Entities;
 using Game.Prefabs;
 using System.Linq;
 using System.Collections.Generic;
 using Game.UI;
 using System.Reflection;
-using Newtonsoft.Json;
 using Colossal.Entities;
-using Colossal.IO.AssetDatabase;
-using Game.Buildings;
-using Game.Citizens;
-using Game.Common;
-using Game.Creatures;
-using Game.Net;
-using Game.Objects;
 
 namespace FindStuff.UI
 {
@@ -95,11 +86,15 @@ namespace FindStuff.UI
             {
                 return true;
             }
-            else if ( EntityManager.HasComponent<NetPieceData>( prefabEntity ) )
+            else if (EntityManager.HasComponent<NetData>( prefabEntity ) )
             {
                 return true;
             }
-            else if ( EntityManager.HasComponent<SignatureBuildingData>( prefabEntity ) )
+            else if (EntityManager.HasComponent<BuildingData>(prefabEntity) && EntityManager.HasComponent<ServiceObjectData>(prefabEntity))
+            {
+                return true;
+            }
+            else if (EntityManager.HasComponent<VehicleData>( prefabEntity ) )
             {
                 return true;
             }
@@ -117,9 +112,13 @@ namespace FindStuff.UI
             {
                 return "Foliage";
             }
-            else if ( EntityManager.HasComponent<RoadData>( prefabEntity ) )
+            else if ( EntityManager.HasComponent<NetData>( prefabEntity ) )
             {
                 return "Network";
+            }
+            else if (EntityManager.HasComponent<BuildingData>(prefabEntity) && EntityManager.HasComponent<ServiceObjectData>(prefabEntity))
+            {
+                return "ServiceBuilding";
             }
             else if ( EntityManager.HasComponent<SignatureBuildingData>( prefabEntity ) )
             {
@@ -161,11 +160,11 @@ namespace FindStuff.UI
                 case "Foliage":
                     return "Media/Game/Icons/Forest.svg";
 
-                case "Roads":
+                case "Network":
                     return "Media/Game/Icons/Roads.svg";
 
-                case "Building":
-                    return "Media/Game/Icons/Roads.svg";
+                case "ServiceBuilding":
+                    return "Media/Game/Icons/Services.svg";
 
                 case "Signature":
                     return "Media/Game/Icons/ZoneSignature.svg";

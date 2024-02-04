@@ -77,11 +77,12 @@ namespace FindStuff.UI
     {
         None = 0,
         Foliage = 1,
-        Roads = 2,
-        Signature = 3,
-        ZoneResidential = 4,
-        ZoneCommercial = 5,
-        ZoneIndustrial = 6, 
-        Vehicles
+        Network = 2,
+        Vehicle = 3,
+        ServiceBuilding = 4,
+        Signature = 5,
+        ZoneResidential = 6,
+        ZoneCommercial = 7,
+        ZoneIndustrial = 8, 
     }
 }
