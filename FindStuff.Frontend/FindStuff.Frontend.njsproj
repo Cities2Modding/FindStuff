@@ -27,6 +27,14 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug - 89' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug - 89\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release - 89' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Release - 89\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Content Include="gulpfile.js" />
     <Content Include="package.json" />
