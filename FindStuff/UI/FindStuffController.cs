@@ -151,7 +151,7 @@ namespace FindStuff.UI
                 _prefabType = "Tree";
                 _tags.Add("tree");
             }
-            else if (prefab is SurfacePrefab && EntityManager.HasComponent<RenderedAreaData>(prefabEntity) && EntityManager.HasComponent<SurfaceData>(prefabEntity))
+            else if (EntityManager.HasComponent<SurfaceData>( prefabEntity ) )
             {
                 isValid = true;
                 _prefabType = "Surface";
@@ -373,15 +373,6 @@ namespace FindStuff.UI
             }
 
             return "";
-        }
-
-        private bool IsOffice(IndustrialProcessData industrialProcessData)
-        {
-            return industrialProcessData.m_Output.m_Resource switch
-            {
-                Game.Economy.Resource.Software or Game.Economy.Resource.Financial or Game.Economy.Resource.Media => true,
-                _ => false,
-            };
         }
 
         protected override void OnUpdate( )
