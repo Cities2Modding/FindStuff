@@ -139,13 +139,20 @@ namespace FindStuff.UI
             bool isValid = false;
             _prefabType = "Unknown";
 
-            if ( EntityManager.HasComponent<TreeData>( prefabEntity ) || EntityManager.HasComponent<PlantData>( prefabEntity ) )
+            if ( EntityManager.HasComponent<PlantData>( prefabEntity ) )
             {
                 isValid = true;
-                _prefabType = "Foliage";
-                _tags.Add("tree");
-                _tags.Add("foliage");
-                _tags.Add("spawnable");
+                _prefabType = "Plant";
+            }
+            else if ( EntityManager.HasComponent<TreeData>( prefabEntity ) )
+            {
+                isValid = true;
+                _prefabType = "Tree";
+            }
+            else if ( EntityManager.HasComponent<SurfaceData>( prefabEntity ) ) // Not working yet?
+            {
+                isValid = true;
+                _prefabType = "Surface";
             }
             else if (prefab is SurfacePrefab && EntityManager.HasComponent<RenderedAreaData>(prefabEntity))
             {
@@ -329,7 +336,10 @@ namespace FindStuff.UI
         {
             switch ( type )
             {
-                case "Foliage":
+                case "Plant":
+                    return "Media/Game/Icons/Forest.svg";
+
+                case "Tree":
                     return "Media/Game/Icons/Forest.svg";
 
                 case "Network":
@@ -358,6 +368,9 @@ namespace FindStuff.UI
 
                 case "Vehicle":
                     return "Media/Game/Icons/Traffic.svg";
+
+                case "Surface":
+                    return "fa:solid-pencil";
             }
 
             return "";

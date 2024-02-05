@@ -35,6 +35,12 @@ namespace FindStuff.UI
             get;
             set;
         } = Filter.None;
+
+        public SubFilter SubFilter
+        {
+            get;
+            set;
+        } = SubFilter.None;
     }
 
     public class PrefabItem
@@ -96,14 +102,23 @@ namespace FindStuff.UI
         None = 0,
         Foliage = 1,
         Network = 2,
-        Vehicle = 3,
-        ServiceBuilding = 4,
-        SignatureBuilding = 5,
-        ZoneResidential = 6,
-        ZoneCommercial = 7,
-        ZoneOffice = 8,
-        ZoneIndustrial = 9,
-        Surface = 10,
-        Props = 99,
+        Buildings = 4,
+        Zones = 5,
+        Surface = 6,
+        Misc = 20,
+    }
+
+    public enum SubFilter
+    {
+        None = 0,
+        ZoneResidential = 1,
+        ZoneCommercial = 2,
+        ZoneOffice = 3,
+        ZoneIndustrial = 4,
+        ServiceBuilding = 5,
+        SignatureBuilding = 6,
+        Vehicle = 7,
+        Tree = 8,
+        Plant = 9
     }
 }
