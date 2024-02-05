@@ -11,6 +11,7 @@ using Colossal.Serialization.Entities;
 using Game;
 using Game.Companies;
 using Colossal.Entities;
+using Game.UI.InGame;
 
 namespace FindStuff.UI
 {
@@ -19,16 +20,23 @@ namespace FindStuff.UI
         private ToolSystem _toolSystem;
         private PrefabSystem _prefabSystem;
         private ImageSystem _imageSystem;
+        private ToolbarUISystem _toolbarUISystem;
 
         static FieldInfo _prefabsField = typeof( PrefabSystem ).GetField( "m_Prefabs", BindingFlags.Instance | BindingFlags.NonPublic );
 
         private Dictionary<string, PrefabBase> _prefabInstances = [];
+        private EntityArchetype _entityArchetype;
+        private EndFrameBarrier _endFrameBarrier;
+        static MethodInfo _selectTool = typeof( ToolbarUISystem ).GetMethods( BindingFlags.Instance | BindingFlags.NonPublic )
+            .FirstOrDefault( m => m.Name == "SelectAsset" && m.GetParameters( ).Length == 1 );
 
         public override FindStuffViewModel Configure( )
         {
             _toolSystem = World.GetOrCreateSystemManaged<ToolSystem>( );
             _prefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>( );
             _imageSystem = World.GetOrCreateSystemManaged<ImageSystem>( );
+            _endFrameBarrier = World.GetOrCreateSystemManaged<EndFrameBarrier>( );
+            _toolbarUISystem = World.GetOrCreateSystemManaged<ToolbarUISystem>( );
 
             _toolSystem.EventToolChanged += ( tool =>
             {
@@ -38,6 +46,9 @@ namespace FindStuff.UI
                     TriggerUpdate( );
                 }
             } );
+
+
+            _entityArchetype = this.EntityManager.CreateArchetype( ComponentType.ReadWrite<Unlock>( ), ComponentType.ReadWrite<Game.Common.Event>( ) );
 
             var model = new FindStuffViewModel( );
 
@@ -237,6 +248,30 @@ namespace FindStuff.UI
             //    duckTool.SetActive( Model.IsVisible );
             //}
             TriggerUpdate( );
+        }
+
+        [OnTrigger]
+        private void OnSelectPrefab( string name )
+        {
+            if ( string.IsNullOrEmpty( name ) )
+                return;
+
+            var prefabs = ( List<PrefabBase> ) _prefabsField.GetValue( _prefabSystem );
+            var prefab = prefabs?.FirstOrDefault( p => p.name == name );
+
+            if ( prefab != null )
+            {
+                var entity = _prefabSystem.GetEntity( prefab );
+
+                if ( entity != Entity.Null )
+                {
+                    EntityCommandBuffer commandBuffer = _endFrameBarrier.CreateCommandBuffer( );
+
+                    var unlockEntity = commandBuffer.CreateEntity( _entityArchetype );
+                    commandBuffer.SetComponent<Unlock>( unlockEntity, new Unlock( entity ) );
+                    _selectTool.Invoke( _toolbarUISystem, new object[] { entity } );
+                }
+            }
         }
     }
 }

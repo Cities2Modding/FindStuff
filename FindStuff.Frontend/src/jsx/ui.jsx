@@ -93,6 +93,7 @@ const ToolWindow = ({ react, setupController }) => {
 
     const onSelectPrefab = (prefab) => {
         setSeletedPrefab(prefab);
+        trigger("OnSelectPrefab", prefab.Name);
     };
 
     const onMouseEnter = (prefab) => {
