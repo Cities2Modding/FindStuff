@@ -62,12 +62,12 @@ const ToolWindow = ({ react, setupController }) => {
             model.Prefabs.filter(function (p) {
                 return (model.Filter && model.Filter.length > 0 && model.Filter !== "None" ? p.Type === model.Filter : true) &&
                     (search && search.length > 0 ?
-                    (p.Name && _L(`Assets.NAME[${p.Name}]`).toLowerCase().includes(search.toLowerCase()) || p.Type && p.Type.toLowerCase().includes(search.toLowerCase()))
+                    (p.Name && prefabName(p).toLowerCase().includes(search.toLowerCase()) || p.Type && p.Type.toLowerCase().includes(search.toLowerCase()))
                     : true);
             })
         );
 
-        filtered.sort((a, b) => _L(`Assets.NAME[${a.Name}]`).toLowerCase().localeCompare(_L(`Assets.NAME[${b.Name}]`).toLowerCase()));
+        filtered.sort((a, b) => prefabName(a).toLowerCase().localeCompare(prefabName(b).toLowerCase()));
 
         if (!model.OrderByAscending)
             filtered.reverse();
@@ -112,9 +112,19 @@ const ToolWindow = ({ react, setupController }) => {
 
         return (!searchTerm || searchTerm.length == 0) ? text : splitText.map((part, index) =>
             regex.test(part) ? <span key={index}>
-                <b className={selectedPrefab.Name == text || _L(`Assets.NAME[${selectedPrefab.Name}]`) == text ? "text-dark bg-warning" : "text-dark bg-warning"}>{part}</b>
+                <b className={selectedPrefab.Name == text || prefabName(selectedPrefab) == text ? "text-dark bg-warning" : "text-dark bg-warning"}>{part}</b>
             </span> : part
         );
+    };
+
+    const prefabName = (p) => {
+        const key = `Assets.NAME[${p.Name}]`;
+        const name = _L(key);
+
+        if (name === key)
+            return p.Name;
+
+        else return name;
     };
 
     const renderItemContent = (p) => {
@@ -123,7 +133,7 @@ const ToolWindow = ({ react, setupController }) => {
                 <div className="col-5">
                     <div className="d-flex flex-row">
                         <img className="icon icon-sm ml-1 mr-1" src={p.Thumbnail} />
-                        <span className="fs-sm flex-1">{highlightSearchTerm(_L(`Assets.NAME[${p.Name}]`), search)}</span>
+                        <span className="fs-sm flex-1">{highlightSearchTerm(prefabName(p), search)}</span>
                     </div>
                 </div>
                 <div className="col-2">
@@ -137,7 +147,7 @@ const ToolWindow = ({ react, setupController }) => {
             </Grid>
         </> : <>            
             <img className={model.ViewMode === "IconGrid" ? "icon icon-lg" : model.ViewMode === "IconGridLarge" ? "icon icon-xl" : "icon icon-sm ml-2"} src={p.Thumbnail} />
-                {model.ViewMode === "Rows" || model.ViewMode === "Columns" ? <span className="ml-1 fs-sm mr-4">{highlightSearchTerm(_L(`Assets.NAME[${p.Name}]`), search)}</span> : <span className="fs-xs ml-1 mr-4" style={{ maxWidth: '80%', textOverflow: 'ellipsis', overflowX: 'hidden' }}>{highlightSearchTerm(_L(`Assets.NAME[${p.Name}]`), search)}</span>}
+                {model.ViewMode === "Rows" || model.ViewMode === "Columns" ? <span className="ml-1 fs-sm mr-4">{highlightSearchTerm(prefabName(p), search)}</span> : <span className="fs-xs ml-1 mr-4" style={{ maxWidth: '80%', textOverflow: 'ellipsis', overflowX: 'hidden' }}>{highlightSearchTerm(prefabName(p), search)}</span>}
         </>;
     };
 
@@ -234,7 +244,7 @@ const ToolWindow = ({ react, setupController }) => {
         </div>
         <div className="col">
             {hoverPrefab && hoverPrefab.Name.length > 0 ?
-                <Modal className="mb-2" icon={<><Icon icon={hoverPrefab.TypeIcon} /></>} title={_L(`Assets.NAME[${hoverPrefab.Name}]`)} noClose>
+                <Modal className="mb-2" icon={<><Icon icon={hoverPrefab.TypeIcon} /></>} title={prefabName(hoverPrefab)} noClose>
                     <Icon icon={hoverPrefab.Thumbnail} size="xxl" />
                 </Modal> : null }
             <Modal bodyClassName={"asset-menu" + (expanded ? " asset-menu-xl" : "")} title={<div className="d-flex flex-row align-items-center">
