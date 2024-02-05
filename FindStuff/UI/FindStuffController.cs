@@ -143,18 +143,15 @@ namespace FindStuff.UI
             {
                 isValid = true;
                 _prefabType = "Plant";
+                _tags.Add("plant");
             }
             else if ( EntityManager.HasComponent<TreeData>( prefabEntity ) )
             {
                 isValid = true;
                 _prefabType = "Tree";
+                _tags.Add("tree");
             }
-            else if ( EntityManager.HasComponent<SurfaceData>( prefabEntity ) ) // Not working yet?
-            {
-                isValid = true;
-                _prefabType = "Surface";
-            }
-            else if (prefab is SurfacePrefab && EntityManager.HasComponent<RenderedAreaData>(prefabEntity))
+            else if (prefab is SurfacePrefab && EntityManager.HasComponent<RenderedAreaData>(prefabEntity) && EntityManager.HasComponent<SurfaceData>(prefabEntity))
             {
                 isValid = true;
                 _prefabType = "Surface";
@@ -311,6 +308,8 @@ namespace FindStuff.UI
                 if (spawnableBuildingData.m_ZonePrefab != Entity.Null && EntityManager.TryGetComponent(spawnableBuildingData.m_ZonePrefab, out ZoneData zoneData))
                 {
                     var areaType = zoneData.m_AreaType;
+                    _tags.Add("spawnable");
+                    _tags.Add("zone");
                     switch (areaType)
                     {
                         case Game.Zones.AreaType.Commercial:
