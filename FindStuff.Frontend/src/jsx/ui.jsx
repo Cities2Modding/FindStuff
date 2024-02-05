@@ -163,7 +163,7 @@ const ToolWindow = ({ react, setupController }) => {
                 </div>
                 <div className="col-2">
                     <span className="fs-xs h-x">
-                        <Icon icon={iconSrc} size="sm" className="mr-1" />
+                        <Icon icon={iconSrc} fa={isFAIcon ? true : null} size="sm" className="mr-1" />
                         {highlightSearchTerm(p.Type, search)}
                     </span>
                 </div>
