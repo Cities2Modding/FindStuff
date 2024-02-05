@@ -69,7 +69,13 @@ namespace FindStuff.UI
             set;
         }
 
-        public bool IsDangerous
+        public Dictionary<string, object> Meta
+        {
+            get;
+            set;
+        }
+
+        public List<string> Tags
         {
             get;
             set;
@@ -96,6 +102,6 @@ namespace FindStuff.UI
         ZoneResidential = 6,
         ZoneCommercial = 7,
         ZoneOffice = 8,
-        ZoneIndustrial = 9, 
+        ZoneIndustrial = 9,
     }
 }
