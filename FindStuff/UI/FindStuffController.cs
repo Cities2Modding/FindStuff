@@ -139,10 +139,20 @@ namespace FindStuff.UI
             bool isValid = false;
             _prefabType = "Unknown";
 
-            if ( EntityManager.HasComponent<TreeData>( prefabEntity ) || EntityManager.HasComponent<PlantData>( prefabEntity ) )
+            if ( EntityManager.HasComponent<PlantData>( prefabEntity ) )
             {
                 isValid = true;
-                _prefabType = "Foliage";
+                _prefabType = "Plant";
+            }
+            else if ( EntityManager.HasComponent<TreeData>( prefabEntity ) )
+            {
+                isValid = true;
+                _prefabType = "Tree";
+            }
+            else if ( EntityManager.HasComponent<SurfaceData>( prefabEntity ) ) // Not working yet?
+            {
+                isValid = true;
+                _prefabType = "Surface";
             }
             else if ( EntityManager.HasComponent<NetData>( prefabEntity ) )
             {
