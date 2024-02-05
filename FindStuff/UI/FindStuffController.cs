@@ -155,13 +155,21 @@ namespace FindStuff.UI
 
         private string GetType( PrefabBase prefab, Entity prefabEntity )
         {
-            if ( EntityManager.HasComponent<TreeData>( prefabEntity ) || EntityManager.HasComponent<PlantData>( prefabEntity ) )
+            if ( EntityManager.HasComponent<PlantData>( prefabEntity ) )
             {
-                return "Foliage";
+                return "Plant";
             }
+            else if( EntityManager.HasComponent<TreeData>( prefabEntity ) )
+            {
+                return "Tree";
+            }             
             else if ( EntityManager.HasComponent<NetData>( prefabEntity ) )
             {
                 return "Network";
+            }
+            else if ( EntityManager.HasComponent<SurfaceData>( prefabEntity ) )
+            {
+                return "Surface";
             }
             else if (EntityManager.HasComponent<BuildingData>(prefabEntity) && EntityManager.HasComponent<ServiceObjectData>(prefabEntity))
             {
@@ -205,7 +213,10 @@ namespace FindStuff.UI
         {
             switch ( type )
             {
-                case "Foliage":
+                case "Plant":
+                    return "Media/Game/Icons/Forest.svg";
+
+                case "Tree":
                     return "Media/Game/Icons/Forest.svg";
 
                 case "Network":
@@ -234,6 +245,9 @@ namespace FindStuff.UI
 
                 case "Vehicle":
                     return "Media/Game/Icons/Traffic.svg";
+
+                case "Surface":
+                    return "fa:solid-pencil";
             }
 
             return "";

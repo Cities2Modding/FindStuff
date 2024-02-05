@@ -31,7 +31,7 @@ const AppButton = ({ react, setupController }) => {
     };
     return <>
         <div className="spacer_oEi"></div>
-        <button onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onClick={onClick} class="button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT toggle-states_X82 toggle-states_DTm">
+        <button onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onClick={onClick} className={"button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT toggle-states_X82 toggle-states_DTm" + (model.IsVisible ? " selected" : "")}>
 
             <div className="fa fa-solid-magnifying-glass icon-lg"></div>
 
@@ -56,11 +56,26 @@ const ToolWindow = ({ react, setupController }) => {
     const [filteredPrefabs, setFilteredPrefabs] = react.useState(model.Prefabs);
     const [search, setSearch] = react.useState("");
     const [expanded, setExpanded] = react.useState(false);
-    
+
+    const subFitlers = {
+        "Zones": ["ZoneResidential", "ZoneCommercial", "ZoneIndustrial", "ZoneOffice"],
+        "Buildings": ["ServiceBuilding", "SignatureBuilding"],
+        "Misc": ["Vehicle"],
+        "Foliage": ["Tree", "Plant"],
+    };
+
+    const checkFilterTypes = (p) => {
+        const hasFilter = model.Filter && model.Filter.length > 0 && model.Filter !== "None";
+        const hasSubFilter = model.SubFilter && model.SubFilter.length > 0 && model.SubFilter !== "None";
+
+        return (hasSubFilter ? p.Type === model.SubFilter :
+            (hasFilter ? p.Type === model.Filter || subFitlers[model.Filter] && subFitlers[model.Filter].includes(p.Type) : true));
+    };
+
     const updateSearchFilter = () => {
         let filtered = ((!model.Filter || model.Filter.length == 0 || model.Filter === "None") && (!search || search === "") ? model.Prefabs :
             model.Prefabs.filter(function (p) {
-                return (model.Filter && model.Filter.length > 0 && model.Filter !== "None" ? p.Type === model.Filter : true) &&
+                return checkFilterTypes(p) &&
                     (search && search.length > 0 ?
                     (p.Name && prefabName(p).toLowerCase().includes(search.toLowerCase()) || p.Type && p.Type.toLowerCase().includes(search.toLowerCase()))
                     : true);
@@ -127,7 +142,17 @@ const ToolWindow = ({ react, setupController }) => {
         else return name;
     };
 
+    const updateFilter = (filter) => {
+        update("Filter", filter);
+        if (model.SubFilter && subFitlers[filter] && !subFitlers[filter].includes(model.SubFilter)) {
+            model.SubFilter = "None";
+            update("SubFilter", "None");
+        }
+    };
+
     const renderItemContent = (p) => {
+        const isFAIcon = p.TypeIcon.includes("fa:");
+        const iconSrc = isFAIcon ? p.TypeIcon.replaceAll("fa:", "") : p.TypeIcon;
         return model.ViewMode == "Detailed" ? <>
             <Grid>
                 <div className="col-5">
@@ -138,7 +163,7 @@ const ToolWindow = ({ react, setupController }) => {
                 </div>
                 <div className="col-2">
                     <span className="fs-xs h-x">
-                        <Icon icon={p.TypeIcon} size="sm" className="mr-1" />
+                        <Icon icon={iconSrc} size="sm" className="mr-1" />
                         {highlightSearchTerm(p.Type, search)}
                     </span>
                 </div>
@@ -158,6 +183,69 @@ const ToolWindow = ({ react, setupController }) => {
             </div>
         </Button>;
     };
+
+    const renderSubOptions = () => {
+        const subOptionsHeader = <>
+            <h5 className="mr-2 text-muted">{model.Filter}</h5>
+            <Button className={(!model.SubFilter || model.SubFilter === "None" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("SubFilter", "None")}>
+                <Icon icon="solid-asterisk" fa />
+            </Button>
+        </>;
+
+        if (model.Filter === "Zones") {
+            return <div className="d-flex flex-row flex-wrap justify-content-end mr-6 flex-1">
+                {subOptionsHeader}
+                <Button className={"ml-1" + (model.SubFilter === "ZoneResidential" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("SubFilter", "ZoneResidential")}>
+                    <Icon icon="Media/Game/Icons/ZoneResidential.svg" />
+                </Button>
+                <Button className={"ml-1" + (model.SubFilter === "ZoneCommercial" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("SubFilter", "ZoneCommercial")}>
+                    <Icon icon="Media/Game/Icons/ZoneCommercial.svg" />
+                </Button>
+                <Button className={"ml-1" + (model.SubFilter === "ZoneOffice" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("SubFilter", "ZoneOffice")}>
+                    <Icon icon="Media/Game/Icons/ZoneOffice.svg" />
+                </Button>
+                <Button className={"ml-1 mr-1" + (model.SubFilter === "ZoneIndustrial" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("SubFilter", "ZoneIndustrial")}>
+                    <Icon icon="Media/Game/Icons/ZoneIndustrial.svg" />
+                </Button>
+            </div>;
+        }
+        else if (model.Filter === "Buildings") {
+            return <div className="d-flex flex-row flex-wrap justify-content-end mr-6 flex-1">
+                {subOptionsHeader}
+                <Button className={"ml-1" + (model.SubFilter === "ServiceBuilding" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("SubFilter", "ServiceBuilding")}>
+                    <Icon icon="Media/Game/Icons/Services.svg" />
+                </Button>
+                <Button className={"ml-1" + (model.SubFilter === "SignatureBuilding" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("SubFilter", "SignatureBuilding")}>
+                    <Icon icon="Media/Game/Icons/ZoneSignature.svg" />
+                </Button>
+            </div>;
+        }
+        else if (model.Filter === "Foliage") {
+            return <div className="d-flex flex-row flex-wrap justify-content-end mr-6 flex-1">
+                {subOptionsHeader}
+                <Button className={"ml-1" + (model.SubFilter === "Tree" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("SubFilter", "Tree")}>
+                    <Icon icon="Media/Game/Icons/Forest.svg" />
+                </Button>
+                <Button className={"ml-1" + (model.SubFilter === "Plant" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("SubFilter", "Plant")}>
+                    <Icon icon="Media/Game/Icons/Forest.svg" />
+                </Button>
+            </div>;
+        }
+        else if (model.Filter === "Misc") {
+            return <div className="d-flex flex-row flex-wrap justify-content-end mr-6 flex-1">
+                {subOptionsHeader}
+                <Button className={"ml-1" + (model.SubFilter === "Vehicle" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("SubFilter", "Vehicle")}>
+                    <Icon icon="Media/Game/Icons/Traffic.svg" />
+                </Button>
+            </div>;
+        }
+
+        return null;
+    };
+
+
+    const modalTypeIconIsFAIcon = hoverPrefab && hoverPrefab.TypeIcon ? hoverPrefab.TypeIcon.includes("fa:") : false;
+    const modalTypeIconSrc = modalTypeIconIsFAIcon ? hoverPrefab.TypeIcon.replaceAll("fa:", "") : hoverPrefab ? hoverPrefab.TypeIcon : null;
 
     return model.IsVisible ? <div className={isVisibleClass}>
         <div className="col">
@@ -188,39 +276,28 @@ const ToolWindow = ({ react, setupController }) => {
                     </div>
                     <div>
                         <div className="d-flex flex-row flex-wrap align-items-center justify-content-end">
-                            <Button className={(model.Filter === "None" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "None")}>
+                            <Button className={(!model.SubFilter || model.Filter === "None" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateFilter("None")}>
                                 <Icon icon="solid-asterisk" fa />
                             </Button>
-                            <Button className={"ml-1" + (model.Filter === "Foliage" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "Foliage")}>
+                            <Button className={"ml-1" + (model.Filter === "Foliage" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateFilter("Foliage")}>
                                 <Icon icon="Media/Game/Icons/Forest.svg" />
                             </Button>
-                            <Button className={"ml-1" + (model.Filter === "Network" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "Network")}>
+                            <Button className={"ml-1" + (model.Filter === "Network" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateFilter("Network")}>
                                 <Icon icon="Media/Game/Icons/Roads.svg" />
                             </Button>
-                            <Button className={"ml-1" + (model.Filter === "Vehicle" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "Vehicle")}>
-                                <Icon icon="Media/Game/Icons/Traffic.svg" />
-                            </Button>
                         </div>
                         <div className="d-flex flex-row flex-wrap align-items-center justify-content-end mt-1">
-                            <Button className={(model.Filter === "ServiceBuilding" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "ServiceBuilding")}>
-                                <Icon icon="Media/Game/Icons/Services.svg" />
-                            </Button>
-                            <Button className={"ml-1" + (model.Filter === "SignatureBuilding" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "SignatureBuilding")}>
+                            <Button className={(model.Filter === "Buildings" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateFilter("Buildings")}>
                                 <Icon icon="Media/Game/Icons/ZoneSignature.svg" />
                             </Button>
-                        </div>
-                        <div className="d-flex flex-row flex-wrap align-items-center justify-content-end mt-1">
-                            <Button className={(model.Filter === "ZoneResidential" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "ZoneResidential")}>
-                                <Icon icon="Media/Game/Icons/ZoneResidential.svg" />
+                            <Button className={"ml-1" + (model.Filter === "Zones" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateFilter("Zones")}>
+                                <Icon icon="Media/Game/Icons/Zones.svg" />                                
                             </Button>
-                            <Button className={"ml-1" + (model.Filter === "ZoneCommercial" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "ZoneCommercial")}>
-                                <Icon icon="Media/Game/Icons/ZoneCommercial.svg" />
+                            <Button className={"ml-1" + (model.Filter === "Surface" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateFilter("Surface")}>
+                                <Icon icon="solid-pencil" fa />
                             </Button>
-                            <Button className={"ml-1" + (model.Filter === "ZoneOffice" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "ZoneOffice")}>
-                                <Icon icon="Media/Game/Icons/ZoneOffice.svg" />
-                            </Button>
-                            <Button className={"ml-1" + (model.Filter === "ZoneIndustrial" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("Filter", "ZoneIndustrial")}>
-                                <Icon icon="Media/Game/Icons/ZoneIndustrial.svg" />
+                            <Button className={"ml-1" + (model.Filter === "Misc" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateFilter("Misc")}>
+                                <Icon icon="solid-question" fa />
                             </Button>
                         </div>
                     </div>
@@ -244,7 +321,7 @@ const ToolWindow = ({ react, setupController }) => {
         </div>
         <div className="col">
             {hoverPrefab && hoverPrefab.Name.length > 0 ?
-                <Modal className="mb-2" icon={<><Icon icon={hoverPrefab.TypeIcon} /></>} title={prefabName(hoverPrefab)} noClose>
+                <Modal className="mb-2" icon={<><Icon icon={modalTypeIconSrc} fa={modalTypeIconIsFAIcon ? true : null} /></>} title={prefabName(hoverPrefab)} noClose>
                     <Icon icon={hoverPrefab.Thumbnail} size="xxl" />
                 </Modal> : null }
             <Modal bodyClassName={"asset-menu" + (expanded ? " asset-menu-xl" : "")} title={<div className="d-flex flex-row align-items-center">
@@ -256,6 +333,7 @@ const ToolWindow = ({ react, setupController }) => {
                 {<Button circular icon style="trans-faded" disabled={search && search.length > 0 ? null : true} onClick={() => setSearch("")}>
                     <Icon icon="solid-eraser" fa />
                 </Button>}
+                {renderSubOptions()}
             </div>} onClose={closeModal}>
                 <div className="asset-menu-container" onMouseLeave={() => onMouseLeave()}>
                     <div className="flex-1">
