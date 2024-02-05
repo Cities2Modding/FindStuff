@@ -75,7 +75,13 @@ namespace FindStuff.UI
             set;
         }
 
-        public bool IsDangerous
+        public Dictionary<string, object> Meta
+        {
+            get;
+            set;
+        }
+
+        public List<string> Tags
         {
             get;
             set;

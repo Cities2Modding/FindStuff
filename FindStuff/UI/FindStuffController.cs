@@ -13,11 +13,16 @@ using Game.Companies;
 using Colossal.Entities;
 using Game.UI.InGame;
 using UnityEngine.InputSystem;
+using Colossal.IO.AssetDatabase;
 
 namespace FindStuff.UI
 {
     public class FindStuffController : Controller<FindStuffViewModel>
     {
+        const string META_IS_DANGEROUS = "IsDangerous";
+        const string META_IS_DANGEROUS_REASON = "IsDangerousReason";
+        const string META_IS_SPAWNABLE = "IsSpawnable";
+
         private ToolSystem _toolSystem;
         private PrefabSystem _prefabSystem;
         private ImageSystem _imageSystem;
@@ -31,6 +36,11 @@ namespace FindStuff.UI
         private EndFrameBarrier _endFrameBarrier;
         static MethodInfo _selectTool = typeof( ToolbarUISystem ).GetMethods( BindingFlags.Instance | BindingFlags.NonPublic )
             .FirstOrDefault( m => m.Name == "SelectAsset" && m.GetParameters( ).Length == 1 );
+
+        private bool _isValidPrefab = false;
+        private string _prefabType = "Unknown";
+        private Dictionary<string, object> _meta = new Dictionary<string, object>();
+        private List<string> _tags = new List<string>();
 
         public override FindStuffViewModel Configure( )
         {
@@ -48,7 +58,6 @@ namespace FindStuff.UI
                     TriggerUpdate( );
                 }
             } );
-
 
             _entityArchetype = this.EntityManager.CreateArchetype( ComponentType.ReadWrite<Unlock>( ), ComponentType.ReadWrite<Game.Common.Event>( ) );
 
@@ -77,20 +86,20 @@ namespace FindStuff.UI
                 _enableAction.Enable( );
 
                 var prefabs = ( List<PrefabBase> ) _prefabsField.GetValue( _prefabSystem );
-                UnityEngine.Debug.Log( "Getting prefabs" );
-                var prefabsList = new List<PrefabItem>( );
-                foreach ( var prefabBase in prefabs.Where( p => IsValid( _prefabSystem.GetEntity( p ) ) ) )
+                UnityEngine.Debug.Log("Getting prefabs");
+                var prefabsList = new List<PrefabItem>();
+                foreach ( var prefabBase in prefabs.Where(ProcessPrefab) )
                 {
-                    var entity = _prefabSystem.GetEntity( prefabBase );
+                    _tags.Clear();
+                    _meta.Clear();
 
-                    var type = GetType( prefabBase, entity );
-                    var isSpawnableBuilding = EntityManager.HasComponent<SpawnableBuildingData>( entity );
+                    var entity = _prefabSystem.GetEntity( prefabBase );
                     var prefabIcon = "";
 
                     var thumbnail = _imageSystem.GetThumbnail( entity );
-                    var typeIcon = GetTypeIcon( type );
+                    var typeIcon = GetTypeIcon(_prefabType);
 
-                    if ( thumbnail == null || thumbnail == "Media/Placeholder.svg" )
+                    if ( thumbnail == null || thumbnail == _imageSystem.placeholderIcon )
                         prefabIcon = typeIcon;
                     else
                         prefabIcon = thumbnail;
@@ -98,9 +107,11 @@ namespace FindStuff.UI
                     var prefabItem = new PrefabItem
                     {
                         Name = prefabBase.name,
-                        Type = type,
+                        Type = _prefabType,
                         Thumbnail = prefabIcon,
-                        TypeIcon = typeIcon
+                        TypeIcon = typeIcon,
+                        Meta = _meta,
+                        Tags = _tags,
                     };
                     prefabsList.Add( prefabItem );
 
@@ -122,91 +133,74 @@ namespace FindStuff.UI
             _enableAction?.Dispose( );
         }
 
-        private bool IsValid( Entity prefabEntity )
+        private bool ProcessPrefab(PrefabBase prefab)
         {
-            if ( EntityManager.HasComponent<TreeData>( prefabEntity ) || 
-                EntityManager.HasComponent<PlantData>( prefabEntity ) )
-            {
-                return true;
-            }
-            else if (EntityManager.HasComponent<NetData>( prefabEntity ) )
-            {
-                return true;
-            }
-            else if (EntityManager.HasComponent<BuildingData>(prefabEntity) && EntityManager.HasComponent<ServiceObjectData>(prefabEntity))
-            {
-                return true;
-            }
-            else if (EntityManager.HasComponent<VehicleData>( prefabEntity ) )
-            {
-                return true;
-            }
-            else if (EntityManager.HasComponent<ServiceCompanyData>(prefabEntity) && EntityManager.HasComponent<CommercialCompanyData>(prefabEntity))
-            {
-                return true;
-            }
-            else if ( EntityManager.HasComponent<SpawnableBuildingData>(prefabEntity) )
-            {
-                return true;
-            }
+            var prefabEntity = _prefabSystem.GetEntity(prefab);
+            bool isValid = false;
+            _prefabType = "Unknown";
 
-            return false;
-        }
-
-        private string GetType( PrefabBase prefab, Entity prefabEntity )
-        {
-            if ( EntityManager.HasComponent<PlantData>( prefabEntity ) )
+            if ( EntityManager.HasComponent<TreeData>( prefabEntity ) || EntityManager.HasComponent<PlantData>( prefabEntity ) )
             {
-                return "Plant";
+                isValid = true;
+                _prefabType = "Foliage";
             }
-            else if( EntityManager.HasComponent<TreeData>( prefabEntity ) )
-            {
-                return "Tree";
-            }             
             else if ( EntityManager.HasComponent<NetData>( prefabEntity ) )
             {
-                return "Network";
-            }
-            else if ( EntityManager.HasComponent<SurfaceData>( prefabEntity ) )
-            {
-                return "Surface";
+                // Flag invisible roads as dangerous. They can make your savegame break if not used properly.
+                if (prefab.name.ToLower().Contains("invisible"))
+                {
+                    _meta.Add(META_IS_DANGEROUS, true);
+                    _meta.Add(META_IS_DANGEROUS_REASON, "This asset could break your save game if not used properly.");
+                }
+
+                isValid = true;
+                _prefabType = "Network";
             }
             else if (EntityManager.HasComponent<BuildingData>(prefabEntity) && EntityManager.HasComponent<ServiceObjectData>(prefabEntity))
             {
-                return "ServiceBuilding";
+                isValid = true;
+                _prefabType = "ServiceBuilding";
             }
             else if ( EntityManager.HasComponent<SignatureBuildingData>( prefabEntity ) )
             {
-                return "SignatureBuilding";
+                isValid = true;
+                _prefabType = "SignatureBuilding";
             }
             else if ( EntityManager.HasComponent<VehicleData>( prefabEntity ) )
             {
-                return "Vehicle";
+                if (EntityManager.HasComponent<TrainData>(prefabEntity))
+                {
+                    _meta.Add(META_IS_DANGEROUS, true);
+                    _meta.Add(META_IS_DANGEROUS_REASON, "This asset can't be removed with bulldozer tool after placing.");
+                }
+
+                isValid = true;
+                _prefabType = "Vehicle";
             }
-            else if (EntityManager.TryGetComponent<SpawnableBuildingData>(prefabEntity, out var spawnableBuildingData))
+            else if (EntityManager.TryGetComponent(prefabEntity, out SpawnableBuildingData spawnableBuildingData))
             {
-                if (spawnableBuildingData.m_ZonePrefab != Entity.Null && EntityManager.TryGetComponent<ZoneData>(spawnableBuildingData.m_ZonePrefab, out var zoneData))
+                if (spawnableBuildingData.m_ZonePrefab != Entity.Null && EntityManager.TryGetComponent(spawnableBuildingData.m_ZonePrefab, out ZoneData zoneData))
                 {
                     var areaType = zoneData.m_AreaType;
                     switch (areaType)
                     {
                         case Game.Zones.AreaType.Commercial:
-                            return "ZoneCommercial";
-
+                            _prefabType = "ZoneCommercial";
+                            break;
                         case Game.Zones.AreaType.Residential:
-                            return "ZoneResidential";
-
+                            _prefabType = "ZoneResidential";
+                            break;
                         case Game.Zones.AreaType.Industrial:
                             ZonePrefab zonePrefab = _prefabSystem.GetPrefab<ZonePrefab>(spawnableBuildingData.m_ZonePrefab);
-                            return zonePrefab.m_Office ? "ZoneOffice" : "ZoneIndustrial";
-
-                        default:
-                            return "Unknown";
+                            _prefabType = zonePrefab.m_Office ? "ZoneOffice" : "ZoneIndustrial";
+                            break;
                     }
+
+                    isValid = true;
                 }
             }
 
-            return "Unknown";
+            return isValid;
         }
 
         private string GetTypeIcon( string type )
