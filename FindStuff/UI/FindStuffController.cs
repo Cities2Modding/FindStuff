@@ -12,6 +12,7 @@ using Game;
 using Game.Companies;
 using Colossal.Entities;
 using Game.UI.InGame;
+using UnityEngine.InputSystem;
 
 namespace FindStuff.UI
 {
@@ -21,6 +22,7 @@ namespace FindStuff.UI
         private PrefabSystem _prefabSystem;
         private ImageSystem _imageSystem;
         private ToolbarUISystem _toolbarUISystem;
+        private InputAction _enableAction;
 
         static FieldInfo _prefabsField = typeof( PrefabSystem ).GetField( "m_Prefabs", BindingFlags.Instance | BindingFlags.NonPublic );
 
@@ -61,6 +63,19 @@ namespace FindStuff.UI
 
             if ( mode == GameMode.Game )
             {
+                if ( _enableAction != null )
+                {
+                    _enableAction.Disable();
+                    _enableAction.Dispose( );
+                }
+
+                _enableAction = new InputAction( "FindStuff_Toggle" );
+                _enableAction.AddCompositeBinding( "ButtonWithOneModifier" )
+                    .With( "Modifier", "<Keyboard>/CTRL" )
+                    .With( "Button", "<Keyboard>/f" );
+                _enableAction.performed += ( a ) => OnToggleVisible( );
+                _enableAction.Enable( );
+
                 var prefabs = ( List<PrefabBase> ) _prefabsField.GetValue( _prefabSystem );
                 UnityEngine.Debug.Log( "Getting prefabs" );
                 var prefabsList = new List<PrefabItem>( );
@@ -98,6 +113,13 @@ namespace FindStuff.UI
                 Model.Prefabs = prefabsList;
                 TriggerUpdate( );
             }
+        }
+
+        protected override void OnDestroy( )
+        {
+            base.OnDestroy( );
+            _enableAction?.Disable( );
+            _enableAction?.Dispose( );
         }
 
         private bool IsValid( Entity prefabEntity )
