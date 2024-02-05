@@ -68,6 +68,12 @@ namespace FindStuff.UI
             get;
             set;
         }
+
+        public bool IsDangerous
+        {
+            get;
+            set;
+        }
     }
 
     public enum ViewMode
