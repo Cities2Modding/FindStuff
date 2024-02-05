@@ -143,6 +143,15 @@ namespace FindStuff.UI
             {
                 isValid = true;
                 _prefabType = "Foliage";
+                _tags.Add("tree");
+                _tags.Add("foliage");
+                _tags.Add("spawnable");
+            }
+            else if (prefab is SurfacePrefab && EntityManager.HasComponent<RenderedAreaData>(prefabEntity))
+            {
+                isValid = true;
+                _prefabType = "Surface";
+                _tags.Add("surface");
             }
             else if ( EntityManager.HasComponent<NetData>( prefabEntity ) )
             {
@@ -155,23 +164,136 @@ namespace FindStuff.UI
 
                 isValid = true;
                 _prefabType = "Network";
+                _tags.Add("network");
+                if (prefab.name.ToLower().Contains("tram"))
+                {
+                    _tags.Add("tram");
+                }
+                
+                if (prefab.name.ToLower().Contains("train"))
+                {
+                    _tags.Add("train");
+                }
+                
+                if (prefab.name.ToLower().Contains("road"))
+                {
+                    _tags.Add("road");
+                }
+
+                if (prefab.name.ToLower().Contains("bridge"))
+                {
+                    _tags.Add("bridge");
+                }
             }
             else if (EntityManager.HasComponent<BuildingData>(prefabEntity) && EntityManager.HasComponent<ServiceObjectData>(prefabEntity))
             {
                 isValid = true;
                 _prefabType = "ServiceBuilding";
+                _tags.Add("building");
+
+                if (EntityManager.HasComponent<FireStationData>(prefabEntity))
+                {
+                    _tags.Add("fire-department");
+                }
+                else if (EntityManager.HasComponent<PoliceStationData>(prefabEntity))
+                {
+                    _tags.Add("police");
+                }
+                else if (EntityManager.HasComponent<PrisonData>(prefabEntity))
+                {
+                    _tags.Add("prison");
+                }
+                else if (EntityManager.HasComponent<HospitalData>(prefabEntity))
+                {
+                    _tags.Add("hospital");
+                }
+                else if (EntityManager.HasComponent<GarbageFacilityData>(prefabEntity))
+                {
+                    _tags.Add("garbage");
+                }
+                else if (EntityManager.HasComponent<PowerPlantData>(prefabEntity))
+                {
+                    _tags.Add("power");
+                }
+                else if (EntityManager.HasComponent<CargoTransportStationData>(prefabEntity))
+                {
+                    _tags.Add("cargo");
+                }
+                else if (EntityManager.HasComponent<ParkData>(prefabEntity))
+                {
+                    _tags.Add("park");
+                }
+                else if (EntityManager.HasComponent<ParkingFacilityData>(prefabEntity))
+                {
+                    _tags.Add("parking");
+                }
+                else if (EntityManager.HasComponent<AdminBuildingData>(prefabEntity))
+                {
+                    _tags.Add("administration");
+                }
+                else if (EntityManager.HasChunkComponent<TransportDepotData>(prefabEntity))
+                {
+                    _tags.Add("depot");
+                }
+                else if (EntityManager.HasChunkComponent<PublicTransportStationData>(prefabEntity))
+                {
+                    _tags.Add("transport");
+                }
+                else if (EntityManager.HasChunkComponent<MaintenanceDepotData>(prefabEntity))
+                {
+                    _tags.Add("maintenance");
+                }
+                else if (EntityManager.HasChunkComponent<TelecomFacilityData>(prefabEntity))
+                {
+                    _tags.Add("telecom");
+                }
+                else if (EntityManager.HasChunkComponent<ResearchFacilityData>(prefabEntity))
+                {
+                    _tags.Add("research");
+                }
+                else if (EntityManager.HasChunkComponent<DeathcareFacilityData>(prefabEntity))
+                {
+                    _tags.Add("deathcare");
+                }
+                else if (EntityManager.HasChunkComponent<SchoolData>(prefabEntity))
+                {
+                    _tags.Add("school");
+                }
+                else if (EntityManager.HasChunkComponent<WelfareOfficeData>(prefabEntity))
+                {
+                    _tags.Add("welfare");
+                }
+                else if (EntityManager.HasChunkComponent<PostFacilityData>(prefabEntity))
+                {
+                    _tags.Add("post");
+                }
             }
             else if ( EntityManager.HasComponent<SignatureBuildingData>( prefabEntity ) )
             {
                 isValid = true;
                 _prefabType = "SignatureBuilding";
+                _tags.Add("signature");
+                _tags.Add("building");
             }
             else if ( EntityManager.HasComponent<VehicleData>( prefabEntity ) )
             {
+                _tags.Add("vehicle");
+                
                 if (EntityManager.HasComponent<TrainData>(prefabEntity))
                 {
                     _meta.Add(META_IS_DANGEROUS, true);
                     _meta.Add(META_IS_DANGEROUS_REASON, "This asset can't be removed with bulldozer tool after placing.");
+                    _tags.Add("train");
+                }
+                
+                if (EntityManager.HasComponent<CarData>(prefabEntity))
+                {
+                    _tags.Add("car");
+                }
+
+                if (EntityManager.HasComponent<DeliveryTruckData>(prefabEntity))
+                {
+                    _tags.Add("truck");
                 }
 
                 isValid = true;

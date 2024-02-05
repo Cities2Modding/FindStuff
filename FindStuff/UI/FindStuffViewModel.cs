@@ -103,5 +103,7 @@ namespace FindStuff.UI
         ZoneCommercial = 7,
         ZoneOffice = 8,
         ZoneIndustrial = 9,
+        Surface = 10,
+        Props = 99,
     }
 }
