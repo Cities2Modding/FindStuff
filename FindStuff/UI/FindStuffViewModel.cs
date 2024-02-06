@@ -127,6 +127,7 @@ namespace FindStuff.UI
         SignatureBuilding = 6,
         Vehicle = 7,
         Tree = 8,
-        Plant = 9
+        Plant = 9,
+        Prop = 10,
     }
 }
