@@ -4,6 +4,7 @@ using Colossal.Serialization.Entities;
 using FindStuff.Configuration;
 using Game;
 using Game.Prefabs;
+using Game.SceneFlow;
 using Game.Tools;
 using Game.UI;
 using Game.UI.InGame;
@@ -35,7 +36,7 @@ namespace FindStuff.UI
         private Dictionary<string, PrefabBase> _prefabInstances = [];
         private EntityArchetype _entityArchetype;
         private EndFrameBarrier _endFrameBarrier;
-        static MethodInfo _selectTool = typeof( ToolbarUISystem ).GetMethods( BindingFlags.Instance | BindingFlags.NonPublic )
+        static MethodInfo _selectAsset = typeof( ToolbarUISystem ).GetMethods( BindingFlags.Instance | BindingFlags.NonPublic )
             .FirstOrDefault( m => m.Name == "SelectAsset" && m.GetParameters( ).Length == 1 );
 
         private bool _isValidPrefab = false;
@@ -426,10 +427,31 @@ namespace FindStuff.UI
                 if ( entity != Entity.Null )
                 {
                     EntityCommandBuffer commandBuffer = _endFrameBarrier.CreateCommandBuffer( );
-
                     var unlockEntity = commandBuffer.CreateEntity( _entityArchetype );
+
+                    // This is a way to trigger the zone prefab zoning tool for the building
+                    //if ( EntityManager.TryGetComponent( entity, out SpawnableBuildingData spawnableBuildingData ) )
+                    //{
+                    //    if ( spawnableBuildingData.m_ZonePrefab != Entity.Null &&
+                    //        EntityManager.TryGetComponent( spawnableBuildingData.m_ZonePrefab, out ZoneData zoneData ) )
+                    //    {
+                    //        entity = spawnableBuildingData.m_ZonePrefab;
+                    //    }
+                    //}
+                    // This is a way to trigger the zone prefab zoning tool for the building
+                    //if ( EntityManager.TryGetComponent( entity, out SpawnableBuildingData spawnableBuildingData ) )
+                    //{
+                    //    if ( spawnableBuildingData.m_ZonePrefab != Entity.Null &&
+                    //        EntityManager.TryGetComponent( spawnableBuildingData.m_ZonePrefab, out ZoneData zoneData ) )
+                    //    {
+                    //        entity = spawnableBuildingData.m_ZonePrefab;
+                    //    }
+                    //}
+
                     commandBuffer.SetComponent<Unlock>( unlockEntity, new Unlock( entity ) );
-                    _selectTool.Invoke( _toolbarUISystem, new object[] { entity } );
+                   
+                    GameManager.instance.userInterface.view.View.ExecuteScript( $"engine.trigger('toolbar.selectAsset',{{index: {entity.Index}, version: {entity.Version}}});" );
+                    //_selectAsset.Invoke( _toolbarUISystem, new object[] { entity } );                    
                 }
             }
         }
