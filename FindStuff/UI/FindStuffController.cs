@@ -430,6 +430,8 @@ namespace FindStuff.UI
 
                 if ( entity != Entity.Null )
                 {
+                    _toolSystem.ActivatePrefabTool( prefab );
+
                     EntityCommandBuffer commandBuffer = _endFrameBarrier.CreateCommandBuffer( );
                     var unlockEntity = commandBuffer.CreateEntity( _entityArchetype );
 
