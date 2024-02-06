@@ -68,8 +68,8 @@ const ToolWindow = ({ react, setupController }) => {
         const hasFilter = model.Filter && model.Filter.length > 0 && model.Filter !== "None";
         const hasSubFilter = model.SubFilter && model.SubFilter.length > 0 && model.SubFilter !== "None";
 
-        return (hasSubFilter ? p.Type === model.SubFilter :
-            (hasFilter ? p.Type === model.Filter || subFitlers[model.Filter] && subFitlers[model.Filter].includes(p.Type) : true));
+        return (hasFilter && model.Filter === "Favourite" ? model.Favourites && model.Favourites.includes(p.Name) : true ) && (hasSubFilter ? p.Type === model.SubFilter : true ) &&
+            (hasFilter && model.Filter !== "Favourite" ? p.Type === model.Filter || subFitlers[model.Filter] && subFitlers[model.Filter].includes(p.Type) : true);
     };
 
     const updateSearchFilter = () => {
@@ -150,12 +150,35 @@ const ToolWindow = ({ react, setupController }) => {
         }
     };
 
+    const favourteClick = (e, p) => {
+        e.stopPropagation();
+
+        if (!p)
+            return;
+        trigger("OnToggleFavourite", p.Name);
+    };
+
     const renderItemContent = (p) => {
         const isFAIcon = p.TypeIcon.includes("fa:");
         const iconSrc = isFAIcon ? p.TypeIcon.replaceAll("fa:", "") : p.TypeIcon;
+        const isFavourite = model.Favourites && model.Favourites.includes(p.Name);
+
+        const renderFavourite = () => {
+            if (model.ViewMode === "Columns" || model.ViewMode === "Rows") {
+                return <Button circular icon style="trans-faded" onClick={(e) => favourteClick(e, p)} elementStyle={{ transform: 'scale(0.75)' }}>
+                    <Icon icon={(isFavourite ? "solid-star" : "star")} className={(isFavourite ? "bg-secondary" : "bg-secondary")} fa />
+                </Button>;
+            }
+            return <div className="p-absolute p-top-0 p-left-0 w-100 h-100">
+                <Button className="p-absolute p-right-0 p-top-0 mr-2 mb-2" circular icon style="trans-faded" onClick={(e) => favourteClick(e, p)} elementStyle={{ transform: 'scale(0.75)', ...(model.ViewMode === "Detailed" ? { marginTop: '-2.5rem'} : null )}} >
+                    <Icon icon={(isFavourite ? "solid-star" : "star")} className={(isFavourite ? "bg-secondary" : "bg-secondary")} fa />
+                </Button>
+            </div>;
+        };
+
         return model.ViewMode == "Detailed" ? <>
             <Grid>
-                <div className="col-5">
+                <div className="col-7">
                     <div className="d-flex flex-row">
                         <img className="icon icon-sm ml-1 mr-1" src={p.Thumbnail} />
                         <span className="fs-sm flex-1">{highlightSearchTerm(prefabName(p), search)}</span>
@@ -167,18 +190,23 @@ const ToolWindow = ({ react, setupController }) => {
                         {highlightSearchTerm(p.Type, search)}
                     </span>
                 </div>
-                <div className="col-5">
+                <div className="col-2">
+                    {p.Meta && p.Meta.IsDangerous ? <div className="badge badge-xs badge-danger">Dangerous</div> : null}
+                </div>
+                <div className="col-1 p-relative pr-2">
+                    {hoverPrefab && p.Name == hoverPrefab.Name ? renderFavourite() : null}
                 </div>
             </Grid>
         </> : <>            
             <img className={model.ViewMode === "IconGrid" ? "icon icon-lg" : model.ViewMode === "IconGridLarge" ? "icon icon-xl" : "icon icon-sm ml-2"} src={p.Thumbnail} />
                 {model.ViewMode === "Rows" || model.ViewMode === "Columns" ? <span className="ml-1 fs-sm mr-4">{highlightSearchTerm(prefabName(p), search)}</span> : <span className="fs-xs ml-1 mr-4" style={{ maxWidth: '80%', textOverflow: 'ellipsis', overflowX: 'hidden' }}>{highlightSearchTerm(prefabName(p), search)}</span>}
+                {hoverPrefab && p.Name == hoverPrefab.Name ? renderFavourite() : null}
         </>;
     };
 
     const onRenderItem = (p, index) => {
         return <Button color={selectedPrefab.Name == p.Name ? "primary" : "light"} style={selectedPrefab.Name == p.Name ? "trans" : "trans-faded"} onMouseEnter={() => onMouseEnter(p)} className={"asset-menu-item auto flex-1 m-mini" + (selectedPrefab.Name == p.Name ? " text-dark" : " text-light") + (model.ViewMode !== "IconGrid" && model.ViewMode !== "IconGridLarge" ? " flat" : "") + (model.ViewMode !== "IconGrid" && model.ViewMode !== "IconGridLarge" && selectedPrefab.Name !== p.Name ? " btn-transparent" : "")} onClick={() => onSelectPrefab(p)}>
-            <div className={"d-flex align-items-center justify-content-center " + (model.ViewMode === "Columns" || model.ViewMode === "Rows" || model.ViewMode === "Detailed" ? " w-x flex-row " : " flex-column")}>
+            <div className={"d-flex align-items-center justify-content-center p-relative " + (model.ViewMode === "Columns" || model.ViewMode === "Rows" || model.ViewMode === "Detailed" ? " w-x flex-row " : " flex-column")}>
                 {renderItemContent(p)}
             </div>
         </Button>;
@@ -243,6 +271,27 @@ const ToolWindow = ({ react, setupController }) => {
         return null;
     };
 
+    const renderHoverContents = () => {
+        if (!hoverPrefab)
+            return;
+
+        return <Grid>
+            <div className="col-3">
+                <Icon icon={hoverPrefab.Thumbnail} size="xxl" />
+            </div>
+            <div className="col-9">
+                {hoverPrefab.Meta && hoverPrefab.Meta.IsDangerous ? <div className="alert alert-danger fs-sm d-flex flex-row flex-wrap align-items-center p-2 mb-4">
+                    <Icon className="mr-2" icon="solid-circle-exclamation" fa />
+                    {hoverPrefab.Meta.IsDangerousReason}
+                </div> : null}
+                <div className="d-inline">
+                    {hoverPrefab.Tags.map((tag, index) => <div key={index} className="badge badge-info">
+                        {tag}
+                    </div>)}
+                </div>
+            </div>
+        </Grid>
+    };
 
     const modalTypeIconIsFAIcon = hoverPrefab && hoverPrefab.TypeIcon ? hoverPrefab.TypeIcon.includes("fa:") : false;
     const modalTypeIconSrc = modalTypeIconIsFAIcon ? hoverPrefab.TypeIcon.replaceAll("fa:", "") : hoverPrefab ? hoverPrefab.TypeIcon : null;
@@ -276,8 +325,11 @@ const ToolWindow = ({ react, setupController }) => {
                     </div>
                     <div>
                         <div className="d-flex flex-row flex-wrap align-items-center justify-content-end">
-                            <Button className={(!model.SubFilter || model.Filter === "None" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateFilter("None")}>
+                            <Button className={(!model.Filter || model.Filter === "None" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateFilter("None")}>
                                 <Icon icon="solid-asterisk" fa />
+                            </Button>
+                            <Button className={"ml-1" + (model.Filter === "Favourite" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateFilter("Favourite")}>
+                                <Icon icon="solid-star" fa />
                             </Button>
                             <Button className={"ml-1" + (model.Filter === "Foliage" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateFilter("Foliage")}>
                                 <Icon icon="Media/Game/Icons/Forest.svg" />
@@ -322,7 +374,7 @@ const ToolWindow = ({ react, setupController }) => {
         <div className="col">
             {hoverPrefab && hoverPrefab.Name.length > 0 ?
                 <Modal className="mb-2" icon={<><Icon icon={modalTypeIconSrc} fa={modalTypeIconIsFAIcon ? true : null} /></>} title={prefabName(hoverPrefab)} noClose>
-                    <Icon icon={hoverPrefab.Thumbnail} size="xxl" />
+                    {renderHoverContents()}
                 </Modal> : null }
             <Modal bodyClassName={"asset-menu" + (expanded ? " asset-menu-xl" : "")} title={<div className="d-flex flex-row align-items-center">
                 <Button circular icon style="trans-faded" onClick={() => setExpanded(!expanded)}>

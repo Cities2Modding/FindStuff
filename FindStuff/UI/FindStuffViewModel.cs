@@ -41,6 +41,13 @@ namespace FindStuff.UI
             get;
             set;
         } = SubFilter.None;
+
+        public List<string> Favourites
+        {
+
+            get;
+            set;
+        } = new List<string>( );
     }
 
     public class PrefabItem
@@ -100,8 +107,9 @@ namespace FindStuff.UI
     public enum Filter
     {
         None = 0,
-        Foliage = 1,
-        Network = 2,
+        Favourite = 1,
+        Foliage = 2,
+        Network = 3,
         Buildings = 4,
         Zones = 5,
         Surface = 6,
