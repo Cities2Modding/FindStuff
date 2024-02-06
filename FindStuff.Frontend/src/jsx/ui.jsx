@@ -205,7 +205,7 @@ const ToolWindow = ({ react, setupController }) => {
     };
 
     const onRenderItem = (p, index) => {
-        const borderClass = model.Filter !== "Favourite" && model.Favourites.includes(p.Name) ? " border-secondary-trans-less-faded" : p.Meta && p.Meta.IsDangerous ? " border-danger-trans-less-faded" : "";
+        const borderClass = model.Filter !== "Favourite" && model.Favourites.includes(p.Name) ? " border-secondary-trans" : p.Meta && p.Meta.IsDangerous ? " border-danger-trans" : "";
         return <Button color={selectedPrefab.Name == p.Name ? "primary" : "light"} style={selectedPrefab.Name == p.Name ? "trans" : "trans-faded"} onMouseEnter={() => onMouseEnter(p)} className={"asset-menu-item auto flex-1 m-mini" + borderClass + (selectedPrefab.Name == p.Name ? " text-dark" : " text-light") + (model.ViewMode !== "IconGrid" && model.ViewMode !== "IconGridLarge" ? " flat" : "") + (model.ViewMode !== "IconGrid" && model.ViewMode !== "IconGridLarge" && selectedPrefab.Name !== p.Name ? " btn-transparent" : "")} onClick={() => onSelectPrefab(p)}>
             <div className={"d-flex align-items-center justify-content-center p-relative " + (model.ViewMode === "Columns" || model.ViewMode === "Rows" || model.ViewMode === "Detailed" ? " w-x flex-row " : " flex-column")}>
                 {renderItemContent(p)}
