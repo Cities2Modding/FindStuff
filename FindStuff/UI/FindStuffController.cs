@@ -65,6 +65,10 @@ namespace FindStuff.UI
             var model = new FindStuffViewModel( );
 
             model.Favourites = _config.Favourites.ToList( ); // Create a copy
+            model.ViewMode = _config.ViewMode;
+            model.Filter = _config.Filter;
+            model.SubFilter = _config.SubFilter;
+            model.OrderByAscending = _config.OrderByAscending;
 
             return model;
         }
@@ -482,6 +486,15 @@ namespace FindStuff.UI
                     TriggerUpdate( );
                 }
             }
+        }
+
+        protected override void OnModelUpdated( )
+        {
+            _config.ViewMode = Model.ViewMode;
+            _config.Filter = Model.Filter;
+            _config.SubFilter = Model.SubFilter;
+            _config.OrderByAscending = Model.OrderByAscending;
+            _config.Save( );
         }
     }
 }

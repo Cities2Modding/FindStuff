@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using FindStuff.UI;
+using System.Collections.Generic;
 
 namespace FindStuff.Configuration
 {
@@ -12,5 +13,29 @@ namespace FindStuff.Configuration
             get;
             set;
         } = new HashSet<string>( );
+
+        public bool OrderByAscending
+        {
+            get;
+            set;
+        } = true;
+
+        public ViewMode ViewMode
+        {
+            get;
+            set;
+        } = ViewMode.Rows;
+
+        public Filter Filter
+        {
+            get;
+            set;
+        } = Filter.None;
+
+        public SubFilter SubFilter
+        {
+            get;
+            set;
+        } = SubFilter.None;
     }
 }
