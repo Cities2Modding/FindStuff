@@ -2045,10 +2045,18 @@
       }
       return null;
     };
+    const prefabDesc = (p) => {
+      const key = `Assets.DESCRIPTION[${p.Name}]`;
+      const trans = _L(key);
+      if (trans === key)
+        return null;
+      return trans;
+    };
     const renderHoverContents = () => {
       if (!hoverPrefab)
         return;
-      return /* @__PURE__ */ import_react.default.createElement(Grid, null, /* @__PURE__ */ import_react.default.createElement("div", { className: "col-3" }, /* @__PURE__ */ import_react.default.createElement(Icon, { icon: hoverPrefab.Thumbnail, size: "xxl" })), /* @__PURE__ */ import_react.default.createElement("div", { className: "col-9" }, hoverPrefab.Meta && hoverPrefab.Meta.IsDangerous ? /* @__PURE__ */ import_react.default.createElement("div", { className: "alert alert-danger fs-sm d-flex flex-row flex-wrap align-items-center p-2 mb-4" }, /* @__PURE__ */ import_react.default.createElement(Icon, { className: "mr-2", icon: "solid-circle-exclamation", fa: true }), hoverPrefab.Meta.IsDangerousReason) : null, /* @__PURE__ */ import_react.default.createElement("div", { className: "d-inline" }, hoverPrefab.Tags.map((tag, index) => /* @__PURE__ */ import_react.default.createElement("div", { key: index, className: "badge badge-info" }, tag)))));
+      const prefabDescText = prefabDesc(hoverPrefab);
+      return /* @__PURE__ */ import_react.default.createElement(Grid, null, /* @__PURE__ */ import_react.default.createElement("div", { className: "col-3" }, /* @__PURE__ */ import_react.default.createElement(Icon, { icon: hoverPrefab.Thumbnail, size: "xxl" })), /* @__PURE__ */ import_react.default.createElement("div", { className: "col-9" }, prefabDescText ? /* @__PURE__ */ import_react.default.createElement("p", { className: "mb-4 fs-sm", cohinline: "cohinline" }, prefabDescText) : null, hoverPrefab.Meta && hoverPrefab.Meta.IsDangerous ? /* @__PURE__ */ import_react.default.createElement("div", { className: "alert alert-danger fs-sm d-flex flex-row flex-wrap align-items-center p-2 mb-4" }, /* @__PURE__ */ import_react.default.createElement(Icon, { className: "mr-2", icon: "solid-circle-exclamation", fa: true }), hoverPrefab.Meta.IsDangerousReason) : null, /* @__PURE__ */ import_react.default.createElement("div", { className: "d-inline" }, hoverPrefab.Tags.map((tag, index) => /* @__PURE__ */ import_react.default.createElement("div", { key: index, className: "badge badge-info" }, tag)))));
     };
     const modalTypeIconIsFAIcon = hoverPrefab && hoverPrefab.TypeIcon ? hoverPrefab.TypeIcon.includes("fa:") : false;
     const modalTypeIconSrc = modalTypeIconIsFAIcon ? hoverPrefab.TypeIcon.replaceAll("fa:", "") : hoverPrefab ? hoverPrefab.TypeIcon : null;

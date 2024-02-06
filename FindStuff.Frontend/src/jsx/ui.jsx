@@ -272,15 +272,31 @@ const ToolWindow = ({ react, setupController }) => {
         return null;
     };
 
+    const prefabDesc = (p) => {
+        const key = `Assets.DESCRIPTION[${p.Name}]`;
+        const trans = _L(key);
+
+        if (trans === key)
+            return null;
+
+        return trans;
+    };
+
     const renderHoverContents = () => {
         if (!hoverPrefab)
             return;
+
+        const prefabDescText = prefabDesc(hoverPrefab);
 
         return <Grid>
             <div className="col-3">
                 <Icon icon={hoverPrefab.Thumbnail} size="xxl" />
             </div>
             <div className="col-9">
+                {prefabDescText ?
+                    <p className="mb-4 fs-sm" cohinline="cohinline">
+                        {prefabDescText}
+                    </p> : null }
                 {hoverPrefab.Meta && hoverPrefab.Meta.IsDangerous ? <div className="alert alert-danger fs-sm d-flex flex-row flex-wrap align-items-center p-2 mb-4">
                     <Icon className="mr-2" icon="solid-circle-exclamation" fa />
                     {hoverPrefab.Meta.IsDangerousReason}
