@@ -386,15 +386,6 @@ namespace FindStuff.UI
             return "";
         }
 
-        private bool IsOffice( IndustrialProcessData industrialProcessData )
-        {
-            return industrialProcessData.m_Output.m_Resource switch
-            {
-                Game.Economy.Resource.Software or Game.Economy.Resource.Financial or Game.Economy.Resource.Media => true,
-                _ => false,
-            };
-        }
-
         protected override void OnUpdate( )
         {
             base.OnUpdate( );
