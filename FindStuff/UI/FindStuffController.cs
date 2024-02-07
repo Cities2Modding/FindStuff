@@ -1,5 +1,4 @@
-﻿using Colossal.Entities;
-using Colossal.Localization;
+﻿using Colossal.Localization;
 using Colossal.Serialization.Entities;
 using FindStuff.Configuration;
 using FindStuff.Helper;
@@ -11,7 +10,6 @@ using Game.UI;
 using Game.UI.InGame;
 using Gooee.Plugins;
 using Gooee.Plugins.Attributes;
-using MonoMod.Utils;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -60,15 +58,15 @@ namespace FindStuff.UI
 
             _baseHelper =
             [
-                new CityServiceHelper(EntityManager),
-                new NetworkHelper(EntityManager),
-                new PlantHelper(EntityManager),
-                new PropHelper(EntityManager),
-                new SignatureBuildingHelper(EntityManager),
-                new SurfaceHelper(EntityManager),
-                new TreeHelper(EntityManager),
-                new VehicleHelper(EntityManager),
-                new ZoneBuildingHelper(EntityManager, _prefabSystem),
+                new PlantHelper( EntityManager ),
+                new TreeHelper( EntityManager ),
+                new SurfaceHelper( EntityManager ),
+                new NetworkHelper( EntityManager ),
+                new CityServiceHelper( EntityManager ),
+                new SignatureBuildingHelper( EntityManager ),
+                new VehicleHelper( EntityManager ),
+                new ZoneBuildingHelper( EntityManager, _prefabSystem ),
+                new PropHelper( EntityManager ),
             ];
 
             _toolSystem.EventToolChanged += ( tool =>
@@ -181,8 +179,8 @@ namespace FindStuff.UI
                 if ( helper.IsValidPrefab( prefab, prefabEntity ) )
                 {
                     isValid = true;
-                    tags = helper.CreateTags(prefab, prefabEntity);
-                    meta = helper.CreateMeta(prefab, prefabEntity);
+                    tags = helper.CreateTags( prefab, prefabEntity );
+                    meta = helper.CreateMeta( prefab, prefabEntity );
                     prefabType = helper.PrefabType;
                     categoryType = helper.CategoryType;
 
@@ -345,7 +343,7 @@ namespace FindStuff.UI
                 _config.Filter != Model.Filter ||
                 _config.SubFilter != Model.SubFilter ||
                 _config.OrderByAscending != Model.OrderByAscending )
-            {            
+            {
                 _config.ViewMode = Model.ViewMode;
                 _config.Filter = Model.Filter;
                 _config.SubFilter = Model.SubFilter;

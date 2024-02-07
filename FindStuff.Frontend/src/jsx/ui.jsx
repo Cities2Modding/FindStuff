@@ -69,7 +69,6 @@ const ToolWindow = ({ react, setupController }) => {
     const [sliderValue, setSliderValue] = react.useState(0);
     const [selectedPrefab, setSeletedPrefab] = react.useState({ Name: "" });
     const [hoverPrefab, setHoverPrefab] = react.useState({ Name: "" });
-    const [tm, setTm] = react.useState(null);
 
     const { Button, Icon, VirtualList, Slider, List, Grid, FormGroup, FormCheckBox, Scrollable, ToolTip, TextBox, Dropdown, ToolTipContent, TabModal, Modal, MarkDown } = window.$_gooee.framework;
 
@@ -150,8 +149,6 @@ const ToolWindow = ({ react, setupController }) => {
     const onMouseEnterItem = (prefab) => {
         setHoverPrefab(prefab);
         setMouseOverItem(prefab);
-        if (tm)
-            clearTimeout(tm);
     };
 
     const onMouseLeave = () => {
@@ -188,6 +185,11 @@ const ToolWindow = ({ react, setupController }) => {
         doResultsUpdate(model);
     };
 
+    const toggleExpander = react.useCallback(() => {
+        const newValue = !expanded;
+        setExpanded(newValue);
+    }, [expanded, setExpanded]);
+
     const isBorderedList = model.ViewMode === "IconGrid" || model.ViewMode === "IconGridLarge" ? null : true;
     const columnCount = model.ViewMode === "Rows" || model.ViewMode === "Detailed" ? 1 : model.ViewMode === "Columns" ? 2 : model.ViewMode === "IconGrid" ? 13 : 9;
     const rowCount = model.ViewMode === "Rows" || model.ViewMode === "Detailed" || model.ViewMode === "Columns" ? (expanded ? 8 : 4) : model.ViewMode === "IconGrid" ? (expanded ? 6 : 3) : (expanded ? 4 : 2);
@@ -195,11 +197,12 @@ const ToolWindow = ({ react, setupController }) => {
     return model.IsVisible ? <div className={isVisibleClass}>
         <div className="col">
             <FiltersWindow model={model} update={update} onDoUpdate={doResultsUpdate} _L={_L} />
+            {expanded ? "true" : "false" }
         </div>
         <div className="col">
             {hoverPrefab && hoverPrefab.Name && hoverPrefab.Name.length > 0 ? <HoverWindow hoverPrefab={hoverPrefab} _L={_L} /> : null}
             <Modal bodyClassName={"asset-menu p-relative" + (expanded ? " asset-menu-xl" : "")} title={<div className="d-flex flex-row align-items-center">
-                <Button circular icon style="trans-faded" onClick={() => setExpanded(!expanded)}>
+                <Button watch={[expanded]} circular icon style="trans-faded" onClick={toggleExpander}>
                     <Icon icon={expanded ? "solid-chevron-down" : "solid-chevron-up"} fa />
                 </Button>
                 <Icon icon="solid-magnifying-glass" fa className="bg-muted ml-2" />
@@ -208,6 +211,7 @@ const ToolWindow = ({ react, setupController }) => {
                     <Icon icon="solid-eraser" fa />
                 </Button>}
                 <SubFilters model={model} update={update} onDoUpdate={doResultsUpdate} />
+                
             </div>} onClose={closeModal}>
                 <div className="asset-menu-container" onMouseLeave={() => onMouseLeave()}>
                     <div className="flex-1">
