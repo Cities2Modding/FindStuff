@@ -12,14 +12,14 @@ const SubFilters = ({ model, update, onDoUpdate }) => {
             onDoUpdate(model);
     };
 
-    const subOptionsHeader = react.useMemo(() => (
+    const subOptionsHeader =/* react.useMemo(() => (*/
         <>
             <h5 className="mr-2 text-muted">{model.Filter}</h5>
             <Button className={(!model.SubFilter || model.SubFilter === "None" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("None")}>
                 <Icon icon="solid-asterisk" fa />
             </Button>
         </>
-    ), [model.Filter, model.SubFilter, update]);
+ /*   ), [model.Filter, model.SubFilter, update]);*/
 
     if (model.Filter === "Zones") {
         return <div className="d-flex flex-row flex-wrap justify-content-end mr-6 flex-1">
@@ -27,7 +27,7 @@ const SubFilters = ({ model, update, onDoUpdate }) => {
             <Button className={"ml-1" + (model.SubFilter === "ZoneResidential" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("ZoneResidential")}>
                 <Icon icon="Media/Game/Icons/ZoneResidential.svg" />
             </Button>
-            <Button className={"ml-1" + (model.SubFilter === "ZoneCommercial" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("SubFilter", "ZoneCommercial")}>
+            <Button className={"ml-1" + (model.SubFilter === "ZoneCommercial" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("ZoneCommercial")}>
                 <Icon icon="Media/Game/Icons/ZoneCommercial.svg" />
             </Button>
             <Button className={"ml-1" + (model.SubFilter === "ZoneOffice" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("ZoneOffice")}>

@@ -80,7 +80,6 @@ const ToolWindow = ({ react, setupController }) => {
     const [mouseOverItem, setMouseOverItem] = react.useState(null);    
 
     const triggerResultsUpdate = debounce((curQueryKey, m) => {
-
         //if (queryKey !== curQueryKey) {
         console.log("query key: " + curQueryKey);
             // If the local JS cache has a store use that instead but only for non-searches
@@ -169,6 +168,10 @@ const ToolWindow = ({ react, setupController }) => {
         else
             model.Favourites.push(prefabName);
         trigger("OnToggleFavourite", prefabName);
+
+        const curQueryKey = `${model.Filter}:${model.SubFilter}:${model.Search ? model.Search : ""}:${model.OrderByAscending}`;
+
+        window.$_findStuff_cache[curQueryKey] = null;
     };
 
     const onRenderItem = (p, index) => {
