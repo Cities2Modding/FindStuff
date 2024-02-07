@@ -8,7 +8,7 @@ namespace FindStuff.Helper
     {
         public string PrefabType => "Vehicle";
 
-        public string CategoryType => "Misc";
+        public string CategoryType => "Props";
 
         public Dictionary<string, object> CreateMeta(PrefabBase prefab, Entity entity)
         {

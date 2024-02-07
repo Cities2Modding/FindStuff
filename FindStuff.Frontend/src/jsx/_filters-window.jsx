@@ -83,8 +83,8 @@ const FiltersWindow = ({ model, update, _L, onDoUpdate }) => {
                     <Button className={"ml-1" + (model.Filter === "Zones" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateFilter("Zones")}>
                         <Icon icon="Media/Game/Icons/Zones.svg" />
                     </Button>
-                    <Button className={"ml-1" + (model.Filter === "Surface" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateFilter("Surface")}>
-                        <Icon icon="Media/Game/Icons/LotTool.svg" />
+                    <Button className={"ml-1" + (model.Filter === "Props" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateFilter("Props")}>
+                        <Icon icon="solid-cube" fa />
                     </Button>
                     <Button className={"ml-1" + (model.Filter === "Misc" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateFilter("Misc")}>
                         <Icon icon="solid-ellipsis" fa />

@@ -20,7 +20,7 @@ namespace FindStuff.Helper
             List<string> tags = new List<string>();
 
             if (entityManager == null)
-                return new List<string>();
+                return tags;
 
             tags.Add("plant");
 

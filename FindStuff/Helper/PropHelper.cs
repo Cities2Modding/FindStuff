@@ -6,9 +6,10 @@ namespace FindStuff.Helper
 {
     public class PropHelper(EntityManager entityManager) : IBaseHelper
     {
-        public string PrefabType => "Prop";
+        public string PrefabType => _PrefabType;
+        private string _PrefabType = "PropMisc";
 
-        public string CategoryType => "Misc";
+        public string CategoryType => "Props";
 
         public Dictionary<string, object> CreateMeta(PrefabBase prefab, Entity entity)
         {
@@ -24,6 +25,32 @@ namespace FindStuff.Helper
 
             tags.Add("spawnable");
             tags.Add("prop");
+
+            string prefabLowered = prefab.name.ToLower();
+            if (prefabLowered.StartsWith("sign"))
+            {
+                _PrefabType = "SignsAndPosters";
+                tags.Add("sign");
+            }
+            else if (prefabLowered.StartsWith("poster"))
+            {
+                tags.Add("poster");
+                _PrefabType = "SignsAndPosters";
+            }
+            else if (prefabLowered.StartsWith("billboard"))
+            {
+                tags.Add("billboard");
+                _PrefabType = "Billboards";
+            }
+            else if (prefabLowered.StartsWith("fence"))
+            {
+                tags.Add("fence");
+                _PrefabType = "Fences";
+            }
+            else
+            {
+                _PrefabType = "PropMisc";
+            }
 
             return tags;
         }

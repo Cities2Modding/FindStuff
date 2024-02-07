@@ -168,11 +168,11 @@ namespace FindStuff.UI
         Foliage = 2,
         Buildings = 4,
         Zones = 5,
+        Props = 6,
         Misc = 20,
 
         // Top Level
         Network = 3,
-        Surface = 6,
     }
 
     public enum SubFilter
@@ -187,6 +187,10 @@ namespace FindStuff.UI
         Vehicle = 7,
         Tree = 8,
         Plant = 9,
-        Prop = 10,
+        PropMisc = 10,
+        Surface = 11,
+        SignsAndPosters = 12,
+        Fences = 13,
+        Billboards = 14,
     }
 }
