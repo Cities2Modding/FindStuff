@@ -197,7 +197,6 @@ const ToolWindow = ({ react, setupController }) => {
     return model.IsVisible ? <div className={isVisibleClass}>
         <div className="col">
             <FiltersWindow model={model} update={update} onDoUpdate={doResultsUpdate} _L={_L} />
-            {expanded ? "true" : "false" }
         </div>
         <div className="col">
             {hoverPrefab && hoverPrefab.Name && hoverPrefab.Name.length > 0 ? <HoverWindow hoverPrefab={hoverPrefab} _L={_L} /> : null}
