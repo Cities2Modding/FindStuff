@@ -115,7 +115,7 @@ const ToolWindow = ({ react, setupController }) => {
         return () => {
             eventHandle.clear();
         };
-    }, [model.Filter, model.SubFilter, model.Search, model.OrderByAscending])
+    }, [model.ViewMode, model.Filter, model.SubFilter, model.Search, model.OrderByAscending])
     
     react.useEffect(() => {
         doResultsUpdate(model);
