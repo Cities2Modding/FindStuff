@@ -20,46 +20,10 @@ namespace FindStuff.UI
 
             get;
             set;
-        } = [
-                new Category 
-                { 
-                    Filter = Filter.Foliage, 
-                    SubFilters = 
-                    [
-                        SubFilter.Tree, 
-                        SubFilter.Plant
-                    ] 
-                },
-                new Category 
-                { 
-                    Filter = Filter.Buildings, 
-                    SubFilters = 
-                    [
-                        SubFilter.ServiceBuilding, 
-                        SubFilter.SignatureBuilding
-                    ] 
-                },
-                new Category 
-                { 
-                    Filter = Filter.Zones,
-                    SubFilters = 
-                    [
-                        SubFilter.ZoneResidential, 
-                        SubFilter.ZoneCommercial, 
-                        SubFilter.ZoneIndustrial,
-                        SubFilter.ZoneOffice
-                    ] 
-                },
-                new Category 
-                { 
-                    Filter = Filter.Misc,
-                    SubFilters = 
-                    [
-                        SubFilter.Prop, 
-                        SubFilter.Vehicle
-                    ] 
-                }
-            ];
+        } = PrefabIndexer._filterMappings.Select( kvp => new Category
+        { 
+            Filter = kvp.Key, SubFilters = kvp.Value.ToList()
+        } ).ToList();
 
         public bool IsWaitingQuery
         {

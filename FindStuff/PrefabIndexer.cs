@@ -29,7 +29,7 @@ namespace FindStuff
             }
         };
 
-        private static readonly Dictionary<Filter, SubFilter[]> _filterMappings = new( )
+        public static readonly Dictionary<Filter, SubFilter[]> _filterMappings = new( )
         {
             { Filter.Foliage, [SubFilter.Tree, SubFilter.Plant] },
             { Filter.Buildings, [SubFilter.ServiceBuilding, SubFilter.SignatureBuilding] },
