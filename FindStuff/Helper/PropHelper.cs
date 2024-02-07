@@ -23,7 +23,6 @@ namespace FindStuff.Helper
             if (entityManager == null)
                 return tags;
 
-            tags.Add("spawnable");
             tags.Add("prop");
 
             string prefabLowered = prefab.name.ToLower();

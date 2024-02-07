@@ -35,7 +35,7 @@ namespace FindStuff
             { Filter.Buildings, [SubFilter.ServiceBuilding, SubFilter.SignatureBuilding] },
             { Filter.Zones, [SubFilter.ZoneResidential, SubFilter.ZoneCommercial, SubFilter.ZoneIndustrial, SubFilter.ZoneOffice] },
             { Filter.Props, [SubFilter.Billboards, SubFilter.Fences, SubFilter.SignsAndPosters, SubFilter.PropMisc] },
-            { Filter.Misc, [SubFilter.Surface, SubFilter.Vehicle] }
+            { Filter.Misc, [SubFilter.Surface] }
         };
 
         private static readonly LocalizationManager _localisationManager = GameManager.instance.localizationManager;
