@@ -412,7 +412,7 @@ namespace FindStuff.UI
                     return "Media/Game/Icons/Traffic.svg";
 
                 case "Surface":
-                    return "fa:solid-pencil";
+                    return "Media/Game/Icons/LotTool.svg";
 
                 case "Prop":
                     return "fa:solid-cube";

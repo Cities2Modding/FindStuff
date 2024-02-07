@@ -42,19 +42,19 @@ const FiltersWindow = ({ model, update, _L, onDoUpdate }) => {
                 {_L("FindStuff.View")}
             </div>
             <Button className={"mr-1" + (model.ViewMode === "Rows" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("ViewMode", "Rows")}>
-                <Icon icon="solid-list" fa />
+                <Icon icon="solid-bars" fa />
             </Button>
             <Button className={"mr-1" + (model.ViewMode === "Columns" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("ViewMode", "Columns")}>
-                <Icon icon="solid-list" fa />
+                <Icon icon="solid-table-columns" fa />
             </Button>
             <Button className={"mr-1" + (model.ViewMode === "IconGrid" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("ViewMode", "IconGrid")}>
                 <Icon icon="solid-table-cells" fa />
             </Button>
             <Button className={"mr-1" + (model.ViewMode === "IconGridLarge" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("ViewMode", "IconGridLarge")}>
-                <Icon icon="solid-border-all" fa />
+                <Icon icon="solid-table-cells-large" fa />
             </Button>
             <Button className={"" + (model.ViewMode === "Detailed" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("ViewMode", "Detailed")}>
-                <Icon icon="solid-align-justify" fa />
+                <Icon icon="solid-table-list" fa />
             </Button>
         </div>
         <div className="d-flex flex-row align-items-center justify-content-center mt-4">
@@ -84,10 +84,10 @@ const FiltersWindow = ({ model, update, _L, onDoUpdate }) => {
                         <Icon icon="Media/Game/Icons/Zones.svg" />
                     </Button>
                     <Button className={"ml-1" + (model.Filter === "Surface" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateFilter("Surface")}>
-                        <Icon icon="solid-pencil" fa />
+                        <Icon icon="Media/Game/Icons/LotTool.svg" fa />
                     </Button>
                     <Button className={"ml-1" + (model.Filter === "Misc" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateFilter("Misc")}>
-                        <Icon icon="solid-question" fa />
+                        <Icon icon="solid-ellipsis" fa />
                     </Button>
                 </div>
             </div>
