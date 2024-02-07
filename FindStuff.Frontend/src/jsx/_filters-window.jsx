@@ -84,7 +84,7 @@ const FiltersWindow = ({ model, update, _L, onDoUpdate }) => {
                         <Icon icon="Media/Game/Icons/Zones.svg" />
                     </Button>
                     <Button className={"ml-1" + (model.Filter === "Surface" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateFilter("Surface")}>
-                        <Icon icon="Media/Game/Icons/LotTool.svg" fa />
+                        <Icon icon="Media/Game/Icons/LotTool.svg" />
                     </Button>
                     <Button className={"ml-1" + (model.Filter === "Misc" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateFilter("Misc")}>
                         <Icon icon="solid-ellipsis" fa />
