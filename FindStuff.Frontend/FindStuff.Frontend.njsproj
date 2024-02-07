@@ -39,6 +39,12 @@
     <Content Include="gulpfile.js" />
     <Content Include="package.json" />
     <Content Include="src\jsx\ui.jsx" />
+    <Content Include="src\jsx\_loading-screen.jsx" />
+    <Content Include="src\jsx\_prefab-item.jsx" />
+    <Content Include="src\jsx\_favourite_star.jsx" />
+    <Content Include="src\jsx\_filters-window.jsx" />
+    <Content Include="src\jsx\_hover-window.jsx" />
+    <Content Include="src\jsx\_sub-filters.jsx" />
     <Content Include="src\jsx\_test.js.dump" />
   </ItemGroup>
   <ItemGroup>

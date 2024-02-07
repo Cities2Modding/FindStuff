@@ -1,5 +1,5 @@
 ﻿using Colossal.Entities;
-using Colossal.IO.AssetDatabase;
+using Colossal.Localization;
 using Colossal.Serialization.Entities;
 using FindStuff.Configuration;
 using Game;
@@ -12,7 +12,6 @@ using Gooee.Plugins;
 using Gooee.Plugins.Attributes;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using Unity.Entities;
 using UnityEngine.InputSystem;
@@ -44,6 +43,9 @@ namespace FindStuff.UI
 
         public readonly static FindStuffConfig _config = ConfigBase.Load<FindStuffConfig>( );
 
+        private PrefabIndexer _indexer;
+        private LocalizationManager _localizationManager;
+
         public override FindStuffViewModel Configure( )
         {
             _toolSystem = World.GetOrCreateSystemManaged<ToolSystem>( );
@@ -51,13 +53,14 @@ namespace FindStuff.UI
             _imageSystem = World.GetOrCreateSystemManaged<ImageSystem>( );
             _endFrameBarrier = World.GetOrCreateSystemManaged<EndFrameBarrier>( );
             _toolbarUISystem = World.GetOrCreateSystemManaged<ToolbarUISystem>( );
+            _localizationManager = GameManager.instance.localizationManager;
 
             _toolSystem.EventToolChanged += ( tool =>
             {
                 if ( Model.IsVisible )
                 {
-                    Model.IsVisible = false;
-                    TriggerUpdate( );
+                    //Model.IsVisible = false;
+                    //TriggerUpdate( );
                 }
             } );
 
@@ -94,13 +97,13 @@ namespace FindStuff.UI
                 _enableAction.Enable( );
 
                 var prefabs = ( List<PrefabBase> ) _prefabsField.GetValue( _prefabSystem );
-                UnityEngine.Debug.Log( "Getting prefabs" );
+                UnityEngine.Debug.Log( $"Getting {prefabs.Count} prefabs" );
 
                 var prefabsList = new List<PrefabItem>( );
 
                 foreach ( var prefabBase in prefabs )
                 {
-                    if ( !ProcessPrefab( prefabBase, out var prefabType, out var tags, out var meta ) )
+                    if ( !ProcessPrefab( prefabBase, out var prefabType, out var categoryType, out var tags, out var meta ) )
                         continue;
 
                     var entity = _prefabSystem.GetEntity( prefabBase );
@@ -116,8 +119,10 @@ namespace FindStuff.UI
 
                     var prefabItem = new PrefabItem
                     {
+                        ID = entity.Index,
                         Name = prefabBase.name,
                         Type = prefabType,
+                        Category = categoryType,
                         Thumbnail = prefabIcon,
                         TypeIcon = typeIcon,
                         Meta = meta,
@@ -131,6 +136,8 @@ namespace FindStuff.UI
                     _prefabInstances.Add( prefabBase.name, prefabBase );
                 }
 
+                _indexer = new PrefabIndexer( prefabsList );
+                _indexer.Build( );
                 Model.Prefabs = prefabsList;
                 TriggerUpdate( );
             }
@@ -143,7 +150,7 @@ namespace FindStuff.UI
             _enableAction?.Dispose( );
         }
 
-        private bool ProcessPrefab( PrefabBase prefab, out string prefabType, out List<string> tags, out Dictionary<string, object> meta )
+        private bool ProcessPrefab( PrefabBase prefab, out string prefabType, out string categoryType, out List<string> tags, out Dictionary<string, object> meta )
         {
             tags = new List<string>( );
             meta = new Dictionary<string, object>( );
@@ -151,184 +158,194 @@ namespace FindStuff.UI
             var prefabEntity = _prefabSystem.GetEntity( prefab );
             bool isValid = false;
             prefabType = "Unknown";
+            categoryType = "None";
 
-            if (EntityManager.HasComponent<PlantData>(prefabEntity) && !EntityManager.HasComponent<TreeData>(prefabEntity))
+            if ( EntityManager.HasComponent<PlantData>( prefabEntity ) && !EntityManager.HasComponent<TreeData>( prefabEntity ) )
             {
                 isValid = true;
                 prefabType = "Plant";
-                tags.Add("plant");
+                categoryType = "Foliage";
+                tags.Add( "plant" );
             }
-            else if (EntityManager.HasComponent<TreeData>(prefabEntity))
+            else if ( EntityManager.HasComponent<TreeData>( prefabEntity ) )
             {
                 isValid = true;
                 prefabType = "Tree";
-                tags.Add("tree");
+                categoryType = "Foliage";
+                tags.Add( "tree" );
             }
-            else if (prefab is SurfacePrefab && EntityManager.HasComponent<RenderedAreaData>(prefabEntity) && EntityManager.HasComponent<SurfaceData>(prefabEntity))
+            else if ( prefab is SurfacePrefab && EntityManager.HasComponent<RenderedAreaData>( prefabEntity ) && EntityManager.HasComponent<SurfaceData>( prefabEntity ) )
             {
                 isValid = true;
                 prefabType = "Surface";
-                tags.Add("surface");
+                categoryType = "None";
+                tags.Add( "surface" );
             }
-            else if (EntityManager.HasComponent<NetData>(prefabEntity))
+            else if ( EntityManager.HasComponent<NetData>( prefabEntity ) )
             {
                 // Flag invisible roads as dangerous. They can make your savegame break if not used properly.
-                if (prefab.name.ToLower().Contains("invisible"))
+                if ( prefab.name.ToLower( ).Contains( "invisible" ) )
                 {
-                    meta.Add(META_IS_DANGEROUS, true);
-                    meta.Add(META_IS_DANGEROUS_REASON, "This asset could break your save game if not used properly.");
+                    meta.Add( META_IS_DANGEROUS, true );
+                    meta.Add( META_IS_DANGEROUS_REASON, "This asset could break your save game if not used properly." );
                 }
 
                 isValid = true;
                 prefabType = "Network";
-                tags.Add("network");
-                if (prefab.name.ToLower().Contains("tram"))
+                categoryType = "None";
+                tags.Add( "network" );
+                if ( prefab.name.ToLower( ).Contains( "tram" ) )
                 {
-                    tags.Add("tram");
+                    tags.Add( "tram" );
                 }
 
-                if (prefab.name.ToLower().Contains("train"))
+                if ( prefab.name.ToLower( ).Contains( "train" ) )
                 {
-                    tags.Add("train");
+                    tags.Add( "train" );
                 }
 
-                if (prefab.name.ToLower().Contains("road"))
+                if ( prefab.name.ToLower( ).Contains( "road" ) )
                 {
-                    tags.Add("road");
+                    tags.Add( "road" );
                 }
 
-                if (prefab.name.ToLower().Contains("bridge"))
+                if ( prefab.name.ToLower( ).Contains( "bridge" ) )
                 {
-                    tags.Add("bridge");
+                    tags.Add( "bridge" );
                 }
             }
-            else if (EntityManager.HasComponent<BuildingData>(prefabEntity) && EntityManager.HasComponent<ServiceObjectData>(prefabEntity))
+            else if ( EntityManager.HasComponent<BuildingData>( prefabEntity ) && EntityManager.HasComponent<ServiceObjectData>( prefabEntity ) )
             {
                 isValid = true;
                 prefabType = "ServiceBuilding";
-                tags.Add("building");
+                categoryType = "Buildings";
+                tags.Add( "building" );
 
-                if (EntityManager.HasComponent<FireStationData>(prefabEntity))
+                if ( EntityManager.HasComponent<FireStationData>( prefabEntity ) )
                 {
-                    tags.Add("fire-department");
+                    tags.Add( "fire-department" );
                 }
-                else if (EntityManager.HasComponent<PoliceStationData>(prefabEntity))
+                else if ( EntityManager.HasComponent<PoliceStationData>( prefabEntity ) )
                 {
-                    tags.Add("police");
+                    tags.Add( "police" );
                 }
-                else if (EntityManager.HasComponent<PrisonData>(prefabEntity))
+                else if ( EntityManager.HasComponent<PrisonData>( prefabEntity ) )
                 {
-                    tags.Add("prison");
+                    tags.Add( "prison" );
                 }
-                else if (EntityManager.HasComponent<HospitalData>(prefabEntity))
+                else if ( EntityManager.HasComponent<HospitalData>( prefabEntity ) )
                 {
-                    tags.Add("hospital");
+                    tags.Add( "hospital" );
                 }
-                else if (EntityManager.HasComponent<GarbageFacilityData>(prefabEntity))
+                else if ( EntityManager.HasComponent<GarbageFacilityData>( prefabEntity ) )
                 {
-                    tags.Add("garbage");
+                    tags.Add( "garbage" );
                 }
-                else if (EntityManager.HasComponent<PowerPlantData>(prefabEntity))
+                else if ( EntityManager.HasComponent<PowerPlantData>( prefabEntity ) )
                 {
-                    tags.Add("power");
+                    tags.Add( "power" );
                 }
-                else if (EntityManager.HasComponent<CargoTransportStationData>(prefabEntity))
+                else if ( EntityManager.HasComponent<CargoTransportStationData>( prefabEntity ) )
                 {
-                    tags.Add("cargo");
+                    tags.Add( "cargo" );
                 }
-                else if (EntityManager.HasComponent<ParkData>(prefabEntity))
+                else if ( EntityManager.HasComponent<ParkData>( prefabEntity ) )
                 {
-                    tags.Add("park");
+                    tags.Add( "park" );
                 }
-                else if (EntityManager.HasComponent<ParkingFacilityData>(prefabEntity))
+                else if ( EntityManager.HasComponent<ParkingFacilityData>( prefabEntity ) )
                 {
-                    tags.Add("parking");
+                    tags.Add( "parking" );
                 }
-                else if (EntityManager.HasComponent<AdminBuildingData>(prefabEntity))
+                else if ( EntityManager.HasComponent<AdminBuildingData>( prefabEntity ) )
                 {
-                    tags.Add("administration");
+                    tags.Add( "administration" );
                 }
-                else if (EntityManager.HasChunkComponent<TransportDepotData>(prefabEntity))
+                else if ( EntityManager.HasChunkComponent<TransportDepotData>( prefabEntity ) )
                 {
-                    tags.Add("depot");
+                    tags.Add( "depot" );
                 }
-                else if (EntityManager.HasChunkComponent<PublicTransportStationData>(prefabEntity))
+                else if ( EntityManager.HasChunkComponent<PublicTransportStationData>( prefabEntity ) )
                 {
-                    tags.Add("transport");
+                    tags.Add( "transport" );
                 }
-                else if (EntityManager.HasChunkComponent<MaintenanceDepotData>(prefabEntity))
+                else if ( EntityManager.HasChunkComponent<MaintenanceDepotData>( prefabEntity ) )
                 {
-                    tags.Add("maintenance");
+                    tags.Add( "maintenance" );
                 }
-                else if (EntityManager.HasChunkComponent<TelecomFacilityData>(prefabEntity))
+                else if ( EntityManager.HasChunkComponent<TelecomFacilityData>( prefabEntity ) )
                 {
-                    tags.Add("telecom");
+                    tags.Add( "telecom" );
                 }
-                else if (EntityManager.HasChunkComponent<ResearchFacilityData>(prefabEntity))
+                else if ( EntityManager.HasChunkComponent<ResearchFacilityData>( prefabEntity ) )
                 {
-                    tags.Add("research");
+                    tags.Add( "research" );
                 }
-                else if (EntityManager.HasChunkComponent<DeathcareFacilityData>(prefabEntity))
+                else if ( EntityManager.HasChunkComponent<DeathcareFacilityData>( prefabEntity ) )
                 {
-                    tags.Add("deathcare");
+                    tags.Add( "deathcare" );
                 }
-                else if (EntityManager.HasChunkComponent<SchoolData>(prefabEntity))
+                else if ( EntityManager.HasChunkComponent<SchoolData>( prefabEntity ) )
                 {
-                    tags.Add("school");
+                    tags.Add( "school" );
                 }
-                else if (EntityManager.HasChunkComponent<WelfareOfficeData>(prefabEntity))
+                else if ( EntityManager.HasChunkComponent<WelfareOfficeData>( prefabEntity ) )
                 {
-                    tags.Add("welfare");
+                    tags.Add( "welfare" );
                 }
-                else if (EntityManager.HasChunkComponent<PostFacilityData>(prefabEntity))
+                else if ( EntityManager.HasChunkComponent<PostFacilityData>( prefabEntity ) )
                 {
-                    tags.Add("post");
+                    tags.Add( "post" );
                 }
             }
-            else if (EntityManager.HasComponent<SignatureBuildingData>(prefabEntity))
+            else if ( EntityManager.HasComponent<SignatureBuildingData>( prefabEntity ) )
             {
                 isValid = true;
                 prefabType = "SignatureBuilding";
-                tags.Add("signature");
-                tags.Add("building");
+                categoryType = "Buildings";
+                tags.Add( "signature" );
+                tags.Add( "building" );
             }
-            else if (EntityManager.HasComponent<VehicleData>(prefabEntity))
+            else if ( EntityManager.HasComponent<VehicleData>( prefabEntity ) )
             {
-                tags.Add("vehicle");
+                tags.Add( "vehicle" );
 
-                if (EntityManager.HasComponent<TrainData>(prefabEntity))
+                if ( EntityManager.HasComponent<TrainData>( prefabEntity ) )
                 {
-                    meta.Add(META_IS_DANGEROUS, true);
-                    meta.Add(META_IS_DANGEROUS_REASON, "This asset can't be removed with bulldozer tool after placing.");
-                    tags.Add("train");
+                    meta.Add( META_IS_DANGEROUS, true );
+                    meta.Add( META_IS_DANGEROUS_REASON, "This asset can't be removed with bulldozer tool after placing." );
+                    tags.Add( "train" );
                 }
 
-                if (EntityManager.HasComponent<CarData>(prefabEntity))
+                if ( EntityManager.HasComponent<CarData>( prefabEntity ) )
                 {
-                    tags.Add("car");
+                    tags.Add( "car" );
                 }
 
-                if (EntityManager.HasComponent<DeliveryTruckData>(prefabEntity))
+                if ( EntityManager.HasComponent<DeliveryTruckData>( prefabEntity ) )
                 {
-                    tags.Add("truck");
+                    tags.Add( "truck" );
                 }
 
                 isValid = true;
                 prefabType = "Vehicle";
+                categoryType = "Misc";
             }
-            else if (prefab is BuildingPrefab buildingPrefab && EntityManager.TryGetComponent(prefabEntity, out SpawnableBuildingData spawnableBuildingData))
+            else if ( prefab is BuildingPrefab buildingPrefab && EntityManager.TryGetComponent( prefabEntity, out SpawnableBuildingData spawnableBuildingData ) )
             {
-                if (spawnableBuildingData.m_ZonePrefab != Entity.Null && EntityManager.TryGetComponent(spawnableBuildingData.m_ZonePrefab, out ZoneData zoneData))
+                if ( spawnableBuildingData.m_ZonePrefab != Entity.Null && EntityManager.TryGetComponent( spawnableBuildingData.m_ZonePrefab, out ZoneData zoneData ) )
                 {
                     var areaType = zoneData.m_AreaType;
-                    tags.Add("spawnable");
-                    tags.Add("zone");
+                    tags.Add( "spawnable" );
+                    tags.Add( "zone" );
 
-                    meta.Add(META_ZONE_LOT_DEPTH, buildingPrefab.m_LotDepth);
-                    meta.Add(META_ZONE_LOT_WIDTH, buildingPrefab.m_LotWidth);
-                    meta.Add(META_ZONE_LOT_SUM, buildingPrefab.m_LotDepth * buildingPrefab.m_LotWidth);
+                    meta.Add( META_ZONE_LOT_DEPTH, buildingPrefab.m_LotDepth );
+                    meta.Add( META_ZONE_LOT_WIDTH, buildingPrefab.m_LotWidth );
+                    meta.Add( META_ZONE_LOT_SUM, buildingPrefab.m_LotDepth * buildingPrefab.m_LotWidth );
 
-                    switch (areaType)
+                    categoryType = "Zones";
+
+                    switch ( areaType )
                     {
                         case Game.Zones.AreaType.Commercial:
                             prefabType = "ZoneCommercial";
@@ -337,7 +354,7 @@ namespace FindStuff.UI
                             prefabType = "ZoneResidential";
                             break;
                         case Game.Zones.AreaType.Industrial:
-                            ZonePrefab zonePrefab = _prefabSystem.GetPrefab<ZonePrefab>(spawnableBuildingData.m_ZonePrefab);
+                            ZonePrefab zonePrefab = _prefabSystem.GetPrefab<ZonePrefab>( spawnableBuildingData.m_ZonePrefab );
                             prefabType = zonePrefab.m_Office ? "ZoneOffice" : "ZoneIndustrial";
                             break;
                     }
@@ -345,16 +362,13 @@ namespace FindStuff.UI
                     isValid = true;
                 }
             }
-            else if (prefab is StaticObjectPrefab staticObjectPrefab && staticObjectPrefab.m_Meshes.Length > 0 && staticObjectPrefab.isDirty == true && staticObjectPrefab.active == true && staticObjectPrefab.components.Find(p => p is SpawnableObject))
+            else if ( prefab is StaticObjectPrefab staticObjectPrefab && staticObjectPrefab.m_Meshes.Length > 0 && staticObjectPrefab.isDirty == true && staticObjectPrefab.active == true && staticObjectPrefab.components.Find( p => p is SpawnableObject ) )
             {
                 tags.Add( "spawnable" );
                 tags.Add( "prop" );
                 isValid = true;
-                prefabType = "Misc";
-            }
-            else
-            {
-                prefabType = "Unknown";
+                prefabType = "Prop";
+                categoryType = "Misc";
             }
 
             return isValid;
@@ -399,6 +413,9 @@ namespace FindStuff.UI
 
                 case "Surface":
                     return "fa:solid-pencil";
+
+                case "Prop":
+                    return "fa:solid-cube";
             }
 
             return "";
@@ -468,7 +485,7 @@ namespace FindStuff.UI
                     //}
 
                     commandBuffer.SetComponent<Unlock>( unlockEntity, new Unlock( entity ) );
-                   
+
                     GameManager.instance.userInterface.view.View.ExecuteScript( $"engine.trigger('toolbar.selectAsset',{{index: {entity.Index}, version: {entity.Version}}});" );
                     //_selectAsset.Invoke( _toolbarUISystem, new object[] { entity } );                    
                 }
@@ -505,11 +522,32 @@ namespace FindStuff.UI
 
         protected override void OnModelUpdated( )
         {
-            _config.ViewMode = Model.ViewMode;
-            _config.Filter = Model.Filter;
-            _config.SubFilter = Model.SubFilter;
-            _config.OrderByAscending = Model.OrderByAscending;
-            _config.Save( );
+            if ( _config.ViewMode != Model.ViewMode ||
+                _config.Filter != Model.Filter ||
+                _config.SubFilter != Model.SubFilter ||
+                _config.OrderByAscending != Model.OrderByAscending )
+            {            
+                _config.ViewMode = Model.ViewMode;
+                _config.Filter = Model.Filter;
+                _config.SubFilter = Model.SubFilter;
+                _config.OrderByAscending = Model.OrderByAscending;
+                _config.Save( );
+            }
+        }
+
+        [OnTrigger]
+        private void OnUpdateQuery( )
+        {
+            if ( Model == null || _indexer == null )
+                return;
+
+            var result = _indexer.Query( Model, out var key );
+
+            if ( string.IsNullOrEmpty( result.Json ) )
+                return;
+
+            // Provide the results to the client
+            GameManager.instance.userInterface.view.View.TriggerEvent( "findstuff.onReceiveResults", key, result.Json );
         }
     }
 }

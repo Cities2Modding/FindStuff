@@ -1,5 +1,10 @@
 import React from "react";
-import { Virtuoso } from "react-virtuoso";
+import HoverWindow from "./_hover-window";
+import FiltersWindow from "./_filters-window";
+import SubFilters from "./_sub-filters";
+import PrefabItem from "./_prefab-item";
+import LoadingScreen from "./_loading-screen";
+import FavouriteStar from "./_favourite_star";
 
 const AppButton = ({ react, setupController }) => {
     const [tooltipVisible, setTooltipVisible] = react.useState(false);
@@ -44,6 +49,22 @@ const AppButton = ({ react, setupController }) => {
 
 window.$_gooee.register("findstuff", "FindStuffAppButton", AppButton, "bottom-right-toolbar", "findstuff");
 
+if (!window.$_findStuff_cache)
+    window.$_findStuff_cache = {};
+;
+
+const debounce = (func, wait) => {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+};
+
 const ToolWindow = ({ react, setupController }) => {
     const [sliderValue, setSliderValue] = react.useState(0);
     const [selectedPrefab, setSeletedPrefab] = react.useState({ Name: "" });
@@ -53,51 +74,68 @@ const ToolWindow = ({ react, setupController }) => {
     const { Button, Icon, VirtualList, Slider, List, Grid, FormGroup, FormCheckBox, Scrollable, ToolTip, TextBox, Dropdown, ToolTipContent, TabModal, Modal, MarkDown } = window.$_gooee.framework;
 
     const { model, update, trigger, _L } = setupController();
-    const [filteredPrefabs, setFilteredPrefabs] = react.useState(model.Prefabs);
-    const [search, setSearch] = react.useState("");
+    const [filteredPrefabs, setFilteredPrefabs] = react.useState([]);
+    const [search, setSearch] = react.useState(model.Search ?? "");
     const [expanded, setExpanded] = react.useState(false);
+    const [mouseOverItem, setMouseOverItem] = react.useState(null);    
 
-    const subFitlers = {
-        "Zones": ["ZoneResidential", "ZoneCommercial", "ZoneIndustrial", "ZoneOffice"],
-        "Buildings": ["ServiceBuilding", "SignatureBuilding"],
-        "Misc": ["Vehicle"],
-        "Foliage": ["Tree", "Plant"],
-    };
+    const triggerResultsUpdate = debounce((curQueryKey, m) => {
 
-    const checkFilterTypes = (p) => {
-        const hasFilter = model.Filter && model.Filter.length > 0 && model.Filter !== "None";
-        const hasSubFilter = model.SubFilter && model.SubFilter.length > 0 && model.SubFilter !== "None";
+        //if (queryKey !== curQueryKey) {
+        console.log("query key: " + curQueryKey);
+            // If the local JS cache has a store use that instead but only for non-searches
+            if ((!m.Search || m.Search.length == 0) && window.$_findStuff_cache[curQueryKey]) {
+                console.log("Got cache for " + curQueryKey);
+                setFilteredPrefabs(window.$_findStuff_cache[curQueryKey]);
+            }
+            // Otherwise use C# backend to query it
+            else {
+                trigger("OnUpdateQuery");
+            }
+        //}
+    }, 50);
 
-        return (hasFilter && model.Filter === "Favourite" ? model.Favourites && model.Favourites.includes(p.Name) : true ) && (hasSubFilter ? p.Type === model.SubFilter : true ) &&
-            (hasFilter && model.Filter !== "Favourite" ? p.Type === model.Filter || subFitlers[model.Filter] && subFitlers[model.Filter].includes(p.Type) : true);
-    };
+    const onReceiveResults = (curQueryKey, json) => {
+        const result = json ? JSON.parse(json) : null;
 
-    const updateSearchFilter = () => {
-        let filtered = ((!model.Filter || model.Filter.length == 0 || model.Filter === "None") && (!search || search === "") ? model.Prefabs :
-            model.Prefabs.filter(function (p) {
-                return checkFilterTypes(p) &&
-                    (search && search.length > 0 ?
-                    (p.Name && prefabName(p).toLowerCase().includes(search.toLowerCase()) || p.Type && p.Type.toLowerCase().includes(search.toLowerCase()))
-                    : true);
-            })
-        );
+        if (!result || !result.Prefabs)
+            return;
 
-        filtered.sort((a, b) => prefabName(a).toLowerCase().localeCompare(prefabName(b).toLowerCase()));
+        setFilteredPrefabs(result.Prefabs);
 
-        if (!model.OrderByAscending)
-            filtered.reverse();
-
-        setFilteredPrefabs(filtered);
+        if (curQueryKey && curQueryKey.includes("::")) {
+            window.$_findStuff_cache[curQueryKey] = result.Prefabs;
+            console.log("Updated cache for " + curQueryKey);
+        }
     };
 
     react.useEffect(() => {
-        updateSearchFilter();
-    }, [model, search]);
+        const eventHandle = engine.on("findstuff.onReceiveResults", onReceiveResults);
+
+        return () => {
+            eventHandle.clear();
+        };
+    }, [model.Filter, model.SubFilter, model.Search, model.OrderByAscending])
+    
+    react.useEffect(() => {
+        doResultsUpdate(model);
+    }, []);
+
+    const doResultsUpdate = (m) => {
+        const curQueryKey = `${m.Filter}:${m.SubFilter}:${m.Search ? m.Search : ""}:${m.OrderByAscending}`;
+        triggerResultsUpdate(curQueryKey, model);
+    };
+
+    const debouncedSearchUpdate = debounce((val) => {
+        model.Search = val;
+        update("Search", val);
+        doResultsUpdate(model);
+    }, 500);
 
     const onSearchInputChanged = (val) => {
         setSearch(val);
+        debouncedSearchUpdate(val);
     };
-
 
     const closeModal = () => {
         trigger("OnToggleVisible");
@@ -108,305 +146,69 @@ const ToolWindow = ({ react, setupController }) => {
 
     const onSelectPrefab = (prefab) => {
         setSeletedPrefab(prefab);
-        trigger("OnSelectPrefab", prefab.Name);
     };
 
-    const onMouseEnter = (prefab) => {
+    const onMouseEnterItem = (prefab) => {
+        setHoverPrefab(prefab);
+        setMouseOverItem(prefab);
         if (tm)
             clearTimeout(tm);
-        setHoverPrefab(prefab);
     };
 
     const onMouseLeave = () => {
         setHoverPrefab(null);
     }
-    
-    const highlightSearchTerm = (text, searchTerm) => {
-        const regex = new RegExp(`(${searchTerm})`, 'gi');
-        const splitText = text.split(regex);
 
-        return (!searchTerm || searchTerm.length == 0) ? text : splitText.map((part, index) =>
-            regex.test(part) ? <span key={index}>
-                <b className={selectedPrefab.Name == text || prefabName(selectedPrefab) == text ? "text-dark bg-warning" : "text-dark bg-warning"}>{part}</b>
-            </span> : part
-        );
+    const onMouseLeaveItem = () => {
+        setMouseOverItem(null);
     };
 
-    const prefabName = (p) => {
-        const key = `Assets.NAME[${p.Name}]`;
-        const name = _L(key);
-
-        if (name === key)
-            return p.Name;
-
-        else return name;
-    };
-
-    const updateFilter = (filter) => {
-        update("Filter", filter);
-        if (model.SubFilter && subFitlers[filter] && !subFitlers[filter].includes(model.SubFilter)) {
-            model.SubFilter = "None";
-            update("SubFilter", "None");
-        }
-    };
-
-    const favourteClick = (e, p) => {
-        e.stopPropagation();
-
-        if (!p)
-            return;
-        trigger("OnToggleFavourite", p.Name);
-    };
-
-    const renderItemContent = (p) => {
-        const isFAIcon = p.TypeIcon.includes("fa:");
-        const iconSrc = isFAIcon ? p.TypeIcon.replaceAll("fa:", "") : p.TypeIcon;
-        const isFavourite = model.Favourites && model.Favourites.includes(p.Name);
-
-        const renderFavourite = () => {
-            if (model.ViewMode === "Columns" || model.ViewMode === "Rows") {
-                return <Button circular icon style="trans-faded" onClick={(e) => favourteClick(e, p)} elementStyle={{ transform: 'scale(0.75)' }}>
-                    <Icon icon={(isFavourite ? "solid-star" : "star")} className={(isFavourite ? "bg-secondary" : "bg-secondary")} fa />
-                </Button>;
-            }
-            return <div className="p-absolute p-top-0 p-left-0 w-100 h-100">
-                <Button className="p-absolute p-right-0 p-top-0 mr-2 mb-2" circular icon style="trans-faded" onClick={(e) => favourteClick(e, p)} elementStyle={{ transform: 'scale(0.75)', ...(model.ViewMode === "Detailed" ? { marginTop: '-2.5rem'} : null )}} >
-                    <Icon icon={(isFavourite ? "solid-star" : "star")} className={(isFavourite ? "bg-secondary" : "bg-secondary")} fa />
-                </Button>
-            </div>;
-        };
-
-        return model.ViewMode == "Detailed" ? <>
-            <Grid>
-                <div className="col-7">
-                    <div className="d-flex flex-row">
-                        <img className="icon icon-sm ml-1 mr-1" src={p.Thumbnail} />
-                        <span className="fs-sm flex-1">{highlightSearchTerm(prefabName(p), search)}</span>
-                    </div>
-                </div>
-                <div className="col-2">
-                    <span className="fs-xs h-x">
-                        <Icon icon={iconSrc} fa={isFAIcon ? true : null} size="sm" className={(isFAIcon ? "bg-muted " : "") + "mr-1"} style={{ maxHeight: "16rem" }} />
-                        {highlightSearchTerm(p.Type, search)}
-                    </span>
-                </div>
-                <div className="col-2">
-                    {p.Meta && p.Meta.IsDangerous ? <div className="badge badge-xs badge-danger">Dangerous</div> : null}
-                </div>
-                <div className="col-1 p-relative pr-2">
-                    {hoverPrefab && p.Name == hoverPrefab.Name ? renderFavourite() : null}
-                </div>
-            </Grid>
-        </> : <>            
-            <img className={model.ViewMode === "IconGrid" ? "icon icon-lg" : model.ViewMode === "IconGridLarge" ? "icon icon-xl" : "icon icon-sm ml-2"} src={p.Thumbnail} />
-                {model.ViewMode === "Rows" || model.ViewMode === "Columns" ? <span className="ml-1 fs-sm mr-4">{highlightSearchTerm(prefabName(p), search)}</span> : <span className="fs-xs ml-1 mr-4" style={{ maxWidth: '80%', textOverflow: 'ellipsis', overflowX: 'hidden' }}>{highlightSearchTerm(prefabName(p), search)}</span>}
-                {hoverPrefab && p.Name == hoverPrefab.Name ? renderFavourite() : null}
-        </>;
+    const onUpdateFavourite = (prefabName) => {
+        if (model.Favourites.includes(prefabName))
+            model.Favourites = model.Favourites.filter(f => f !== prefabName);
+        else
+            model.Favourites.push(prefabName);
+        trigger("OnToggleFavourite", prefabName);
     };
 
     const onRenderItem = (p, index) => {
-        const borderClass = model.Filter !== "Favourite" && model.Favourites.includes(p.Name) ? " border-secondary-trans" : p.Meta && p.Meta.IsDangerous ? " border-danger-trans" : "";
-        return <Button color={selectedPrefab.Name == p.Name ? "primary" : "light"} style={selectedPrefab.Name == p.Name ? "trans" : "trans-faded"} onMouseEnter={() => onMouseEnter(p)} className={"asset-menu-item auto flex-1 m-mini" + borderClass + (selectedPrefab.Name == p.Name ? " text-dark" : " text-light") + (model.ViewMode !== "IconGrid" && model.ViewMode !== "IconGridLarge" ? " flat" : "") + (model.ViewMode !== "IconGrid" && model.ViewMode !== "IconGridLarge" && selectedPrefab.Name !== p.Name ? " btn-transparent" : "")} onClick={() => onSelectPrefab(p)}>
-            <div className={"d-flex align-items-center justify-content-center p-relative " + (model.ViewMode === "Columns" || model.ViewMode === "Rows" || model.ViewMode === "Detailed" ? " w-x flex-row " : " flex-column")}>
-                {renderItemContent(p)}
-            </div>
-        </Button>;
+        return <PrefabItem key={p.Name} model={model} trigger={trigger} selected={selectedPrefab}
+            prefab={p}
+            onSelected={onSelectPrefab} onMouseEnter={onMouseEnterItem} onMouseLeave={onMouseLeaveItem}
+            _L={_L} extraContent={hoverPrefab && hoverPrefab.Name === p.Name ? <FavouriteStar model={model} onUpdateFavourite={onUpdateFavourite} prefab={p} /> : null} />;
     };
 
-    const renderSubOptions = () => {
-        const subOptionsHeader = <>
-            <h5 className="mr-2 text-muted">{model.Filter}</h5>
-            <Button className={(!model.SubFilter || model.SubFilter === "None" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("SubFilter", "None")}>
-                <Icon icon="solid-asterisk" fa />
-            </Button>
-        </>;
-
-        if (model.Filter === "Zones") {
-            return <div className="d-flex flex-row flex-wrap justify-content-end mr-6 flex-1">
-                {subOptionsHeader}
-                <Button className={"ml-1" + (model.SubFilter === "ZoneResidential" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("SubFilter", "ZoneResidential")}>
-                    <Icon icon="Media/Game/Icons/ZoneResidential.svg" />
-                </Button>
-                <Button className={"ml-1" + (model.SubFilter === "ZoneCommercial" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("SubFilter", "ZoneCommercial")}>
-                    <Icon icon="Media/Game/Icons/ZoneCommercial.svg" />
-                </Button>
-                <Button className={"ml-1" + (model.SubFilter === "ZoneOffice" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("SubFilter", "ZoneOffice")}>
-                    <Icon icon="Media/Game/Icons/ZoneOffice.svg" />
-                </Button>
-                <Button className={"ml-1 mr-1" + (model.SubFilter === "ZoneIndustrial" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("SubFilter", "ZoneIndustrial")}>
-                    <Icon icon="Media/Game/Icons/ZoneIndustrial.svg" />
-                </Button>
-            </div>;
-        }
-        else if (model.Filter === "Buildings") {
-            return <div className="d-flex flex-row flex-wrap justify-content-end mr-6 flex-1">
-                {subOptionsHeader}
-                <Button className={"ml-1" + (model.SubFilter === "ServiceBuilding" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("SubFilter", "ServiceBuilding")}>
-                    <Icon icon="Media/Game/Icons/Services.svg" />
-                </Button>
-                <Button className={"ml-1" + (model.SubFilter === "SignatureBuilding" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("SubFilter", "SignatureBuilding")}>
-                    <Icon icon="Media/Game/Icons/ZoneSignature.svg" />
-                </Button>
-            </div>;
-        }
-        else if (model.Filter === "Foliage") {
-            return <div className="d-flex flex-row flex-wrap justify-content-end mr-6 flex-1">
-                {subOptionsHeader}
-                <Button className={"ml-1" + (model.SubFilter === "Tree" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("SubFilter", "Tree")}>
-                    <Icon icon="Media/Game/Icons/Forest.svg" />
-                </Button>
-                <Button className={"ml-1" + (model.SubFilter === "Plant" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("SubFilter", "Plant")}>
-                    <Icon icon="Media/Game/Icons/Forest.svg" />
-                </Button>
-            </div>;
-        }
-        else if (model.Filter === "Misc") {
-            return <div className="d-flex flex-row flex-wrap justify-content-end mr-6 flex-1">
-                {subOptionsHeader}
-                <Button className={"ml-1" + (model.SubFilter === "Vehicle" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("SubFilter", "Vehicle")}>
-                    <Icon icon="Media/Game/Icons/Traffic.svg" />
-                </Button>
-            </div>;
-        }
-
-        return null;
+    const clearSearch = () => {
+        setSearch("");
+        model.Search = "";
+        update("Search", "");
+        doResultsUpdate(model);
     };
 
-    const prefabDesc = (p) => {
-        const key = `Assets.DESCRIPTION[${p.Name}]`;
-        const trans = _L(key);
-
-        if (trans === key)
-            return null;
-
-        return trans;
-    };
-
-    const renderHoverContents = () => {
-        if (!hoverPrefab)
-            return;
-
-        const prefabDescText = prefabDesc(hoverPrefab);
-
-        return <Grid>
-            <div className="col-3">
-                <Icon icon={hoverPrefab.Thumbnail} size="xxl" />
-            </div>
-            <div className="col-9">
-                {prefabDescText ?
-                    <p className="mb-4 fs-sm" cohinline="cohinline">
-                        {prefabDescText}
-                    </p> : null }
-                {hoverPrefab.Meta && hoverPrefab.Meta.IsDangerous ? <div className="alert alert-danger fs-sm d-flex flex-row flex-wrap align-items-center p-2 mb-4">
-                    <Icon className="mr-2" icon="solid-circle-exclamation" fa />
-                    {hoverPrefab.Meta.IsDangerousReason}
-                </div> : null}
-                <div className="d-inline">
-                    {hoverPrefab.Tags.map((tag, index) => <div key={index} className="badge badge-info">
-                        {tag}
-                    </div>)}
-                </div>
-            </div>
-        </Grid>
-    };
-
-    const modalTypeIconIsFAIcon = hoverPrefab && hoverPrefab.TypeIcon ? hoverPrefab.TypeIcon.includes("fa:") : false;
-    const modalTypeIconSrc = modalTypeIconIsFAIcon ? hoverPrefab.TypeIcon.replaceAll("fa:", "") : hoverPrefab ? hoverPrefab.TypeIcon : null;
-
+    const isBorderedList = model.ViewMode === "IconGrid" || model.ViewMode === "IconGridLarge" ? null : true;
+    const columnCount = model.ViewMode === "Rows" || model.ViewMode === "Detailed" ? 1 : model.ViewMode === "Columns" ? 2 : model.ViewMode === "IconGrid" ? 13 : 9;
+    const rowCount = model.ViewMode === "Rows" || model.ViewMode === "Detailed" || model.ViewMode === "Columns" ? (expanded ? 8 : 4) : model.ViewMode === "IconGrid" ? (expanded ? 6 : 3) : (expanded ? 4 : 2);
+    
     return model.IsVisible ? <div className={isVisibleClass}>
         <div className="col">
-            <div className="bg-panel text-light p-4 rounded-sm">
-                <div className="d-flex flex-row align-items-center justify-content-center">
-                    <div className="flex-1">
-                        {_L("FindStuff.View")}
-                    </div>
-                    <Button className={"mr-1" + (model.ViewMode === "Rows" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("ViewMode", "Rows")}>
-                        <Icon icon="solid-list" fa />
-                    </Button>
-                    <Button className={"mr-1" + (model.ViewMode === "Columns" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("ViewMode", "Columns")}>
-                        <Icon icon="solid-list" fa />
-                    </Button>
-                    <Button className={"mr-1" + (model.ViewMode === "IconGrid" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("ViewMode", "IconGrid")}>
-                        <Icon icon="solid-table-cells" fa />
-                    </Button>
-                    <Button className={"mr-1" + (model.ViewMode === "IconGridLarge" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("ViewMode", "IconGridLarge")}>
-                        <Icon icon="solid-border-all" fa />
-                    </Button>
-                    <Button className={"" + (model.ViewMode === "Detailed" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("ViewMode", "Detailed")}>
-                        <Icon icon="solid-align-justify" fa />
-                    </Button>
-                </div>
-                <div className="d-flex flex-row align-items-center justify-content-center mt-4">
-                    <div className="flex-1">
-                        {_L("FindStuff.Filter")}
-                    </div>
-                    <div>
-                        <div className="d-flex flex-row flex-wrap align-items-center justify-content-end">
-                            <Button className={(!model.Filter || model.Filter === "None" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateFilter("None")}>
-                                <Icon icon="solid-asterisk" fa />
-                            </Button>
-                            <Button className={"ml-1" + (model.Filter === "Favourite" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateFilter("Favourite")}>
-                                <Icon icon="solid-star" fa />
-                            </Button>
-                            <Button className={"ml-1" + (model.Filter === "Foliage" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateFilter("Foliage")}>
-                                <Icon icon="Media/Game/Icons/Forest.svg" />
-                            </Button>
-                            <Button className={"ml-1" + (model.Filter === "Network" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateFilter("Network")}>
-                                <Icon icon="Media/Game/Icons/Roads.svg" />
-                            </Button>
-                        </div>
-                        <div className="d-flex flex-row flex-wrap align-items-center justify-content-end mt-1">
-                            <Button className={(model.Filter === "Buildings" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateFilter("Buildings")}>
-                                <Icon icon="Media/Game/Icons/ZoneSignature.svg" />
-                            </Button>
-                            <Button className={"ml-1" + (model.Filter === "Zones" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateFilter("Zones")}>
-                                <Icon icon="Media/Game/Icons/Zones.svg" />                                
-                            </Button>
-                            <Button className={"ml-1" + (model.Filter === "Surface" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateFilter("Surface")}>
-                                <Icon icon="solid-pencil" fa />
-                            </Button>
-                            <Button className={"ml-1" + (model.Filter === "Misc" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateFilter("Misc")}>
-                                <Icon icon="solid-question" fa />
-                            </Button>
-                        </div>
-                    </div>
-                </div>
-                <div className="d-flex flex-row align-items-center justify-content-center mt-4">
-                    <div className="flex-1">
-                        {_L("FindStuff.OrderBy")}
-                    </div>
-                    <div>
-                        <div className="d-flex flex-row flex-wrap align-items-center justify-content-end">
-                            <Button className={(model.OrderByAscending === true ? " active" : "")} color="tool" size="sm" icon onClick={() => update("OrderByAscending", true)}>
-                                <Icon icon="solid-arrow-down-a-z" fa />
-                            </Button>
-                            <Button className={"ml-1" + (model.OrderByAscending === false ? " active" : "")} color="tool" size="sm" icon onClick={() => update("OrderByAscending", false)}>
-                                <Icon icon="solid-arrow-up-a-z" fa />
-                            </Button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <FiltersWindow model={model} update={update} onDoUpdate={doResultsUpdate} _L={_L} />
         </div>
         <div className="col">
-            {hoverPrefab && hoverPrefab.Name.length > 0 ?
-                <Modal className="mb-2" icon={<><Icon icon={modalTypeIconSrc} fa={modalTypeIconIsFAIcon ? true : null} /></>} title={prefabName(hoverPrefab)} noClose>
-                    {renderHoverContents()}
-                </Modal> : null }
-            <Modal bodyClassName={"asset-menu" + (expanded ? " asset-menu-xl" : "")} title={<div className="d-flex flex-row align-items-center">
+            {hoverPrefab && hoverPrefab.Name && hoverPrefab.Name.length > 0 ? <HoverWindow hoverPrefab={hoverPrefab} _L={_L} /> : null}
+            <Modal bodyClassName={"asset-menu p-relative" + (expanded ? " asset-menu-xl" : "")} title={<div className="d-flex flex-row align-items-center">
                 <Button circular icon style="trans-faded" onClick={() => setExpanded(!expanded)}>
                     <Icon icon={expanded ? "solid-chevron-down" : "solid-chevron-up"} fa />
                 </Button>
                 <Icon icon="solid-magnifying-glass" fa className="bg-muted ml-2" />
                 <TextBox size="sm" className="bg-dark-trans-less-faded w-25 mr-2 ml-4" placeholder="Search..." text={search} onChange={onSearchInputChanged} />
-                {<Button circular icon style="trans-faded" disabled={search && search.length > 0 ? null : true} onClick={() => setSearch("")}>
+                {<Button circular icon style="trans-faded" disabled={search && search.length > 0 ? null : true} onClick={clearSearch}>
                     <Icon icon="solid-eraser" fa />
                 </Button>}
-                {renderSubOptions()}
+                <SubFilters model={model} update={update} onDoUpdate={doResultsUpdate} />
             </div>} onClose={closeModal}>
                 <div className="asset-menu-container" onMouseLeave={() => onMouseLeave()}>
                     <div className="flex-1">
-                        <VirtualList border={model.ViewMode === "IconGrid" || model.ViewMode === "IconGridLarge" ? null : true} data={filteredPrefabs} onRenderItem={onRenderItem} columns={model.ViewMode === "Rows" || model.ViewMode === "Detailed" ? 1 : model.ViewMode === "Columns" ? 2 : model.ViewMode === "IconGrid" ? 13 : 9} rows={model.ViewMode === "Rows" || model.ViewMode === "Detailed" || model.ViewMode === "Columns" ? (expanded ? 8 : 4) : model.ViewMode === "IconGrid" ? (expanded ? 6 : 3) : ( expanded ? 4 : 2 )} contentClassName="d-flex flex-row flex-wrap" size="sm" itemHeight={32}>
+                        <VirtualList watch={[model.Favourites, selectedPrefab, mouseOverItem, model.Search, model.Filter, model.SubFilter, model.ViewMode, model.OrderByAscending]} border={isBorderedList} data={filteredPrefabs} onRenderItem={onRenderItem} columns={columnCount} rows={rowCount} contentClassName="d-flex flex-row flex-wrap" size="sm" itemHeight={32}>
                         </VirtualList>
                     </div>
                 </div>

@@ -1,6 +1,9 @@
 ﻿using Gooee.Plugins;
 using Gooee.Plugins.Attributes;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FindStuff.UI
 {
@@ -12,6 +15,60 @@ namespace FindStuff.UI
             set;
         }
 
+        public List<Category> Categories
+        {
+
+            get;
+            set;
+        } = [
+                new Category 
+                { 
+                    Filter = Filter.Foliage, 
+                    SubFilters = 
+                    [
+                        SubFilter.Tree, 
+                        SubFilter.Plant
+                    ] 
+                },
+                new Category 
+                { 
+                    Filter = Filter.Buildings, 
+                    SubFilters = 
+                    [
+                        SubFilter.ServiceBuilding, 
+                        SubFilter.SignatureBuilding
+                    ] 
+                },
+                new Category 
+                { 
+                    Filter = Filter.Zones,
+                    SubFilters = 
+                    [
+                        SubFilter.ZoneResidential, 
+                        SubFilter.ZoneCommercial, 
+                        SubFilter.ZoneIndustrial,
+                        SubFilter.ZoneOffice
+                    ] 
+                },
+                new Category 
+                { 
+                    Filter = Filter.Misc,
+                    SubFilters = 
+                    [
+                        SubFilter.Prop, 
+                        SubFilter.Vehicle
+                    ] 
+                }
+            ];
+
+        public bool IsWaitingQuery
+        {
+            get;
+            set;
+        }
+
+        // This list gets huge don't serialise it and lag JS!
+        [JsonIgnore]
         public List<PrefabItem> Prefabs
         {
             get;
@@ -29,6 +86,12 @@ namespace FindStuff.UI
             get;
             set;
         } = ViewMode.Rows;
+
+        public string Search
+        {
+            get;
+            set;
+        }
 
         public Filter Filter
         {
@@ -52,7 +115,19 @@ namespace FindStuff.UI
 
     public class PrefabItem
     {
+        public int ID
+        {
+            get;
+            set;
+        }
+
         public string Name
+        {
+            get;
+            set;
+        }
+
+        public string Category
         {
             get;
             set;
@@ -89,6 +164,22 @@ namespace FindStuff.UI
         }
 
         public List<string> Tags
+        {
+            get;
+            set;
+        }
+    }
+
+    public class Category
+    {
+        public Filter Filter
+        {
+
+            get;
+            set;
+        }
+
+        public List<SubFilter> SubFilters
         {
             get;
             set;
