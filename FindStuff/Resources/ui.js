@@ -1985,7 +1985,7 @@
 
   // src/jsx/_sub-filters.jsx
   var import_react3 = __toESM(require_react());
-  var SubFilters = ({ model, update, onDoUpdate }) => {
+  var SubFilters = ({ model, update, onDoUpdate, _L }) => {
     const react = window.$_gooee.react;
     const { Icon, Button } = window.$_gooee.framework;
     const updateBackend = (val) => {
@@ -1994,9 +1994,18 @@
       if (onDoUpdate)
         onDoUpdate(model);
     };
+    const categoryName = () => {
+      const key = `FindStuff.PrefabCategory.${model.Filter}`;
+      const name = _L(key);
+      if (name === key)
+        return model.Filter;
+      else
+        return name;
+    };
+    const computedCategoryName = react.useMemo(() => categoryName(), [model.Filter, _L]);
     const subOptionsHeader = (
       /* react.useMemo(() => (*/
-      /* @__PURE__ */ import_react3.default.createElement(import_react3.default.Fragment, null, /* @__PURE__ */ import_react3.default.createElement("h5", { className: "mr-2 text-muted" }, model.Filter), /* @__PURE__ */ import_react3.default.createElement(Button, { className: !model.SubFilter || model.SubFilter === "None" ? " active" : "", color: "tool", size: "sm", icon: true, onClick: () => updateBackend("None") }, /* @__PURE__ */ import_react3.default.createElement(Icon, { icon: "solid-asterisk", fa: true })))
+      /* @__PURE__ */ import_react3.default.createElement(import_react3.default.Fragment, null, /* @__PURE__ */ import_react3.default.createElement("h5", { className: "mr-2 text-muted" }, computedCategoryName), /* @__PURE__ */ import_react3.default.createElement(Button, { className: !model.SubFilter || model.SubFilter === "None" ? " active" : "", color: "tool", size: "sm", icon: true, onClick: () => updateBackend("None") }, /* @__PURE__ */ import_react3.default.createElement(Icon, { icon: "solid-asterisk", fa: true })))
     );
     if (model.Filter === "Zones") {
       return /* @__PURE__ */ import_react3.default.createElement("div", { className: "d-flex flex-row flex-wrap justify-content-end mr-6 flex-1" }, subOptionsHeader, /* @__PURE__ */ import_react3.default.createElement(Button, { className: "ml-1" + (model.SubFilter === "ZoneResidential" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => updateBackend("ZoneResidential") }, /* @__PURE__ */ import_react3.default.createElement(Icon, { icon: "Media/Game/Icons/ZoneResidential.svg" })), /* @__PURE__ */ import_react3.default.createElement(Button, { className: "ml-1" + (model.SubFilter === "ZoneCommercial" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => updateBackend("ZoneCommercial") }, /* @__PURE__ */ import_react3.default.createElement(Icon, { icon: "Media/Game/Icons/ZoneCommercial.svg" })), /* @__PURE__ */ import_react3.default.createElement(Button, { className: "ml-1" + (model.SubFilter === "ZoneOffice" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => updateBackend("ZoneOffice") }, /* @__PURE__ */ import_react3.default.createElement(Icon, { icon: "Media/Game/Icons/ZoneOffice.svg" })), /* @__PURE__ */ import_react3.default.createElement(Button, { className: "ml-1 mr-1" + (model.SubFilter === "ZoneIndustrial" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => updateBackend("ZoneIndustrial") }, /* @__PURE__ */ import_react3.default.createElement(Icon, { icon: "Media/Game/Icons/ZoneIndustrial.svg" })));
@@ -2026,7 +2035,16 @@
       else
         return name;
     };
+    const prefabTypeName = () => {
+      const key = `FindStuff.PrefabType.${prefab.Type}`;
+      const name = _L(key);
+      if (name === key)
+        return prefab.Type;
+      else
+        return name;
+    };
     const computedPrefabName = react.useMemo(() => prefabName(), [prefab.Name, _L]);
+    const computedPrefabTypeName = react.useMemo(() => prefabTypeName(), [prefab.Type, _L]);
     const highlightSearchTerm = (text) => {
       const regex = new RegExp(`(${model.Search})`, "gi");
       const splitText = text.split(regex);
@@ -2035,7 +2053,7 @@
       );
     };
     const highlightedName = react.useMemo(() => highlightSearchTerm(computedPrefabName), [computedPrefabName, model.Search]);
-    const highlightedType = react.useMemo(() => highlightSearchTerm(prefab.Type), [prefab.Type, model.Search]);
+    const highlightedType = react.useMemo(() => highlightSearchTerm(computedPrefabTypeName), [computedPrefabTypeName, model.Search]);
     const onSelectPrefab = () => {
       trigger("OnSelectPrefab", prefab.Name);
       if (onSelected)
@@ -2231,7 +2249,7 @@
     const isBorderedList = model.ViewMode === "IconGrid" || model.ViewMode === "IconGridLarge" ? null : true;
     const columnCount = model.ViewMode === "Rows" || model.ViewMode === "Detailed" ? 1 : model.ViewMode === "Columns" ? 2 : model.ViewMode === "IconGrid" ? 13 : 9;
     const rowCount = model.ViewMode === "Rows" || model.ViewMode === "Detailed" || model.ViewMode === "Columns" ? expanded ? 8 : 4 : model.ViewMode === "IconGrid" ? expanded ? 6 : 3 : expanded ? 4 : 2;
-    return model.IsVisible ? /* @__PURE__ */ import_react7.default.createElement("div", { className: isVisibleClass }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "col" }, /* @__PURE__ */ import_react7.default.createElement(filters_window_default, { model, update, onDoUpdate: doResultsUpdate, _L })), /* @__PURE__ */ import_react7.default.createElement("div", { className: "col" }, hoverPrefab && hoverPrefab.Name && hoverPrefab.Name.length > 0 ? /* @__PURE__ */ import_react7.default.createElement(hover_window_default, { hoverPrefab, _L }) : null, /* @__PURE__ */ import_react7.default.createElement(Modal, { bodyClassName: "asset-menu p-relative" + (expanded ? " asset-menu-xl" : ""), title: /* @__PURE__ */ import_react7.default.createElement("div", { className: "d-flex flex-row align-items-center" }, /* @__PURE__ */ import_react7.default.createElement(Button, { watch: [expanded], circular: true, icon: true, style: "trans-faded", onClick: toggleExpander }, /* @__PURE__ */ import_react7.default.createElement(Icon, { icon: expanded ? "solid-chevron-down" : "solid-chevron-up", fa: true })), /* @__PURE__ */ import_react7.default.createElement(Icon, { icon: "solid-magnifying-glass", fa: true, className: "bg-muted ml-2" }), /* @__PURE__ */ import_react7.default.createElement(TextBox, { size: "sm", className: "bg-dark-trans-less-faded w-25 mr-2 ml-4", placeholder: "Search...", text: search, onChange: onSearchInputChanged }), /* @__PURE__ */ import_react7.default.createElement(Button, { circular: true, icon: true, style: "trans-faded", disabled: search && search.length > 0 ? null : true, onClick: clearSearch }, /* @__PURE__ */ import_react7.default.createElement(Icon, { icon: "solid-eraser", fa: true })), /* @__PURE__ */ import_react7.default.createElement(sub_filters_default, { model, update, onDoUpdate: doResultsUpdate })), onClose: closeModal }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "asset-menu-container", onMouseLeave: () => onMouseLeave() }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "flex-1" }, /* @__PURE__ */ import_react7.default.createElement(VirtualList, { watch: [model.Favourites, selectedPrefab, mouseOverItem, model.Search, model.Filter, model.SubFilter, model.ViewMode, model.OrderByAscending], border: isBorderedList, data: filteredPrefabs, onRenderItem, columns: columnCount, rows: rowCount, contentClassName: "d-flex flex-row flex-wrap", size: "sm", itemHeight: 32 }))))), /* @__PURE__ */ import_react7.default.createElement("div", { className: "col" })) : null;
+    return model.IsVisible ? /* @__PURE__ */ import_react7.default.createElement("div", { className: isVisibleClass }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "col" }, /* @__PURE__ */ import_react7.default.createElement(filters_window_default, { model, update, onDoUpdate: doResultsUpdate, _L })), /* @__PURE__ */ import_react7.default.createElement("div", { className: "col" }, hoverPrefab && hoverPrefab.Name && hoverPrefab.Name.length > 0 ? /* @__PURE__ */ import_react7.default.createElement(hover_window_default, { hoverPrefab, _L }) : null, /* @__PURE__ */ import_react7.default.createElement(Modal, { bodyClassName: "asset-menu p-relative" + (expanded ? " asset-menu-xl" : ""), title: /* @__PURE__ */ import_react7.default.createElement("div", { className: "d-flex flex-row align-items-center" }, /* @__PURE__ */ import_react7.default.createElement(Button, { watch: [expanded], circular: true, icon: true, style: "trans-faded", onClick: toggleExpander }, /* @__PURE__ */ import_react7.default.createElement(Icon, { icon: expanded ? "solid-chevron-down" : "solid-chevron-up", fa: true })), /* @__PURE__ */ import_react7.default.createElement(Icon, { icon: "solid-magnifying-glass", fa: true, className: "bg-muted ml-2" }), /* @__PURE__ */ import_react7.default.createElement(TextBox, { size: "sm", className: "bg-dark-trans-less-faded w-25 mr-2 ml-4", placeholder: "Search...", text: search, onChange: onSearchInputChanged }), /* @__PURE__ */ import_react7.default.createElement(Button, { circular: true, icon: true, style: "trans-faded", disabled: search && search.length > 0 ? null : true, onClick: clearSearch }, /* @__PURE__ */ import_react7.default.createElement(Icon, { icon: "solid-eraser", fa: true })), /* @__PURE__ */ import_react7.default.createElement(sub_filters_default, { model, update, onDoUpdate: doResultsUpdate, _L })), onClose: closeModal }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "asset-menu-container", onMouseLeave: () => onMouseLeave() }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "flex-1" }, /* @__PURE__ */ import_react7.default.createElement(VirtualList, { watch: [model.Favourites, selectedPrefab, mouseOverItem, model.Search, model.Filter, model.SubFilter, model.ViewMode, model.OrderByAscending], border: isBorderedList, data: filteredPrefabs, onRenderItem, columns: columnCount, rows: rowCount, contentClassName: "d-flex flex-row flex-wrap", size: "sm", itemHeight: 32 }))))), /* @__PURE__ */ import_react7.default.createElement("div", { className: "col" })) : null;
   };
   window.$_gooee.register("findstuff", "FindStuffWindow", ToolWindow, "main-container", "findstuff");
 })();

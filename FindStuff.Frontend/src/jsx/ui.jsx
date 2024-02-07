@@ -209,7 +209,7 @@ const ToolWindow = ({ react, setupController }) => {
                 {<Button circular icon style="trans-faded" disabled={search && search.length > 0 ? null : true} onClick={clearSearch}>
                     <Icon icon="solid-eraser" fa />
                 </Button>}
-                <SubFilters model={model} update={update} onDoUpdate={doResultsUpdate} />
+                <SubFilters model={model} update={update} onDoUpdate={doResultsUpdate} _L={_L} />
                 
             </div>} onClose={closeModal}>
                 <div className="asset-menu-container" onMouseLeave={() => onMouseLeave()}>

@@ -7,3 +7,21 @@ lang:
  FindStuff.View: View
  FindStuff.Filter: Filter
  FindStuff.OrderBy: Order
+ 
+ FindStuff.PrefabCategory.Foliage: Foliage
+ FindStuff.PrefabCategory.Buildings: Buildings
+ FindStuff.PrefabCategory.Zones: Zones
+ FindStuff.PrefabCategory.Misc: Misc
+
+ FindStuff.PrefabType.Surface: Surface
+ FindStuff.PrefabType.Network: Network
+ FindStuff.PrefabType.ZoneResidential: Residential
+ FindStuff.PrefabType.ZoneCommercial: Commercial
+ FindStuff.PrefabType.ZoneOffice: Office
+ FindStuff.PrefabType.ZoneIndustrial: Industrial
+ FindStuff.PrefabType.ServiceBuilding: Service
+ FindStuff.PrefabType.SignatureBuilding: Signature Building
+ FindStuff.PrefabType.Vehicle: Vehicle
+ FindStuff.PrefabType.Tree: Tree
+ FindStuff.PrefabType.Plant: Plant
+ FindStuff.PrefabType.Prop: Prop

@@ -1,6 +1,6 @@
 import React from "react";
 
-const SubFilters = ({ model, update, onDoUpdate }) => {
+const SubFilters = ({ model, update, onDoUpdate, _L }) => {
     const react = window.$_gooee.react;
     const { Icon, Button } = window.$_gooee.framework;    
 
@@ -12,9 +12,21 @@ const SubFilters = ({ model, update, onDoUpdate }) => {
             onDoUpdate(model);
     };
 
+    const categoryName = () => {
+        const key = `FindStuff.PrefabCategory.${model.Filter}`;
+        const name = _L(key);
+
+        if (name === key)
+            return model.Filter;
+        else
+            return name;
+    };
+
+    const computedCategoryName = react.useMemo(() => categoryName(), [model.Filter, _L]);
+
     const subOptionsHeader =/* react.useMemo(() => (*/
         <>
-            <h5 className="mr-2 text-muted">{model.Filter}</h5>
+            <h5 className="mr-2 text-muted">{computedCategoryName}</h5>
             <Button className={(!model.SubFilter || model.SubFilter === "None" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("None")}>
                 <Icon icon="solid-asterisk" fa />
             </Button>

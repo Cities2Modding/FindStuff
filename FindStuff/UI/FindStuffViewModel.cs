@@ -199,12 +199,16 @@ namespace FindStuff.UI
     {
         None = 0,
         Favourite = 1,
+
+        // Sub Filter Groups (Prefab Category)
         Foliage = 2,
-        Network = 3,
         Buildings = 4,
         Zones = 5,
-        Surface = 6,
         Misc = 20,
+
+        // Top Level
+        Network = 3,
+        Surface = 6,
     }
 
     public enum SubFilter

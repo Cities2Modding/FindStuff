@@ -16,8 +16,19 @@ const PrefabItem = ({ model, trigger, prefab, selected, _L, onSelected, onMouseE
         else
             return name;
     };
-    
+
+    const prefabTypeName = () => {
+        const key = `FindStuff.PrefabType.${prefab.Type}`;
+        const name = _L(key);
+
+        if (name === key)
+            return prefab.Type;
+        else
+            return name;
+    };
+
     const computedPrefabName = react.useMemo(() => prefabName(), [prefab.Name, _L]);
+    const computedPrefabTypeName = react.useMemo(() => prefabTypeName(), [prefab.Type, _L]);
 
     const highlightSearchTerm = (text) => {
         const regex = new RegExp(`(${model.Search})`, 'gi');
@@ -31,7 +42,7 @@ const PrefabItem = ({ model, trigger, prefab, selected, _L, onSelected, onMouseE
     };
 
     const highlightedName = react.useMemo(() => highlightSearchTerm(computedPrefabName), [computedPrefabName, model.Search]);
-    const highlightedType = react.useMemo(() => highlightSearchTerm(prefab.Type), [prefab.Type, model.Search]);
+    const highlightedType = react.useMemo(() => highlightSearchTerm(computedPrefabTypeName), [computedPrefabTypeName, model.Search]);
 
     const onSelectPrefab = () => {
         trigger("OnSelectPrefab", prefab.Name);
