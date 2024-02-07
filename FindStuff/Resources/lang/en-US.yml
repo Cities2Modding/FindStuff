@@ -25,3 +25,6 @@ lang:
  FindStuff.PrefabType.Tree: Tree
  FindStuff.PrefabType.Plant: Plant
  FindStuff.PrefabType.Prop: Prop
+ 
+ FindStuff.Dangerous.CorruptWarning: This asset could break your save game if not used properly.
+ FindStuff.Dangerous.NoDelete: This asset can't be removed with bulldozer tool after placing.

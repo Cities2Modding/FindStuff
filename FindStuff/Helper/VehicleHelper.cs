@@ -16,7 +16,7 @@ namespace FindStuff.Helper
             if (entityManager.HasComponent<TrainData>(entity))
             {
                 meta.Add(IBaseHelper.META_IS_DANGEROUS, true);
-                meta.Add(IBaseHelper.META_IS_DANGEROUS_REASON, "This asset can't be removed with bulldozer tool after placing.");
+                meta.Add(IBaseHelper.META_IS_DANGEROUS_REASON, "FindStuff.Dangerous.NoDelete");
             }
 
             return meta;
