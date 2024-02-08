@@ -1,7 +1,5 @@
 ﻿using Gooee.Plugins;
-using Gooee.Plugins.Attributes;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,9 +13,14 @@ namespace FindStuff.UI
             set;
         }
 
+        public bool IsPicking
+        {
+            get;
+            set;
+        }
+
         public List<Category> Categories
         {
-
             get;
             set;
         } = PrefabIndexer._filterMappings.Select( kvp => new Category
