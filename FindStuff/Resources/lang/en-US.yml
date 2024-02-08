@@ -1,8 +1,10 @@
 lang:
  FindStuff.FindStuffSettings.ModName: Find Stuff
+ Options.SECTION[FindStuff.FindStuffSettings]: Find Stuff 
+ Options.GROUP[FindStuff.FindStuffSettings.Toggles]: Find Stuff
  
- FindStuffSettings.ChangeLog.Option: Show mod changelogs
- FindStuffSettings.ChangeLog.Option_desc: When mods configured to use Gooee changelogs are updated, a changelog window will popup.
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Hide menu on selection
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Hide the Find Stuff menu when you select a prefab.
  
  FindStuff.View: View
  FindStuff.Filter: Filter

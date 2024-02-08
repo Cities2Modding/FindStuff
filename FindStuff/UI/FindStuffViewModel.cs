@@ -75,6 +75,12 @@ namespace FindStuff.UI
             get;
             set;
         } = new List<string>( );
+
+        public bool HideOnSelection
+        {
+            get;
+            set;
+        }
     }
 
     public class PrefabItem

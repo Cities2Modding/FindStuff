@@ -2152,6 +2152,12 @@
       } else
         engine.trigger("audio.playSound", "close-panel", 1);
     };
+    react.useEffect(() => {
+      if (model.IsVisible && model.HideOnSelection) {
+        engine.trigger("tool.selectTool", "Default Tool");
+        engine.trigger("toolbar.clearAssetSelection");
+      }
+    }, [model.IsVisible, model.HideOnSelection]);
     return /* @__PURE__ */ import_react7.default.createElement(import_react7.default.Fragment, null, /* @__PURE__ */ import_react7.default.createElement("div", { className: "spacer_oEi" }), /* @__PURE__ */ import_react7.default.createElement("button", { onMouseEnter, onMouseLeave, onClick, className: "button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT toggle-states_X82 toggle-states_DTm" + (model.IsVisible ? " selected" : "") }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "fa fa-solid-magnifying-glass icon-lg" }), /* @__PURE__ */ import_react7.default.createElement(ToolTip, { visible: tooltipVisible, float: "up", align: "right" }, /* @__PURE__ */ import_react7.default.createElement(ToolTipContent, { title: "Test", description: "Hello, world!" }))));
   };
   window.$_gooee.register("findstuff", "FindStuffAppButton", AppButton, "bottom-right-toolbar", "findstuff");
@@ -2202,8 +2208,14 @@
       setShifted(true);
     };
     const onSelectTool = (tool) => {
-      console.log(tool);
-      setShifted(tool.id !== "Default Tool");
+      const isDefaultTool = tool.id === "Default Tool";
+      if (model.HideOnSelection) {
+        if (!isDefaultTool) {
+          model.IsVisible = false;
+          trigger("OnHide");
+        }
+      } else
+        setShifted(!isDefaultTool);
     };
     react.useEffect(() => {
       const eventHandle = engine.on("findstuff.onReceiveResults", onReceiveResults);
@@ -2214,7 +2226,7 @@
         selectAssetHandle.clear();
         selectToolHandle.clear();
       };
-    }, [model.ViewMode, model.Filter, model.SubFilter, model.Search, model.OrderByAscending, shifted]);
+    }, [model.ViewMode, model.HideOnSelection, model.Filter, model.SubFilter, model.Search, model.OrderByAscending, shifted]);
     react.useEffect(() => {
       doResultsUpdate(model);
     }, []);

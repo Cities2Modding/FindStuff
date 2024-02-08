@@ -5,15 +5,15 @@ namespace FindStuff.UI
 {
     internal class FindStuffSettings : GooeeSettings
     {
-        [SettingsUISection( "ChangeLog" )]
-        public bool ChangeLog
+        [SettingsUISection( "Toggles" )]
+        public bool HideMenuOnSelection
         {
             get;
             set;
         }
 
         [SettingsUIHidden]
-        protected override string UIResource => null;
+        protected override string UIResource => "FindStuff.Resources.settings.xml";
 
         public FindStuffSettings( )
         {
@@ -21,7 +21,7 @@ namespace FindStuff.UI
 
         public override void SetDefaults( )
         {
-            ChangeLog = true;
+            HideMenuOnSelection = false;
         }
     }
 }

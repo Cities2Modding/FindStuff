@@ -100,6 +100,8 @@ namespace FindStuff.UI
 
             if ( mode == GameMode.Game )
             {
+                UpdateFromSettings( );
+
                 if ( _enableAction != null )
                 {
                     _enableAction.Disable( );
@@ -309,6 +311,20 @@ namespace FindStuff.UI
         }
 
         [OnTrigger]
+        private void OnShow( )
+        {
+            Model.IsVisible = true;
+            TriggerUpdate( );
+        }
+
+        [OnTrigger]
+        private void OnHide( )
+        {
+            Model.IsVisible = false;
+            TriggerUpdate( );
+        }
+
+        [OnTrigger]
         private void OnSelectPrefab( string name )
         {
             if ( string.IsNullOrEmpty( name ) )
@@ -395,6 +411,22 @@ namespace FindStuff.UI
                 _config.SubFilter = Model.SubFilter;
                 _config.OrderByAscending = Model.OrderByAscending;
                 _config.Save( );
+            }
+
+            UpdateFromSettings( );
+        }
+
+        private void UpdateFromSettings( )
+        {
+            var plugin = Plugin as FindStuffPlugin;
+
+            if ( plugin.Settings is FindStuffSettings settings )
+            {
+                if ( settings.HideMenuOnSelection != Model.HideOnSelection )
+                {
+                    Model.HideOnSelection = settings.HideMenuOnSelection;
+                    TriggerUpdate( );
+                }
             }
         }
 

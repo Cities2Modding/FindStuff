@@ -34,6 +34,14 @@ const AppButton = ({ react, setupController }) => {
         else
             engine.trigger("audio.playSound", "close-panel", 1);
     };
+
+    react.useEffect(() => {
+        if (model.IsVisible && model.HideOnSelection) {
+            engine.trigger("tool.selectTool", "Default Tool");
+            engine.trigger("toolbar.clearAssetSelection");
+        }
+    }, [model.IsVisible, model.HideOnSelection]);
+
     return <>
         <div className="spacer_oEi"></div>
         <button onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onClick={onClick} className={"button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT toggle-states_X82 toggle-states_DTm" + (model.IsVisible ? " selected" : "")}>
@@ -77,7 +85,7 @@ const ToolWindow = ({ react, setupController }) => {
     const [search, setSearch] = react.useState(model.Search ?? "");
     const [expanded, setExpanded] = react.useState(false);
     const [shifted, setShifted] = react.useState(false);
-    const [mouseOverItem, setMouseOverItem] = react.useState(null);    
+    const [mouseOverItem, setMouseOverItem] = react.useState(null);
 
     const triggerResultsUpdate = debounce((curQueryKey, m) => {
         //if (queryKey !== curQueryKey) {
@@ -111,9 +119,18 @@ const ToolWindow = ({ react, setupController }) => {
     const onSelectAsset = (entity) => {
         setShifted(true);
     };
+
     const onSelectTool = (tool) => {
-        console.log(tool);
-        setShifted(tool.id !== "Default Tool");
+        const isDefaultTool = tool.id === "Default Tool";
+        
+        if (model.HideOnSelection) {
+            if (!isDefaultTool) {
+                model.IsVisible = false;
+                trigger("OnHide");
+            }
+        }
+        else
+            setShifted(!isDefaultTool);
     };
 
     react.useEffect(() => {
@@ -126,7 +143,7 @@ const ToolWindow = ({ react, setupController }) => {
             selectAssetHandle.clear();
             selectToolHandle.clear();
         };
-    }, [model.ViewMode, model.Filter, model.SubFilter, model.Search, model.OrderByAscending, shifted])
+    }, [model.ViewMode, model.HideOnSelection, model.Filter, model.SubFilter, model.Search, model.OrderByAscending, shifted])
     
     react.useEffect(() => {
         doResultsUpdate(model);
