@@ -55,6 +55,8 @@ Activate the mod with the magnifying glass icon or the HookUI/Gooee mod backpack
 - [Cities 2 Modding Community](https://discord.gg/M9rgRtGcRa)
 - Colossal Order & Paradox Interactive
 
+***This mod was made with [Gooee](https://github.com/Cities2Modding/Gooee) - A powerful UI framework for Cities: Skylines 2.***
+
 ## Feedback and Support
 We value your feedback! If you encounter any issues, have suggestions for improvement, or simply want to connect with the development team, please visit our discord community: [https://discord.gg/M9rgRtGcRa](https://discord.gg/M9rgRtGcRa)
 
