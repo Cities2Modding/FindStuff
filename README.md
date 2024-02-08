@@ -1,31 +1,31 @@
-# FindStuff mod for Cities: Skylines 2
+﻿# FindStuff mod for Cities: Skylines 2
 
 ## Overview
 Welcome to ***FindStuff***, a powerful mod designed to enhance your Cities Skylines experience! With FindStuff, you can streamline your gameplay by easily locating various objects within the game.
 This mod is currently in its alpha state, continuously being improved to provide the best functionality for players like you.
 
 ## Key Features
-### Unified Gameobject Finder
+### 💯Unified Gameobject Finder
 - Easily find most objects in one convenient window.
 - Utilize an integrated Picker tool for seamless object selection.
 
-### Advanced Search Functionality
+### 🔎Advanced Search Functionality
 - Benefit from a powerful real-time text search, allowing you to quickly locate specific objects.
 - Filter objects by prop categories to narrow down your search results.
 
-### Favorites and Tag System
+### ⭐Favorites and 🏷️Tag System 
 - Organize your frequently used objects with the Favorites system.
 - Tag objects for even more efficient categorization and management.
 
-### Shortcut and Language Support
+### 🎮Shortcut and 🌐Language Support 
 - Utilize the CTRL + F shortcut for quick access to the search functionality.
 - Enjoy language support for all default Cities Skylines 2 locales.
 
-### Performance and Optimization
+### 🚀Performance and  💨Optimization
 - Experience a performant and optimized object list capable of efficiently processing tens of thousands of game objects.
 - Highlight dangerous objects for improved gameplay awareness.
 
-### Extended UI and Configuration
+### 💫Extended UI and 💾Configuration
 - Navigate through an extended UI created by the Gooee framework.
 - FindStuff remembers your view configuration and restores it upon game load for a seamless experience.
 
@@ -45,11 +45,11 @@ Activate the mod with the magnifying glass icon or the HookUI/Gooee mod backpack
 
 ---
 
-### Development Team
+### 👨‍💻Development Team
 - [optimus-code](https://github.com/optimus-code)
 - [89pleasure](https://github.com/89pleasure)
 
-### Credits & Special Thanks
+### 💖Credits & Special Thanks
 - Rebecca
 - CaptainOfCoit
 - [Cities 2 Modding Community](https://discord.gg/M9rgRtGcRa)
