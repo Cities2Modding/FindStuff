@@ -8,7 +8,7 @@ namespace FindStuff.Helper
     {
         public string PrefabType => "Vehicle";
 
-        public string CategoryType => "Misc";
+        public string CategoryType => "Props";
 
         public Dictionary<string, object> CreateMeta(PrefabBase prefab, Entity entity)
         {
@@ -27,7 +27,9 @@ namespace FindStuff.Helper
             List<string> tags = new List<string>();
 
             if (entityManager == null)
-                return new List<string>();
+                return tags;
+
+            tags.Add("prop");
 
             if (entityManager.HasComponent<TrainData>(entity))
             {
@@ -43,9 +45,6 @@ namespace FindStuff.Helper
             {
                 tags.Add("truck");
             }
-
-            tags.Add("signature");
-            tags.Add("building");
 
             return tags;
         }

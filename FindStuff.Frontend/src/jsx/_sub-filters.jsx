@@ -72,14 +72,31 @@ const SubFilters = ({ model, update, onDoUpdate, _L }) => {
             </Button>
         </div>;
     }
-    else if (model.Filter === "Misc") {
+    else if (model.Filter === "Props") {
         return <div className="d-flex flex-row flex-wrap justify-content-end mr-6 flex-1">
             {subOptionsHeader}
-            <Button className={"ml-1" + (model.SubFilter === "Prop" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Prop")}>
-                <Icon icon="solid-cube" fa />
+            <Button className={"ml-1" + (model.SubFilter === "Billboards" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Billboards")}>
+                <Icon icon="solid-bullhorn" fa />
+            </Button>
+            <Button className={"ml-1" + (model.SubFilter === "Fences" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Fences")}>
+                <Icon icon="solid-xmarks-lines" fa />
+            </Button>
+            <Button className={"ml-1" + (model.SubFilter === "SignsAndPosters" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("SignsAndPosters")}>
+                <Icon icon="solid-sign-hanging" fa />
             </Button>
             <Button className={"ml-1" + (model.SubFilter === "Vehicle" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Vehicle")}>
                 <Icon icon="Media/Game/Icons/Traffic.svg" />
+            </Button>
+            <Button className={"ml-1" + (model.SubFilter === "PropMisc" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("PropMisc")}>
+                <Icon icon="solid-ellipsis" fa/>
+            </Button>
+        </div>;
+    }
+    else if (model.Filter === "Misc") {
+        return <div className="d-flex flex-row flex-wrap justify-content-end mr-6 flex-1">
+            {subOptionsHeader}
+            <Button className={"ml-1" + (model.SubFilter === "Surface" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Surface")}>
+                <Icon icon="Media/Game/Icons/LotTool.svg" />
             </Button>
         </div>;
     }

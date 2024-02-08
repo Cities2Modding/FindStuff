@@ -34,7 +34,8 @@ namespace FindStuff
             { Filter.Foliage, [SubFilter.Tree, SubFilter.Plant] },
             { Filter.Buildings, [SubFilter.ServiceBuilding, SubFilter.SignatureBuilding] },
             { Filter.Zones, [SubFilter.ZoneResidential, SubFilter.ZoneCommercial, SubFilter.ZoneIndustrial, SubFilter.ZoneOffice] },
-            { Filter.Misc, [SubFilter.Prop, SubFilter.Vehicle] }
+            { Filter.Props, [SubFilter.Billboards, SubFilter.Fences, SubFilter.SignsAndPosters, SubFilter.PropMisc] },
+            { Filter.Misc, [SubFilter.Surface] }
         };
 
         private static readonly LocalizationManager _localisationManager = GameManager.instance.localizationManager;
@@ -269,8 +270,7 @@ namespace FindStuff
                         }
 
                         var canSubFilter = model.Filter != Filter.None &&
-                            model.Filter != Filter.Favourite &&
-                            model.Filter != Filter.Surface;
+                            model.Filter != Filter.Favourite;
 
                         if ( !filterIsPrefab
                             && canSubFilter )
