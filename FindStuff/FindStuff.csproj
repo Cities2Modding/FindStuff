@@ -34,7 +34,18 @@
 	
 	<ItemGroup>
 	  <None Remove="Resources\changelog.md" />
+	  <None Remove="Resources\lang\de-DE.yml" />
 	  <None Remove="Resources\lang\en-US.yml" />
+	  <None Remove="Resources\lang\es-ES.yml" />
+	  <None Remove="Resources\lang\fr-FR.yml" />
+	  <None Remove="Resources\lang\it-IT.yml" />
+	  <None Remove="Resources\lang\ja-JP.yml" />
+	  <None Remove="Resources\lang\ko-KR.yml" />
+	  <None Remove="Resources\lang\pl-PL.yml" />
+	  <None Remove="Resources\lang\pt-BR.yml" />
+	  <None Remove="Resources\lang\ru-RU.yml" />
+	  <None Remove="Resources\lang\zh-HANS.yml" />
+	  <None Remove="Resources\lang\zh-HANT.yml" />
 	  <None Remove="Resources\settings.xml" />
 	  <None Remove="Resources\ui.js" />
 	</ItemGroup>
@@ -43,6 +54,17 @@
 	  <EmbeddedResource Include="Resources\changelog.md">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </EmbeddedResource>
+	  <EmbeddedResource Include="Resources\lang\zh-HANT.yml" />
+	  <EmbeddedResource Include="Resources\lang\zh-HANS.yml" />
+	  <EmbeddedResource Include="Resources\lang\ru-RU.yml" />
+	  <EmbeddedResource Include="Resources\lang\pt-BR.yml" />
+	  <EmbeddedResource Include="Resources\lang\pl-PL.yml" />
+	  <EmbeddedResource Include="Resources\lang\ko-KR.yml" />
+	  <EmbeddedResource Include="Resources\lang\ja-JP.yml" />
+	  <EmbeddedResource Include="Resources\lang\es-ES.yml" />
+	  <EmbeddedResource Include="Resources\lang\it-IT.yml" />
+	  <EmbeddedResource Include="Resources\lang\fr-FR.yml" />
+	  <EmbeddedResource Include="Resources\lang\de-DE.yml" />
 	  <EmbeddedResource Include="Resources\lang\en-US.yml" />
 	  <EmbeddedResource Include="Resources\settings.xml" />
 	  <EmbeddedResource Include="Resources\ui.js" />

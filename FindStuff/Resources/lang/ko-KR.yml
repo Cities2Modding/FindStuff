@@ -1,0 +1,130 @@
+﻿lang:
+ FindStuff.FindStuffSettings.ModName: 물건 찾기
+ Options.SECTION[FindStuff.FindStuffSettings]: 물건 찾기
+ Options.GROUP[FindStuff.FindStuffSettings.Toggles]: 물건 찾기
+ 
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: 프리팹 선택시 숨기기
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: 프리팹을 선택할 때 물건 찾기 메뉴를 숨깁니다.
+ 
+ FindStuff.View: 보기
+ FindStuff.Filter: 필터
+ FindStuff.OrderBy: 정렬
+ 
+ FindStuff.PrefabCategory.Foliage: 초목
+ FindStuff.PrefabCategory.Buildings: 건물
+ FindStuff.PrefabCategory.Zones: 구역
+ FindStuff.PrefabCategory.Misc: 기타
+
+ FindStuff.PrefabType.Surface: 표면
+ FindStuff.PrefabType.Network: 네트워크
+ FindStuff.PrefabType.ZoneResidential: 주거
+ FindStuff.PrefabType.ZoneCommercial: 상업
+ FindStuff.PrefabType.ZoneOffice: 사무실
+ FindStuff.PrefabType.ZoneIndustrial: 산업
+ FindStuff.PrefabType.ServiceBuilding: 서비스 건물
+ FindStuff.PrefabType.SignatureBuilding: 대표 건물
+ FindStuff.PrefabType.ParkBuilding: 공원
+ FindStuff.PrefabType.Vehicle: 차량
+ FindStuff.PrefabType.Tree: 나무
+ FindStuff.PrefabType.Plant: 식물
+ FindStuff.PrefabType.Prop: 소품
+ FindStuff.PrefabType.Bridge: 다리
+ FindStuff.PrefabType.Train: 기차
+ FindStuff.PrefabType.Tram: 트램
+ FindStuff.PrefabType.Pipe: 파이프
+ FindStuff.PrefabType.OtherNetwork: 기타 네트워크
+ FindStuff.PrefabType.SmallRoad: 작은 길
+ FindStuff.PrefabType.MediumRoad: 중간 길
+ FindStuff.PrefabType.LargeRoad: 큰 길
+ FindStuff.PrefabType.Highway: 고속도로
+ FindStuff.PrefabType.RoadTool: 도로 도구
+ FindStuff.PrefabType.Pavment: 보도
+ 
+ FindStuff.Dangerous.CorruptWarning: 이 자산은 제대로 사용하지 않으면 저장 게임을 손상시킬 수 있습니다.
+ FindStuff.Dangerous.NoDelete: 이 자산은 배치 후 불도저 도구로 제거할 수 없습니다.
+ 
+ FindStuff.Tag.eu: 유럽
+ FindStuff.Tag.na: 북미
+ FindStuff.Tag.foliage: 초목
+ FindStuff.Tag.building: 건물
+ FindStuff.Tag.zones: 구역
+ FindStuff.Tag.misc: 기타
+ FindStuff.Tag.surface: 표면
+ FindStuff.Tag.grass: 잔디
+ FindStuff.Tag.agriculture: 농장
+ FindStuff.Tag.sand: 모래
+ FindStuff.Tag.concrete: 콘크리트
+ FindStuff.Tag.forestry: 숲
+ FindStuff.Tag.pavement: 포장도로
+ FindStuff.Tag.landfill: 쓰레기 매립지
+ FindStuff.Tag.tiles: 타일
+ FindStuff.Tag.oil: 오일
+ FindStuff.Tag.ore: 광물
+ FindStuff.Tag.network: 네트워크
+ FindStuff.Tag.marker: 표시
+ FindStuff.Tag.power-line: 전력선
+ FindStuff.Tag.pipe: 파이프
+ FindStuff.Tag.bridge: 다리
+ FindStuff.Tag.small-road: 작은
+ FindStuff.Tag.medium-road: 중간
+ FindStuff.Tag.large-road: 큰
+ FindStuff.Tag.highway: 고속도로
+ FindStuff.Tag.road: 도로
+ FindStuff.Tag.road-tool: 도로 도구
+ FindStuff.Tag.electricity: 전기
+ FindStuff.Tag.electricity-connection: 전기 연결
+ FindStuff.Tag.station: 역
+ FindStuff.Tag.water: 물
+ FindStuff.Tag.waterway: 수로
+ FindStuff.Tag.water-connection: 물 연결
+ FindStuff.Tag.water-source: 물원
+ FindStuff.Tag.power-plant: 발전소
+ FindStuff.Tag.low-density: 저밀도
+ FindStuff.Tag.medium-density: 중밀도
+ FindStuff.Tag.mixed-density: 혼합 밀도
+ FindStuff.Tag.high-density: 고밀도
+ FindStuff.Tag.residential: 주거
+ FindStuff.Tag.row: 열
+ FindStuff.Tag.low-rent: 저렌트
+ FindStuff.Tag.commercial: 상업
+ FindStuff.Tag.office: 사무실
+ FindStuff.Tag.industrial: 산업
+ FindStuff.Tag.service: 서비스
+ FindStuff.Tag.signature: 서명
+ FindStuff.Tag.vehicle: 차량
+ FindStuff.Tag.tree: 나무
+ FindStuff.Tag.plant: 식물
+ FindStuff.Tag.prop: 소품
+ FindStuff.Tag.park: 공원
+ FindStuff.Tag.cargo: 화물
+ FindStuff.Tag.parking: 주차
+ FindStuff.Tag.administration: 관리
+ FindStuff.Tag.fire: 소방서
+ FindStuff.Tag.emergency: 비상
+ FindStuff.Tag.police: 경찰
+ FindStuff.Tag.prison: 감옥
+ FindStuff.Tag.hospital: 병원
+ FindStuff.Tag.garbage: 쓰레기
+ FindStuff.Tag.fence: 울타리
+ FindStuff.Tag.poster: 포스터
+ FindStuff.Tag.billboard: 광고판
+ FindStuff.Tag.aircraft: 항공기
+ FindStuff.Tag.watercraft: 수상 선박
+ FindStuff.Tag.automobile: 자동차
+ FindStuff.Tag.ship: 배
+ FindStuff.Tag.post: 우체국
+ FindStuff.Tag.subway: 지하철
+ FindStuff.Tag.rocket: 로켓
+ FindStuff.Tag.sign: 표지판
+ FindStuff.Tag.van: 밴
+ FindStuff.Tag.car: 자동차
+ FindStuff.Tag.taxi: 택시
+ FindStuff.Tag.bus: 버스
+ FindStuff.Tag.truck: 트럭
+ FindStuff.Tag.tram: 트램
+ FindStuff.Tag.train: 기차
+ FindStuff.Tag.engine: 엔진
+ FindStuff.Tag.carriage: 객차
+ FindStuff.Tag.airplane: 비행기
+ FindStuff.Tag.helicopter: 헬리콥터
+ FindStuff.Tag.public-transport: 대중교통

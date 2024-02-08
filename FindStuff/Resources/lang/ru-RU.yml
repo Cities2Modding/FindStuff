@@ -1,0 +1,130 @@
+﻿lang:
+ FindStuff.FindStuffSettings.ModName: Найти Вещи
+ Options.SECTION[FindStuff.FindStuffSettings]: Найти Вещи
+ Options.GROUP[FindStuff.FindStuffSettings.Toggles]: Найти Вещи
+ 
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Скрыть при выборе префаба
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Скрыть меню Найти Вещи при выборе префаба.
+ 
+ FindStuff.View: Просмотр
+ FindStuff.Filter: Фильтр
+ FindStuff.OrderBy: Сортировка
+ 
+ FindStuff.PrefabCategory.Foliage: Растительность
+ FindStuff.PrefabCategory.Buildings: Здания
+ FindStuff.PrefabCategory.Zones: Зонирование
+ FindStuff.PrefabCategory.Misc: Разное
+
+ FindStuff.PrefabType.Surface: Поверхность
+ FindStuff.PrefabType.Network: Сети
+ FindStuff.PrefabType.ZoneResidential: Жилой
+ FindStuff.PrefabType.ZoneCommercial: Коммерческий
+ FindStuff.PrefabType.ZoneOffice: Офисный
+ FindStuff.PrefabType.ZoneIndustrial: Промышленный
+ FindStuff.PrefabType.ServiceBuilding: Сервисные Здания
+ FindStuff.PrefabType.SignatureBuilding: Знаковые Здания
+ FindStuff.PrefabType.ParkBuilding: Парки
+ FindStuff.PrefabType.Vehicle: Транспорт
+ FindStuff.PrefabType.Tree: Деревья
+ FindStuff.PrefabType.Plant: Растения
+ FindStuff.PrefabType.Prop: Пропсы
+ FindStuff.PrefabType.Bridge: Мосты
+ FindStuff.PrefabType.Train: Поезда
+ FindStuff.PrefabType.Tram: Трамваи
+ FindStuff.PrefabType.Pipe: Трубы
+ FindStuff.PrefabType.OtherNetwork: Прочие Сети
+ FindStuff.PrefabType.SmallRoad: Малые Дороги
+ FindStuff.PrefabType.MediumRoad: Средние Дороги
+ FindStuff.PrefabType.LargeRoad: Большие Дороги
+ FindStuff.PrefabType.Highway: Шоссе
+ FindStuff.PrefabType.RoadTool: Дорожные Инструменты
+ FindStuff.PrefabType.Pavment: Тропинки
+ 
+ FindStuff.Dangerous.CorruptWarning: Этот актив может повредить ваше сохранение, если использовать его неправильно.
+ FindStuff.Dangerous.NoDelete: Этот актив нельзя удалить с помощью инструмента бульдозера после размещения.
+ 
+ FindStuff.Tag.eu: Европейский
+ FindStuff.Tag.na: Североамериканский
+ FindStuff.Tag.foliage: Растительность
+ FindStuff.Tag.building: Здания
+ FindStuff.Tag.zones: Зонирование
+ FindStuff.Tag.misc: Разное
+ FindStuff.Tag.surface: Поверхность
+ FindStuff.Tag.grass: Трава
+ FindStuff.Tag.agriculture: Фермы
+ FindStuff.Tag.sand: Песок
+ FindStuff.Tag.concrete: Бетон
+ FindStuff.Tag.forestry: Лесное Хозяйство
+ FindStuff.Tag.pavement: Мощение
+ FindStuff.Tag.landfill: Свалки
+ FindStuff.Tag.tiles: Плитка
+ FindStuff.Tag.oil: Нефть
+ FindStuff.Tag.ore: Руда
+ FindStuff.Tag.network: Сети
+ FindStuff.Tag.marker: Маркеры
+ FindStuff.Tag.power-line: Линии Электропередач
+ FindStuff.Tag.pipe: Трубы
+ FindStuff.Tag.bridge: Мосты
+ FindStuff.Tag.small-road: Малые
+ FindStuff.Tag.medium-road: Средние
+ FindStuff.Tag.large-road: Большие
+ FindStuff.Tag.highway: Шоссе
+ FindStuff.Tag.road: Дороги
+ FindStuff.Tag.road-tool: Дорожные Инструменты
+ FindStuff.Tag.electricity: Электричество
+ FindStuff.Tag.electricity-connection: Подключение Электричества
+ FindStuff.Tag.station: Станции
+ FindStuff.Tag.water: Вода
+ FindStuff.Tag.waterway: Водные Пути
+ FindStuff.Tag.water-connection: Подключение Воды
+ FindStuff.Tag.water-source: Источники Воды
+ FindStuff.Tag.power-plant: Электростанции
+ FindStuff.Tag.low-density: Низкая Плотность
+ FindStuff.Tag.medium-density: Средняя Плотность
+ FindStuff.Tag.mixed-density: Смешанная Плотность
+ FindStuff.Tag.high-density: Высокая Плотность
+ FindStuff.Tag.residential: Жилые
+ FindStuff.Tag.row: Ряды
+ FindStuff.Tag.low-rent: Низкая Арендная Плата
+ FindStuff.Tag.commercial: Коммерческие
+ FindStuff.Tag.office: Офисные
+ FindStuff.Tag.industrial: Промышленные
+ FindStuff.Tag.service: Сервисные
+ FindStuff.Tag.signature: Знаковые
+ FindStuff.Tag.vehicle: Транспорт
+ FindStuff.Tag.tree: Деревья
+ FindStuff.Tag.plant: Растения
+ FindStuff.Tag.prop: Пропсы
+ FindStuff.Tag.park: Парки
+ FindStuff.Tag.cargo: Грузы
+ FindStuff.Tag.parking: Парковки
+ FindStuff.Tag.administration: Администрация
+ FindStuff.Tag.fire: Пожарные Департаменты
+ FindStuff.Tag.emergency: Чрезвычайные Службы
+ FindStuff.Tag.police: Полиция
+ FindStuff.Tag.prison: Тюрьмы
+ FindStuff.Tag.hospital: Больницы
+ FindStuff.Tag.garbage: Мусор
+ FindStuff.Tag.fence: Заборы
+ FindStuff.Tag.poster: Постеры
+ FindStuff.Tag.billboard: Билборды
+ FindStuff.Tag.aircraft: Воздушные Суда
+ FindStuff.Tag.watercraft: Водные Суда
+ FindStuff.Tag.automobile: Автомобили
+ FindStuff.Tag.ship: Корабли
+ FindStuff.Tag.post: Почта
+ FindStuff.Tag.subway: Метро
+ FindStuff.Tag.rocket: Ракеты
+ FindStuff.Tag.sign: Знаки
+ FindStuff.Tag.van: Фургоны
+ FindStuff.Tag.car: Автомобили
+ FindStuff.Tag.taxi: Такси
+ FindStuff.Tag.bus: Автобусы
+ FindStuff.Tag.truck: Грузовики
+ FindStuff.Tag.tram: Трамваи
+ FindStuff.Tag.train: Поезда
+ FindStuff.Tag.engine: Двигатели
+ FindStuff.Tag.carriage: Вагоны
+ FindStuff.Tag.airplane: Самолеты
+ FindStuff.Tag.helicopter: Вертолеты
+ FindStuff.Tag.public-transport: Общественный Транспорт

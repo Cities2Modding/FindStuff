@@ -1,0 +1,130 @@
+﻿lang:
+ FindStuff.FindStuffSettings.ModName: Znajdź Rzeczy
+ Options.SECTION[FindStuff.FindStuffSettings]: Znajdź Rzeczy
+ Options.GROUP[FindStuff.FindStuffSettings.Toggles]: Znajdź Rzeczy
+ 
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Ukryj przy wyborze prefabrykatu
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Ukryj menu Znajdź Rzeczy, gdy wybierzesz prefabrykat.
+ 
+ FindStuff.View: Widok
+ FindStuff.Filter: Filtr
+ FindStuff.OrderBy: Sortuj
+ 
+ FindStuff.PrefabCategory.Foliage: Roślinność
+ FindStuff.PrefabCategory.Buildings: Budynki
+ FindStuff.PrefabCategory.Zones: Strefy
+ FindStuff.PrefabCategory.Misc: Różne
+
+ FindStuff.PrefabType.Surface: Powierzchnia
+ FindStuff.PrefabType.Network: Sieci
+ FindStuff.PrefabType.ZoneResidential: Mieszkalne
+ FindStuff.PrefabType.ZoneCommercial: Komercyjne
+ FindStuff.PrefabType.ZoneOffice: Biurowe
+ FindStuff.PrefabType.ZoneIndustrial: Przemysłowe
+ FindStuff.PrefabType.ServiceBuilding: Usługi
+ FindStuff.PrefabType.SignatureBuilding: Charakterystyczne Budynki
+ FindStuff.PrefabType.ParkBuilding: Parki
+ FindStuff.PrefabType.Vehicle: Pojazdy
+ FindStuff.PrefabType.Tree: Drzewa
+ FindStuff.PrefabType.Plant: Rośliny
+ FindStuff.PrefabType.Prop: Rekwizyty
+ FindStuff.PrefabType.Bridge: Mosty
+ FindStuff.PrefabType.Train: Pociągi
+ FindStuff.PrefabType.Tram: Tramwaje
+ FindStuff.PrefabType.Pipe: Rury
+ FindStuff.PrefabType.OtherNetwork: Inne Sieci
+ FindStuff.PrefabType.SmallRoad: Małe Drogi
+ FindStuff.PrefabType.MediumRoad: Średnie Drogi
+ FindStuff.PrefabType.LargeRoad: Duże Drogi
+ FindStuff.PrefabType.Highway: Autostrady
+ FindStuff.PrefabType.RoadTool: Narzędzia Drogowe
+ FindStuff.PrefabType.Pavment: Ścieżki
+ 
+ FindStuff.Dangerous.CorruptWarning: Ten zasób może uszkodzić Twoją grę, jeśli nie zostanie użyty prawidłowo.
+ FindStuff.Dangerous.NoDelete: Tego zasobu nie można usunąć narzędziem buldożera po umieszczeniu.
+ 
+ FindStuff.Tag.eu: Europejskie
+ FindStuff.Tag.na: Północnoamerykańskie
+ FindStuff.Tag.foliage: Roślinność
+ FindStuff.Tag.building: Budynki
+ FindStuff.Tag.zones: Strefy
+ FindStuff.Tag.misc: Różne
+ FindStuff.Tag.surface: Powierzchnia
+ FindStuff.Tag.grass: Trawa
+ FindStuff.Tag.agriculture: Rolnictwo
+ FindStuff.Tag.sand: Piasek
+ FindStuff.Tag.concrete: Beton
+ FindStuff.Tag.forestry: Leśnictwo
+ FindStuff.Tag.pavement: Nawierzchnie
+ FindStuff.Tag.landfill: Składowiska
+ FindStuff.Tag.tiles: Płytki
+ FindStuff.Tag.oil: Ropa
+ FindStuff.Tag.ore: Ruda
+ FindStuff.Tag.network: Sieci
+ FindStuff.Tag.marker: Znaczniki
+ FindStuff.Tag.power-line: Linie Energetyczne
+ FindStuff.Tag.pipe: Rury
+ FindStuff.Tag.bridge: Mosty
+ FindStuff.Tag.small-road: Małe
+ FindStuff.Tag.medium-road: Średnie
+ FindStuff.Tag.large-road: Duże
+ FindStuff.Tag.highway: Autostrady
+ FindStuff.Tag.road: Drogi
+ FindStuff.Tag.road-tool: Narzędzia Drogowe
+ FindStuff.Tag.electricity: Elektryczność
+ FindStuff.Tag.electricity-connection: Połączenia Elektryczne
+ FindStuff.Tag.station: Stacje
+ FindStuff.Tag.water: Woda
+ FindStuff.Tag.waterway: Drogi Wodne
+ FindStuff.Tag.water-connection: Połączenia Wodne
+ FindStuff.Tag.water-source: Źródła Wody
+ FindStuff.Tag.power-plant: Elektrownie
+ FindStuff.Tag.low-density: Niska Gęstość
+ FindStuff.Tag.medium-density: Średnia Gęstość
+ FindStuff.Tag.mixed-density: Mieszana Gęstość
+ FindStuff.Tag.high-density: Wysoka Gęstość
+ FindStuff.Tag.residential: Mieszkalne
+ FindStuff.Tag.row: Rzędy
+ FindStuff.Tag.low-rent: Niski Czynsz
+ FindStuff.Tag.commercial: Komercyjne
+ FindStuff.Tag.office: Biurowe
+ FindStuff.Tag.industrial: Przemysłowe
+ FindStuff.Tag.service: Usługi
+ FindStuff.Tag.signature: Charakterystyczne
+ FindStuff.Tag.vehicle: Pojazdy
+ FindStuff.Tag.tree: Drzewa
+ FindStuff.Tag.plant: Rośliny
+ FindStuff.Tag.prop: Rekwizyty
+ FindStuff.Tag.park: Parki
+ FindStuff.Tag.cargo: Ładunki
+ FindStuff.Tag.parking: Parkingi
+ FindStuff.Tag.administration: Administracja
+ FindStuff.Tag.fire: Straż Pożarna
+ FindStuff.Tag.emergency: Ratunkowe
+ FindStuff.Tag.police: Policja
+ FindStuff.Tag.prison: Więzienia
+ FindStuff.Tag.hospital: Szpitale
+ FindStuff.Tag.garbage: Śmieci
+ FindStuff.Tag.fence: Ogrodzenia
+ FindStuff.Tag.poster: Plakaty
+ FindStuff.Tag.billboard: Billboardy
+ FindStuff.Tag.aircraft: Statki Powietrzne
+ FindStuff.Tag.watercraft: Jednostki Pływające
+ FindStuff.Tag.automobile: Samochody
+ FindStuff.Tag.ship: Statki
+ FindStuff.Tag.post: Poczta
+ FindStuff.Tag.subway: Metro
+ FindStuff.Tag.rocket: Rakiety
+ FindStuff.Tag.sign: Znaki
+ FindStuff.Tag.van: Vany
+ FindStuff.Tag.car: Samochody
+ FindStuff.Tag.taxi: Taksówki
+ FindStuff.Tag.bus: Autobusy
+ FindStuff.Tag.truck: Ciężarówki
+ FindStuff.Tag.tram: Tramwaje
+ FindStuff.Tag.train: Pociągi
+ FindStuff.Tag.engine: Silniki
+ FindStuff.Tag.carriage: Wagony
+ FindStuff.Tag.airplane: Samoloty
+ FindStuff.Tag.helicopter: Helikoptery
+ FindStuff.Tag.public-transport: Transport Publiczny

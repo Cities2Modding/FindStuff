@@ -3,7 +3,7 @@ lang:
  Options.SECTION[FindStuff.FindStuffSettings]: Find Stuff 
  Options.GROUP[FindStuff.FindStuffSettings.Toggles]: Find Stuff
  
- Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Hide menu on selection
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Hide on prefab select
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Hide the Find Stuff menu when you select a prefab.
  
  FindStuff.View: View
@@ -128,4 +128,3 @@ lang:
  FindStuff.Tag.airplane: Airplane
  FindStuff.Tag.helicopter: Helicopter
  FindStuff.Tag.public-transport: Public Transport
- 

@@ -1,0 +1,130 @@
+lang:
+ FindStuff.FindStuffSettings.ModName: Sachen Finden
+ Options.SECTION[FindStuff.FindStuffSettings]: Sachen Finden
+ Options.GROUP[FindStuff.FindStuffSettings.Toggles]: Sachen Finden
+ 
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Bei Auswahl ausblenden
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Menü "Sachen Finden" bei Auswahl eines Prefabs ausblenden.
+ 
+ FindStuff.View: Ansicht
+ FindStuff.Filter: Filter
+ FindStuff.OrderBy: Sortieren
+ 
+ FindStuff.PrefabCategory.Foliage: Laub
+ FindStuff.PrefabCategory.Buildings: Gebäude
+ FindStuff.PrefabCategory.Zones: Zonen
+ FindStuff.PrefabCategory.Misc: Verschiedenes
+
+ FindStuff.PrefabType.Surface: Oberfläche
+ FindStuff.PrefabType.Network: Netze
+ FindStuff.PrefabType.ZoneResidential: Wohngebiet
+ FindStuff.PrefabType.ZoneCommercial: Gewerbe
+ FindStuff.PrefabType.ZoneOffice: Büro
+ FindStuff.PrefabType.ZoneIndustrial: Industrie
+ FindStuff.PrefabType.ServiceBuilding: Dienstleistung
+ FindStuff.PrefabType.SignatureBuilding: Signaturgebäude
+ FindStuff.PrefabType.ParkBuilding: Park
+ FindStuff.PrefabType.Vehicle: Fahrzeug
+ FindStuff.PrefabType.Tree: Baum
+ FindStuff.PrefabType.Plant: Pflanze
+ FindStuff.PrefabType.Prop: Requisite
+ FindStuff.PrefabType.Bridge: Brücke
+ FindStuff.PrefabType.Train: Zug
+ FindStuff.PrefabType.Tram: Straßenbahn
+ FindStuff.PrefabType.Pipe: Rohr
+ FindStuff.PrefabType.OtherNetwork: Sonstige Netze
+ FindStuff.PrefabType.SmallRoad: Kleine Straße
+ FindStuff.PrefabType.MediumRoad: Mittlere Straße
+ FindStuff.PrefabType.LargeRoad: Große Straße
+ FindStuff.PrefabType.Highway: Autobahn
+ FindStuff.PrefabType.RoadTool: Straßenwerkzeug
+ FindStuff.PrefabType.Pavment: Weg
+ 
+ FindStuff.Dangerous.CorruptWarning: Dieses Asset könnte Ihr Spiel speichern brechen, wenn es nicht richtig verwendet wird.
+ FindStuff.Dangerous.NoDelete: Dieses Asset kann nach der Platzierung nicht mit dem Abrisswerkzeug entfernt werden.
+ 
+ FindStuff.Tag.eu: Europäisch
+ FindStuff.Tag.na: Nordamerikanisch
+ FindStuff.Tag.foliage: Laub
+ FindStuff.Tag.building: Gebäude
+ FindStuff.Tag.zones: Zonen
+ FindStuff.Tag.misc: Verschiedenes
+ FindStuff.Tag.surface: Oberfläche
+ FindStuff.Tag.grass: Gras
+ FindStuff.Tag.agriculture: Bauernhof
+ FindStuff.Tag.sand: Sand
+ FindStuff.Tag.concrete: Beton
+ FindStuff.Tag.forestry: Wald
+ FindStuff.Tag.pavement: Pflaster
+ FindStuff.Tag.landfill: Mülldeponie
+ FindStuff.Tag.tiles: Fliesen
+ FindStuff.Tag.oil: Öl
+ FindStuff.Tag.ore: Erz
+ FindStuff.Tag.network: Netz
+ FindStuff.Tag.marker: Markierung
+ FindStuff.Tag.power-line: Stromleitung
+ FindStuff.Tag.pipe: Rohr
+ FindStuff.Tag.bridge: Brücke
+ FindStuff.Tag.small-road: Klein
+ FindStuff.Tag.medium-road: Mittel
+ FindStuff.Tag.large-road: Groß
+ FindStuff.Tag.highway: Autobahn
+ FindStuff.Tag.road: Straße
+ FindStuff.Tag.road-tool: Straßenwerkzeug
+ FindStuff.Tag.electricity: Elektrizität
+ FindStuff.Tag.electricity-connection: Stromanschluss
+ FindStuff.Tag.station: Station
+ FindStuff.Tag.water: Wasser
+ FindStuff.Tag.waterway: Wasserweg
+ FindStuff.Tag.water-connection: Wasseranschluss
+ FindStuff.Tag.water-source: Wasserquelle
+ FindStuff.Tag.power-plant: Kraftwerk
+ FindStuff.Tag.low-density: Geringe Dichte
+ FindStuff.Tag.medium-density: Mittlere Dichte
+ FindStuff.Tag.mixed-density: Gemischte Dichte
+ FindStuff.Tag.high-density: Hohe Dichte
+ FindStuff.Tag.residential: Wohngebiet
+ FindStuff.Tag.row: Reihe
+ FindStuff.Tag.low-rent: Niedrige Miete
+ FindStuff.Tag.commercial: Gewerbe
+ FindStuff.Tag.office: Büro
+ FindStuff.Tag.industrial: Industrie
+ FindStuff.Tag.service: Dienstleistung
+ FindStuff.Tag.signature: Signatur
+ FindStuff.Tag.vehicle: Fahrzeug
+ FindStuff.Tag.tree: Baum
+ FindStuff.Tag.plant: Pflanze
+ FindStuff.Tag.prop: Requisite
+ FindStuff.Tag.park: Park
+ FindStuff.Tag.cargo: Fracht
+ FindStuff.Tag.parking: Parken
+ FindStuff.Tag.administration: Verwaltung
+ FindStuff.Tag.fire: Feuerwehr
+ FindStuff.Tag.emergency: Notfall
+ FindStuff.Tag.police: Polizei
+ FindStuff.Tag.prison: Gefängnis
+ FindStuff.Tag.hospital: Krankenhaus
+ FindStuff.Tag.garbage: Müll
+ FindStuff.Tag.fence: Zaun
+ FindStuff.Tag.poster: Poster
+ FindStuff.Tag.billboard: Werbetafel
+ FindStuff.Tag.aircraft: Flugzeug
+ FindStuff.Tag.watercraft: Wasserfahrzeug
+ FindStuff.Tag.automobile: Auto
+ FindStuff.Tag.ship: Schiff
+ FindStuff.Tag.post: Post
+ FindStuff.Tag.subway: U-Bahn
+ FindStuff.Tag.rocket: Rakete
+ FindStuff.Tag.sign: Schild
+ FindStuff.Tag.van: Lieferwagen
+ FindStuff.Tag.car: Auto
+ FindStuff.Tag.taxi: Taxi
+ FindStuff.Tag.bus: Bus
+ FindStuff.Tag.truck: LKW
+ FindStuff.Tag.tram: Straßenbahn
+ FindStuff.Tag.train: Zug
+ FindStuff.Tag.engine: Motor
+ FindStuff.Tag.carriage: Waggon
+ FindStuff.Tag.airplane: Flugzeug
+ FindStuff.Tag.helicopter: Hubschrauber
+ FindStuff.Tag.public-transport: Öffentlicher Verkehr

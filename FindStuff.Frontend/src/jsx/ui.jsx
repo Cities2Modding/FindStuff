@@ -35,13 +35,6 @@ const AppButton = ({ react, setupController }) => {
             engine.trigger("audio.playSound", "close-panel", 1);
     };
 
-    react.useEffect(() => {
-        if (model.IsVisible && model.HideOnSelection) {
-            engine.trigger("tool.selectTool", "Default Tool");
-            engine.trigger("toolbar.clearAssetSelection");
-        }
-    }, [model.IsVisible, model.HideOnSelection]);
-
     return <>
         <div className="spacer_oEi"></div>
         <button onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onClick={onClick} className={"button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT toggle-states_X82 toggle-states_DTm" + (model.IsVisible ? " selected" : "")}>
@@ -87,6 +80,17 @@ const ToolWindow = ({ react, setupController }) => {
     const [shifted, setShifted] = react.useState(false);
     const [mouseOverItem, setMouseOverItem] = react.useState(null);
 
+
+    react.useEffect(() => {
+        if (model.IsVisible && model.HideOnSelection) {
+            engine.trigger("tool.selectTool", "Default Tool");
+            engine.trigger("toolbar.clearAssetSelection");
+        }
+        else if (!model.IsVisible) {
+            setShifted(false);
+        }
+    }, [model.IsVisible, model.HideOnSelection]);
+
     const triggerResultsUpdate = debounce((curQueryKey, m) => {
         //if (queryKey !== curQueryKey) {
         console.log("query key: " + curQueryKey);
@@ -117,7 +121,10 @@ const ToolWindow = ({ react, setupController }) => {
     };
 
     const onSelectAsset = (entity) => {
-        setShifted(true);
+        if (!model.HideOnSelection)
+            setShifted(true);
+        else
+            setShifted(false);
     };
 
     const onSelectTool = (tool) => {
@@ -168,6 +175,7 @@ const ToolWindow = ({ react, setupController }) => {
     const closeModal = () => {
         trigger("OnToggleVisible");
         engine.trigger("audio.playSound", "close-panel", 1);
+        setShifted(false);
     };
 
     const isVisibleClass = "tool-layout";
@@ -255,7 +263,7 @@ const ToolWindow = ({ react, setupController }) => {
             case "IconGrid":
                 if (expanded) {
                     if (shifted) {
-                        rowsCount = 4;
+                        rowsCount = 3;
                         columnsCount = 9;
                     }
                     else {
@@ -278,7 +286,7 @@ const ToolWindow = ({ react, setupController }) => {
             case "IconGridLarge":
                 if (expanded) {
                     if (shifted) {
-                        rowsCount = 4;
+                        rowsCount = 2;
                         columnsCount = 9;
                     }
                     else {
@@ -317,7 +325,7 @@ const ToolWindow = ({ react, setupController }) => {
         </div>
         <div className="col">
             {!shifted ? renderHoverWindow() : null}
-            <Modal bodyClassName={"asset-menu p-relative" + (expanded ? " asset-menu-xl" : shifted ? " asset-menu-sm" : "")} title={<div className="d-flex flex-row align-items-center">
+            <Modal bodyClassName={"asset-menu p-relative" + (shifted && expanded ? "" : expanded ? " asset-menu-xl" : shifted ? " asset-menu-sm" : "")} title={<div className="d-flex flex-row align-items-center">
                 <Button watch={[expanded]} circular icon style="trans-faded" onClick={toggleExpander}>
                     <Icon icon={expanded ? (!shifted ? "solid-chevron-down" : "solid-chevron-up") : (shifted ? "solid-chevron-down" : "solid-chevron-up")} fa />
                 </Button>

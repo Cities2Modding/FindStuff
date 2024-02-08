@@ -2152,12 +2152,6 @@
       } else
         engine.trigger("audio.playSound", "close-panel", 1);
     };
-    react.useEffect(() => {
-      if (model.IsVisible && model.HideOnSelection) {
-        engine.trigger("tool.selectTool", "Default Tool");
-        engine.trigger("toolbar.clearAssetSelection");
-      }
-    }, [model.IsVisible, model.HideOnSelection]);
     return /* @__PURE__ */ import_react7.default.createElement(import_react7.default.Fragment, null, /* @__PURE__ */ import_react7.default.createElement("div", { className: "spacer_oEi" }), /* @__PURE__ */ import_react7.default.createElement("button", { onMouseEnter, onMouseLeave, onClick, className: "button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT toggle-states_X82 toggle-states_DTm" + (model.IsVisible ? " selected" : "") }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "fa fa-solid-magnifying-glass icon-lg" }), /* @__PURE__ */ import_react7.default.createElement(ToolTip, { visible: tooltipVisible, float: "up", align: "right" }, /* @__PURE__ */ import_react7.default.createElement(ToolTipContent, { title: "Test", description: "Hello, world!" }))));
   };
   window.$_gooee.register("findstuff", "FindStuffAppButton", AppButton, "bottom-right-toolbar", "findstuff");
@@ -2185,6 +2179,14 @@
     const [expanded, setExpanded] = react.useState(false);
     const [shifted, setShifted] = react.useState(false);
     const [mouseOverItem, setMouseOverItem] = react.useState(null);
+    react.useEffect(() => {
+      if (model.IsVisible && model.HideOnSelection) {
+        engine.trigger("tool.selectTool", "Default Tool");
+        engine.trigger("toolbar.clearAssetSelection");
+      } else if (!model.IsVisible) {
+        setShifted(false);
+      }
+    }, [model.IsVisible, model.HideOnSelection]);
     const triggerResultsUpdate = debounce((curQueryKey, m) => {
       console.log("query key: " + curQueryKey);
       if ((!m.Search || m.Search.length == 0) && window.$_findStuff_cache[curQueryKey]) {
@@ -2205,7 +2207,10 @@
       }
     };
     const onSelectAsset = (entity) => {
-      setShifted(true);
+      if (!model.HideOnSelection)
+        setShifted(true);
+      else
+        setShifted(false);
     };
     const onSelectTool = (tool) => {
       const isDefaultTool = tool.id === "Default Tool";
@@ -2246,6 +2251,7 @@
     const closeModal = () => {
       trigger("OnToggleVisible");
       engine.trigger("audio.playSound", "close-panel", 1);
+      setShifted(false);
     };
     const isVisibleClass = "tool-layout";
     const onSelectPrefab = (prefab) => {
@@ -2326,7 +2332,7 @@
         case "IconGrid":
           if (expanded) {
             if (shifted) {
-              rowsCount = 4;
+              rowsCount = 3;
               columnsCount = 9;
             } else {
               rowsCount = 6;
@@ -2345,7 +2351,7 @@
         case "IconGridLarge":
           if (expanded) {
             if (shifted) {
-              rowsCount = 4;
+              rowsCount = 2;
               columnsCount = 9;
             } else {
               rowsCount = 4;
@@ -2371,7 +2377,7 @@
     const renderHoverWindow = () => {
       return hoverPrefab && hoverPrefab.Name && hoverPrefab.Name.length > 0 ? /* @__PURE__ */ import_react7.default.createElement(hover_window_default, { className: shifted ? "mt-2" : "mb-2", hoverPrefab, _L }) : null;
     };
-    return model.IsVisible ? /* @__PURE__ */ import_react7.default.createElement("div", { className: isVisibleClass + (shifted ? " align-items-start" : "") }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "col" }, /* @__PURE__ */ import_react7.default.createElement(filters_window_default, { compact: shifted, model, update, onDoUpdate: doResultsUpdate, _L })), /* @__PURE__ */ import_react7.default.createElement("div", { className: "col" }, !shifted ? renderHoverWindow() : null, /* @__PURE__ */ import_react7.default.createElement(Modal, { bodyClassName: "asset-menu p-relative" + (expanded ? " asset-menu-xl" : shifted ? " asset-menu-sm" : ""), title: /* @__PURE__ */ import_react7.default.createElement("div", { className: "d-flex flex-row align-items-center" }, /* @__PURE__ */ import_react7.default.createElement(Button, { watch: [expanded], circular: true, icon: true, style: "trans-faded", onClick: toggleExpander }, /* @__PURE__ */ import_react7.default.createElement(Icon, { icon: expanded ? !shifted ? "solid-chevron-down" : "solid-chevron-up" : shifted ? "solid-chevron-down" : "solid-chevron-up", fa: true })), /* @__PURE__ */ import_react7.default.createElement(Icon, { icon: "solid-magnifying-glass", fa: true, className: "bg-muted ml-2" }), /* @__PURE__ */ import_react7.default.createElement(TextBox, { size: "sm", className: "bg-dark-trans-less-faded w-25 mr-2 ml-4", placeholder: "Search...", text: search, onChange: onSearchInputChanged }), /* @__PURE__ */ import_react7.default.createElement(Button, { circular: true, icon: true, style: "trans-faded", disabled: search && search.length > 0 ? null : true, onClick: clearSearch }, /* @__PURE__ */ import_react7.default.createElement(Icon, { icon: "solid-eraser", fa: true })), /* @__PURE__ */ import_react7.default.createElement(sub_filters_default, { model, update, onDoUpdate: doResultsUpdate, _L })), onClose: closeModal }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "asset-menu-container", onMouseLeave: () => onMouseLeave() }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "flex-1" }, /* @__PURE__ */ import_react7.default.createElement(VirtualList, { watch: [model.Favourites, selectedPrefab, mouseOverItem, model.Search, model.Filter, model.SubFilter, model.ViewMode, model.OrderByAscending], border: isBorderedList, data: filteredPrefabs, onRenderItem, columns: columnCount, rows: rowCount, contentClassName: "d-flex flex-row flex-wrap", size: "sm", itemHeight: 32 })))), shifted ? renderHoverWindow() : null), /* @__PURE__ */ import_react7.default.createElement("div", { className: "col" }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "d-inline h-x w-x" }))) : null;
+    return model.IsVisible ? /* @__PURE__ */ import_react7.default.createElement("div", { className: isVisibleClass + (shifted ? " align-items-start" : "") }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "col" }, /* @__PURE__ */ import_react7.default.createElement(filters_window_default, { compact: shifted, model, update, onDoUpdate: doResultsUpdate, _L })), /* @__PURE__ */ import_react7.default.createElement("div", { className: "col" }, !shifted ? renderHoverWindow() : null, /* @__PURE__ */ import_react7.default.createElement(Modal, { bodyClassName: "asset-menu p-relative" + (shifted && expanded ? "" : expanded ? " asset-menu-xl" : shifted ? " asset-menu-sm" : ""), title: /* @__PURE__ */ import_react7.default.createElement("div", { className: "d-flex flex-row align-items-center" }, /* @__PURE__ */ import_react7.default.createElement(Button, { watch: [expanded], circular: true, icon: true, style: "trans-faded", onClick: toggleExpander }, /* @__PURE__ */ import_react7.default.createElement(Icon, { icon: expanded ? !shifted ? "solid-chevron-down" : "solid-chevron-up" : shifted ? "solid-chevron-down" : "solid-chevron-up", fa: true })), /* @__PURE__ */ import_react7.default.createElement(Icon, { icon: "solid-magnifying-glass", fa: true, className: "bg-muted ml-2" }), /* @__PURE__ */ import_react7.default.createElement(TextBox, { size: "sm", className: "bg-dark-trans-less-faded w-25 mr-2 ml-4", placeholder: "Search...", text: search, onChange: onSearchInputChanged }), /* @__PURE__ */ import_react7.default.createElement(Button, { circular: true, icon: true, style: "trans-faded", disabled: search && search.length > 0 ? null : true, onClick: clearSearch }, /* @__PURE__ */ import_react7.default.createElement(Icon, { icon: "solid-eraser", fa: true })), /* @__PURE__ */ import_react7.default.createElement(sub_filters_default, { model, update, onDoUpdate: doResultsUpdate, _L })), onClose: closeModal }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "asset-menu-container", onMouseLeave: () => onMouseLeave() }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "flex-1" }, /* @__PURE__ */ import_react7.default.createElement(VirtualList, { watch: [model.Favourites, selectedPrefab, mouseOverItem, model.Search, model.Filter, model.SubFilter, model.ViewMode, model.OrderByAscending], border: isBorderedList, data: filteredPrefabs, onRenderItem, columns: columnCount, rows: rowCount, contentClassName: "d-flex flex-row flex-wrap", size: "sm", itemHeight: 32 })))), shifted ? renderHoverWindow() : null), /* @__PURE__ */ import_react7.default.createElement("div", { className: "col" }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "d-inline h-x w-x" }))) : null;
   };
   window.$_gooee.register("findstuff", "FindStuffWindow", ToolWindow, "main-container", "findstuff");
 })();
