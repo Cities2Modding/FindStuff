@@ -19,7 +19,10 @@ namespace FindStuff.Helper
 
             try
             {
+                SpawnableBuildingData spawnableBuildingData = entityManager.GetComponentData<SpawnableBuildingData>(entity);
                 BuildingPrefab buildingPrefab = (BuildingPrefab)prefab;
+
+                meta.Add(IBaseHelper.META_ZONE_LEVEL, spawnableBuildingData.m_Level);
                 meta.Add(IBaseHelper.META_ZONE_LOT_DEPTH, buildingPrefab.m_LotDepth);
                 meta.Add(IBaseHelper.META_ZONE_LOT_WIDTH, buildingPrefab.m_LotWidth);
                 meta.Add(IBaseHelper.META_ZONE_LOT_SUM, buildingPrefab.m_LotDepth * buildingPrefab.m_LotWidth);
@@ -36,7 +39,7 @@ namespace FindStuff.Helper
             List<string> tags = new List<string>();
 
             if (entityManager == null)
-                return new List<string>();
+                return tags;
 
             SpawnableBuildingData spawnableBuildingData = entityManager.GetComponentData<SpawnableBuildingData>(entity);
             ZoneData zoneData = entityManager.GetComponentData<ZoneData>(spawnableBuildingData.m_ZonePrefab);

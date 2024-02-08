@@ -1,4 +1,5 @@
-﻿using Game.Prefabs;
+﻿using Colossal.Entities;
+using Game.Prefabs;
 using System.Collections.Generic;
 using Unity.Entities;
 
@@ -31,6 +32,12 @@ namespace FindStuff.Helper
         {
             if (entityManager == null || entity == Entity.Null)
                 return false;
+
+            // Do not add bugged non removeable placeholder tree
+            if (prefab.name.ToLower().Contains("placeholder"))
+            {
+                return false;
+            }
 
             return entityManager.HasComponent<TreeData>(entity);
         }

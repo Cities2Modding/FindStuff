@@ -9,6 +9,7 @@ namespace FindStuff.Helper
         const string META_IS_DANGEROUS = "IsDangerous";
         const string META_IS_DANGEROUS_REASON = "IsDangerousReason";
         const string META_IS_SPAWNABLE = "IsSpawnable";
+        const string META_ZONE_LEVEL = "ZoneLevel";
         const string META_ZONE_LOT_DEPTH = "ZoneLotDepth";
         const string META_ZONE_LOT_WIDTH = "ZoneLotWidth";
         const string META_ZONE_LOT_SUM = "ZoneLotSum";

@@ -1,48 +1,63 @@
-# DucksInARow Mod for Cities Skylines 2
+﻿# FindStuff mod for Cities: Skylines 2
 
 ## Overview
-Welcome to the "DucksInARow" mod for Cities Skylines 2! Enhance your city-building experience with advanced prop and tree placement options. This mod is continuously evolving, bringing new features and improvements to your urban planning toolkit.
+Welcome to ***FindStuff***, a powerful mod designed to enhance your Cities Skylines experience! With FindStuff, you can streamline your gameplay by easily locating various objects within the game.
+This mod is currently in its alpha state, continuously being improved to provide the best functionality for players like you.
 
-### Latest Features in Update
-- **Better placement**: Oddities removed from the previous "dirtier" implementation.
-- **Line Visualization**: Visual aids for linear prop placement, enhancing accuracy and aesthetics.
-- **Corrected Random Rotation**: Improved random rotation logic for more natural and varied prop arrangements.
-- **Curve and Circle Modes**: New modes for placing props in curved or circular patterns, easily cycled with ALT+X when the tree tool is active.
-- **Adult Tree Toggle**: Use ALT+A to toggle between adult and sapling tree placements, offering more control over the maturity of your urban forestry.
-- **Right-Click to Cancel**: Easily cancel ongoing operations with a right-click, improving workflow efficiency.
-- **Finer Spacing Adjustment**: More precise control over the spacing between props, allowing for detailed customization.
-- **Optimised Generation**: The generation routine is limited per frame to ensure maximum performance.
-- **Bug Fixes and Optimizations**: Various bug fixes and performance improvements for a smoother experience.
-- **More to Come**: Stay tuned for future updates and enhancements.
+## Key Features
+### 💯Unified Gameobject Finder
+- Easily find most objects in one convenient window.
+- Utilize an integrated Picker tool for seamless object selection.
 
-### Previous Features
-- **Toggle Options for Line Placement of Props**: Linear arrangement of props with a default spacing of 8 meters.
-- **Tree Placement Logic**: Even distribution of trees along a line, with varying results due to game logic.
-- **No UI Yet**: Monitor output through the console log, UI coming in future updates.
-- **Dependency**: Requires BepInEx5 for proper functionality.
+### 🔎Advanced Search Functionality
+- Benefit from a powerful real-time text search, allowing you to quickly locate specific objects.
+- Filter objects by prop categories to narrow down your search results.
+
+### ⭐Favorites and 🏷️Tag System 
+- Organize your frequently used objects with the Favorites system.
+- Tag objects for even more efficient categorization and management.
+
+### 🎮Shortcut and 🌐Language Support 
+- Utilize the CTRL + F shortcut for quick access to the search functionality.
+- Enjoy language support for all default Cities Skylines 2 locales.
+
+### 🚀Performance and  💨Optimization
+- Experience a performant and optimized object list capable of efficiently processing tens of thousands of game objects.
+- Highlight dangerous objects for improved gameplay awareness.
+
+### 💫Extended UI and 💾Configuration
+- Navigate through an extended UI created by the Gooee framework.
+- FindStuff remembers your view configuration and restores it upon game load for a seamless experience.
 
 ### Key Shortcuts
-- **LEFT SHIFT**: Toggle the mod's functionality on/off while using the tree placement tool.
-- **UP/DOWN ARROWS**: Adjust prop spacing.
-- **ALT+X**: Cycle through tree placement modes (line, curve, circle).
-- **ALT+A**: Toggle between adult and sapling trees.
+- **CTRL + F shortcut**: For quick access to the search functionality.
 
 ## Installation
-Install BepInEx5 for Cities Skylines 2. Download "DucksInARow" via the official GitHub repository or Thunderstore.io.
+Install BepInEx5 for Cities Skylines 2. Download "FindStuff" via the official GitHub repository or Thunderstore.io.
 
 ## Usage
-1. Activate the tree placement tool.
-2. Toggle mod functions with LEFT SHIFT.
-3. Place trees and adjust with key shortcuts.
+Activate the mod with the magnifying glass icon or the HookUI/Gooee mod backpack icon button on the upper left.
 
-## Important Notes
+### Important Notes
 - **Experimental Phase**: This mod is rudimentary and under active development.
 - **Official Downloads**: Only download from Thunderstore.io or the GitHub page.
-- **Community Effort**: A proud creation of the Cities 2 Modding community.
-
-## Disclaimer
-Due to Cities Skylines 2's validation logic even with the bypass enabled, prop placements may be hidden by the game. We are looking to improve this. Feedback is welcomed for continuous improvement.
+- **Community Effort**: A proud creation of the [Cities 2 Modding](https://discord.gg/M9rgRtGcRa) community.
 
 ---
 
-Enjoy "DucksInARow" and stay tuned for more updates and features to enhance your city-building experience!
+### 👨‍💻Development Team
+- [optimus-code](https://github.com/optimus-code)
+- [89pleasure](https://github.com/89pleasure)
+
+### 💖Credits & Special Thanks
+- Rebecca
+- CaptainOfCoit
+- [Cities 2 Modding Community](https://discord.gg/M9rgRtGcRa)
+- Colossal Order & Paradox Interactive
+
+***This mod was made with [Gooee](https://github.com/Cities2Modding/Gooee) - A powerful UI framework for Cities: Skylines 2 mods.***
+
+## Feedback and Support
+We value your feedback! If you encounter any issues, have suggestions for improvement, or simply want to connect with the development team, please visit our discord community: [https://discord.gg/M9rgRtGcRa](https://discord.gg/M9rgRtGcRa)
+
+Thank you for using FindStuff! Enjoy your enhanced Cities Skylines gameplay experience.
