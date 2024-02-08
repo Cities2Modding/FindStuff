@@ -1,7 +1,8 @@
 # FindStuff mod for Cities: Skylines 2
 
 ## Overview
-Welcome to the "DucksInARow" mod for Cities Skylines 2! Enhance your city-building experience with advanced prop and tree placement options. This mod is continuously evolving, bringing new features and improvements to your urban planning toolkit.
+Welcome to ***FindStuff***, a powerful mod designed to enhance your Cities Skylines experience! With FindStuff, you can streamline your gameplay by easily locating various objects within the game.
+This mod is currently in its alpha state, continuously being improved to provide the best functionality for players like you.
 
 ## Key Features
 ### Unified Gameobject Finder
