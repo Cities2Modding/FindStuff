@@ -4,8 +4,11 @@ const PrefabItem = ({ model, trigger, prefab, selected, _L, onSelected, onMouseE
     const react = window.$_gooee.react;
     const { Icon, Grid, Button } = window.$_gooee.framework;
 
-    const isFAIcon = prefab.TypeIcon.includes("fa:");
-    const iconSrc = react.useMemo(() => isFAIcon ? prefab.TypeIcon.replace("fa:", "") : prefab.TypeIcon, [prefab.TypeIcon]);
+    const isTypeFAIcon = prefab.TypeIcon.includes("fa:");
+    const iconSrc = react.useMemo(() => isTypeFAIcon ? prefab.TypeIcon.replace("fa:", "") : prefab.TypeIcon, [prefab.TypeIcon]);
+
+    const isFAIcon = prefab.Thumbnail.includes("fa:");
+    const prefabIconSrc = react.useMemo(() => isFAIcon ? prefab.Thumbnail.replace("fa:", "") : prefab.Thumbnail, [prefab.Thumbnail]);
     
     const prefabName = () => {
         const key = `Assets.NAME[${prefab.Name}]`;
@@ -67,13 +70,13 @@ const PrefabItem = ({ model, trigger, prefab, selected, _L, onSelected, onMouseE
                 <Grid>
                     <div className="col-7">
                         <div className="d-flex flex-row">
-                            <img className="icon icon-sm ml-1 mr-1" src={prefab.Thumbnail} />
+                            {prefabIconSrc === iconSrc ? <Icon className="icon-sm ml-1 mr-1" icon={prefabIconSrc} fa={isFAIcon ? true : null} /> : <img className="icon icon-sm ml-1 mr-1" src={prefab.Thumbnail} />}
                             <span className="fs-sm flex-1">{highlightedName}</span>
                         </div>
                     </div>
                     <div className="col-2">
                         <span className="fs-xs h-x">
-                            <Icon icon={iconSrc} fa={isFAIcon ? true : null} size="sm" className={(isFAIcon ? "bg-muted " : "") + "mr-1"} style={{ maxHeight: "16rem" }} />
+                            <Icon icon={iconSrc} fa={isTypeFAIcon ? true : null} size="sm" className={(isTypeFAIcon ? "bg-muted " : "") + "mr-1"} style={{ maxHeight: "16rem" }} />
                             {highlightedType}
                         </span>
                     </div>
@@ -88,7 +91,7 @@ const PrefabItem = ({ model, trigger, prefab, selected, _L, onSelected, onMouseE
         }
         else {
             return <>
-                <img className={model.ViewMode === "IconGrid" ? "icon icon-lg" : model.ViewMode === "IconGridLarge" ? "icon icon-xl" : "icon icon-sm ml-2"} src={prefab.Thumbnail} />
+                {prefabIconSrc ? <Icon className={model.ViewMode === "IconGrid" ? "icon-lg" : model.ViewMode === "IconGridLarge" ? "icon-xl" : "icon-sm ml-2"} icon={prefabIconSrc} fa={isFAIcon ? true : null} /> : <img className={model.ViewMode === "IconGrid" ? "icon icon-lg" : model.ViewMode === "IconGridLarge" ? "icon icon-xl" : "icon icon-sm ml-2"} src={prefab.Thumbnail} />}
                 {model.ViewMode === "Rows" || model.ViewMode === "Columns" ? <span className="ml-1 fs-sm mr-4">{highlightedName}</span> : <span className="fs-xs ml-1 mr-4" style={{ maxWidth: '80%', textOverflow: 'ellipsis', overflowX: 'hidden' }}>{highlightedName}</span>}
                 {extraContent ? extraContent : null}
             </>;

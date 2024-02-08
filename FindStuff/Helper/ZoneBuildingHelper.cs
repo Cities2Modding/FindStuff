@@ -68,5 +68,35 @@ namespace FindStuff.Helper
                 && spawnableBuildingData.m_ZonePrefab != Entity.Null
                 && entityManager.HasComponent<ZoneData>(spawnableBuildingData.m_ZonePrefab);
         }
+
+        public string GetZoneTypeIcon( PrefabBase prefab, Entity entity )
+        {
+            if ( prefab is BuildingPrefab
+                && entityManager.TryGetComponent( entity, out SpawnableBuildingData spawnableBuildingData )
+                && spawnableBuildingData.m_ZonePrefab != Entity.Null
+                && entityManager.TryGetComponent<ZoneData>( spawnableBuildingData.m_ZonePrefab, out var zoneData ) )
+            {
+                var zonePrefab = World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<PrefabSystem>( ).GetPrefab<ZonePrefab>( spawnableBuildingData.m_ZonePrefab );
+                
+                var name = zonePrefab.name;
+
+                if ( name.StartsWith( "EU " ) || name.StartsWith( "NA " ) )
+                    name = name[3..];
+
+                name = name.Replace( " ", "" );
+
+                if ( name == "IndustrialAgriculture" )
+                    name = "ZoneAgricultureArea";
+                else if ( name == "IndustrialOil" )
+                    name = "Oil";
+                else if ( name == "IndustrialOre" )
+                    name = "ZoneOreArea";
+                else
+                    name = "Zone" + name;
+
+                return $"Media/Game/Icons/{name}.svg";
+            }
+            return null;
+        }
     }
 }

@@ -43,6 +43,8 @@ const HoverWindow = ({ hoverPrefab, _L }) => {
         else
             return text;
     };
+    const isFAIcon = hoverPrefab && hoverPrefab.Thumbnail.includes("fa:");
+    const prefabIconSrc = react.useMemo(() => isFAIcon ? hoverPrefab.Thumbnail.replace("fa:", "") : hoverPrefab.Thumbnail, [hoverPrefab.Thumbnail]);
 
     const prefabDescText = react.useMemo(() => prefabDesc(hoverPrefab), [hoverPrefab, _L]);
 
@@ -54,7 +56,7 @@ const HoverWindow = ({ hoverPrefab, _L }) => {
 
         return <Grid>
             <div className="col-3">
-                <Icon icon={hoverPrefab.Thumbnail} size="xxl" />
+                <Icon icon={prefabIconSrc} fa={isFAIcon} className="icom-xxl" />
             </div>
             <div className="col-9">
                 {prefabDescText ?

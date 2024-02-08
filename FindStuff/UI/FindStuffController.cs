@@ -1,4 +1,5 @@
-﻿using Colossal.Localization;
+﻿using Colossal.IO.AssetDatabase;
+using Colossal.Localization;
 using Colossal.Serialization.Entities;
 using FindStuff.Configuration;
 using FindStuff.Helper;
@@ -46,6 +47,8 @@ namespace FindStuff.UI
         private IBaseHelper[] _baseHelper;
         private PrefabIndexer _indexer;
         private LocalizationManager _localizationManager;
+
+        private static HashSet<string> TypesWithNoThumbnails = ["Surface", "Prop"];
 
         public override FindStuffViewModel Configure( )
         {
@@ -124,7 +127,7 @@ namespace FindStuff.UI
                     var prefabIcon = "";
 
                     var thumbnail = _imageSystem.GetThumbnail( entity );
-                    var typeIcon = GetTypeIcon( prefabType );
+                    var typeIcon = GetTypeIcon( prefabType, prefabBase, entity );
 
                     if ( thumbnail == null || thumbnail == _imageSystem.placeholderIcon )
                         prefabIcon = typeIcon;
@@ -137,7 +140,7 @@ namespace FindStuff.UI
                         Name = prefabBase.name,
                         Type = prefabType,
                         Category = categoryType,
-                        Thumbnail = prefabIcon,
+                        Thumbnail = categoryType == "Zones" ? CheckForZoneIcon( prefabBase, entity ) : TypesWithNoThumbnails.Contains( prefabType ) ? typeIcon : prefabIcon,
                         TypeIcon = typeIcon,
                         Meta = meta,
                         Tags = tags,
@@ -155,6 +158,13 @@ namespace FindStuff.UI
                 Model.Prefabs = prefabsList;
                 TriggerUpdate( );
             }
+        }
+
+        private string CheckForZoneIcon( PrefabBase prefabBase, Entity entity )
+        {
+            var helper = new ZoneBuildingHelper( EntityManager, _prefabSystem );
+            var icon = helper.GetZoneTypeIcon( prefabBase, entity );
+            return icon;
         }
 
         protected override void OnDestroy( )
@@ -191,7 +201,7 @@ namespace FindStuff.UI
             return isValid;
         }
 
-        private string GetTypeIcon( string type )
+        private string GetTypeIcon( string type, PrefabBase prefabBase, Entity entity )
         {
             switch ( type )
             {
