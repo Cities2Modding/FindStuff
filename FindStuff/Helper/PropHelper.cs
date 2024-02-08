@@ -1,5 +1,6 @@
 ﻿using Game.Prefabs;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Entities;
 
 namespace FindStuff.Helper
@@ -46,12 +47,16 @@ namespace FindStuff.Helper
                 tags.Add("fence");
                 _PrefabType = "Fences";
             }
+            else if ( entityManager.HasChunkComponent<BridgeData>( entity ) )
+            {
+                tags.Add( "bridge" );
+            }
             else
             {
                 _PrefabType = "PropMisc";
             }
 
-            return tags;
+            return tags.OrderBy( t => t ).ToList( );
         }
 
         public bool IsValidPrefab(PrefabBase prefab, Entity entity)

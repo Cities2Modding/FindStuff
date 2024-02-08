@@ -1,115 +1,145 @@
 ﻿using Game.Prefabs;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Entities;
 
 namespace FindStuff.Helper
 {
-    public class CityServiceHelper(EntityManager entityManager) : IBaseHelper
+    public class CityServiceHelper( EntityManager entityManager ) : IBaseHelper
     {
-        public string PrefabType => "ServiceBuilding";
+        public string PrefabType
+        {
+            get;
+            private set;
+        } = "ServiceBuilding";
 
         public string CategoryType => "Buildings";
 
-        public Dictionary<string, object> CreateMeta(PrefabBase prefab, Entity entity)
+        public Dictionary<string, object> CreateMeta( PrefabBase prefab, Entity entity )
         {
-            return new Dictionary<string, object>();
+            return new Dictionary<string, object>( );
         }
 
-        public List<string> CreateTags(PrefabBase prefab, Entity entity)
+        public List<string> CreateTags( PrefabBase prefab, Entity entity )
         {
-            List<string> Tags = new List<string>();
+            PrefabType = "ServiceBuilding";
 
-            if (entityManager == null || !entityManager.Exists(entity))
-                return new List<string>();
+            List<string> Tags = new List<string>( );
 
-            Tags.Add("building");
+            if ( entityManager == null || !entityManager.Exists( entity ) )
+                return new List<string>( );
 
-            if (entityManager.HasComponent<FireStationData>(entity))
+            Tags.Add( "building" );
+            Tags.Add( "service" );
+
+            if ( entityManager.HasComponent<FireStationData>( entity ) )
             {
-                Tags.Add("fire-department");
+                Tags.Add( "fire" );
             }
-            else if (entityManager.HasComponent<PoliceStationData>(entity))
+            else if ( entityManager.HasComponent<PoliceStationData>( entity ) )
             {
-                Tags.Add("police");
+                Tags.Add( "police" );
             }
-            else if (entityManager.HasComponent<PrisonData>(entity))
+            else if ( entityManager.HasComponent<PrisonData>( entity ) )
             {
-                Tags.Add("prison");
+                Tags.Add( "prison" );
             }
-            else if (entityManager.HasComponent<HospitalData>(entity))
+            else if ( entityManager.HasComponent<HospitalData>( entity ) )
             {
-                Tags.Add("hospital");
+                Tags.Add( "hospital" );
             }
-            else if (entityManager.HasComponent<GarbageFacilityData>(entity))
+            else if ( entityManager.HasComponent<GarbageFacilityData>( entity ) )
             {
-                Tags.Add("garbage");
+                Tags.Add( "garbage" );
             }
-            else if (entityManager.HasComponent<PowerPlantData>(entity))
+            else if ( entityManager.HasComponent<PowerPlantData>( entity ) )
             {
-                Tags.Add("power");
-            }
-            else if (entityManager.HasComponent<CargoTransportStationData>(entity))
+                Tags.Add( "power-plant" );
+                Tags.Add( "electricity" );
+            }            
+            else if ( entityManager.HasComponent<CargoTransportStationData>( entity ) )
             {
-                Tags.Add("cargo");
+                Tags.Add( "cargo" );
             }
-            else if (entityManager.HasComponent<ParkData>(entity))
+            else if ( entityManager.HasComponent<ParkData>( entity ) )
             {
-                Tags.Add("park");
+                Tags.Add( "park" );
+                PrefabType = "Park";
             }
-            else if (entityManager.HasComponent<ParkingFacilityData>(entity))
+            else if ( entityManager.HasComponent<ParkingFacilityData>( entity ) )
             {
-                Tags.Add("parking");
+                Tags.Add( "parking" );
+                PrefabType = "Parking";
             }
-            else if (entityManager.HasComponent<AdminBuildingData>(entity))
+            else if ( entityManager.HasComponent<AdminBuildingData>( entity ) )
             {
-                Tags.Add("administration");
+                Tags.Add( "administration" );
             }
-            else if (entityManager.HasChunkComponent<TransportDepotData>(entity))
+            else if ( entityManager.HasChunkComponent<TransportDepotData>( entity ) )
             {
-                Tags.Add("depot");
+                Tags.Add( "depot" );
             }
-            else if (entityManager.HasChunkComponent<PublicTransportStationData>(entity))
+            else if ( entityManager.HasChunkComponent<PublicTransportStationData>( entity ) )
             {
-                Tags.Add("transport");
+                Tags.Add( "station" );
+                Tags.Add( "public-transport" );
             }
-            else if (entityManager.HasChunkComponent<MaintenanceDepotData>(entity))
+            else if ( entityManager.HasChunkComponent<MaintenanceDepotData>( entity ) )
             {
-                Tags.Add("maintenance");
+                Tags.Add( "maintenance" );
             }
-            else if (entityManager.HasChunkComponent<TelecomFacilityData>(entity))
+            else if ( entityManager.HasChunkComponent<TelecomFacilityData>( entity ) )
             {
-                Tags.Add("telecom");
+                Tags.Add( "telecom" );
             }
-            else if (entityManager.HasChunkComponent<ResearchFacilityData>(entity))
+            else if ( entityManager.HasChunkComponent<ResearchFacilityData>( entity ) )
             {
-                Tags.Add("research");
+                Tags.Add( "research" );
             }
-            else if (entityManager.HasChunkComponent<DeathcareFacilityData>(entity))
+            else if ( entityManager.HasChunkComponent<DeathcareFacilityData>( entity ) )
             {
-                Tags.Add("deathcare");
+                Tags.Add( "deathcare" );
             }
-            else if (entityManager.HasChunkComponent<SchoolData>(entity))
+            else if ( entityManager.HasChunkComponent<SchoolData>( entity ) )
             {
-                Tags.Add("school");
+                Tags.Add( "school" );
             }
-            else if (entityManager.HasChunkComponent<WelfareOfficeData>(entity))
+            else if ( entityManager.HasChunkComponent<WelfareOfficeData>( entity ) )
             {
-                Tags.Add("welfare");
+                Tags.Add( "welfare" );
             }
-            else if (entityManager.HasChunkComponent<PostFacilityData>(entity))
+            else if ( entityManager.HasChunkComponent<PostFacilityData>( entity ) )
             {
-                Tags.Add("post");
+                Tags.Add( "post" );
             }
+            if ( entityManager.HasComponent<ElectricityConnectionData>( entity ) )
+            {
+                Tags.Add( "electricity-connection" );
+            }
+            else if ( entityManager.HasComponent<WaterSourceData>( entity ) )
+            {
+                Tags.Add( "water-source" );
+            }
+            else if ( entityManager.HasComponent<WaterPipeConnectionData>( entity ) )
+            {
+                Tags.Add( "water-connection" );
+            }
+            
+            if ( entityManager.HasComponent<SewageOutlet>( entity ) )
+            {
+                Tags.Add( "sewage" );
+            }
+            Tags = Tags.OrderBy( t => t ).ToList( );
 
             return Tags;
         }
 
-        public bool IsValidPrefab(PrefabBase prefab, Entity entity)
+        public bool IsValidPrefab( PrefabBase prefab, Entity entity )
         {
-            if (entityManager == null || entity == Entity.Null)
+            if ( entityManager == null || entity == Entity.Null )
                 return false;
 
-            return entityManager.HasComponent<BuildingData>(entity) && entityManager.HasComponent<ServiceObjectData>(entity);
+            return entityManager.HasComponent<BuildingData>( entity ) && entityManager.HasComponent<ServiceObjectData>( entity );
         }
     }
 }

@@ -31,11 +31,58 @@ namespace FindStuff
 
         public static readonly Dictionary<Filter, SubFilter[]> _filterMappings = new( )
         {
-            { Filter.Foliage, [SubFilter.Tree, SubFilter.Plant] },
-            { Filter.Buildings, [SubFilter.ServiceBuilding, SubFilter.SignatureBuilding] },
-            { Filter.Zones, [SubFilter.ZoneResidential, SubFilter.ZoneCommercial, SubFilter.ZoneIndustrial, SubFilter.ZoneOffice] },
-            { Filter.Props, [SubFilter.Billboards, SubFilter.Fences, SubFilter.SignsAndPosters, SubFilter.PropMisc] },
-            { Filter.Misc, [SubFilter.Surface] }
+            { 
+                Filter.Foliage, 
+                [
+                    SubFilter.Tree,
+                    SubFilter.Plant
+                ] 
+            },
+            { 
+                Filter.Buildings, 
+                [
+                    SubFilter.ServiceBuilding, 
+                    SubFilter.SignatureBuilding,
+                    SubFilter.Park,
+                    SubFilter.Parking
+                ] 
+            },
+            { 
+                Filter.Zones, 
+                [
+                    SubFilter.ZoneResidential, 
+                    SubFilter.ZoneCommercial,
+                    SubFilter.ZoneIndustrial,
+                    SubFilter.ZoneOffice
+                ] 
+            },
+            { 
+                Filter.Props,
+                [
+                    SubFilter.Billboards,
+                    SubFilter.Fences,
+                    SubFilter.SignsAndPosters,
+                    SubFilter.PropMisc
+                ] 
+            },
+            { 
+                Filter.Network,
+                [
+                    SubFilter.RoadTool,
+                    SubFilter.SmallRoad, 
+                    SubFilter.MediumRoad,
+                    SubFilter.LargeRoad, 
+                    SubFilter.Highway,
+                    SubFilter.Pavement,
+                    SubFilter.OtherNetwork
+                ] 
+            },
+            { 
+                Filter.Misc, 
+                [
+                    SubFilter.Surface
+                ] 
+            }
         };
 
         private static readonly LocalizationManager _localisationManager = GameManager.instance.localizationManager;
@@ -44,6 +91,7 @@ namespace FindStuff
         private readonly ReadOnlyDictionary<int, string> _prefabNames = new( prefabs.ToDictionary( p => p.ID, p => p.Name ) );
         private readonly ReadOnlyDictionary<int, string> _prefabTypesNames = new( prefabs.ToDictionary( p => p.ID, p => p.Type ) );
         private readonly ReadOnlyDictionary<int, string> _prefabDisplayNames = new( prefabs.ToDictionary( p => p.ID, p => ResolvePrefabName( _localisationManager, p.Name ) ) );
+        private readonly ReadOnlyDictionary<int, HashSet<string>> _prefabTags = new( prefabs.ToDictionary( p => p.ID, p => p.Tags.Distinct().Select( t => ResolvePrefabName( _localisationManager, t.ToLowerInvariant() ) ).ToHashSet()) );
 
         private readonly HashSet<Filter> _filters = [.. ( ( Filter[] ) Enum.GetValues( typeof( Filter ) ) )];
         private readonly HashSet<SubFilter> _subFilters = [.. ( ( SubFilter[] ) Enum.GetValues( typeof( SubFilter ) ) )];
@@ -103,6 +151,27 @@ namespace FindStuff
             return _subFilters.Contains( subFilter );
         }
 
+        private void CacheFilterPrefabs( )
+        {
+            var filterPrefabs = _prefabs.Values
+                .Where( IsFilterPrefab )
+                .GroupBy( p => Enum.Parse<Filter>( p.Type ) )
+                .ToDictionary( g => g.Key, g => g.Select( p => p.ID ).ToArray( ) );
+
+            _filterPrefabs = new( filterPrefabs );
+
+        }
+
+        private void CacheSubFilterPrefabs( )
+        {
+            var subFilterPrefabs = _prefabs.Values
+                .Where( IsSubFilterPrefab )
+                .GroupBy( p => Enum.Parse<SubFilter>( p.Type ) )
+                .ToDictionary( g => g.Key, g => g.Select( p => p.ID ).ToArray( ) );
+
+            _subFilterPrefabs = new( subFilterPrefabs );
+        }
+
         /// <summary>
         /// Build the indexes
         /// </summary>
@@ -110,19 +179,8 @@ namespace FindStuff
         {
             _stopWatch.Restart( );
 
-            var filterPrefabs = _prefabs.Values
-                .Where( IsFilterPrefab )
-                .GroupBy( p => p.Type )
-                .ToDictionary( g => Enum.Parse<Filter>( g.Key ), g => g.Select( p => p.ID ).ToArray( ) );
-
-            _filterPrefabs = new ( filterPrefabs );
-
-            var subFilterPrefabs = _prefabs.Values
-                .Where( IsSubFilterPrefab )
-                .GroupBy( p => p.Type )
-                .ToDictionary( g => Enum.Parse<SubFilter>( g.Key ), g => g.Select( p => p.ID ).ToArray( ) );
-
-            _subFilterPrefabs = new( subFilterPrefabs );
+            CacheFilterPrefabs( );
+            CacheSubFilterPrefabs( );
 
             _stopWatch.Stop( );
             UnityEngine.Debug.Log( $"[PrefabIndexer] Build took {_stopWatch.ElapsedMilliseconds} ms." );
@@ -159,11 +217,15 @@ namespace FindStuff
                     var name = _prefabNames[id].ToLowerInvariant( );
                     var displayName = _prefabDisplayNames[id].ToLowerInvariant( );
                     var typeName = _prefabTypesNames[id].ToLowerInvariant( );
+                    var tags = _prefabTags[id];
 
                     if ( name.Contains( search ) ||
                         displayName.Contains( search ) ||
-                        typeName.Contains( search ) )
+                        typeName.Contains( search ) ||
+                        tags.Contains( search ) )
+                    {
                         WorkingSet.Add( id );
+                    }
                 }
                 else
                     WorkingSet.Add( id );
@@ -209,7 +271,7 @@ namespace FindStuff
         /// <returns></returns>
         private string GenerateKey( FindStuffViewModel model )
         {
-            return $"{model.Filter}:{model.SubFilter}:{model.Search ?? ""}:{model.OrderByAscending.ToString().ToLower()}";
+            return $"{model.Filter}:{model.SubFilter}:{model.Search ?? ""}:{model.OrderByAscending.ToString().ToLower()}{( model.Filter == Filter.Favourite ? ":" + model.Favourites.Count : "" )}";
         }
 
         /// <summary>
@@ -226,14 +288,12 @@ namespace FindStuff
 
             var workingSetKey = GenerateKey( model );
 
-            if ( !BigQueryCache.ContainsKey( workingSetKey ) )
+            if ( !BigQueryCache.ContainsKey( workingSetKey ) || model.Filter == Filter.Favourite )
             {
                 // Only execute a query if the inputs changed
                 if ( WorkingSetKey != workingSetKey )
                 {
                     WorkingSetKey = workingSetKey;
-
-                    UpdateFavourites( model );
 
                     if ( model.Filter == Filter.None &&
                         model.SubFilter == SubFilter.None &&
@@ -256,6 +316,7 @@ namespace FindStuff
                                 break;
 
                             case Filter.Favourite:
+                                UpdateFavourites( model );
                                 if ( _favouritePrefabs?.Count > 0 )
                                     AddToWorkingSet( model, _favouritePrefabs.ToArray( ) );
                                 break;
@@ -338,7 +399,7 @@ namespace FindStuff
 
             _stopWatch.Stop( );
 
-            UnityEngine.Debug.Log( $"[PrefabIndexer] Query with '{WorkingSetCache.Count}' results took {_stopWatch.ElapsedMilliseconds} ms." );
+            UnityEngine.Debug.Log( $"[PrefabIndexer] Query '{WorkingSetKey}' with '{WorkingSetCache.Count}' results took {_stopWatch.ElapsedMilliseconds} ms." );
 
             key = WorkingSetKey;
             return WorkingSetCache;
@@ -360,6 +421,18 @@ namespace FindStuff
             }
 
             return prefabName;
+        }
+
+        private static string ResolveTagName( LocalizationManager localizationManager, string tag )
+        {
+            var localeKey = "FindStuff.Tag." + tag;
+
+            if ( localizationManager.activeDictionary.TryGetValue( localeKey, out var localisedName ) )
+            {
+                return localisedName;
+            }
+
+            return tag;
         }
     }
 

@@ -175,22 +175,36 @@ namespace FindStuff.UI
         Network = 3,
     }
 
-    public enum SubFilter
+    public enum SubFilter : long
     {
         None = 0,
-        ZoneResidential = 1,
-        ZoneCommercial = 2,
-        ZoneOffice = 3,
-        ZoneIndustrial = 4,
-        ServiceBuilding = 5,
-        SignatureBuilding = 6,
-        Vehicle = 7,
-        Tree = 8,
-        Plant = 9,
-        PropMisc = 10,
-        Surface = 11,
-        SignsAndPosters = 12,
-        Fences = 13,
-        Billboards = 14,
+        ZoneResidential,
+        ZoneCommercial,
+        ZoneOffice,
+        ZoneIndustrial,
+
+        // Buildings
+        ServiceBuilding,
+        SignatureBuilding,
+        Park,
+        Parking,
+
+        Vehicle,
+        Tree,
+        Plant,
+        PropMisc,
+        Surface,
+        SignsAndPosters,
+        Fences,
+        Billboards,
+
+        // Networks
+        RoadTool,
+        SmallRoad,
+        MediumRoad,
+        LargeRoad,
+        Highway,
+        Pavement,
+        OtherNetwork
     }
 }

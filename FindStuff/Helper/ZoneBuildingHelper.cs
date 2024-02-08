@@ -40,20 +40,52 @@ namespace FindStuff.Helper
 
             SpawnableBuildingData spawnableBuildingData = entityManager.GetComponentData<SpawnableBuildingData>(entity);
             ZoneData zoneData = entityManager.GetComponentData<ZoneData>(spawnableBuildingData.m_ZonePrefab);
+            var zonePrefab = World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<PrefabSystem>( )
+                .GetPrefab<ZonePrefab>( spawnableBuildingData.m_ZonePrefab );
 
-            switch (zoneData.m_AreaType)
+            tags.Add( "zones" );
+
+            switch ( zoneData.m_AreaType)
             {
                 case Game.Zones.AreaType.Commercial:
                     _PrefabType = "ZoneCommercial";
+                    tags.Add( "commercial" );
                     break;
                 case Game.Zones.AreaType.Residential:
                     _PrefabType = "ZoneResidential";
+                    tags.Add( "residential" );
                     break;
                 case Game.Zones.AreaType.Industrial:
-                    ZonePrefab zonePrefab = prefabSystem.GetPrefab<ZonePrefab>(spawnableBuildingData.m_ZonePrefab);
                     _PrefabType = zonePrefab.m_Office ? "ZoneOffice" : "ZoneIndustrial";
+                    tags.Add( zonePrefab.m_Office ? "office" : "industrial" );
                     break;
             }
+            
+            var name = zonePrefab.name;
+            var theme = "";
+
+            if ( name.StartsWith( "EU " ) || name.StartsWith( "NA " ) )
+                theme = name[..2].ToLower( );
+
+            if ( !string.IsNullOrEmpty( theme ) )
+                tags.Add( theme );
+
+            if ( name.ToLower( ).Contains( " high" ) )
+                tags.Add( "high-density" );
+            else if ( name.ToLower( ).Contains( " low" ) )
+                tags.Add( "low-density" );
+            else if ( name.ToLower( ).Contains( " mixed" ) )
+                tags.Add( "mixed-density" );
+            else if ( name.ToLower( ).Contains( " lowrent" ) )
+                tags.Add( "low-rent" );
+            else if ( name.ToLower( ).Contains( " medium row" ) )
+            {
+                tags.Add( "medium-density" );
+                tags.Add( "row" );
+            }
+            else if ( name.ToLower( ).Contains( " medium" ) )
+                tags.Add( "medium-density" );
+
 
             return tags;
         }

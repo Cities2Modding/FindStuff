@@ -1,6 +1,6 @@
 import React from "react";
 
-const HoverWindow = ({ hoverPrefab, _L }) => {
+const HoverWindow = ({ className, hoverPrefab, _L }) => {
     const react = window.$_gooee.react;
     const { Icon, Grid, Modal } = window.$_gooee.framework;
 
@@ -47,6 +47,22 @@ const HoverWindow = ({ hoverPrefab, _L }) => {
     const prefabIconSrc = react.useMemo(() => isFAIcon ? hoverPrefab.Thumbnail.replace("fa:", "") : hoverPrefab.Thumbnail, [hoverPrefab.Thumbnail]);
 
     const prefabDescText = react.useMemo(() => prefabDesc(hoverPrefab), [hoverPrefab, _L]);
+    const renderTags = react.useCallback(() => {
+        const getName = (tag) => {
+            const key = `FindStuff.Tag.${tag}`;
+            const name = _L(key);
+
+            if (name === key)
+                return tag;
+            else
+                return name;
+        };
+
+        return hoverPrefab.Tags ? hoverPrefab.Tags.map((tag, index) => <div key={index + "_" + tag} className="badge badge-dark">
+            {getName(tag)}
+        </div>) : null;
+        
+    }, [hoverPrefab.Tags, _L]);
 
     const renderHoverContents = react.useCallback( () => {
         if (!hoverPrefab)
@@ -56,7 +72,9 @@ const HoverWindow = ({ hoverPrefab, _L }) => {
 
         return <Grid>
             <div className="col-3">
-                <Icon icon={prefabIconSrc} fa={isFAIcon} className="icom-xxl" />
+                <div className="bg-dark-trans-mid rounded-sm w-x">
+                    <Icon icon={prefabIconSrc} fa={isFAIcon} className="icon-xxxl" />
+                </div>
             </div>
             <div className="col-9">
                 {prefabDescText ?
@@ -68,9 +86,7 @@ const HoverWindow = ({ hoverPrefab, _L }) => {
                     {computedDangerousReason}
                 </div> : null}
                 <div className="d-inline">
-                    {hoverPrefab.Tags ? hoverPrefab.Tags.map((tag, index) => <div key={index} className="badge badge-info">
-                        {tag}
-                    </div>) : null}
+                    {renderTags()}
                 </div>
             </div>
         </Grid>
@@ -79,7 +95,7 @@ const HoverWindow = ({ hoverPrefab, _L }) => {
     const modalTypeIconIsFAIcon = hoverPrefab && hoverPrefab.TypeIcon ? hoverPrefab.TypeIcon.includes("fa:") : false;
     const modalTypeIconSrc = modalTypeIconIsFAIcon ? hoverPrefab.TypeIcon.replaceAll("fa:", "") : hoverPrefab ? hoverPrefab.TypeIcon : null;
 
-    return <Modal className="mb-2" icon={<><Icon icon={modalTypeIconSrc} fa={modalTypeIconIsFAIcon ? true : null} /></>} title={prefabName(hoverPrefab)} noClose>
+    return <Modal className={className} icon={<><Icon icon={modalTypeIconSrc} fa={modalTypeIconIsFAIcon ? true : null} /></>} title={prefabName(hoverPrefab)} noClose>
         {renderHoverContents()}
     </Modal>;
 };

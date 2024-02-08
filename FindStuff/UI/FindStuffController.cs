@@ -48,7 +48,7 @@ namespace FindStuff.UI
         private PrefabIndexer _indexer;
         private LocalizationManager _localizationManager;
 
-        private static HashSet<string> TypesWithNoThumbnails = ["Surface", "Prop"];
+        private static HashSet<string> TypesWithNoThumbnails = ["Surface", "PropMisc", "Billboards", "Fences", "SignsAndPosters"];
 
         public override FindStuffViewModel Configure( )
         {
@@ -64,8 +64,8 @@ namespace FindStuff.UI
                 new PlantHelper( EntityManager ),
                 new TreeHelper( EntityManager ),
                 new SurfaceHelper( EntityManager ),
-                new NetworkHelper( EntityManager ),
                 new CityServiceHelper( EntityManager ),
+                new NetworkHelper( EntityManager ),
                 new SignatureBuildingHelper( EntityManager ),
                 new VehicleHelper( EntityManager ),
                 new ZoneBuildingHelper( EntityManager, _prefabSystem ),
@@ -241,8 +241,44 @@ namespace FindStuff.UI
                 case "Surface":
                     return "Media/Game/Icons/LotTool.svg";
 
-                case "Prop":
+                case "PropMisc":
                     return "fa:solid-cube";
+
+                case "SignsAndPosters":
+                    return "fa:solid-clipboard-user";
+
+                case "Fences":
+                    return "fa:solid-xmarks-lines";
+
+                case "Billboards":
+                    return "fa:solid-rectangle-ad";
+
+                case "Pavement":
+                    return "Media/Game/Icons/Pathways.svg";
+
+                case "SmallRoad":
+                    return "Media/Game/Icons/SmallRoad.svg";
+
+                case "MediumRoad":
+                    return "Media/Game/Icons/MediumRoad.svg";
+
+                case "LargeRoad":
+                    return "Media/Game/Icons/LargeRoad.svg";
+
+                case "Highway":
+                    return "Media/Game/Icons/Highways.svg";
+                //
+                case "RoadTool":
+                    return "Media/Game/Icons/RoadsServices.svg";
+
+                case "OtherNetwork":
+                    return "Media/Game/Icons/Roads.svg";
+
+                case "Park":
+                    return "fa:solid-children";
+
+                case "Parking":
+                    return "Media/Game/Icons/Parking.svg";
             }
 
             return "";

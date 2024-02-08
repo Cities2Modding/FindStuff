@@ -1,6 +1,6 @@
 import React from "react";
 
-const FiltersWindow = ({ model, update, _L, onDoUpdate }) => {
+const FiltersWindow = ({ compact = null, model, update, _L, onDoUpdate }) => {
     const react = window.$_gooee.react;
     const { Icon, Button } = window.$_gooee.framework;    
 
@@ -19,10 +19,8 @@ const FiltersWindow = ({ model, update, _L, onDoUpdate }) => {
         model.Filter = filter;
         update("Filter", filter);
 
-        if (model.SubFilter && model.Categories && !hasSubFilter(filter)) {
-            model.SubFilter = "None";
-            update("SubFilter", "None");
-        }
+        model.SubFilter = "None";
+        update("SubFilter", "None");
 
         if (onDoUpdate)
             onDoUpdate(model);
@@ -36,32 +34,33 @@ const FiltersWindow = ({ model, update, _L, onDoUpdate }) => {
             onDoUpdate(model);
     }, [model.OrderByAscending, update]);
 
-    return <div className="bg-panel text-light p-4 rounded-sm">
-        <div className="d-flex flex-row align-items-center justify-content-center">
-            <div className="flex-1">
-                {_L("FindStuff.View")}
-            </div>
-            <Button className={"mr-1" + (model.ViewMode === "Rows" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("ViewMode", "Rows")}>
-                <Icon icon="solid-bars" fa />
-            </Button>
-            <Button className={"mr-1" + (model.ViewMode === "Columns" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("ViewMode", "Columns")}>
-                <Icon icon="solid-table-columns" fa />
-            </Button>
-            <Button className={"mr-1" + (model.ViewMode === "IconGrid" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("ViewMode", "IconGrid")}>
-                <Icon icon="solid-table-cells" fa />
-            </Button>
-            <Button className={"mr-1" + (model.ViewMode === "IconGridLarge" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("ViewMode", "IconGridLarge")}>
-                <Icon icon="solid-table-cells-large" fa />
-            </Button>
-            <Button className={"" + (model.ViewMode === "Detailed" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("ViewMode", "Detailed")}>
-                <Icon icon="solid-table-list" fa />
-            </Button>
-        </div>
-        <div className="d-flex flex-row align-items-center justify-content-center mt-4">
-            <div className="flex-1">
+    return <div className={"bg-panel text-light rounded-sm" + (compact ? " align-self-end w-x p-2" :" p-4")}>
+        {!compact ?
+            <div className="d-flex flex-row align-items-center justify-content-center">
+                <div className="flex-1">
+                    {_L("FindStuff.View")}
+                </div>
+                <Button className={"mr-1" + (model.ViewMode === "Rows" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("ViewMode", "Rows")}>
+                    <Icon icon="solid-bars" fa />
+                </Button>
+                <Button className={"mr-1" + (model.ViewMode === "Columns" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("ViewMode", "Columns")}>
+                    <Icon icon="solid-table-columns" fa />
+                </Button>
+                <Button className={"mr-1" + (model.ViewMode === "IconGrid" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("ViewMode", "IconGrid")}>
+                    <Icon icon="solid-table-cells" fa />
+                </Button>
+                <Button className={"mr-1" + (model.ViewMode === "IconGridLarge" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("ViewMode", "IconGridLarge")}>
+                    <Icon icon="solid-table-cells-large" fa />
+                </Button>
+                <Button className={"" + (model.ViewMode === "Detailed" ? " active" : "")} color="tool" size="sm" icon onClick={() => update("ViewMode", "Detailed")}>
+                    <Icon icon="solid-table-list" fa />
+                </Button>
+            </div> : null}
+        <div className={"d-flex flex-row align-items-center justify-content-center" + (!compact ? " mt-4" : "")}>
+            {!compact ? <div className="flex-1">
                 {_L("FindStuff.Filter")}
-            </div>
-            <div>
+            </div> : null}
+            <div className={compact ? "w-x" : null}>
                 <div className="d-flex flex-row flex-wrap align-items-center justify-content-end">
                     <Button className={(!model.Filter || model.Filter === "None" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateFilter("None")}>
                         <Icon icon="solid-asterisk" fa />
@@ -92,21 +91,22 @@ const FiltersWindow = ({ model, update, _L, onDoUpdate }) => {
                 </div>
             </div>
         </div>
-        <div className="d-flex flex-row align-items-center justify-content-center mt-4">
-            <div className="flex-1">
-                {_L("FindStuff.OrderBy")}
-            </div>
-            <div>
-                <div className="d-flex flex-row flex-wrap align-items-center justify-content-end">
-                    <Button className={(model.OrderByAscending === true ? " active" : "")} color="tool" size="sm" icon onClick={() => updateOrderBy(true)}>
-                        <Icon icon="solid-arrow-down-a-z" fa />
-                    </Button>
-                    <Button className={"ml-1" + (model.OrderByAscending === false ? " active" : "")} color="tool" size="sm" icon onClick={() => updateOrderBy(false)}>
-                        <Icon icon="solid-arrow-up-a-z" fa />
-                    </Button>
+        {!compact ?
+            <div className="d-flex flex-row align-items-center justify-content-center mt-4">
+                <div className="flex-1">
+                    {_L("FindStuff.OrderBy")}
                 </div>
-            </div>
-        </div>
+                <div>
+                    <div className="d-flex flex-row flex-wrap align-items-center justify-content-end">
+                        <Button className={(model.OrderByAscending === true ? " active" : "")} color="tool" size="sm" icon onClick={() => updateOrderBy(true)}>
+                            <Icon icon="solid-arrow-down-a-z" fa />
+                        </Button>
+                        <Button className={"ml-1" + (model.OrderByAscending === false ? " active" : "")} color="tool" size="sm" icon onClick={() => updateOrderBy(false)}>
+                            <Icon icon="solid-arrow-up-a-z" fa />
+                        </Button>
+                    </div>
+                </div>
+            </div> : null}
     </div>;
 };
 

@@ -10,21 +10,120 @@ lang:
  
  FindStuff.PrefabCategory.Foliage: Foliage
  FindStuff.PrefabCategory.Buildings: Buildings
- FindStuff.PrefabCategory.Zones: Zones
+ FindStuff.PrefabCategory.Zones: Zoning
  FindStuff.PrefabCategory.Misc: Misc
 
  FindStuff.PrefabType.Surface: Surface
- FindStuff.PrefabType.Network: Network
+ FindStuff.PrefabType.Network: Networks
  FindStuff.PrefabType.ZoneResidential: Residential
  FindStuff.PrefabType.ZoneCommercial: Commercial
  FindStuff.PrefabType.ZoneOffice: Office
  FindStuff.PrefabType.ZoneIndustrial: Industrial
  FindStuff.PrefabType.ServiceBuilding: Service
  FindStuff.PrefabType.SignatureBuilding: Signature Building
+ FindStuff.PrefabType.ParkBuilding: Park
  FindStuff.PrefabType.Vehicle: Vehicle
  FindStuff.PrefabType.Tree: Tree
  FindStuff.PrefabType.Plant: Plant
  FindStuff.PrefabType.Prop: Prop
+ FindStuff.PrefabType.Bridge: Bridge
+ FindStuff.PrefabType.Train: Train
+ FindStuff.PrefabType.Tram: Tram
+ FindStuff.PrefabType.Pipe: Pipe
+ FindStuff.PrefabType.OtherNetwork: Misc
+ FindStuff.PrefabType.SmallRoad: Small Road
+ FindStuff.PrefabType.MediumRoad: Medium Road
+ FindStuff.PrefabType.LargeRoad: Large Road
+ FindStuff.PrefabType.Highway: Highway
+ FindStuff.PrefabType.RoadTool: Road Tool
+ FindStuff.PrefabType.Pavment: Path
  
  FindStuff.Dangerous.CorruptWarning: This asset could break your save game if not used properly.
  FindStuff.Dangerous.NoDelete: This asset can't be removed with bulldozer tool after placing.
+ 
+ FindStuff.Tag.eu: European
+ FindStuff.Tag.na: North American
+ FindStuff.Tag.foliage: Foliage
+ FindStuff.Tag.building: Building
+ FindStuff.Tag.zones: Zoning
+ FindStuff.Tag.misc: Misc
+ FindStuff.Tag.surface: Surface
+ FindStuff.Tag.grass: Grass
+ FindStuff.Tag.agriculture: Farm
+ FindStuff.Tag.sand: Sand
+ FindStuff.Tag.concrete: Concrete
+ FindStuff.Tag.forestry: Forest
+ FindStuff.Tag.pavement: Pavement
+ FindStuff.Tag.landfill: Landfill
+ FindStuff.Tag.tiles: Tiles
+ FindStuff.Tag.oil: Oil
+ FindStuff.Tag.ore: Ore
+ FindStuff.Tag.network: Network
+ FindStuff.Tag.marker: Marker
+ FindStuff.Tag.power-line: Power Line
+ FindStuff.Tag.pipe: Pipe
+ FindStuff.Tag.bridge: Bridge
+ FindStuff.Tag.small-road: Small
+ FindStuff.Tag.medium-road: Medium
+ FindStuff.Tag.large-road: Large
+ FindStuff.Tag.highway: Highway
+ FindStuff.Tag.road: Road
+ FindStuff.Tag.road-tool: Road Tool
+ FindStuff.Tag.electricity: Electricity
+ FindStuff.Tag.electricity-connection: Electricity
+ FindStuff.Tag.station: Station
+ FindStuff.Tag.water: Water
+ FindStuff.Tag.waterway: Water
+ FindStuff.Tag.water-connection: Water
+ FindStuff.Tag.water-source: Water
+ FindStuff.Tag.power-plant: Power Plant
+ FindStuff.Tag.low-density: Low Density
+ FindStuff.Tag.medium-density: Medium Density
+ FindStuff.Tag.mixed-density: Mixed Density
+ FindStuff.Tag.high-density: High Density
+ FindStuff.Tag.residential: Residential
+ FindStuff.Tag.row: Row
+ FindStuff.Tag.low-rent: Low Rent
+ FindStuff.Tag.commercial: Commercial
+ FindStuff.Tag.office: Office
+ FindStuff.Tag.industrial: Industrial
+ FindStuff.Tag.service: Service
+ FindStuff.Tag.signature: Signature
+ FindStuff.Tag.vehicle: Vehicle
+ FindStuff.Tag.tree: Tree
+ FindStuff.Tag.plant: Plant
+ FindStuff.Tag.prop: Prop
+ FindStuff.Tag.park: Park 
+ FindStuff.Tag.cargo: Cargo
+ FindStuff.Tag.parking: Parking
+ FindStuff.Tag.administration: Administration
+ FindStuff.Tag.fire: Fire Deptartment
+ FindStuff.Tag.emergency: Emergency
+ FindStuff.Tag.police: Police
+ FindStuff.Tag.prison: Prison
+ FindStuff.Tag.hospital: Hospital
+ FindStuff.Tag.garbage: Garbage
+ FindStuff.Tag.fence: Fence
+ FindStuff.Tag.poster: Poster
+ FindStuff.Tag.billboard: Billboard
+ FindStuff.Tag.aircraft: Aircraft
+ FindStuff.Tag.watercraft: Watercraft
+ FindStuff.Tag.automobile: Automobile
+ FindStuff.Tag.ship: Ship
+ FindStuff.Tag.post: Post
+ FindStuff.Tag.subway: Subway
+ FindStuff.Tag.rocket: Rocket
+ FindStuff.Tag.sign: Sign
+ FindStuff.Tag.van: Van
+ FindStuff.Tag.car: Car
+ FindStuff.Tag.taxi: Taxi
+ FindStuff.Tag.bus: Bus
+ FindStuff.Tag.truck: Truck
+ FindStuff.Tag.tram: Tram
+ FindStuff.Tag.train: Train
+ FindStuff.Tag.engine: Engine
+ FindStuff.Tag.carriage: Carriage
+ FindStuff.Tag.airplane: Airplane
+ FindStuff.Tag.helicopter: Helicopter
+ FindStuff.Tag.public-transport: Public Transport
+ 

@@ -17,17 +17,14 @@ namespace FindStuff
             var harmony = Harmony.CreateAndPatchAll( Assembly.GetExecutingAssembly( ), MyPluginInfo.PLUGIN_GUID + "_Cities2Harmony" );
 
             var patchedMethods = harmony.GetPatchedMethods( ).ToArray( );
-            
-            Logger.LogInfo( "=================================================================" );
-            Logger.LogInfo( MyPluginInfo.PLUGIN_NAME + " by Cities2Modding community." );
-            Logger.LogInfo( "=================================================================" );
-            Logger.LogInfo( "Reddit link: https://www.reddit.com/r/cities2modding/" );
-            Logger.LogInfo( "Discord link: https://discord.gg/KGRNBbm5Fh" );
-            Logger.LogInfo( "Our mods are officially distributed via Thunderstore.io and https://github.com/Cities2Modding" );
-            Logger.LogInfo( "Example mod repository and modding info: https://github.com/optimus-code/Cities2Modding" );
-            Logger.LogInfo( "Thanks to Captain_Of_Coit, 89pleasure, Rebecca, optimus-code and the Cites2Modding community!" );
-            Logger.LogInfo( "=================================================================" );
 
+            Logger.LogInfo( @"  _____ _           _ ____  _          __  __ 
+ |  ___(_)_ __   __| / ___|| |_ _   _ / _|/ _|
+ | |_  | | '_ \ / _` \___ \| __| | | | |_| |_ 
+ |  _| | | | | | (_| |___) | |_| |_| |  _|  _|
+ |_|   |_|_| |_|\__,_|____/ \__|\__,_|_| |_|  
+                                              " );
+            
             // Plugin startup logic
             Logger.LogInfo( $"Plugin {MyPluginInfo.PLUGIN_GUID} is loaded! Patched methods: " + patchedMethods.Length );
 

@@ -1,5 +1,6 @@
 ﻿using Game.Prefabs;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Entities;
 
 namespace FindStuff.Helper
@@ -22,9 +23,32 @@ namespace FindStuff.Helper
             if (entityManager == null)
                 return tags;
 
-            tags.Add("surface");
+            var lowerName = prefab.name.ToLowerInvariant();
 
-            return tags;
+            tags.Add( "surface" );
+
+            if ( lowerName.Contains( "grass" ) )
+                tags.Add( "grass" );
+            else if ( lowerName.Contains( "agriculture" ) )
+                tags.Add( "agriculture" );
+            else if ( lowerName.Contains( "sand" ) )
+                tags.Add( "sand" );
+            else if ( lowerName.Contains( "concrete" ) )
+                tags.Add( "concrete" );
+            else if ( lowerName.Contains( "forestry" ) )
+                tags.Add( "forestry" );
+            else if ( lowerName.Contains( "pavement" ) )
+                tags.Add( "pavement" );
+            else if ( lowerName.Contains( "landfill" ) )
+                tags.Add( "landfill" );
+            else if ( lowerName.Contains( "tiles " ) )
+                tags.Add( "tiles" );
+            else if ( lowerName.Contains( "oil " ) )
+                tags.Add( "oil" );
+            else if ( lowerName.Contains( "ore " ) )
+                tags.Add( "ore" );
+
+            return tags.OrderBy( t => t ).ToList();
         }
 
         public bool IsValidPrefab(PrefabBase prefab, Entity entity)

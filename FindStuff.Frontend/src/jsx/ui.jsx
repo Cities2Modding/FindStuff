@@ -76,6 +76,7 @@ const ToolWindow = ({ react, setupController }) => {
     const [filteredPrefabs, setFilteredPrefabs] = react.useState([]);
     const [search, setSearch] = react.useState(model.Search ?? "");
     const [expanded, setExpanded] = react.useState(false);
+    const [shifted, setShifted] = react.useState(false);
     const [mouseOverItem, setMouseOverItem] = react.useState(null);    
 
     const triggerResultsUpdate = debounce((curQueryKey, m) => {
@@ -101,26 +102,38 @@ const ToolWindow = ({ react, setupController }) => {
 
         setFilteredPrefabs(result.Prefabs);
 
-        if (curQueryKey && curQueryKey.includes("::")) {
+        if (curQueryKey &&  curQueryKey.includes("::")) {
             window.$_findStuff_cache[curQueryKey] = result.Prefabs;
             console.log("Updated cache for " + curQueryKey);
         }
     };
 
+    const onSelectAsset = (entity) => {
+        setShifted(true);
+    };
+    const onSelectTool = (tool) => {
+        console.log(tool);
+        setShifted(tool.id !== "Default Tool");
+    };
+
     react.useEffect(() => {
         const eventHandle = engine.on("findstuff.onReceiveResults", onReceiveResults);
+        const selectAssetHandle = engine.on("toolbar.selectAsset", onSelectAsset);
+        const selectToolHandle = engine.on("tool.activeTool.update", onSelectTool);
 
         return () => {
             eventHandle.clear();
+            selectAssetHandle.clear();
+            selectToolHandle.clear();
         };
-    }, [model.ViewMode, model.Filter, model.SubFilter, model.Search, model.OrderByAscending])
+    }, [model.ViewMode, model.Filter, model.SubFilter, model.Search, model.OrderByAscending, shifted])
     
     react.useEffect(() => {
         doResultsUpdate(model);
     }, []);
 
     const doResultsUpdate = (m) => {
-        const curQueryKey = `${m.Filter}:${m.SubFilter}:${m.Search ? m.Search : ""}:${m.OrderByAscending}`;
+        const curQueryKey = `${m.Filter}:${m.SubFilter}:${m.Search ? m.Search : ""}:${m.OrderByAscending}${m.Filter === "Favourite" ? ":" + m.Favourites.length : ""}`;
         triggerResultsUpdate(curQueryKey, model);
     };
 
@@ -128,7 +141,7 @@ const ToolWindow = ({ react, setupController }) => {
         model.Search = val;
         update("Search", val);
         doResultsUpdate(model);
-    }, 500);
+    }, filteredPrefabs.length > 5_000 ? 500 : 50);
 
     const onSearchInputChanged = (val) => {
         setSearch(val);
@@ -190,19 +203,106 @@ const ToolWindow = ({ react, setupController }) => {
         setExpanded(newValue);
     }, [expanded, setExpanded]);
 
+    const toggleShifter = react.useCallback(() => {
+        const newValue = !shifted;
+        setShifted(newValue);
+    }, [shifted, setShifted]);
+
+    const getGridCounts = () => {
+        let rowsCount = 0;
+        let columnsCount = 0;
+
+        switch (model.ViewMode) {
+            case "Rows":
+            case "Detailed":
+            case "Columns":
+                columnsCount = 1;
+                if (expanded) {
+                    if (shifted) {
+                        rowsCount = 4;
+                    }
+                    else {
+                        rowsCount = 8;
+                    }
+                }
+                else {
+                    if (shifted) {
+                        rowsCount = 2;
+                    }
+                    else {
+                        rowsCount = 4;
+                    }
+                }
+                break;
+
+            case "IconGrid":
+                if (expanded) {
+                    if (shifted) {
+                        rowsCount = 4;
+                        columnsCount = 9;
+                    }
+                    else {
+                        rowsCount = 6;
+                        columnsCount = 13;
+                    }
+                }
+                else {
+                    if (shifted) {
+                        rowsCount = 1;
+                        columnsCount = 9;
+                    }
+                    else {
+                        rowsCount = 3;
+                        columnsCount = 13;
+                    }
+                }
+                break;
+
+            case "IconGridLarge":
+                if (expanded) {
+                    if (shifted) {
+                        rowsCount = 4;
+                        columnsCount = 9;
+                    }
+                    else {
+                        rowsCount = 4;
+                        columnsCount = 9;
+                    }
+                }
+                else {
+                    if (shifted) {
+                        rowsCount = 1;
+                        columnsCount = 9;
+                    }
+                    else {
+                        rowsCount = 2;
+                        columnsCount = 9;
+                    }
+                }
+                break;
+        }
+
+        return { r: rowsCount, c: columnsCount };
+    };
+
+    const gridCounts = getGridCounts();
     const isBorderedList = model.ViewMode === "IconGrid" || model.ViewMode === "IconGridLarge" ? null : true;
-    const columnCount = model.ViewMode === "Rows" || model.ViewMode === "Detailed" ? 1 : model.ViewMode === "Columns" ? 2 : model.ViewMode === "IconGrid" ? 13 : 9;
-    const rowCount = model.ViewMode === "Rows" || model.ViewMode === "Detailed" || model.ViewMode === "Columns" ? (expanded ? 8 : 4) : model.ViewMode === "IconGrid" ? (expanded ? 6 : 3) : (expanded ? 4 : 2);
-    
-    return model.IsVisible ? <div className={isVisibleClass}>
+    const columnCount = gridCounts.c;// gridCounts.model.ViewMode === "Rows" || model.ViewMode === "Detailed" ? 1 : model.ViewMode === "Columns" ? 2 : model.ViewMode === "IconGrid" ? shifted ? 9 : 13 : shifted ? 6 : 9;
+    const rowCount = gridCounts.r;// model.ViewMode === "Rows" || model.ViewMode === "Detailed" || model.ViewMode === "Columns" ? (expanded ? shifted ? 4 : 8 : shifted ? 2 : 4) : model.ViewMode === "IconGrid" ? (expanded ? shifted ? 2 : 6 : shifted ? 1 : 3) : (expanded ? shifted ? 2 : 4 : shifted ? 1 : 2);
+
+    const renderHoverWindow = () => {
+        return hoverPrefab && hoverPrefab.Name && hoverPrefab.Name.length > 0 ? <HoverWindow className={shifted ? "mt-2" : "mb-2"} hoverPrefab={hoverPrefab} _L={_L} /> : null;
+    };
+
+    return model.IsVisible ? <div className={isVisibleClass + (shifted? " align-items-start" : "")}>
         <div className="col">
-            <FiltersWindow model={model} update={update} onDoUpdate={doResultsUpdate} _L={_L} />
+            <FiltersWindow compact={shifted} model={model} update={update} onDoUpdate={doResultsUpdate} _L={_L} />
         </div>
         <div className="col">
-            {hoverPrefab && hoverPrefab.Name && hoverPrefab.Name.length > 0 ? <HoverWindow hoverPrefab={hoverPrefab} _L={_L} /> : null}
-            <Modal bodyClassName={"asset-menu p-relative" + (expanded ? " asset-menu-xl" : "")} title={<div className="d-flex flex-row align-items-center">
+            {!shifted ? renderHoverWindow() : null}
+            <Modal bodyClassName={"asset-menu p-relative" + (expanded ? " asset-menu-xl" : shifted ? " asset-menu-sm" : "")} title={<div className="d-flex flex-row align-items-center">
                 <Button watch={[expanded]} circular icon style="trans-faded" onClick={toggleExpander}>
-                    <Icon icon={expanded ? "solid-chevron-down" : "solid-chevron-up"} fa />
+                    <Icon icon={expanded ? (!shifted ? "solid-chevron-down" : "solid-chevron-up") : (shifted ? "solid-chevron-down" : "solid-chevron-up")} fa />
                 </Button>
                 <Icon icon="solid-magnifying-glass" fa className="bg-muted ml-2" />
                 <TextBox size="sm" className="bg-dark-trans-less-faded w-25 mr-2 ml-4" placeholder="Search..." text={search} onChange={onSearchInputChanged} />
@@ -219,8 +319,14 @@ const ToolWindow = ({ react, setupController }) => {
                     </div>
                 </div>
             </Modal>
+            {shifted ? renderHoverWindow() : null}
         </div>
         <div className="col">
+            <div className="d-inline h-x w-x">
+                {/*<Button watch={[shifted]} circular border icon style="trans-faded" onClick={toggleShifter}>*/}
+                {/*    <Icon icon={shifted ? "solid-arrow-down" : "solid-arrow-up"} size="sm" fa />*/}
+                {/*</Button>*/}
+            </div>
         </div>
     </div> : null;
 };
