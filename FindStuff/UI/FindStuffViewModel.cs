@@ -81,6 +81,12 @@ namespace FindStuff.UI
             get;
             set;
         }
+
+        public bool Shifted
+        {
+            get;
+            set;
+        }
     }
 
     public class PrefabItem

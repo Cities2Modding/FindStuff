@@ -2177,16 +2177,29 @@
     const [filteredPrefabs, setFilteredPrefabs] = react.useState([]);
     const [search, setSearch] = react.useState(model.Search ?? "");
     const [expanded, setExpanded] = react.useState(false);
-    const [shifted, setShifted] = react.useState(false);
+    const [shifted, setShifted] = react.useState(model.Shifted);
     const [mouseOverItem, setMouseOverItem] = react.useState(null);
+    const updateShift = (turnOn) => {
+      if (turnOn) {
+        model.Shifted = true;
+        update("Shifted", model.Shifted);
+        setShifted(model.Shifted);
+      } else {
+        model.Shifted = false;
+        update("Shifted", model.Shifted);
+        setShifted(model.Shifted);
+      }
+    };
     react.useEffect(() => {
       if (model.IsVisible && model.HideOnSelection) {
         engine.trigger("tool.selectTool", "Default Tool");
         engine.trigger("toolbar.clearAssetSelection");
       } else if (!model.IsVisible) {
-        setShifted(false);
+        updateShift(false);
+      } else if (model.IsVisible && !model.HideOnSelection && model.Shifted) {
+        setShifted(true);
       }
-    }, [model.IsVisible, model.HideOnSelection]);
+    }, [model.IsVisible, model.HideOnSelection, shifted, model.Shifted]);
     const triggerResultsUpdate = debounce((curQueryKey, m) => {
       console.log("query key: " + curQueryKey);
       if ((!m.Search || m.Search.length == 0) && window.$_findStuff_cache[curQueryKey]) {
@@ -2208,9 +2221,9 @@
     };
     const onSelectAsset = (entity) => {
       if (!model.HideOnSelection)
-        setShifted(true);
+        updateShift(true);
       else
-        setShifted(false);
+        updateShift(false);
     };
     const onSelectTool = (tool) => {
       const isDefaultTool = tool.id === "Default Tool";
@@ -2220,7 +2233,7 @@
           trigger("OnHide");
         }
       } else
-        setShifted(!isDefaultTool);
+        updateShift(!isDefaultTool);
     };
     react.useEffect(() => {
       const eventHandle = engine.on("findstuff.onReceiveResults", onReceiveResults);
@@ -2231,7 +2244,7 @@
         selectAssetHandle.clear();
         selectToolHandle.clear();
       };
-    }, [model.ViewMode, model.HideOnSelection, model.Filter, model.SubFilter, model.Search, model.OrderByAscending, shifted]);
+    }, [model.ViewMode, model.Shifted, model.HideOnSelection, model.Filter, model.SubFilter, model.Search, model.OrderByAscending, shifted]);
     react.useEffect(() => {
       doResultsUpdate(model);
     }, []);
@@ -2251,7 +2264,6 @@
     const closeModal = () => {
       trigger("OnToggleVisible");
       engine.trigger("audio.playSound", "close-panel", 1);
-      setShifted(false);
     };
     const isVisibleClass = "tool-layout";
     const onSelectPrefab = (prefab) => {
@@ -2305,7 +2317,7 @@
     }, [expanded, setExpanded]);
     const toggleShifter = react.useCallback(() => {
       const newValue = !shifted;
-      setShifted(newValue);
+      updateShift(newValue);
     }, [shifted, setShifted]);
     const getGridCounts = () => {
       let rowsCount = 0;
