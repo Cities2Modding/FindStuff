@@ -3,7 +3,7 @@
 ## Overview
 **FindStuff** elevates your Cities: Skylines 2 experience by introducing an advanced mod that streamlines the search and management of game objects. As we continue to refine its features and interface in its alpha phase, FindStuff aims to seamlessly integrate with your gameplay, offering powerful functionalities designed for efficiency and convenience.
 
-![Find Stuff Preview](https://github.com/Cities2Modding/FindStuff/blob/master/FindStuff.png?raw=true "FindStuff Preview")
+![Find Stuff Preview](https://i.ibb.co/pwptQW8/preview.png "FindStuff Preview")
 
 ## Features
 
