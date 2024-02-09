@@ -56,7 +56,7 @@ namespace FindStuff.Systems
             {
 
                 if ( EntityManager.TryGetComponent<Game.Objects.Transform>( raycastResult.m_Owner, out var transform ) )
-                    _overlay.DrawCircle( UnityEngine.Color.yellow, transform.m_Position, 0.4f );
+                    _overlay.DrawCircle( UnityEngine.Color.yellow, transform.m_Position, 8f );
 
                 Entity prefab = prefabRef.m_Prefab;
                 if (Input.GetKeyDown(KeyCode.Mouse0))

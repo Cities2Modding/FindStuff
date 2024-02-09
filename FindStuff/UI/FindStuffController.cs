@@ -20,6 +20,7 @@ using UnityEngine.InputSystem;
 
 namespace FindStuff.UI
 {
+    [ControllerDepends( SystemUpdatePhase.UIUpdate, typeof( PickerToolSystem ) )]
     public class FindStuffController : Controller<FindStuffViewModel>
     {
         private ToolSystem _toolSystem;
