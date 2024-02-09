@@ -3,9 +3,13 @@ lang:
  Options.SECTION[FindStuff.FindStuffSettings]: Find Stuff 
  Options.GROUP[FindStuff.FindStuffSettings.Toggles]: Find Stuff
  
- Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Hide on prefab select
- Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Hide the Find Stuff menu when you select a prefab.
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.OperationMode]: Operation Mode
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.OperationMode]: Configure how Find Stuff behaves when a tool is opened, it can be be hidden, shift up the screen or hide the vanilla game asset window overriding it.
  
+ FindStuff.FindStuffSettings.MoveFindStuff: Move the window
+ FindStuff.FindStuffSettings.HideFindStuff: Hide the window
+ FindStuff.FindStuffSettings.HideAssetMenu: Override vanilla window
+
  FindStuff.View: View
  FindStuff.Filter: Filter
  FindStuff.OrderBy: Order

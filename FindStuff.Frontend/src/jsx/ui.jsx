@@ -80,6 +80,13 @@ const ToolWindow = ({ react, setupController }) => {
     const [shifted, setShifted] = react.useState(model.Shifted);
     const [mouseOverItem, setMouseOverItem] = react.useState(null);
 
+    const updateAssetHide = () => {
+        if (model.OperationMode == "HideAssetMenu" && model.IsVisible)
+            document.body.classList.add("find-stuff-hide");
+        else
+            document.body.classList.remove("find-stuff-hide");
+    };
+
     const updateShift = (turnOn) => {
         if (turnOn) {
             model.Shifted = true;
@@ -90,34 +97,38 @@ const ToolWindow = ({ react, setupController }) => {
             model.Shifted = false;
             update("Shifted", model.Shifted);
             setShifted(model.Shifted);
+            updateAssetHide();
         }
     };
 
     react.useEffect(() => {
-        if (model.IsVisible && model.HideOnSelection) {
+        if (model.IsVisible && model.OperationMode === "HideFindStuff") {
             engine.trigger("tool.selectTool", "Default Tool");
             engine.trigger("toolbar.clearAssetSelection");
         }
         else if (!model.IsVisible) {
             updateShift(false);
         }
-        else if (model.IsVisible && !model.HideOnSelection && model.Shifted) {
+        else if (model.IsVisible && model.OperationMode === "MoveFindStuff" && model.Shifted) {
             setShifted(true);
         }
-    }, [model.IsVisible, model.HideOnSelection, shifted, model.Shifted]);
+        else if (model.IsVisible && model.OperationMode === "HideAssetMenu") {
+            updateAssetHide();
+        }
+    }, [model.IsVisible, model.OperationMode, shifted, model.Shifted]);
 
     const triggerResultsUpdate = debounce((curQueryKey, m) => {
         //if (queryKey !== curQueryKey) {
         console.log("query key: " + curQueryKey);
-            // If the local JS cache has a store use that instead but only for non-searches
-            if ((!m.Search || m.Search.length == 0) && window.$_findStuff_cache[curQueryKey]) {
-                console.log("Got cache for " + curQueryKey);
-                setFilteredPrefabs(window.$_findStuff_cache[curQueryKey]);
-            }
-            // Otherwise use C# backend to query it
-            else {
-                trigger("OnUpdateQuery");
-            }
+        // If the local JS cache has a store use that instead but only for non-searches
+        if ((!m.Search || m.Search.length == 0) && window.$_findStuff_cache[curQueryKey]) {
+            console.log("Got cache for " + curQueryKey);
+            setFilteredPrefabs(window.$_findStuff_cache[curQueryKey]);
+        }
+        // Otherwise use C# backend to query it
+        else {
+            trigger("OnUpdateQuery");
+        }
         //}
     }, 50);
 
@@ -129,14 +140,14 @@ const ToolWindow = ({ react, setupController }) => {
 
         setFilteredPrefabs(result.Prefabs);
 
-        if (curQueryKey &&  curQueryKey.includes("::")) {
+        if (curQueryKey && curQueryKey.includes("::")) {
             window.$_findStuff_cache[curQueryKey] = result.Prefabs;
             console.log("Updated cache for " + curQueryKey);
         }
     };
 
     const onSelectAsset = (entity) => {
-        if (!model.HideOnSelection)
+        if (model.OperationMode === "MoveFindStuff")
             updateShift(true);
         else
             updateShift(false);
@@ -144,14 +155,14 @@ const ToolWindow = ({ react, setupController }) => {
 
     const onSelectTool = (tool) => {
         const isDefaultTool = tool.id === "Default Tool";
-        
-        if (model.HideOnSelection) {
+
+        if (model.OperationMode === "HideFindStuff") {
             if (!isDefaultTool) {
                 model.IsVisible = false;
                 trigger("OnHide");
             }
         }
-        else
+        else if (model.OperationMode === "MoveFindStuff")
             updateShift(!isDefaultTool);
     };
 
@@ -165,11 +176,11 @@ const ToolWindow = ({ react, setupController }) => {
             selectAssetHandle.clear();
             selectToolHandle.clear();
         };
-    }, [model.ViewMode, model.Shifted, model.HideOnSelection, model.Filter, model.SubFilter, model.Search, model.OrderByAscending, shifted])
-    
+    }, [model.ViewMode, model.Shifted, model.OperationMode, model.Filter, model.SubFilter, model.Search, model.OrderByAscending, shifted])
+
     react.useEffect(() => {
         doResultsUpdate(model);
-    }, []);
+    }, [model]);
 
     const doResultsUpdate = (m) => {
         const curQueryKey = `${m.Filter}:${m.SubFilter}:${m.Search ? m.Search : ""}:${m.OrderByAscending}${m.Filter === "Favourite" ? ":" + m.Favourites.length : ""}`;
@@ -255,7 +266,11 @@ const ToolWindow = ({ react, setupController }) => {
             case "Rows":
             case "Detailed":
             case "Columns":
-                columnsCount = 1;
+                if (model.ViewMode === "Columns")
+                    columnsCount = 2;
+                else
+                    columnsCount = 1;
+
                 if (expanded) {
                     if (shifted) {
                         rowsCount = 4;
@@ -329,9 +344,11 @@ const ToolWindow = ({ react, setupController }) => {
     const columnCount = gridCounts.c;// gridCounts.model.ViewMode === "Rows" || model.ViewMode === "Detailed" ? 1 : model.ViewMode === "Columns" ? 2 : model.ViewMode === "IconGrid" ? shifted ? 9 : 13 : shifted ? 6 : 9;
     const rowCount = gridCounts.r;// model.ViewMode === "Rows" || model.ViewMode === "Detailed" || model.ViewMode === "Columns" ? (expanded ? shifted ? 4 : 8 : shifted ? 2 : 4) : model.ViewMode === "IconGrid" ? (expanded ? shifted ? 2 : 6 : shifted ? 1 : 3) : (expanded ? shifted ? 2 : 4 : shifted ? 1 : 2);
 
-    const renderHoverWindow = () => {
-        return hoverPrefab && hoverPrefab.Name && hoverPrefab.Name.length > 0 ? <HoverWindow className={shifted ? "mt-2" : "mb-2"} hoverPrefab={hoverPrefab} _L={_L} /> : null;
-    };
+    const renderHoverWindow = react.useCallback(() => {
+        return hoverPrefab && hoverPrefab.Name && hoverPrefab.Name.length > 0 ?
+            <HoverWindow model={model} className={shifted ? "mt-2" : "mb-2"} hoverPrefab={hoverPrefab} _L={_L} />
+            : null;
+    }, [hoverPrefab, model, shifted, model.Search] );
 
     return model.IsVisible ? <div className={isVisibleClass + (shifted? " align-items-start" : "")}>
         <div className="col">

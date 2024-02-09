@@ -18,12 +18,9 @@ namespace FindStuff
 
             var patchedMethods = harmony.GetPatchedMethods( ).ToArray( );
 
-            Logger.LogInfo( @"  _____ _           _ ____  _          __  __ 
- |  ___(_)_ __   __| / ___|| |_ _   _ / _|/ _|
- | |_  | | '_ \ / _` \___ \| __| | | | |_| |_ 
- |  _| | | | | | (_| |___) | |_| |_| |  _|  _|
- |_|   |_|_| |_|\__,_|____/ \__|\__,_|_| |_|  
-                                              " );
+            Logger.LogInfo( System.Environment.NewLine + @" +-+-+-+-+ +-+-+-+-+-+
+ |F|i|n|d| |S|t|u|f|f|
+ +-+-+-+-+ +-+-+-+-+-+" );
             
             // Plugin startup logic
             Logger.LogInfo( $"Plugin {MyPluginInfo.PLUGIN_GUID} is loaded! Patched methods: " + patchedMethods.Length );

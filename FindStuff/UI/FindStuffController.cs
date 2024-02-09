@@ -29,6 +29,7 @@ namespace FindStuff.UI
         const string META_ZONE_LOT_SUM = "ZoneLotSum";
 
         private ToolSystem _toolSystem;
+        private DefaultToolSystem _defaulToolSystem;
         private PrefabSystem _prefabSystem;
         private ImageSystem _imageSystem;
         private ToolbarUISystem _toolbarUISystem;
@@ -53,6 +54,7 @@ namespace FindStuff.UI
         public override FindStuffViewModel Configure( )
         {
             _toolSystem = World.GetOrCreateSystemManaged<ToolSystem>( );
+            _defaulToolSystem = World.GetOrCreateSystemManaged<DefaultToolSystem>( );
             _prefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>( );
             _imageSystem = World.GetOrCreateSystemManaged<ImageSystem>( );
             _endFrameBarrier = World.GetOrCreateSystemManaged<EndFrameBarrier>( );
@@ -277,7 +279,7 @@ namespace FindStuff.UI
                     return "Media/Game/Icons/Roads.svg";
 
                 case "Park":
-                    return "fa:solid-children";
+                    return "Media/Game/Icons/ParksAndRecreation.svg";
 
                 case "Parking":
                     return "Media/Game/Icons/Parking.svg";
@@ -301,6 +303,13 @@ namespace FindStuff.UI
         private void OnToggleVisible( )
         {
             Model.IsVisible = !Model.IsVisible;
+
+            // If there's an active tool then ensure stuff is shifted
+            if ( Model.OperationMode == "MoveFindStuff" && Model.IsVisible && !Model.Shifted && _toolSystem.activeTool != _defaulToolSystem )
+            {
+                Model.Shifted = true;
+            }
+
             //_toolSystem.activeTool = World.GetOrCreateSystemManaged<ManualDuckToolSystem>( );
 
             //if (_toolSystem.activeTool != null && _toolSystem.activeTool is ManualDuckToolSystem duckTool )
@@ -422,9 +431,9 @@ namespace FindStuff.UI
 
             if ( plugin.Settings is FindStuffSettings settings )
             {
-                if ( settings.HideMenuOnSelection != Model.HideOnSelection )
+                if ( settings.OperationMode != Model.OperationMode )
                 {
-                    Model.HideOnSelection = settings.HideMenuOnSelection;
+                    Model.OperationMode = settings.OperationMode;
                     TriggerUpdate( );
                 }
             }

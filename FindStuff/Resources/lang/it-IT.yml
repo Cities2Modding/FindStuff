@@ -41,7 +41,7 @@ lang:
  FindStuff.PrefabType.Pavment: Sentiero
  
  FindStuff.Dangerous.CorruptWarning: Questo asset potrebbe danneggiare il tuo salvataggio se non usato correttamente.
- FindStuff.Dangerous.NoDelete: Questo asset non puÚ essere rimosso con lo strumento bulldozer dopo la posa.
+ FindStuff.Dangerous.NoDelete: Questo asset non pu√≤ essere rimosso con lo strumento bulldozer dopo la posa.
  
  FindStuff.Tag.eu: Europeo
  FindStuff.Tag.na: Nord Americano
@@ -71,7 +71,7 @@ lang:
  FindStuff.Tag.highway: Autostrada
  FindStuff.Tag.road: Strada
  FindStuff.Tag.road-tool: Attrezzo Strada
- FindStuff.Tag.electricity: Elettricit‡
+ FindStuff.Tag.electricity: Elettricit√†
  FindStuff.Tag.electricity-connection: Collegamento Elettrico
  FindStuff.Tag.station: Stazione
  FindStuff.Tag.water: Acqua
@@ -79,10 +79,10 @@ lang:
  FindStuff.Tag.water-connection: Collegamento Acqua
  FindStuff.Tag.water-source: Fonte Acqua
  FindStuff.Tag.power-plant: Centrale Elettrica
- FindStuff.Tag.low-density: Bassa Densit‡
- FindStuff.Tag.medium-density: Media Densit‡
- FindStuff.Tag.mixed-density: Densit‡ Mista
- FindStuff.Tag.high-density: Alta Densit‡
+ FindStuff.Tag.low-density: Bassa Densit√†
+ FindStuff.Tag.medium-density: Media Densit√†
+ FindStuff.Tag.mixed-density: Densit√† Mista
+ FindStuff.Tag.high-density: Alta Densit√†
  FindStuff.Tag.residential: Residenziale
  FindStuff.Tag.row: Fila
  FindStuff.Tag.low-rent: Affitto Basso

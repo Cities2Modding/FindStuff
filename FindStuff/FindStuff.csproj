@@ -47,6 +47,7 @@
 	  <None Remove="Resources\lang\zh-HANS.yml" />
 	  <None Remove="Resources\lang\zh-HANT.yml" />
 	  <None Remove="Resources\settings.xml" />
+	  <None Remove="Resources\ui.css" />
 	  <None Remove="Resources\ui.js" />
 	</ItemGroup>
 	
@@ -67,6 +68,7 @@
 	  <EmbeddedResource Include="Resources\lang\de-DE.yml" />
 	  <EmbeddedResource Include="Resources\lang\en-US.yml" />
 	  <EmbeddedResource Include="Resources\settings.xml" />
+	  <EmbeddedResource Include="Resources\ui.css" />
 	  <EmbeddedResource Include="Resources\ui.js" />
 	</ItemGroup>
 	

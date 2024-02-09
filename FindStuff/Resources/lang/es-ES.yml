@@ -4,7 +4,7 @@ lang:
  Options.GROUP[FindStuff.FindStuffSettings.Toggles]: Buscar Cosas
  
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Ocultar al seleccionar
- Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Oculta el men˙ Buscar Cosas cuando selecciones un prefab.
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Oculta el men√∫ Buscar Cosas cuando selecciones un prefab.
  
  FindStuff.View: Vista
  FindStuff.Filter: Filtro
@@ -12,7 +12,7 @@ lang:
  
  FindStuff.PrefabCategory.Foliage: Follaje
  FindStuff.PrefabCategory.Buildings: Edificios
- FindStuff.PrefabCategory.Zones: ZonificaciÛn
+ FindStuff.PrefabCategory.Zones: Zonificaci√≥n
  FindStuff.PrefabCategory.Misc: Varios
 
  FindStuff.PrefabType.Surface: Superficie
@@ -22,35 +22,35 @@ lang:
  FindStuff.PrefabType.ZoneOffice: Oficina
  FindStuff.PrefabType.ZoneIndustrial: Industrial
  FindStuff.PrefabType.ServiceBuilding: Servicio
- FindStuff.PrefabType.SignatureBuilding: Edificio Emblem·tico
+ FindStuff.PrefabType.SignatureBuilding: Edificio Emblem√°tico
  FindStuff.PrefabType.ParkBuilding: Parque
- FindStuff.PrefabType.Vehicle: VehÌculo
- FindStuff.PrefabType.Tree: ¡rbol
+ FindStuff.PrefabType.Vehicle: Veh√≠culo
+ FindStuff.PrefabType.Tree: √Årbol
  FindStuff.PrefabType.Plant: Planta
  FindStuff.PrefabType.Prop: Accesorio
  FindStuff.PrefabType.Bridge: Puente
  FindStuff.PrefabType.Train: Tren
- FindStuff.PrefabType.Tram: TranvÌa
- FindStuff.PrefabType.Pipe: TuberÌa
+ FindStuff.PrefabType.Tram: Tranv√≠a
+ FindStuff.PrefabType.Pipe: Tuber√≠a
  FindStuff.PrefabType.OtherNetwork: Varios
- FindStuff.PrefabType.SmallRoad: Calle PequeÒa
+ FindStuff.PrefabType.SmallRoad: Calle Peque√±a
  FindStuff.PrefabType.MediumRoad: Calle Mediana
  FindStuff.PrefabType.LargeRoad: Calle Grande
  FindStuff.PrefabType.Highway: Autopista
  FindStuff.PrefabType.RoadTool: Herramienta de Carretera
  FindStuff.PrefabType.Pavment: Camino
  
- FindStuff.Dangerous.CorruptWarning: Este activo podrÌa romper tu juego guardado si no se usa correctamente.
- FindStuff.Dangerous.NoDelete: Este activo no se puede eliminar con la herramienta bulldozer despuÈs de colocarlo.
+ FindStuff.Dangerous.CorruptWarning: Este activo podr√≠a romper tu juego guardado si no se usa correctamente.
+ FindStuff.Dangerous.NoDelete: Este activo no se puede eliminar con la herramienta bulldozer despu√©s de colocarlo.
  
  FindStuff.Tag.eu: Europeo
  FindStuff.Tag.na: Norteamericano
  FindStuff.Tag.foliage: Follaje
  FindStuff.Tag.building: Edificio
- FindStuff.Tag.zones: ZonificaciÛn
+ FindStuff.Tag.zones: Zonificaci√≥n
  FindStuff.Tag.misc: Varios
  FindStuff.Tag.surface: Superficie
- FindStuff.Tag.grass: CÈsped
+ FindStuff.Tag.grass: C√©sped
  FindStuff.Tag.agriculture: Granja
  FindStuff.Tag.sand: Arena
  FindStuff.Tag.concrete: Concreto
@@ -58,27 +58,27 @@ lang:
  FindStuff.Tag.pavement: Pavimento
  FindStuff.Tag.landfill: Vertedero
  FindStuff.Tag.tiles: Baldosas
- FindStuff.Tag.oil: PetrÛleo
+ FindStuff.Tag.oil: Petr√≥leo
  FindStuff.Tag.ore: Mineral
  FindStuff.Tag.network: Red
  FindStuff.Tag.marker: Marcador
- FindStuff.Tag.power-line: LÌnea ElÈctrica
- FindStuff.Tag.pipe: TuberÌa
+ FindStuff.Tag.power-line: L√≠nea El√©ctrica
+ FindStuff.Tag.pipe: Tuber√≠a
  FindStuff.Tag.bridge: Puente
- FindStuff.Tag.small-road: PequeÒa
+ FindStuff.Tag.small-road: Peque√±a
  FindStuff.Tag.medium-road: Mediana
  FindStuff.Tag.large-road: Grande
  FindStuff.Tag.highway: Autopista
  FindStuff.Tag.road: Carretera
  FindStuff.Tag.road-tool: Herramienta de Carretera
  FindStuff.Tag.electricity: Electricidad
- FindStuff.Tag.electricity-connection: ConexiÛn ElÈctrica
- FindStuff.Tag.station: EstaciÛn
+ FindStuff.Tag.electricity-connection: Conexi√≥n El√©ctrica
+ FindStuff.Tag.station: Estaci√≥n
  FindStuff.Tag.water: Agua
- FindStuff.Tag.waterway: VÌa Acu·tica
- FindStuff.Tag.water-connection: ConexiÛn de Agua
+ FindStuff.Tag.waterway: V√≠a Acu√°tica
+ FindStuff.Tag.water-connection: Conexi√≥n de Agua
  FindStuff.Tag.water-source: Fuente de Agua
- FindStuff.Tag.power-plant: Planta de EnergÌa
+ FindStuff.Tag.power-plant: Planta de Energ√≠a
  FindStuff.Tag.low-density: Baja Densidad
  FindStuff.Tag.medium-density: Densidad Media
  FindStuff.Tag.mixed-density: Densidad Mixta
@@ -91,40 +91,40 @@ lang:
  FindStuff.Tag.industrial: Industrial
  FindStuff.Tag.service: Servicio
  FindStuff.Tag.signature: Firma
- FindStuff.Tag.vehicle: VehÌculo
- FindStuff.Tag.tree: ¡rbol
+ FindStuff.Tag.vehicle: Veh√≠culo
+ FindStuff.Tag.tree: √Årbol
  FindStuff.Tag.plant: Planta
  FindStuff.Tag.prop: Accesorio
  FindStuff.Tag.park: Parque
  FindStuff.Tag.cargo: Carga
  FindStuff.Tag.parking: Aparcamiento
- FindStuff.Tag.administration: AdministraciÛn
+ FindStuff.Tag.administration: Administraci√≥n
  FindStuff.Tag.fire: Departamento de Bomberos
  FindStuff.Tag.emergency: Emergencia
- FindStuff.Tag.police: PolicÌa
- FindStuff.Tag.prison: PrisiÛn
+ FindStuff.Tag.police: Polic√≠a
+ FindStuff.Tag.prison: Prisi√≥n
  FindStuff.Tag.hospital: Hospital
  FindStuff.Tag.garbage: Basura
  FindStuff.Tag.fence: Valla
- FindStuff.Tag.poster: PÛster
+ FindStuff.Tag.poster: P√≥ster
  FindStuff.Tag.billboard: Valla Publicitaria
  FindStuff.Tag.aircraft: Aeronave
- FindStuff.Tag.watercraft: EmbarcaciÛn
- FindStuff.Tag.automobile: AutomÛvil
+ FindStuff.Tag.watercraft: Embarcaci√≥n
+ FindStuff.Tag.automobile: Autom√≥vil
  FindStuff.Tag.ship: Barco
  FindStuff.Tag.post: Poste
  FindStuff.Tag.subway: Metro
  FindStuff.Tag.rocket: Cohete
- FindStuff.Tag.sign: SeÒal
+ FindStuff.Tag.sign: Se√±al
  FindStuff.Tag.van: Furgoneta
  FindStuff.Tag.car: Coche
  FindStuff.Tag.taxi: Taxi
- FindStuff.Tag.bus: Autob˙s
- FindStuff.Tag.truck: CamiÛn
- FindStuff.Tag.tram: TranvÌa
+ FindStuff.Tag.bus: Autob√∫s
+ FindStuff.Tag.truck: Cami√≥n
+ FindStuff.Tag.tram: Tranv√≠a
  FindStuff.Tag.train: Tren
  FindStuff.Tag.engine: Motor
- FindStuff.Tag.carriage: VagÛn
- FindStuff.Tag.airplane: AviÛn
- FindStuff.Tag.helicopter: HelicÛptero
- FindStuff.Tag.public-transport: Transporte P˙blico
+ FindStuff.Tag.carriage: Vag√≥n
+ FindStuff.Tag.airplane: Avi√≥n
+ FindStuff.Tag.helicopter: Helic√≥ptero
+ FindStuff.Tag.public-transport: Transporte P√∫blico

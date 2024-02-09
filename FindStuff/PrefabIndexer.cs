@@ -91,7 +91,7 @@ namespace FindStuff
         private readonly ReadOnlyDictionary<int, string> _prefabNames = new( prefabs.ToDictionary( p => p.ID, p => p.Name ) );
         private readonly ReadOnlyDictionary<int, string> _prefabTypesNames = new( prefabs.ToDictionary( p => p.ID, p => p.Type ) );
         private readonly ReadOnlyDictionary<int, string> _prefabDisplayNames = new( prefabs.ToDictionary( p => p.ID, p => ResolvePrefabName( _localisationManager, p.Name ) ) );
-        private readonly ReadOnlyDictionary<int, HashSet<string>> _prefabTags = new( prefabs.ToDictionary( p => p.ID, p => p.Tags.Distinct().Select( t => ResolvePrefabName( _localisationManager, t.ToLowerInvariant() ) ).ToHashSet()) );
+        private readonly ReadOnlyDictionary<int, HashSet<string>> _prefabTags = new( prefabs.ToDictionary( p => p.ID, p => p.Tags.Distinct().Select( t => ResolveTagName( _localisationManager, t.ToLowerInvariant() ).ToLowerInvariant( ) ).ToHashSet()) );
 
         private readonly HashSet<Filter> _filters = [.. ( ( Filter[] ) Enum.GetValues( typeof( Filter ) ) )];
         private readonly HashSet<SubFilter> _subFilters = [.. ( ( SubFilter[] ) Enum.GetValues( typeof( SubFilter ) ) )];
@@ -222,7 +222,7 @@ namespace FindStuff
                     if ( name.Contains( search ) ||
                         displayName.Contains( search ) ||
                         typeName.Contains( search ) ||
-                        tags.Contains( search ) )
+                        tags.Count( t => t.Contains( search ) ) > 0 )
                     {
                         WorkingSet.Add( id );
                     }
@@ -282,13 +282,13 @@ namespace FindStuff
         /// <returns></returns>
         public (string Json, int Count) Query( FindStuffViewModel model, out string key )
         {
-            _stopWatch.Restart( );
+            //_stopWatch.Restart( );
 
             ClearWorkingSet( );
 
             var workingSetKey = GenerateKey( model );
 
-            if ( !BigQueryCache.ContainsKey( workingSetKey ) || model.Filter == Filter.Favourite )
+            if ( !BigQueryCache.ContainsKey( workingSetKey ) || !string.IsNullOrEmpty( model.Search ) || model.Filter == Filter.Favourite )
             {
                 // Only execute a query if the inputs changed
                 if ( WorkingSetKey != workingSetKey )
@@ -397,9 +397,9 @@ namespace FindStuff
                 WorkingSetCache = BigQueryCache[WorkingSetKey];
             }
 
-            _stopWatch.Stop( );
+            //_stopWatch.Stop( );
 
-            UnityEngine.Debug.Log( $"[PrefabIndexer] Query '{WorkingSetKey}' with '{WorkingSetCache.Count}' results took {_stopWatch.ElapsedMilliseconds} ms." );
+            //UnityEngine.Debug.Log( $"[PrefabIndexer] Query '{WorkingSetKey}' with '{WorkingSetCache.Count}' results took {_stopWatch.ElapsedMilliseconds} ms." );
 
             key = WorkingSetKey;
             return WorkingSetCache;

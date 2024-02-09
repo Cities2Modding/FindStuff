@@ -1915,7 +1915,7 @@
 
   // src/jsx/_hover-window.jsx
   var import_react = __toESM(require_react());
-  var HoverWindow = ({ className, hoverPrefab, _L }) => {
+  var HoverWindow = ({ className, model, hoverPrefab, _L }) => {
     const react = window.$_gooee.react;
     const { Icon, Grid, Modal } = window.$_gooee.framework;
     const prefabName = (p) => {
@@ -1949,6 +1949,13 @@
     const isFAIcon = hoverPrefab && hoverPrefab.Thumbnail.includes("fa:");
     const prefabIconSrc = react.useMemo(() => isFAIcon ? hoverPrefab.Thumbnail.replace("fa:", "") : hoverPrefab.Thumbnail, [hoverPrefab.Thumbnail]);
     const prefabDescText = react.useMemo(() => prefabDesc(hoverPrefab), [hoverPrefab, _L]);
+    const highlightSearchTerm = (text) => {
+      const regex = new RegExp(`(${model.Search})`, "gi");
+      const splitText = text.split(regex);
+      return !model.Search || model.Search.length == 0 ? text : splitText.map(
+        (part, index) => regex.test(part) ? /* @__PURE__ */ import_react.default.createElement("span", { key: index }, /* @__PURE__ */ import_react.default.createElement("b", { className: "text-dark bg-warning" }, part)) : part
+      );
+    };
     const renderTags = react.useCallback(() => {
       const getName = (tag) => {
         const key = `FindStuff.Tag.${tag}`;
@@ -1958,14 +1965,14 @@
         else
           return name;
       };
-      return hoverPrefab.Tags ? hoverPrefab.Tags.map((tag, index) => /* @__PURE__ */ import_react.default.createElement("div", { key: index + "_" + tag, className: "badge badge-dark" }, getName(tag))) : null;
-    }, [hoverPrefab.Tags, _L]);
+      return hoverPrefab.Tags ? hoverPrefab.Tags.map((tag, index) => /* @__PURE__ */ import_react.default.createElement("div", { key: index + "_" + tag, className: "badge badge-dark" }, highlightSearchTerm(getName(tag)))) : null;
+    }, [hoverPrefab.Tags, _L, model.Search]);
     const renderHoverContents = react.useCallback(() => {
       if (!hoverPrefab)
         return;
       const computedDangerousReason = react.useMemo(() => dangerousReason(hoverPrefab), [hoverPrefab, hoverPrefab.Meta, hoverPrefab.Meta.IsDangerous, hoverPrefab.Meta.IsDangerousReason, _L]);
       return /* @__PURE__ */ import_react.default.createElement(Grid, null, /* @__PURE__ */ import_react.default.createElement("div", { className: "col-3" }, /* @__PURE__ */ import_react.default.createElement("div", { className: "bg-dark-trans-mid rounded-sm w-x" }, /* @__PURE__ */ import_react.default.createElement(Icon, { icon: prefabIconSrc, fa: isFAIcon, className: "icon-xxxl" }))), /* @__PURE__ */ import_react.default.createElement("div", { className: "col-9" }, prefabDescText ? /* @__PURE__ */ import_react.default.createElement("p", { className: "mb-4 fs-sm", cohinline: "cohinline" }, prefabDescText) : null, hoverPrefab.Meta && hoverPrefab.Meta.IsDangerous ? /* @__PURE__ */ import_react.default.createElement("div", { className: "alert alert-danger fs-sm d-flex flex-row flex-wrap align-items-center p-2 mb-4" }, /* @__PURE__ */ import_react.default.createElement(Icon, { className: "mr-2", icon: "solid-circle-exclamation", fa: true }), computedDangerousReason) : null, /* @__PURE__ */ import_react.default.createElement("div", { className: "d-inline" }, renderTags())));
-    }, [hoverPrefab, prefabDescText]);
+    }, [hoverPrefab, prefabDescText, model.Search]);
     const modalTypeIconIsFAIcon = hoverPrefab && hoverPrefab.TypeIcon ? hoverPrefab.TypeIcon.includes("fa:") : false;
     const modalTypeIconSrc = modalTypeIconIsFAIcon ? hoverPrefab.TypeIcon.replaceAll("fa:", "") : hoverPrefab ? hoverPrefab.TypeIcon : null;
     return /* @__PURE__ */ import_react.default.createElement(Modal, { className, icon: /* @__PURE__ */ import_react.default.createElement(import_react.default.Fragment, null, /* @__PURE__ */ import_react.default.createElement(Icon, { icon: modalTypeIconSrc, fa: modalTypeIconIsFAIcon ? true : null })), title: prefabName(hoverPrefab), noClose: true }, renderHoverContents());
@@ -2000,7 +2007,7 @@
       if (onDoUpdate)
         onDoUpdate(model);
     }, [model.OrderByAscending, update]);
-    return /* @__PURE__ */ import_react2.default.createElement("div", { className: "bg-panel text-light rounded-sm" + (compact ? " align-self-end w-x p-2" : " p-4") }, !compact ? /* @__PURE__ */ import_react2.default.createElement("div", { className: "d-flex flex-row align-items-center justify-content-center" }, /* @__PURE__ */ import_react2.default.createElement("div", { className: "flex-1" }, _L("FindStuff.View")), /* @__PURE__ */ import_react2.default.createElement(Button, { className: "mr-1" + (model.ViewMode === "Rows" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => update("ViewMode", "Rows") }, /* @__PURE__ */ import_react2.default.createElement(Icon, { icon: "solid-bars", fa: true })), /* @__PURE__ */ import_react2.default.createElement(Button, { className: "mr-1" + (model.ViewMode === "Columns" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => update("ViewMode", "Columns") }, /* @__PURE__ */ import_react2.default.createElement(Icon, { icon: "solid-table-columns", fa: true })), /* @__PURE__ */ import_react2.default.createElement(Button, { className: "mr-1" + (model.ViewMode === "IconGrid" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => update("ViewMode", "IconGrid") }, /* @__PURE__ */ import_react2.default.createElement(Icon, { icon: "solid-table-cells", fa: true })), /* @__PURE__ */ import_react2.default.createElement(Button, { className: "mr-1" + (model.ViewMode === "IconGridLarge" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => update("ViewMode", "IconGridLarge") }, /* @__PURE__ */ import_react2.default.createElement(Icon, { icon: "solid-table-cells-large", fa: true })), /* @__PURE__ */ import_react2.default.createElement(Button, { className: model.ViewMode === "Detailed" ? " active" : "", color: "tool", size: "sm", icon: true, onClick: () => update("ViewMode", "Detailed") }, /* @__PURE__ */ import_react2.default.createElement(Icon, { icon: "solid-table-list", fa: true }))) : null, /* @__PURE__ */ import_react2.default.createElement("div", { className: "d-flex flex-row align-items-center justify-content-center" + (!compact ? " mt-4" : "") }, !compact ? /* @__PURE__ */ import_react2.default.createElement("div", { className: "flex-1" }, _L("FindStuff.Filter")) : null, /* @__PURE__ */ import_react2.default.createElement("div", { className: compact ? "w-x" : null }, /* @__PURE__ */ import_react2.default.createElement("div", { className: "d-flex flex-row flex-wrap align-items-center justify-content-end" }, /* @__PURE__ */ import_react2.default.createElement(Button, { className: !model.Filter || model.Filter === "None" ? " active" : "", color: "tool", size: "sm", icon: true, onClick: () => updateFilter("None") }, /* @__PURE__ */ import_react2.default.createElement(Icon, { icon: "solid-asterisk", fa: true })), /* @__PURE__ */ import_react2.default.createElement(Button, { className: "ml-1" + (model.Filter === "Favourite" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => updateFilter("Favourite") }, /* @__PURE__ */ import_react2.default.createElement(Icon, { icon: "solid-star", fa: true })), /* @__PURE__ */ import_react2.default.createElement(Button, { className: "ml-1" + (model.Filter === "Foliage" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => updateFilter("Foliage") }, /* @__PURE__ */ import_react2.default.createElement(Icon, { icon: "Media/Game/Icons/Forest.svg" })), /* @__PURE__ */ import_react2.default.createElement(Button, { className: "ml-1" + (model.Filter === "Network" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => updateFilter("Network") }, /* @__PURE__ */ import_react2.default.createElement(Icon, { icon: "Media/Game/Icons/Roads.svg" }))), /* @__PURE__ */ import_react2.default.createElement("div", { className: "d-flex flex-row flex-wrap align-items-center justify-content-end mt-1" }, /* @__PURE__ */ import_react2.default.createElement(Button, { className: model.Filter === "Buildings" ? " active" : "", color: "tool", size: "sm", icon: true, onClick: () => updateFilter("Buildings") }, /* @__PURE__ */ import_react2.default.createElement(Icon, { icon: "Media/Game/Icons/ZoneSignature.svg" })), /* @__PURE__ */ import_react2.default.createElement(Button, { className: "ml-1" + (model.Filter === "Zones" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => updateFilter("Zones") }, /* @__PURE__ */ import_react2.default.createElement(Icon, { icon: "Media/Game/Icons/Zones.svg" })), /* @__PURE__ */ import_react2.default.createElement(Button, { className: "ml-1" + (model.Filter === "Props" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => updateFilter("Props") }, /* @__PURE__ */ import_react2.default.createElement(Icon, { icon: "solid-cube", fa: true })), /* @__PURE__ */ import_react2.default.createElement(Button, { className: "ml-1" + (model.Filter === "Misc" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => updateFilter("Misc") }, /* @__PURE__ */ import_react2.default.createElement(Icon, { icon: "solid-ellipsis", fa: true }))))), !compact ? /* @__PURE__ */ import_react2.default.createElement("div", { className: "d-flex flex-row align-items-center justify-content-center mt-4" }, /* @__PURE__ */ import_react2.default.createElement("div", { className: "flex-1" }, _L("FindStuff.OrderBy")), /* @__PURE__ */ import_react2.default.createElement("div", null, /* @__PURE__ */ import_react2.default.createElement("div", { className: "d-flex flex-row flex-wrap align-items-center justify-content-end" }, /* @__PURE__ */ import_react2.default.createElement(Button, { className: model.OrderByAscending === true ? " active" : "", color: "tool", size: "sm", icon: true, onClick: () => updateOrderBy(true) }, /* @__PURE__ */ import_react2.default.createElement(Icon, { icon: "solid-arrow-down-a-z", fa: true })), /* @__PURE__ */ import_react2.default.createElement(Button, { className: "ml-1" + (model.OrderByAscending === false ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => updateOrderBy(false) }, /* @__PURE__ */ import_react2.default.createElement(Icon, { icon: "solid-arrow-up-a-z", fa: true }))))) : null);
+    return /* @__PURE__ */ import_react2.default.createElement("div", { className: "bg-panel text-light rounded-sm" + (compact ? " align-self-end w-x p-2" : " p-4") }, !compact ? /* @__PURE__ */ import_react2.default.createElement("div", { className: "d-flex flex-row align-items-center justify-content-center fs-tool-text" }, /* @__PURE__ */ import_react2.default.createElement("div", { className: "flex-1" }, _L("FindStuff.View")), /* @__PURE__ */ import_react2.default.createElement(Button, { className: "mr-1" + (model.ViewMode === "Rows" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => update("ViewMode", "Rows") }, /* @__PURE__ */ import_react2.default.createElement(Icon, { icon: "solid-bars", fa: true })), /* @__PURE__ */ import_react2.default.createElement(Button, { className: "mr-1" + (model.ViewMode === "Columns" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => update("ViewMode", "Columns") }, /* @__PURE__ */ import_react2.default.createElement(Icon, { icon: "solid-table-columns", fa: true })), /* @__PURE__ */ import_react2.default.createElement(Button, { className: "mr-1" + (model.ViewMode === "IconGrid" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => update("ViewMode", "IconGrid") }, /* @__PURE__ */ import_react2.default.createElement(Icon, { icon: "solid-table-cells", fa: true })), /* @__PURE__ */ import_react2.default.createElement(Button, { className: "mr-1" + (model.ViewMode === "IconGridLarge" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => update("ViewMode", "IconGridLarge") }, /* @__PURE__ */ import_react2.default.createElement(Icon, { icon: "solid-table-cells-large", fa: true })), /* @__PURE__ */ import_react2.default.createElement(Button, { className: model.ViewMode === "Detailed" ? " active" : "", color: "tool", size: "sm", icon: true, onClick: () => update("ViewMode", "Detailed") }, /* @__PURE__ */ import_react2.default.createElement(Icon, { icon: "solid-table-list", fa: true }))) : null, /* @__PURE__ */ import_react2.default.createElement("div", { className: "d-flex flex-row align-items-center justify-content-center fs-tool-text" + (!compact ? " mt-4" : "") }, !compact ? /* @__PURE__ */ import_react2.default.createElement("div", { className: "flex-1" }, _L("FindStuff.Filter")) : null, /* @__PURE__ */ import_react2.default.createElement("div", { className: compact ? "w-x" : null }, /* @__PURE__ */ import_react2.default.createElement("div", { className: "d-flex flex-row flex-wrap align-items-center justify-content-end" }, /* @__PURE__ */ import_react2.default.createElement(Button, { className: !model.Filter || model.Filter === "None" ? " active" : "", color: "tool", size: "sm", icon: true, onClick: () => updateFilter("None") }, /* @__PURE__ */ import_react2.default.createElement(Icon, { icon: "solid-asterisk", fa: true })), /* @__PURE__ */ import_react2.default.createElement(Button, { className: "ml-1" + (model.Filter === "Favourite" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => updateFilter("Favourite") }, /* @__PURE__ */ import_react2.default.createElement(Icon, { icon: "solid-star", fa: true })), /* @__PURE__ */ import_react2.default.createElement(Button, { className: "ml-1" + (model.Filter === "Foliage" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => updateFilter("Foliage") }, /* @__PURE__ */ import_react2.default.createElement(Icon, { icon: "Media/Game/Icons/Forest.svg" })), /* @__PURE__ */ import_react2.default.createElement(Button, { className: "ml-1" + (model.Filter === "Network" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => updateFilter("Network") }, /* @__PURE__ */ import_react2.default.createElement(Icon, { icon: "Media/Game/Icons/Roads.svg" }))), /* @__PURE__ */ import_react2.default.createElement("div", { className: "d-flex flex-row flex-wrap align-items-center justify-content-end mt-1" }, /* @__PURE__ */ import_react2.default.createElement(Button, { className: model.Filter === "Buildings" ? " active" : "", color: "tool", size: "sm", icon: true, onClick: () => updateFilter("Buildings") }, /* @__PURE__ */ import_react2.default.createElement(Icon, { icon: "Media/Game/Icons/ZoneSignature.svg" })), /* @__PURE__ */ import_react2.default.createElement(Button, { className: "ml-1" + (model.Filter === "Zones" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => updateFilter("Zones") }, /* @__PURE__ */ import_react2.default.createElement(Icon, { icon: "Media/Game/Icons/Zones.svg" })), /* @__PURE__ */ import_react2.default.createElement(Button, { className: "ml-1" + (model.Filter === "Props" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => updateFilter("Props") }, /* @__PURE__ */ import_react2.default.createElement(Icon, { icon: "solid-cube", fa: true })), /* @__PURE__ */ import_react2.default.createElement(Button, { className: "ml-1" + (model.Filter === "Misc" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => updateFilter("Misc") }, /* @__PURE__ */ import_react2.default.createElement(Icon, { icon: "solid-ellipsis", fa: true }))))), !compact ? /* @__PURE__ */ import_react2.default.createElement("div", { className: "d-flex flex-row align-items-center justify-content-center mt-4 fs-tool-text" }, /* @__PURE__ */ import_react2.default.createElement("div", { className: "flex-1" }, _L("FindStuff.OrderBy")), /* @__PURE__ */ import_react2.default.createElement("div", null, /* @__PURE__ */ import_react2.default.createElement("div", { className: "d-flex flex-row flex-wrap align-items-center justify-content-end" }, /* @__PURE__ */ import_react2.default.createElement(Button, { className: model.OrderByAscending === true ? " active" : "", color: "tool", size: "sm", icon: true, onClick: () => updateOrderBy(true) }, /* @__PURE__ */ import_react2.default.createElement(Icon, { icon: "solid-arrow-down-a-z", fa: true })), /* @__PURE__ */ import_react2.default.createElement(Button, { className: "ml-1" + (model.OrderByAscending === false ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => updateOrderBy(false) }, /* @__PURE__ */ import_react2.default.createElement(Icon, { icon: "solid-arrow-up-a-z", fa: true }))))) : null);
   };
   var filters_window_default = FiltersWindow;
 
@@ -2031,7 +2038,7 @@
     if (model.Filter === "Zones") {
       return /* @__PURE__ */ import_react3.default.createElement("div", { className: "d-flex flex-row flex-wrap justify-content-end mr-6 flex-1" }, subOptionsHeader, /* @__PURE__ */ import_react3.default.createElement(Button, { className: "ml-1" + (model.SubFilter === "ZoneResidential" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => updateBackend("ZoneResidential") }, /* @__PURE__ */ import_react3.default.createElement(Icon, { icon: "Media/Game/Icons/ZoneResidential.svg" })), /* @__PURE__ */ import_react3.default.createElement(Button, { className: "ml-1" + (model.SubFilter === "ZoneCommercial" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => updateBackend("ZoneCommercial") }, /* @__PURE__ */ import_react3.default.createElement(Icon, { icon: "Media/Game/Icons/ZoneCommercial.svg" })), /* @__PURE__ */ import_react3.default.createElement(Button, { className: "ml-1" + (model.SubFilter === "ZoneOffice" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => updateBackend("ZoneOffice") }, /* @__PURE__ */ import_react3.default.createElement(Icon, { icon: "Media/Game/Icons/ZoneOffice.svg" })), /* @__PURE__ */ import_react3.default.createElement(Button, { className: "ml-1 mr-1" + (model.SubFilter === "ZoneIndustrial" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => updateBackend("ZoneIndustrial") }, /* @__PURE__ */ import_react3.default.createElement(Icon, { icon: "Media/Game/Icons/ZoneIndustrial.svg" })));
     } else if (model.Filter === "Buildings") {
-      return /* @__PURE__ */ import_react3.default.createElement("div", { className: "d-flex flex-row flex-wrap justify-content-end mr-6 flex-1" }, subOptionsHeader, /* @__PURE__ */ import_react3.default.createElement(Button, { className: "ml-1" + (model.SubFilter === "ServiceBuilding" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => updateBackend("ServiceBuilding") }, /* @__PURE__ */ import_react3.default.createElement(Icon, { icon: "Media/Game/Icons/Services.svg" })), /* @__PURE__ */ import_react3.default.createElement(Button, { className: "ml-1" + (model.SubFilter === "SignatureBuilding" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => updateBackend("SignatureBuilding") }, /* @__PURE__ */ import_react3.default.createElement(Icon, { icon: "Media/Game/Icons/ZoneSignature.svg" })), /* @__PURE__ */ import_react3.default.createElement(Button, { className: "ml-1" + (model.SubFilter === "Park" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => updateBackend("Park") }, /* @__PURE__ */ import_react3.default.createElement(Icon, { icon: "solid-children", fa: true })), /* @__PURE__ */ import_react3.default.createElement(Button, { className: "ml-1" + (model.SubFilter === "Parking" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => updateBackend("Parking") }, /* @__PURE__ */ import_react3.default.createElement(Icon, { icon: "Media/Game/Icons/Parking.svg" })));
+      return /* @__PURE__ */ import_react3.default.createElement("div", { className: "d-flex flex-row flex-wrap justify-content-end mr-6 flex-1" }, subOptionsHeader, /* @__PURE__ */ import_react3.default.createElement(Button, { className: "ml-1" + (model.SubFilter === "ServiceBuilding" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => updateBackend("ServiceBuilding") }, /* @__PURE__ */ import_react3.default.createElement(Icon, { icon: "Media/Game/Icons/Services.svg" })), /* @__PURE__ */ import_react3.default.createElement(Button, { className: "ml-1" + (model.SubFilter === "SignatureBuilding" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => updateBackend("SignatureBuilding") }, /* @__PURE__ */ import_react3.default.createElement(Icon, { icon: "Media/Game/Icons/ZoneSignature.svg" })), /* @__PURE__ */ import_react3.default.createElement(Button, { className: "ml-1" + (model.SubFilter === "Park" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => updateBackend("Park") }, /* @__PURE__ */ import_react3.default.createElement(Icon, { icon: "Media/Game/Icons/ParksAndRecreation.svg" })), /* @__PURE__ */ import_react3.default.createElement(Button, { className: "ml-1" + (model.SubFilter === "Parking" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => updateBackend("Parking") }, /* @__PURE__ */ import_react3.default.createElement(Icon, { icon: "Media/Game/Icons/Parking.svg" })));
     } else if (model.Filter === "Foliage") {
       return /* @__PURE__ */ import_react3.default.createElement("div", { className: "d-flex flex-row flex-wrap justify-content-end mr-6 flex-1" }, subOptionsHeader, /* @__PURE__ */ import_react3.default.createElement(Button, { className: "ml-1" + (model.SubFilter === "Tree" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => updateBackend("Tree") }, /* @__PURE__ */ import_react3.default.createElement(Icon, { icon: "Media/Game/Icons/Forest.svg" })), /* @__PURE__ */ import_react3.default.createElement(Button, { className: "ml-1" + (model.SubFilter === "Plant" ? " active" : ""), color: "tool", size: "sm", icon: true, onClick: () => updateBackend("Plant") }, /* @__PURE__ */ import_react3.default.createElement(Icon, { icon: "Media/Game/Icons/Forest.svg" })));
     } else if (model.Filter === "Props") {
@@ -2179,6 +2186,12 @@
     const [expanded, setExpanded] = react.useState(false);
     const [shifted, setShifted] = react.useState(model.Shifted);
     const [mouseOverItem, setMouseOverItem] = react.useState(null);
+    const updateAssetHide = () => {
+      if (model.OperationMode == "HideAssetMenu" && model.IsVisible)
+        document.body.classList.add("find-stuff-hide");
+      else
+        document.body.classList.remove("find-stuff-hide");
+    };
     const updateShift = (turnOn) => {
       if (turnOn) {
         model.Shifted = true;
@@ -2188,18 +2201,21 @@
         model.Shifted = false;
         update("Shifted", model.Shifted);
         setShifted(model.Shifted);
+        updateAssetHide();
       }
     };
     react.useEffect(() => {
-      if (model.IsVisible && model.HideOnSelection) {
+      if (model.IsVisible && model.OperationMode === "HideFindStuff") {
         engine.trigger("tool.selectTool", "Default Tool");
         engine.trigger("toolbar.clearAssetSelection");
       } else if (!model.IsVisible) {
         updateShift(false);
-      } else if (model.IsVisible && !model.HideOnSelection && model.Shifted) {
+      } else if (model.IsVisible && model.OperationMode === "MoveFindStuff" && model.Shifted) {
         setShifted(true);
+      } else if (model.IsVisible && model.OperationMode === "HideAssetMenu") {
+        updateAssetHide();
       }
-    }, [model.IsVisible, model.HideOnSelection, shifted, model.Shifted]);
+    }, [model.IsVisible, model.OperationMode, shifted, model.Shifted]);
     const triggerResultsUpdate = debounce((curQueryKey, m) => {
       console.log("query key: " + curQueryKey);
       if ((!m.Search || m.Search.length == 0) && window.$_findStuff_cache[curQueryKey]) {
@@ -2220,19 +2236,19 @@
       }
     };
     const onSelectAsset = (entity) => {
-      if (!model.HideOnSelection)
+      if (model.OperationMode === "MoveFindStuff")
         updateShift(true);
       else
         updateShift(false);
     };
     const onSelectTool = (tool) => {
       const isDefaultTool = tool.id === "Default Tool";
-      if (model.HideOnSelection) {
+      if (model.OperationMode === "HideFindStuff") {
         if (!isDefaultTool) {
           model.IsVisible = false;
           trigger("OnHide");
         }
-      } else
+      } else if (model.OperationMode === "MoveFindStuff")
         updateShift(!isDefaultTool);
     };
     react.useEffect(() => {
@@ -2244,10 +2260,10 @@
         selectAssetHandle.clear();
         selectToolHandle.clear();
       };
-    }, [model.ViewMode, model.Shifted, model.HideOnSelection, model.Filter, model.SubFilter, model.Search, model.OrderByAscending, shifted]);
+    }, [model.ViewMode, model.Shifted, model.OperationMode, model.Filter, model.SubFilter, model.Search, model.OrderByAscending, shifted]);
     react.useEffect(() => {
       doResultsUpdate(model);
-    }, []);
+    }, [model]);
     const doResultsUpdate = (m) => {
       const curQueryKey = `${m.Filter}:${m.SubFilter}:${m.Search ? m.Search : ""}:${m.OrderByAscending}${m.Filter === "Favourite" ? ":" + m.Favourites.length : ""}`;
       triggerResultsUpdate(curQueryKey, model);
@@ -2326,7 +2342,10 @@
         case "Rows":
         case "Detailed":
         case "Columns":
-          columnsCount = 1;
+          if (model.ViewMode === "Columns")
+            columnsCount = 2;
+          else
+            columnsCount = 1;
           if (expanded) {
             if (shifted) {
               rowsCount = 4;
@@ -2386,9 +2405,9 @@
     const isBorderedList = model.ViewMode === "IconGrid" || model.ViewMode === "IconGridLarge" ? null : true;
     const columnCount = gridCounts.c;
     const rowCount = gridCounts.r;
-    const renderHoverWindow = () => {
-      return hoverPrefab && hoverPrefab.Name && hoverPrefab.Name.length > 0 ? /* @__PURE__ */ import_react7.default.createElement(hover_window_default, { className: shifted ? "mt-2" : "mb-2", hoverPrefab, _L }) : null;
-    };
+    const renderHoverWindow = react.useCallback(() => {
+      return hoverPrefab && hoverPrefab.Name && hoverPrefab.Name.length > 0 ? /* @__PURE__ */ import_react7.default.createElement(hover_window_default, { model, className: shifted ? "mt-2" : "mb-2", hoverPrefab, _L }) : null;
+    }, [hoverPrefab, model, shifted, model.Search]);
     return model.IsVisible ? /* @__PURE__ */ import_react7.default.createElement("div", { className: isVisibleClass + (shifted ? " align-items-start" : "") }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "col" }, /* @__PURE__ */ import_react7.default.createElement(filters_window_default, { compact: shifted, model, update, onDoUpdate: doResultsUpdate, _L })), /* @__PURE__ */ import_react7.default.createElement("div", { className: "col" }, !shifted ? renderHoverWindow() : null, /* @__PURE__ */ import_react7.default.createElement(Modal, { bodyClassName: "asset-menu p-relative" + (shifted && expanded ? "" : expanded ? " asset-menu-xl" : shifted ? " asset-menu-sm" : ""), title: /* @__PURE__ */ import_react7.default.createElement("div", { className: "d-flex flex-row align-items-center" }, /* @__PURE__ */ import_react7.default.createElement(Button, { watch: [expanded], circular: true, icon: true, style: "trans-faded", onClick: toggleExpander }, /* @__PURE__ */ import_react7.default.createElement(Icon, { icon: expanded ? !shifted ? "solid-chevron-down" : "solid-chevron-up" : shifted ? "solid-chevron-down" : "solid-chevron-up", fa: true })), /* @__PURE__ */ import_react7.default.createElement(Icon, { icon: "solid-magnifying-glass", fa: true, className: "bg-muted ml-2" }), /* @__PURE__ */ import_react7.default.createElement(TextBox, { size: "sm", className: "bg-dark-trans-less-faded w-25 mr-2 ml-4", placeholder: "Search...", text: search, onChange: onSearchInputChanged }), /* @__PURE__ */ import_react7.default.createElement(Button, { circular: true, icon: true, style: "trans-faded", disabled: search && search.length > 0 ? null : true, onClick: clearSearch }, /* @__PURE__ */ import_react7.default.createElement(Icon, { icon: "solid-eraser", fa: true })), /* @__PURE__ */ import_react7.default.createElement(sub_filters_default, { model, update, onDoUpdate: doResultsUpdate, _L })), onClose: closeModal }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "asset-menu-container", onMouseLeave: () => onMouseLeave() }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "flex-1" }, /* @__PURE__ */ import_react7.default.createElement(VirtualList, { watch: [model.Favourites, selectedPrefab, mouseOverItem, model.Search, model.Filter, model.SubFilter, model.ViewMode, model.OrderByAscending], border: isBorderedList, data: filteredPrefabs, onRenderItem, columns: columnCount, rows: rowCount, contentClassName: "d-flex flex-row flex-wrap", size: "sm", itemHeight: 32 })))), shifted ? renderHoverWindow() : null), /* @__PURE__ */ import_react7.default.createElement("div", { className: "col" }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "d-inline h-x w-x" }))) : null;
   };
   window.$_gooee.register("findstuff", "FindStuffWindow", ToolWindow, "main-container", "findstuff");

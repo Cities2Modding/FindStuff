@@ -76,7 +76,7 @@ namespace FindStuff.UI
             set;
         } = new List<string>( );
 
-        public bool HideOnSelection
+        public string OperationMode
         {
             get;
             set;

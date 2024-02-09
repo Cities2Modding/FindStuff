@@ -1,12 +1,16 @@
-﻿using Game.Settings;
+﻿using cohtml.Net;
+using Colossal.Localization;
+using Game.SceneFlow;
+using Game.Settings;
+using Game.UI.Widgets;
 using Gooee;
 
 namespace FindStuff.UI
 {
     internal class FindStuffSettings : GooeeSettings
     {
-        [SettingsUISection( "Toggles" )]
-        public bool HideMenuOnSelection
+        [SettingsUISection( "Toggles" )]//SettingsUIDropdownAttribute
+        public string OperationMode
         {
             get;
             set;
@@ -21,7 +25,33 @@ namespace FindStuff.UI
 
         public override void SetDefaults( )
         {
-            HideMenuOnSelection = false;
+            OperationMode = "MoveFindStuff";
         }
+
+        [Preserve]
+        public static DropdownItem<string>[] GetOperationModes( )
+        {
+            var localisationManager = GameManager.instance.localizationManager;
+
+            return
+            [
+                new DropdownItem<string>
+                {
+                    value = "MoveFindStuff",
+                    displayName = localisationManager.GetLocalizedName( "FindStuff.FindStuffSettings.MoveFindStuff" )
+                },
+                new DropdownItem<string>
+                {
+                    value = "HideFindStuff",
+                    displayName = localisationManager.GetLocalizedName( "FindStuff.FindStuffSettings.HideFindStuff" )
+                },
+                new DropdownItem<string>
+                {
+                    value = "HideAssetMenu",
+                    displayName = localisationManager.GetLocalizedName( "FindStuff.FindStuffSettings.HideAssetMenu" )
+                },
+            ];
+        }
+
     }
 }

@@ -36,7 +36,7 @@ const FiltersWindow = ({ compact = null, model, update, _L, onDoUpdate }) => {
 
     return <div className={"bg-panel text-light rounded-sm" + (compact ? " align-self-end w-x p-2" :" p-4")}>
         {!compact ?
-            <div className="d-flex flex-row align-items-center justify-content-center">
+            <div className="d-flex flex-row align-items-center justify-content-center fs-tool-text">
                 <div className="flex-1">
                     {_L("FindStuff.View")}
                 </div>
@@ -56,7 +56,7 @@ const FiltersWindow = ({ compact = null, model, update, _L, onDoUpdate }) => {
                     <Icon icon="solid-table-list" fa />
                 </Button>
             </div> : null}
-        <div className={"d-flex flex-row align-items-center justify-content-center" + (!compact ? " mt-4" : "")}>
+        <div className={"d-flex flex-row align-items-center justify-content-center fs-tool-text" + (!compact ? " mt-4" : "")}>
             {!compact ? <div className="flex-1">
                 {_L("FindStuff.Filter")}
             </div> : null}
@@ -92,7 +92,7 @@ const FiltersWindow = ({ compact = null, model, update, _L, onDoUpdate }) => {
             </div>
         </div>
         {!compact ?
-            <div className="d-flex flex-row align-items-center justify-content-center mt-4">
+            <div className="d-flex flex-row align-items-center justify-content-center mt-4 fs-tool-text">
                 <div className="flex-1">
                     {_L("FindStuff.OrderBy")}
                 </div>

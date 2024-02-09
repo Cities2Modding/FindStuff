@@ -1,0 +1,16 @@
+﻿body.find-stuff-hide .main-container__E2 > .tool-layout_SqM .tool-main-column_PaC
+{
+    visibility: hidden;
+    opacity: 0;
+}
+body.find-stuff-hide .main-container__E2 > .tool-layout_SqM .tool-side-column_l9i > .tool-options-panel_Se6
+{
+    margin-bottom: 175rem !important;
+}
+
+.fs-tool-text
+{
+    font-size: var(--fontSizeM);
+    font-weight: bold;
+    coh-font-fit-mode: shrink;
+}

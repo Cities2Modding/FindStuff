@@ -1,6 +1,6 @@
 import React from "react";
 
-const HoverWindow = ({ className, hoverPrefab, _L }) => {
+const HoverWindow = ({ className, model, hoverPrefab, _L }) => {
     const react = window.$_gooee.react;
     const { Icon, Grid, Modal } = window.$_gooee.framework;
 
@@ -47,6 +47,18 @@ const HoverWindow = ({ className, hoverPrefab, _L }) => {
     const prefabIconSrc = react.useMemo(() => isFAIcon ? hoverPrefab.Thumbnail.replace("fa:", "") : hoverPrefab.Thumbnail, [hoverPrefab.Thumbnail]);
 
     const prefabDescText = react.useMemo(() => prefabDesc(hoverPrefab), [hoverPrefab, _L]);
+
+    const highlightSearchTerm = (text) => {
+        const regex = new RegExp(`(${model.Search})`, 'gi');
+        const splitText = text.split(regex);
+
+        return (!model.Search || model.Search.length == 0) ? text : splitText.map((part, index) =>
+            regex.test(part) ? <span key={index}>
+                <b className="text-dark bg-warning">{part}</b>
+            </span> : part
+        );
+    };
+
     const renderTags = react.useCallback(() => {
         const getName = (tag) => {
             const key = `FindStuff.Tag.${tag}`;
@@ -57,12 +69,12 @@ const HoverWindow = ({ className, hoverPrefab, _L }) => {
             else
                 return name;
         };
-
+                
         return hoverPrefab.Tags ? hoverPrefab.Tags.map((tag, index) => <div key={index + "_" + tag} className="badge badge-dark">
-            {getName(tag)}
+            {highlightSearchTerm(getName(tag))}
         </div>) : null;
         
-    }, [hoverPrefab.Tags, _L]);
+    }, [hoverPrefab.Tags, _L, model.Search]);
 
     const renderHoverContents = react.useCallback( () => {
         if (!hoverPrefab)
@@ -90,7 +102,7 @@ const HoverWindow = ({ className, hoverPrefab, _L }) => {
                 </div>
             </div>
         </Grid>
-    }, [hoverPrefab, prefabDescText]);
+    }, [hoverPrefab, prefabDescText, model.Search]);
 
     const modalTypeIconIsFAIcon = hoverPrefab && hoverPrefab.TypeIcon ? hoverPrefab.TypeIcon.includes("fa:") : false;
     const modalTypeIconSrc = modalTypeIconIsFAIcon ? hoverPrefab.TypeIcon.replaceAll("fa:", "") : hoverPrefab ? hoverPrefab.TypeIcon : null;

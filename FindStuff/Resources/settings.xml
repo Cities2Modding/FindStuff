@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <settings>
 	<group title="Toggles">
-		<field title="HideMenuOnSelection_Desc">
-			<checkbox isChecked="HideMenuOnSelection" />
+		<field title="OperationMode_Desc">
+			<select selected="OperationMode" options="GetOperationModes">
+			</select>
 		</field>
 	</group>
 </settings>

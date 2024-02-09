@@ -4,74 +4,74 @@ lang:
  Options.GROUP[FindStuff.FindStuffSettings.Toggles]: Sachen Finden
  
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Bei Auswahl ausblenden
- Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Men¸ "Sachen Finden" bei Auswahl eines Prefabs ausblenden.
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Men√º "Sachen Finden" bei Auswahl eines Prefabs ausblenden.
  
  FindStuff.View: Ansicht
  FindStuff.Filter: Filter
  FindStuff.OrderBy: Sortieren
  
  FindStuff.PrefabCategory.Foliage: Laub
- FindStuff.PrefabCategory.Buildings: Geb‰ude
+ FindStuff.PrefabCategory.Buildings: Geb√§ude
  FindStuff.PrefabCategory.Zones: Zonen
  FindStuff.PrefabCategory.Misc: Verschiedenes
 
- FindStuff.PrefabType.Surface: Oberfl‰che
+ FindStuff.PrefabType.Surface: Oberfl√§che
  FindStuff.PrefabType.Network: Netze
  FindStuff.PrefabType.ZoneResidential: Wohngebiet
  FindStuff.PrefabType.ZoneCommercial: Gewerbe
- FindStuff.PrefabType.ZoneOffice: B¸ro
+ FindStuff.PrefabType.ZoneOffice: B√ºro
  FindStuff.PrefabType.ZoneIndustrial: Industrie
  FindStuff.PrefabType.ServiceBuilding: Dienstleistung
- FindStuff.PrefabType.SignatureBuilding: Signaturgeb‰ude
+ FindStuff.PrefabType.SignatureBuilding: Signaturgeb√§ude
  FindStuff.PrefabType.ParkBuilding: Park
  FindStuff.PrefabType.Vehicle: Fahrzeug
  FindStuff.PrefabType.Tree: Baum
  FindStuff.PrefabType.Plant: Pflanze
  FindStuff.PrefabType.Prop: Requisite
- FindStuff.PrefabType.Bridge: Br¸cke
+ FindStuff.PrefabType.Bridge: Br√ºcke
  FindStuff.PrefabType.Train: Zug
- FindStuff.PrefabType.Tram: Straﬂenbahn
+ FindStuff.PrefabType.Tram: Stra√üenbahn
  FindStuff.PrefabType.Pipe: Rohr
  FindStuff.PrefabType.OtherNetwork: Sonstige Netze
- FindStuff.PrefabType.SmallRoad: Kleine Straﬂe
- FindStuff.PrefabType.MediumRoad: Mittlere Straﬂe
- FindStuff.PrefabType.LargeRoad: Groﬂe Straﬂe
+ FindStuff.PrefabType.SmallRoad: Kleine Stra√üe
+ FindStuff.PrefabType.MediumRoad: Mittlere Stra√üe
+ FindStuff.PrefabType.LargeRoad: Gro√üe Stra√üe
  FindStuff.PrefabType.Highway: Autobahn
- FindStuff.PrefabType.RoadTool: Straﬂenwerkzeug
+ FindStuff.PrefabType.RoadTool: Stra√üenwerkzeug
  FindStuff.PrefabType.Pavment: Weg
  
- FindStuff.Dangerous.CorruptWarning: Dieses Asset kˆnnte Ihr Spiel speichern brechen, wenn es nicht richtig verwendet wird.
+ FindStuff.Dangerous.CorruptWarning: Dieses Asset k√∂nnte Ihr Spiel speichern brechen, wenn es nicht richtig verwendet wird.
  FindStuff.Dangerous.NoDelete: Dieses Asset kann nach der Platzierung nicht mit dem Abrisswerkzeug entfernt werden.
  
- FindStuff.Tag.eu: Europ‰isch
+ FindStuff.Tag.eu: Europ√§isch
  FindStuff.Tag.na: Nordamerikanisch
  FindStuff.Tag.foliage: Laub
- FindStuff.Tag.building: Geb‰ude
+ FindStuff.Tag.building: Geb√§ude
  FindStuff.Tag.zones: Zonen
  FindStuff.Tag.misc: Verschiedenes
- FindStuff.Tag.surface: Oberfl‰che
+ FindStuff.Tag.surface: Oberfl√§che
  FindStuff.Tag.grass: Gras
  FindStuff.Tag.agriculture: Bauernhof
  FindStuff.Tag.sand: Sand
  FindStuff.Tag.concrete: Beton
  FindStuff.Tag.forestry: Wald
  FindStuff.Tag.pavement: Pflaster
- FindStuff.Tag.landfill: M¸lldeponie
+ FindStuff.Tag.landfill: M√ºlldeponie
  FindStuff.Tag.tiles: Fliesen
- FindStuff.Tag.oil: ÷l
+ FindStuff.Tag.oil: √ñl
  FindStuff.Tag.ore: Erz
  FindStuff.Tag.network: Netz
  FindStuff.Tag.marker: Markierung
  FindStuff.Tag.power-line: Stromleitung
  FindStuff.Tag.pipe: Rohr
- FindStuff.Tag.bridge: Br¸cke
+ FindStuff.Tag.bridge: Br√ºcke
  FindStuff.Tag.small-road: Klein
  FindStuff.Tag.medium-road: Mittel
- FindStuff.Tag.large-road: Groﬂ
+ FindStuff.Tag.large-road: Gro√ü
  FindStuff.Tag.highway: Autobahn
- FindStuff.Tag.road: Straﬂe
- FindStuff.Tag.road-tool: Straﬂenwerkzeug
- FindStuff.Tag.electricity: Elektrizit‰t
+ FindStuff.Tag.road: Stra√üe
+ FindStuff.Tag.road-tool: Stra√üenwerkzeug
+ FindStuff.Tag.electricity: Elektrizit√§t
  FindStuff.Tag.electricity-connection: Stromanschluss
  FindStuff.Tag.station: Station
  FindStuff.Tag.water: Wasser
@@ -87,7 +87,7 @@ lang:
  FindStuff.Tag.row: Reihe
  FindStuff.Tag.low-rent: Niedrige Miete
  FindStuff.Tag.commercial: Gewerbe
- FindStuff.Tag.office: B¸ro
+ FindStuff.Tag.office: B√ºro
  FindStuff.Tag.industrial: Industrie
  FindStuff.Tag.service: Dienstleistung
  FindStuff.Tag.signature: Signatur
@@ -102,9 +102,9 @@ lang:
  FindStuff.Tag.fire: Feuerwehr
  FindStuff.Tag.emergency: Notfall
  FindStuff.Tag.police: Polizei
- FindStuff.Tag.prison: Gef‰ngnis
+ FindStuff.Tag.prison: Gef√§ngnis
  FindStuff.Tag.hospital: Krankenhaus
- FindStuff.Tag.garbage: M¸ll
+ FindStuff.Tag.garbage: M√ºll
  FindStuff.Tag.fence: Zaun
  FindStuff.Tag.poster: Poster
  FindStuff.Tag.billboard: Werbetafel
@@ -121,10 +121,10 @@ lang:
  FindStuff.Tag.taxi: Taxi
  FindStuff.Tag.bus: Bus
  FindStuff.Tag.truck: LKW
- FindStuff.Tag.tram: Straﬂenbahn
+ FindStuff.Tag.tram: Stra√üenbahn
  FindStuff.Tag.train: Zug
  FindStuff.Tag.engine: Motor
  FindStuff.Tag.carriage: Waggon
  FindStuff.Tag.airplane: Flugzeug
  FindStuff.Tag.helicopter: Hubschrauber
- FindStuff.Tag.public-transport: ÷ffentlicher Verkehr
+ FindStuff.Tag.public-transport: √ñffentlicher Verkehr

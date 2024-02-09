@@ -3,28 +3,28 @@ lang:
  Options.SECTION[FindStuff.FindStuffSettings]: Trouver Objets
  Options.GROUP[FindStuff.FindStuffSettings.Toggles]: Trouver Objets
  
- Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Cacher à la sélection
- Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Cacher le menu Trouver Objets lors de la sélection d'un prefab.
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Cacher Ã  la sÃ©lection
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Cacher le menu Trouver Objets lors de la sÃ©lection d'un prefab.
  
  FindStuff.View: Vue
  FindStuff.Filter: Filtre
  FindStuff.OrderBy: Ordonner
  
  FindStuff.PrefabCategory.Foliage: Feuillage
- FindStuff.PrefabCategory.Buildings: Bâtiments
+ FindStuff.PrefabCategory.Buildings: BÃ¢timents
  FindStuff.PrefabCategory.Zones: Zonage
  FindStuff.PrefabCategory.Misc: Divers
 
  FindStuff.PrefabType.Surface: Surface
- FindStuff.PrefabType.Network: Réseaux
- FindStuff.PrefabType.ZoneResidential: Résidentiel
+ FindStuff.PrefabType.Network: RÃ©seaux
+ FindStuff.PrefabType.ZoneResidential: RÃ©sidentiel
  FindStuff.PrefabType.ZoneCommercial: Commercial
  FindStuff.PrefabType.ZoneOffice: Bureau
  FindStuff.PrefabType.ZoneIndustrial: Industriel
  FindStuff.PrefabType.ServiceBuilding: Service
- FindStuff.PrefabType.SignatureBuilding: Bâtiment Signature
+ FindStuff.PrefabType.SignatureBuilding: BÃ¢timent Signature
  FindStuff.PrefabType.ParkBuilding: Parc
- FindStuff.PrefabType.Vehicle: Véhicule
+ FindStuff.PrefabType.Vehicle: VÃ©hicule
  FindStuff.PrefabType.Tree: Arbre
  FindStuff.PrefabType.Plant: Plante
  FindStuff.PrefabType.Prop: Accessoire
@@ -40,29 +40,29 @@ lang:
  FindStuff.PrefabType.RoadTool: Outil Route
  FindStuff.PrefabType.Pavment: Sentier
  
- FindStuff.Dangerous.CorruptWarning: Cet asset pourrait corrompre votre sauvegarde s'il n'est pas utilisé correctement.
- FindStuff.Dangerous.NoDelete: Cet asset ne peut être supprimé avec l'outil de bulldozer après sa mise en place.
+ FindStuff.Dangerous.CorruptWarning: Cet asset pourrait corrompre votre sauvegarde s'il n'est pas utilisÃ© correctement.
+ FindStuff.Dangerous.NoDelete: Cet asset ne peut Ãªtre supprimÃ© avec l'outil de bulldozer aprÃ¨s sa mise en place.
  
- FindStuff.Tag.eu: Européen
- FindStuff.Tag.na: Nord-Américain
+ FindStuff.Tag.eu: EuropÃ©en
+ FindStuff.Tag.na: Nord-AmÃ©ricain
  FindStuff.Tag.foliage: Feuillage
- FindStuff.Tag.building: Bâtiment
+ FindStuff.Tag.building: BÃ¢timent
  FindStuff.Tag.zones: Zonage
  FindStuff.Tag.misc: Divers
  FindStuff.Tag.surface: Surface
  FindStuff.Tag.grass: Herbe
  FindStuff.Tag.agriculture: Ferme
  FindStuff.Tag.sand: Sable
- FindStuff.Tag.concrete: Béton
- FindStuff.Tag.forestry: Forêt
+ FindStuff.Tag.concrete: BÃ©ton
+ FindStuff.Tag.forestry: ForÃªt
  FindStuff.Tag.pavement: Pavage
- FindStuff.Tag.landfill: Décharge
+ FindStuff.Tag.landfill: DÃ©charge
  FindStuff.Tag.tiles: Tuiles
- FindStuff.Tag.oil: Pétrole
+ FindStuff.Tag.oil: PÃ©trole
  FindStuff.Tag.ore: Minerai
- FindStuff.Tag.network: Réseau
+ FindStuff.Tag.network: RÃ©seau
  FindStuff.Tag.marker: Marqueur
- FindStuff.Tag.power-line: Ligne Électrique
+ FindStuff.Tag.power-line: Ligne Ã‰lectrique
  FindStuff.Tag.pipe: Tuyau
  FindStuff.Tag.bridge: Pont
  FindStuff.Tag.small-road: Petite
@@ -71,27 +71,27 @@ lang:
  FindStuff.Tag.highway: Autoroute
  FindStuff.Tag.road: Route
  FindStuff.Tag.road-tool: Outil Route
- FindStuff.Tag.electricity: Électricité
- FindStuff.Tag.electricity-connection: Connexion Électrique
+ FindStuff.Tag.electricity: Ã‰lectricitÃ©
+ FindStuff.Tag.electricity-connection: Connexion Ã‰lectrique
  FindStuff.Tag.station: Station
  FindStuff.Tag.water: Eau
  FindStuff.Tag.waterway: Voie d'Eau
  FindStuff.Tag.water-connection: Connexion d'Eau
  FindStuff.Tag.water-source: Source d'Eau
- FindStuff.Tag.power-plant: Centrale Électrique
- FindStuff.Tag.low-density: Faible Densité
- FindStuff.Tag.medium-density: Densité Moyenne
- FindStuff.Tag.mixed-density: Densité Mixte
- FindStuff.Tag.high-density: Haute Densité
- FindStuff.Tag.residential: Résidentiel
- FindStuff.Tag.row: Rangée
+ FindStuff.Tag.power-plant: Centrale Ã‰lectrique
+ FindStuff.Tag.low-density: Faible DensitÃ©
+ FindStuff.Tag.medium-density: DensitÃ© Moyenne
+ FindStuff.Tag.mixed-density: DensitÃ© Mixte
+ FindStuff.Tag.high-density: Haute DensitÃ©
+ FindStuff.Tag.residential: RÃ©sidentiel
+ FindStuff.Tag.row: RangÃ©e
  FindStuff.Tag.low-rent: Loyer Bas
  FindStuff.Tag.commercial: Commercial
  FindStuff.Tag.office: Bureau
  FindStuff.Tag.industrial: Industriel
  FindStuff.Tag.service: Service
  FindStuff.Tag.signature: Signature
- FindStuff.Tag.vehicle: Véhicule
+ FindStuff.Tag.vehicle: VÃ©hicule
  FindStuff.Tag.tree: Arbre
  FindStuff.Tag.plant: Plante
  FindStuff.Tag.prop: Accessoire
@@ -103,18 +103,18 @@ lang:
  FindStuff.Tag.emergency: Urgence
  FindStuff.Tag.police: Police
  FindStuff.Tag.prison: Prison
- FindStuff.Tag.hospital: Hôpital
- FindStuff.Tag.garbage: Déchets
- FindStuff.Tag.fence: Clôture
+ FindStuff.Tag.hospital: HÃ´pital
+ FindStuff.Tag.garbage: DÃ©chets
+ FindStuff.Tag.fence: ClÃ´ture
  FindStuff.Tag.poster: Affiche
  FindStuff.Tag.billboard: Panneau d'affichage
- FindStuff.Tag.aircraft: Aéronef
+ FindStuff.Tag.aircraft: AÃ©ronef
  FindStuff.Tag.watercraft: Engin Nautique
  FindStuff.Tag.automobile: Automobile
  FindStuff.Tag.ship: Navire
  FindStuff.Tag.post: Poste
- FindStuff.Tag.subway: Métro
- FindStuff.Tag.rocket: Fusée
+ FindStuff.Tag.subway: MÃ©tro
+ FindStuff.Tag.rocket: FusÃ©e
  FindStuff.Tag.sign: Panneau
  FindStuff.Tag.van: Camionnette
  FindStuff.Tag.car: Voiture
@@ -126,5 +126,5 @@ lang:
  FindStuff.Tag.engine: Moteur
  FindStuff.Tag.carriage: Wagon
  FindStuff.Tag.airplane: Avion
- FindStuff.Tag.helicopter: Hélicoptère
+ FindStuff.Tag.helicopter: HÃ©licoptÃ¨re
  FindStuff.Tag.public-transport: Transport Public
