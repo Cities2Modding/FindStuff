@@ -39,6 +39,7 @@ lang:
  FindStuff.PrefabType.MediumRoad: Estrada Média
  FindStuff.PrefabType.LargeRoad: Estrada Grande
  FindStuff.PrefabType.Highway: Rodovia
+ FindStuff.PrefabType.Roundabout: Rotatória
  FindStuff.PrefabType.RoadTool: Ferramenta de Estrada
  FindStuff.PrefabType.Pavment: Caminho
  

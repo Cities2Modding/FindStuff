@@ -39,6 +39,7 @@ lang:
  FindStuff.PrefabType.MediumRoad: Средние Дороги
  FindStuff.PrefabType.LargeRoad: Большие Дороги
  FindStuff.PrefabType.Highway: Шоссе
+ FindStuff.PrefabType.Roundabout: Круговой маршрут
  FindStuff.PrefabType.RoadTool: Дорожные Инструменты
  FindStuff.PrefabType.Pavment: Тропинки
  

@@ -77,6 +77,12 @@ namespace FindStuff.Helper
                         PrefabType = "RoadTool";
                         break;
 
+                    case "RoadsRoundabouts":
+                        tags.Add( "roundabout" );
+                        tags.Add( "road" );
+                        PrefabType = "Roundabout";
+                        break;
+
                     case "TransportationWater":
                         tags.Add( "waterway" );
                         break;
@@ -107,7 +113,7 @@ namespace FindStuff.Helper
                         tags.Add( uiObject.m_Group.name );
                         break;
                 }
-            }            
+            }
 
             if ( entityManager.HasComponent<MarkerNetData>( entity ) )
             {
@@ -136,7 +142,7 @@ namespace FindStuff.Helper
             if ( entityManager == null || entity == Entity.Null )
                 return false;
 
-            return entityManager.HasComponent<NetData>( entity );
+            return entityManager.HasComponent<NetData>( entity ) || prefab is StaticObjectPrefab staticObject && staticObject.components.Find( p => p is NetObject );
         }
     }
 }

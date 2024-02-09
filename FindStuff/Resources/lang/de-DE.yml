@@ -39,6 +39,7 @@ lang:
  FindStuff.PrefabType.MediumRoad: Mittlere Straße
  FindStuff.PrefabType.LargeRoad: Große Straße
  FindStuff.PrefabType.Highway: Autobahn
+ FindStuff.PrefabType.Roundabout: Kreisverkehr
  FindStuff.PrefabType.RoadTool: Straßenwerkzeug
  FindStuff.PrefabType.Pavment: Weg
  

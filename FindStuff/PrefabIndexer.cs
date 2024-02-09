@@ -74,6 +74,7 @@ namespace FindStuff
                     SubFilter.MediumRoad,
                     SubFilter.LargeRoad, 
                     SubFilter.Highway,
+                    SubFilter.Roundabout,
                     SubFilter.Pavement,
                     SubFilter.OtherNetwork
                 ] 

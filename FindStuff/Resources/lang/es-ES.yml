@@ -39,6 +39,7 @@ lang:
  FindStuff.PrefabType.MediumRoad: Calle Mediana
  FindStuff.PrefabType.LargeRoad: Calle Grande
  FindStuff.PrefabType.Highway: Autopista
+ FindStuff.PrefabType.Roundabout: Rotonda
  FindStuff.PrefabType.RoadTool: Herramienta de Carretera
  FindStuff.PrefabType.Pavment: Camino
  

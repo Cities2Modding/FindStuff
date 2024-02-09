@@ -39,6 +39,7 @@ lang:
  FindStuff.PrefabType.MediumRoad: 中路
  FindStuff.PrefabType.LargeRoad: 大路
  FindStuff.PrefabType.Highway: 高速公路
+ FindStuff.PrefabType.Roundabout: 回旋处
  FindStuff.PrefabType.RoadTool: 道路工具
  FindStuff.PrefabType.Pavment: 小径
  

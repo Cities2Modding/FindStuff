@@ -297,6 +297,9 @@ namespace FindStuff.UI
                 case "Parking":
                     return "Media/Game/Icons/Parking.svg";
 
+                case "Roundabout":
+                    return "Media/Game/Icons/Roundabouts.svg";
+
                 case "Accessory":
                     return "fa:solid-tree-city";
             }

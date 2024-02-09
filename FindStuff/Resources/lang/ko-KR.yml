@@ -39,6 +39,7 @@ lang:
  FindStuff.PrefabType.MediumRoad: 중간 길
  FindStuff.PrefabType.LargeRoad: 큰 길
  FindStuff.PrefabType.Highway: 고속도로
+ FindStuff.PrefabType.Roundabout: 로터리
  FindStuff.PrefabType.RoadTool: 도로 도구
  FindStuff.PrefabType.Pavment: 보도
  
