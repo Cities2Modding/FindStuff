@@ -19,6 +19,7 @@ This mod is currently in its alpha state, continuously being improved to provide
 
 ### 🎮Shortcut and 🌐Language Support 
 - Utilize the CTRL + F shortcut for quick access to the search functionality.
+- Use CTRL + Click to use the picker directly. (optional, needs to be enabled in the settings)
 - Enjoy language support for all default Cities Skylines 2 locales.
 
 ### 🚀Performance and  💨Optimization
