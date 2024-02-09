@@ -3,6 +3,8 @@
 ## Overview
 **FindStuff** elevates your Cities: Skylines 2 experience by introducing an advanced mod that streamlines the search and management of game objects. As we continue to refine its features and interface in its alpha phase, FindStuff aims to seamlessly integrate with your gameplay, offering powerful functionalities designed for efficiency and convenience.
 
+![Find Stuff Preview](FindStuff.png "Find Stuff")
+
 ## Features
 
 ### Enhanced GameObject Finder and UI Interactivity
@@ -31,7 +33,7 @@
 Ensure BepInEx5 and Gooee is installed for Cities Skylines 2. Download FindStuff and Gooee from the official GitHub repository or Thunderstore.io.
 
 ## Usage
-Activate via the magnifying glass icon or through the HookUI/Gooee mod backpack icon in the upper left corner of the game.
+Activate FindStuff via the magnifying glass icon or through the HookUI/Gooee mod backpack icon in the upper left corner of the game, the picker tool is accessed through the eye drop icon.
 
 ### Important Notes
 - **Experimental Phase**: FindStuff is currently in development, focusing on expanding and refining its features. Not all assets/prefabs may be visible, and while custom modded assets are likely to appear if vanilla methods are used, this is not guaranteed.
