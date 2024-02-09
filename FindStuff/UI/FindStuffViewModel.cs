@@ -52,7 +52,7 @@ namespace FindStuff.UI
         {
             get;
             set;
-        } = ViewMode.Rows;
+        } = ViewMode.IconGrid;
 
         public string Search
         {
