@@ -1,64 +1,52 @@
-﻿# FindStuff mod for Cities: Skylines 2
+﻿# FindStuff Mod for Cities: Skylines 2
 
 ## Overview
-Welcome to ***FindStuff***, a powerful mod designed to enhance your Cities Skylines experience! With FindStuff, you can streamline your gameplay by easily locating various objects within the game.
-This mod is currently in its alpha state, continuously being improved to provide the best functionality for players like you.
+**FindStuff** elevates your Cities: Skylines 2 experience by introducing an advanced mod that streamlines the search and management of game objects. As we continue to refine its features and interface in its alpha phase, FindStuff aims to seamlessly integrate with your gameplay, offering powerful functionalities designed for efficiency and convenience.
 
-## Key Features
-### 💯Unified Gameobject Finder
-- Easily find most objects in one convenient window.
-- Utilize an integrated Picker tool for seamless object selection.
+![Find Stuff Preview](https://i.ibb.co/pwptQW8/preview.png "FindStuff Preview")
 
-### 🔎Advanced Search Functionality
-- Benefit from a powerful real-time text search, allowing you to quickly locate specific objects.
-- Filter objects by prop categories to narrow down your search results.
+## Features
 
-### ⭐Favorites and 🏷️Tag System 
-- Organize your frequently used objects with the Favorites system.
-- Tag objects for even more efficient categorization and management.
+### Enhanced GameObject Finder and UI Interactivity
+- **Unified Interface**: A singular window for easy access to game objects, coupled with an integrated Picker tool for precise selection.
+- **Menu Behavior Configuration**: Customize how FindStuff interacts with the game's vanilla menus. Options include:
+  - Hide FindStuff when a vanilla menu is opened.
+  - Move FindStuff to the top of the screen, displaying a compact version, when vanilla menus are active.
+  - Override and hide the vanilla asset window, replacing it with FindStuff for a unified experience.
+- **Prefab Selection Memory**: In override mode, if a prefab is selected outside FindStuff when closed, reopening FindStuff will have that prefab pre-selected.
+- **Dynamic UI Resizing**: Adjust the FindStuff menu size for an expanded or compact view, enhancing visibility and access to a wider range of assets.
 
-### 🎮Shortcut and 🌐Language Support 
-- Utilize the CTRL + F shortcut for quick access to the search functionality.
-- Use CTRL + Click to use the picker directly. (optional, needs to be enabled in the settings)
-- Enjoy language support for all default Cities Skylines 2 locales.
+### Advanced Search and Filtering Capabilities
+- **Comprehensive Search Options**: Perform full-text searches on asset names, translated names, tags, and categories for precise findings.
+- **Enhanced Filtering**: Utilize category and sub-category filters through intuitive icon buttons to streamline your search process.
+- **Sorting Functionality**: Order assets by name in ascending or descending format for easier navigation and selection.
 
-### 🚀Performance and  💨Optimization
-- Experience a performant and optimized object list capable of efficiently processing tens of thousands of game objects.
-- Highlight dangerous objects for improved gameplay awareness.
+### Shortcuts and Language Support
+- Leverage shortcuts like CTRL + F for quick searching and CTRL + Click for direct Picker tool access, with customizable options in settings.
+- Full language support for all default Cities Skylines 2 locales, ensuring accessibility for a global player base.
 
-### 💫Extended UI and 💾Configuration
-- Navigate through an extended UI created by the Gooee framework.
-- FindStuff remembers your view configuration and restores it upon game load for a seamless experience.
-
-### Key Shortcuts
-- **CTRL + F shortcut**: For quick access to the search functionality.
+### Performance, Optimization, and Configuration
+- Experience optimized performance for handling extensive game objects lists, with features to identify potentially harmful objects.
+- Enjoy an extended UI developed with the Gooee framework, with configurations remembered and restored on each game load for a seamless experience.
 
 ## Installation
-Install BepInEx5 for Cities Skylines 2. Download "FindStuff" via the official GitHub repository or Thunderstore.io.
+Ensure BepInEx5 and Gooee is installed for Cities Skylines 2. Download FindStuff and Gooee from the official GitHub repository or Thunderstore.io.
 
 ## Usage
-Activate the mod with the magnifying glass icon or the HookUI/Gooee mod backpack icon button on the upper left.
+Activate FindStuff via the magnifying glass icon or through the HookUI/Gooee mod backpack icon in the upper left corner of the game, the picker tool is accessed through the eye drop icon.
 
 ### Important Notes
-- **Experimental Phase**: This mod is rudimentary and under active development.
-- **Official Downloads**: Only download from Thunderstore.io or the GitHub page.
-- **Community Effort**: A proud creation of the [Cities 2 Modding](https://discord.gg/M9rgRtGcRa) community.
+- **Experimental Phase**: FindStuff is currently in development, focusing on expanding and refining its features. Not all assets/prefabs may be visible, and while custom modded assets are likely to appear if vanilla methods are used, this is not guaranteed.
+- Ensure downloads are from Thunderstore.io or the official GitHub page for authenticity.
+- This mod is a collaborative effort within the Cities 2 Modding community.
 
----
+## Development Team and Credits
+- Development led by [optimus-code](https://github.com/optimus-code) and [89pleasure](https://github.com/89pleasure).
+- Special thanks to Rebecca, CaptainOfCoit, the Cities 2 Modding Community, Colossal Order, and Paradox Interactive.
 
-### 👨‍💻Development Team
-- [optimus-code](https://github.com/optimus-code)
-- [89pleasure](https://github.com/89pleasure)
-
-### 💖Credits & Special Thanks
-- Rebecca
-- CaptainOfCoit
-- [Cities 2 Modding Community](https://discord.gg/M9rgRtGcRa)
-- Colossal Order & Paradox Interactive
-
-***This mod was made with [Gooee](https://github.com/Cities2Modding/Gooee) - A powerful UI framework for Cities: Skylines 2 mods.***
+**Utilizes [Gooee](https://github.com/Cities2Modding/Gooee), a dedicated UI framework for Cities: Skylines 2 mods.**
 
 ## Feedback and Support
-We value your feedback! If you encounter any issues, have suggestions for improvement, or simply want to connect with the development team, please visit our discord community: [https://discord.gg/M9rgRtGcRa](https://discord.gg/M9rgRtGcRa)
+We value your input and encourage feedback to continually improve FindStuff. For issues, suggestions, or to connect with the team, join our Discord at [https://discord.gg/M9rgRtGcRa](https://discord.gg/M9rgRtGcRa).
 
-Thank you for using FindStuff! Enjoy your enhanced Cities Skylines gameplay experience.
+Thank you for choosing FindStuff for an enhanced Cities Skylines gameplay experience.
