@@ -31,6 +31,14 @@ namespace FindStuff.UI
             }
         }
 
+        public bool EnableShortcut
+        {
+            get
+            {
+                return Model.EnableShortcut;
+            }
+        }
+
         private ToolSystem _toolSystem;
         private DefaultToolSystem _defaulToolSystem;
         private PickerToolSystem _pickerToolSystem;
@@ -443,6 +451,12 @@ namespace FindStuff.UI
 
             if ( plugin.Settings is FindStuffSettings settings )
             {
+                if (settings.EnableShortcut != Model.EnableShortcut)
+                {
+                    Model.EnableShortcut = settings.EnableShortcut;
+                    TriggerUpdate( );
+                }
+
                 if ( settings.OperationMode != Model.OperationMode )
                 {
                     Model.OperationMode = settings.OperationMode;

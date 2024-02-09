@@ -5,6 +5,8 @@ lang:
  
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: プレファブ選択時に非表示
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: プレファブを選択したときにアイテム検索メニューを隠す。
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: ショートカットを有効にする
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: CTRL + Click キーを押しながらオブジェクトをピックする。
  
  FindStuff.View: 表示
  FindStuff.Filter: フィルター

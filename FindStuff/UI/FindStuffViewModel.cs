@@ -85,6 +85,12 @@ namespace FindStuff.UI
             set;
         }
 
+        public bool EnableShortcut
+        {
+            get;
+            set;
+        }
+
         public bool Shifted
         {
             get;

@@ -5,6 +5,8 @@ lang:
  
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: 选定预制件时隐藏
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: 当您选择一个预制件时，隐藏查找物品菜单。
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: 激活快捷键
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: 按住 CTRL + 单击来选取对象。
  
  FindStuff.View: 查看
  FindStuff.Filter: 筛选

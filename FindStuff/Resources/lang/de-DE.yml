@@ -1,10 +1,12 @@
 lang:
- FindStuff.FindStuffSettings.ModName: Sachen Finden
- Options.SECTION[FindStuff.FindStuffSettings]: Sachen Finden
- Options.GROUP[FindStuff.FindStuffSettings.Toggles]: Sachen Finden
+ FindStuff.FindStuffSettings.ModName: FindStuff
+ Options.SECTION[FindStuff.FindStuffSettings]: FindStuff
+ Options.GROUP[FindStuff.FindStuffSettings.Toggles]: FindStuff
  
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Bei Auswahl ausblenden
- Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Menü "Sachen Finden" bei Auswahl eines Prefabs ausblenden.
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Menü "FindStuff" bei Auswahl eines Prefabs ausblenden.
+ ptions.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Tastenkombination aktivieren
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Halte STRG + Klick, um ein Objekt auszuwählen.
  
  FindStuff.View: Ansicht
  FindStuff.Filter: Filter

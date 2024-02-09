@@ -5,6 +5,8 @@ lang:
  
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Скрыть при выборе префаба
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Скрыть меню Найти Вещи при выборе префаба.
+  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Активируйте ярлык
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Удерживайте CTRL + Click, чтобы выбрать объект.
  
  FindStuff.View: Просмотр
  FindStuff.Filter: Фильтр

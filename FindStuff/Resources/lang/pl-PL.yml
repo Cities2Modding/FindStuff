@@ -5,6 +5,8 @@ lang:
  
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Ukryj przy wyborze prefabrykatu
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Ukryj menu Znajdź Rzeczy, gdy wybierzesz prefabrykat.
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Aktywuj skrót
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Przytrzymaj CTRL + kliknij, aby wybrać obiekt.
  
  FindStuff.View: Widok
  FindStuff.Filter: Filtr
