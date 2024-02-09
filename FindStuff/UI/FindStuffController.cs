@@ -471,5 +471,23 @@ namespace FindStuff.UI
             Model.IsPicking = isPicking;
             TriggerUpdate( );
         }
+
+        [OnTrigger]
+        private void OnNeedHighlightPrefab( string idString )
+        {
+            if ( string.IsNullOrEmpty( idString ) || !int.TryParse( idString, out var id ) )
+                return;
+
+            var prefabSettings = _indexer.GetPrefab( id );
+
+            if ( prefabSettings.Prefab != null )
+            {
+                Model.Selected = prefabSettings.Prefab;
+                Model.Filter = prefabSettings.Filter;
+                Model.SubFilter = prefabSettings.SubFilter;
+
+                TriggerUpdate( );
+            }
+        }
     }
 }

@@ -90,6 +90,12 @@ namespace FindStuff.UI
             get;
             set;
         }
+
+        public PrefabItem Selected
+        {
+            get;
+            set;
+        }
     }
 
     public class PrefabItem

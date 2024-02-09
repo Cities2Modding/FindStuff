@@ -195,6 +195,44 @@ namespace FindStuff
         }
 
         /// <summary>
+        /// Get a prefab and its filters by ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public (PrefabItem Prefab, Filter Filter, SubFilter SubFilter) GetPrefab( int id )
+        {
+            if ( !_prefabs.ContainsKey( id ) )
+                return default;
+
+            var prefab = _prefabs[id];
+            var filter = Filter.None;
+            var subFilter = SubFilter.None;
+
+            // If the prefab type is a valid top level filter
+            if ( !string.IsNullOrEmpty( prefab.Type ) &&
+                Enum.TryParse<Filter>( prefab.Type, out var f ) &&
+                !_filterMappings.ContainsKey( f ) )
+            {
+                filter = f;   
+            }
+            else if ( !string.IsNullOrEmpty( prefab.Category ) &&
+                Enum.TryParse<Filter>( prefab.Category, out var f2 ) &&
+                Enum.TryParse<SubFilter>( prefab.Type, out var sf ) &&
+                _filterMappings.ContainsKey( f2 ) )
+            {
+                var mappings = _filterMappings[f2];
+
+                if ( mappings.Contains( sf ) )
+                {
+                    filter = f2;
+                    subFilter = sf;
+                }
+            }
+
+            return (prefab, filter, subFilter);
+        }
+
+        /// <summary>
         /// Add prefabs to the working set, filtering them by search if necessary.
         /// </summary>
         /// <param name="model"></param>

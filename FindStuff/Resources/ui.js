@@ -2200,10 +2200,10 @@
   };
   var ToolWindow = ({ react, setupController }) => {
     const [sliderValue, setSliderValue] = react.useState(0);
-    const [selectedPrefab, setSeletedPrefab] = react.useState({ Name: "" });
     const [hoverPrefab, setHoverPrefab] = react.useState({ Name: "" });
     const { Button, Icon, VirtualList, Slider, List, Grid, FormGroup, FormCheckBox, Scrollable, ToolTip, TextBox, Dropdown, ToolTipContent, TabModal, Modal, MarkDown } = window.$_gooee.framework;
     const { model, update, trigger, _L } = setupController();
+    const [selectedPrefab, setSeletedPrefab] = react.useState(model && model.Selected ? model.Selected : { Name: "" });
     const [filteredPrefabs, setFilteredPrefabs] = react.useState([]);
     const [search, setSearch] = react.useState(model.Search ?? "");
     const [expanded, setExpanded] = react.useState(false);
@@ -2259,10 +2259,14 @@
       }
     };
     const onSelectAsset = (entity) => {
+      console.log(JSON.stringify(entity));
       if (model.OperationMode === "MoveFindStuff")
         updateShift(true);
       else
         updateShift(false);
+      if (entity && entity.index >= 0 && (!selectedPrefab || entity.index != selectedPrefab.ID)) {
+        trigger("OnNeedHighlightPrefab", "" + entity.index);
+      }
     };
     const onSelectTool = (tool) => {
       const isDefaultTool = tool.id === "Default Tool";
@@ -2275,6 +2279,8 @@
         updateShift(!isDefaultTool);
     };
     react.useEffect(() => {
+      if (model && model.Selected)
+        setSeletedPrefab(model.Selected);
       const eventHandle = engine.on("findstuff.onReceiveResults", onReceiveResults);
       const selectAssetHandle = engine.on("toolbar.selectAsset", onSelectAsset);
       const selectToolHandle = engine.on("tool.activeTool.update", onSelectTool);
@@ -2283,7 +2289,7 @@
         selectAssetHandle.clear();
         selectToolHandle.clear();
       };
-    }, [model.ViewMode, model.Shifted, model.OperationMode, model.Filter, model.SubFilter, model.Search, model.OrderByAscending, shifted]);
+    }, [model.ViewMode, model.Selected, model.Shifted, model.OperationMode, model.Filter, model.SubFilter, model.Search, model.OrderByAscending, shifted]);
     react.useEffect(() => {
       doResultsUpdate(model);
     }, [model]);
@@ -2307,6 +2313,8 @@
     const isVisibleClass = "tool-layout";
     const onSelectPrefab = (prefab) => {
       setSeletedPrefab(prefab);
+      model.Selected = prefab;
+      update("Selected", model.Selected);
     };
     const onMouseEnterItem = (prefab) => {
       setHoverPrefab(prefab);
