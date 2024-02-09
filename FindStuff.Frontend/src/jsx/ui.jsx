@@ -187,7 +187,6 @@ const ToolWindow = ({ react, setupController }) => {
     };
 
     const onSelectAsset = (entity) => {
-        console.log(JSON.stringify(entity));
         if (model.OperationMode === "MoveFindStuff")
             updateShift(true);
         else
@@ -213,11 +212,19 @@ const ToolWindow = ({ react, setupController }) => {
     };
 
     react.useEffect(() => {
-        if (model && model.Selected)
-            setSeletedPrefab(model.Selected);
+        if (model) {
+            if (model.Search !== search) {
+                setSearch(model.Search);
+            }
+            if (model.Selected) {
+                setSeletedPrefab(model.Selected);
+            }
+        }
+
         const eventHandle = engine.on("findstuff.onReceiveResults", onReceiveResults);
         const selectAssetHandle = engine.on("toolbar.selectAsset", onSelectAsset);
         const selectToolHandle = engine.on("tool.activeTool.update", onSelectTool);
+
 
         return () => {
             eventHandle.clear();
@@ -256,7 +263,7 @@ const ToolWindow = ({ react, setupController }) => {
     const onSelectPrefab = (prefab) => {
         setSeletedPrefab(prefab);
         model.Selected = prefab;
-        update("Selected", model.Selected);
+        update("Selected", prefab);
     };
 
     const onMouseEnterItem = (prefab) => {

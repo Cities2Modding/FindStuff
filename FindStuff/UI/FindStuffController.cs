@@ -500,8 +500,13 @@ namespace FindStuff.UI
             if ( prefabSettings.Prefab != null )
             {
                 Model.Selected = prefabSettings.Prefab;
-                Model.Filter = prefabSettings.Filter;
-                Model.SubFilter = prefabSettings.SubFilter;
+
+                // Only set filters when not visible and in hide asset menu mode
+                if ( !Model.IsVisible && Model.OperationMode == "HideAssetMenu" )
+                {
+                    Model.Filter = prefabSettings.Filter;
+                    Model.SubFilter = prefabSettings.SubFilter;
+                }
 
                 TriggerUpdate( );
             }
