@@ -31,7 +31,7 @@ namespace FindStuff.UI
 
         public override void SetDefaults( )
         {
-            OperationMode = "HideAssetMenu";
+            OperationMode = "HideFindStuff";
             EnableShortcut = false;
         }
 
