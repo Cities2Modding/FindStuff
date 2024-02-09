@@ -2139,6 +2139,29 @@
   var favourite_star_default = FavouriteStar;
 
   // src/jsx/ui.jsx
+  var PickStuffButton = ({ react, setupController }) => {
+    const [tooltipVisible, setTooltipVisible] = react.useState(false);
+    const onMouseEnter = () => {
+      setTooltipVisible(true);
+      engine.trigger("audio.playSound", "hover-item", 1);
+    };
+    const onMouseLeave = () => {
+      setTooltipVisible(false);
+    };
+    const { ToolTip, ToolTipContent } = window.$_gooee.framework;
+    const { model, update, trigger } = setupController();
+    const onClick = () => {
+      const newValue = !model.IsPicking;
+      trigger("OnTogglePicker");
+      engine.trigger("audio.playSound", "select-item", 1);
+      if (newValue) {
+        engine.trigger("audio.playSound", "open-panel", 1);
+      } else
+        engine.trigger("audio.playSound", "close-panel", 1);
+    };
+    return /* @__PURE__ */ import_react7.default.createElement(import_react7.default.Fragment, null, /* @__PURE__ */ import_react7.default.createElement("div", { className: "spacer_oEi" }), /* @__PURE__ */ import_react7.default.createElement("button", { onMouseEnter, onMouseLeave, onClick, className: "button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT toggle-states_X82 toggle-states_DTm" + (model.IsPicking ? " selected" : "") }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "fa fa-solid-eye-dropper icon-lg" }), /* @__PURE__ */ import_react7.default.createElement(ToolTip, { visible: tooltipVisible, float: "up", align: "right" }, /* @__PURE__ */ import_react7.default.createElement(ToolTipContent, { title: "Test", description: "Hello, world!" }))));
+  };
+  window.$_gooee.register("pickstuff", "PickStuffButton", PickStuffButton, "bottom-right-toolbar", "findstuff");
   var AppButton = ({ react, setupController }) => {
     const [tooltipVisible, setTooltipVisible] = react.useState(false);
     const onMouseEnter = () => {

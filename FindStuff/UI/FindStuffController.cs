@@ -3,6 +3,7 @@ using Colossal.Localization;
 using Colossal.Serialization.Entities;
 using FindStuff.Configuration;
 using FindStuff.Helper;
+using FindStuff.Systems;
 using Game;
 using Game.Prefabs;
 using Game.SceneFlow;
@@ -21,15 +22,9 @@ namespace FindStuff.UI
 {
     public class FindStuffController : Controller<FindStuffViewModel>
     {
-        const string META_IS_DANGEROUS = "IsDangerous";
-        const string META_IS_DANGEROUS_REASON = "IsDangerousReason";
-        const string META_IS_SPAWNABLE = "IsSpawnable";
-        const string META_ZONE_LOT_DEPTH = "ZoneLotDepth";
-        const string META_ZONE_LOT_WIDTH = "ZoneLotWidth";
-        const string META_ZONE_LOT_SUM = "ZoneLotSum";
-
         private ToolSystem _toolSystem;
         private DefaultToolSystem _defaulToolSystem;
+        private PickerToolSystem _pickerToolSystem;
         private PrefabSystem _prefabSystem;
         private ImageSystem _imageSystem;
         private ToolbarUISystem _toolbarUISystem;
@@ -59,6 +54,7 @@ namespace FindStuff.UI
             _imageSystem = World.GetOrCreateSystemManaged<ImageSystem>( );
             _endFrameBarrier = World.GetOrCreateSystemManaged<EndFrameBarrier>( );
             _toolbarUISystem = World.GetOrCreateSystemManaged<ToolbarUISystem>( );
+            _pickerToolSystem = World.GetOrCreateSystemManaged<PickerToolSystem>( );
             _localizationManager = GameManager.instance.localizationManager;
 
             _baseHelper =
@@ -291,12 +287,26 @@ namespace FindStuff.UI
         protected override void OnUpdate( )
         {
             base.OnUpdate( );
+
+            if (_pickerToolSystem.IsPicking == false)
+            {
+                Model.IsPicking = false;
+            }
         }
 
         [OnTrigger]
         private void OnTestClick( )
         {
             //TriggerUpdate( );
+        }
+
+        [OnTrigger]
+        private void OnTogglePicker( )
+        {
+            Model.IsPicking = !Model.IsPicking;
+            _pickerToolSystem.IsPicking = true;
+            _toolSystem.activeTool = World.GetOrCreateSystemManaged<DefaultToolSystem>();
+            TriggerUpdate( );
         }
 
         [OnTrigger]

@@ -6,6 +6,48 @@ import PrefabItem from "./_prefab-item";
 import LoadingScreen from "./_loading-screen";
 import FavouriteStar from "./_favourite_star";
 
+const PickStuffButton = ({ react, setupController }) => {
+    const [tooltipVisible, setTooltipVisible] = react.useState(false);
+    const onMouseEnter = () => {
+        setTooltipVisible(true);
+        engine.trigger("audio.playSound", "hover-item", 1);
+    };
+
+    const onMouseLeave = () => {
+        setTooltipVisible(false);
+    };
+
+    const { ToolTip, ToolTipContent } = window.$_gooee.framework;
+
+    const { model, update, trigger } = setupController();
+
+    const onClick = () => {
+        const newValue = !model.IsPicking;
+        trigger("OnTogglePicker");
+        engine.trigger("audio.playSound", "select-item", 1);
+
+        if (newValue) {
+            engine.trigger("audio.playSound", "open-panel", 1);
+            //engine.trigger("tool.selectTool", null);
+        }
+        else
+            engine.trigger("audio.playSound", "close-panel", 1);
+    };
+
+    return <>
+        <div className="spacer_oEi"></div>
+        <button onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onClick={onClick} className={"button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT toggle-states_X82 toggle-states_DTm" + (model.IsPicking ? " selected" : "")}>
+
+            <div className="fa fa-solid-eye-dropper icon-lg"></div>
+
+            <ToolTip visible={tooltipVisible} float="up" align="right">
+                <ToolTipContent title="Test" description="Hello, world!" />
+            </ToolTip>
+        </button>
+    </>;
+};
+window.$_gooee.register("pickstuff", "PickStuffButton", PickStuffButton, "bottom-right-toolbar", "findstuff");
+
 const AppButton = ({ react, setupController }) => {
     const [tooltipVisible, setTooltipVisible] = react.useState(false);
 
