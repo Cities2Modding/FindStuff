@@ -39,6 +39,7 @@ lang:
  FindStuff.PrefabType.MediumRoad: Route Moyenne
  FindStuff.PrefabType.LargeRoad: Grande Route
  FindStuff.PrefabType.Highway: Autoroute
+ FindStuff.PrefabType.Roundabout: Rond-point
  FindStuff.PrefabType.RoadTool: Outil Route
  FindStuff.PrefabType.Pavment: Sentier
  

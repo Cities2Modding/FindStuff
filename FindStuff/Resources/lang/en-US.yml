@@ -43,6 +43,7 @@ lang:
  FindStuff.PrefabType.MediumRoad: Medium Road
  FindStuff.PrefabType.LargeRoad: Large Road
  FindStuff.PrefabType.Highway: Highway
+ FindStuff.PrefabType.Roundabout: Roundabout
  FindStuff.PrefabType.RoadTool: Road Tool
  FindStuff.PrefabType.Pavment: Path
  

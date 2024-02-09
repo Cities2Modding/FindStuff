@@ -39,6 +39,7 @@ lang:
  FindStuff.PrefabType.MediumRoad: Średnie Drogi
  FindStuff.PrefabType.LargeRoad: Duże Drogi
  FindStuff.PrefabType.Highway: Autostrady
+ FindStuff.PrefabType.Roundabout: Rondo
  FindStuff.PrefabType.RoadTool: Narzędzia Drogowe
  FindStuff.PrefabType.Pavment: Ścieżki
  

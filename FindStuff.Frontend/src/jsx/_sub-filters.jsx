@@ -117,6 +117,9 @@ const SubFilters = ({ model, update, onDoUpdate, _L }) => {
             <Button className={"ml-1" + (model.SubFilter === "Highway" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Highway")}>
                 <Icon icon="Media/Game/Icons/Highways.svg" />
             </Button>
+            <Button className={"ml-1" + (model.SubFilter === "Roundabout" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Roundabout")}>
+                <Icon icon="Media/Game/Icons/Roundabouts.svg" />
+            </Button>
             <Button className={"ml-1" + (model.SubFilter === "Pavement" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Pavement")}>
                 <Icon icon="Media/Game/Icons/Pathways.svg" />
             </Button>

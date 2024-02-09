@@ -233,6 +233,7 @@ namespace FindStuff.UI
         LargeRoad,
         Highway,
         Pavement,
+        Roundabout,
         OtherNetwork
     }
 }
