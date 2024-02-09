@@ -41,7 +41,7 @@ const PickStuffButton = ({ react, setupController }) => {
             <div className="fa fa-solid-eye-dropper icon-lg"></div>
 
             <ToolTip visible={tooltipVisible} float="up" align="right">
-                <ToolTipContent title="Test" description="Hello, world!" />
+                <ToolTipContent title="PickStuff" description="Activates the picker." />
             </ToolTip>
         </button>
     </>;
@@ -62,7 +62,7 @@ const AppButton = ({ react, setupController }) => {
 
     const { ToolTip, ToolTipContent } = window.$_gooee.framework;
 
-    const { model, update, trigger } = setupController();
+    const { model, update, trigger, _L } = setupController();
 
     const onClick = () => {
         const newValue = !model.IsVisible;
@@ -84,7 +84,7 @@ const AppButton = ({ react, setupController }) => {
             <div className="fa fa-solid-magnifying-glass icon-lg"></div>
 
             <ToolTip visible={tooltipVisible} float="up" align="right">
-                <ToolTipContent title="Test" description="Hello, world!" />
+                <ToolTipContent title={_L("FindStuff.FindStuffSettings.ModName")} description="Opens the FindStuff panel." />
             </ToolTip>
         </button>
     </>;
