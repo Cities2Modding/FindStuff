@@ -5,6 +5,7 @@ using Game.Creatures;
 using Game.Net;
 using Game.Objects;
 using Game.Prefabs;
+using Game.Rendering;
 using Game.Tools;
 using Game.Vehicles;
 using Unity.Entities;
@@ -23,6 +24,8 @@ namespace FindStuff.Systems
             set;
         } = false;
 
+        private OverlayRenderSystem.Buffer _overlay;
+
         [Preserve]
         protected override void OnCreate()
         {
@@ -31,6 +34,7 @@ namespace FindStuff.Systems
             m_DefaultTool = World.GetOrCreateSystemManaged<DefaultToolSystem>();
             m_PrefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>();
             m_ToolRaycastSystem = World.GetOrCreateSystemManaged<ToolRaycastSystem>();
+            _overlay = World.GetExistingSystemManaged<OverlayRenderSystem>( ).GetBuffer( out _ );
 
             UnityEngine.Debug.Log("[PickerTool]: Created!");
         }
@@ -50,6 +54,10 @@ namespace FindStuff.Systems
                 EntityManager.HasComponent<Plant>(raycastResult.m_Owner)) &&
                 EntityManager.TryGetComponent(raycastResult.m_Owner, out prefabRef))
             {
+
+                if ( EntityManager.TryGetComponent<Game.Objects.Transform>( raycastResult.m_Owner, out var transform ) )
+                    _overlay.DrawCircle( UnityEngine.Color.yellow, transform.m_Position, 0.4f );
+
                 Entity prefab = prefabRef.m_Prefab;
                 if (Input.GetKeyDown(KeyCode.Mouse0))
                 {
