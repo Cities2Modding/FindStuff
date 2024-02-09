@@ -5,5 +5,8 @@
 			<select selected="OperationMode" options="GetOperationModes">
 			</select>
 		</field>
+		<field title="EnableShortcut_Desc">
+			<checkbox isChecked="EnableShortcut" />
+		</field>
 	</group>
 </settings>

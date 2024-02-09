@@ -5,6 +5,8 @@ lang:
  
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Скрыть при выборе префаба
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Скрыть меню Найти Вещи при выборе префаба.
+  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Активируйте ярлык
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Удерживайте CTRL + Click, чтобы выбрать объект.
  
  FindStuff.View: Просмотр
  FindStuff.Filter: Фильтр
@@ -128,3 +130,8 @@ lang:
  FindStuff.Tag.airplane: Самолеты
  FindStuff.Tag.helicopter: Вертолеты
  FindStuff.Tag.public-transport: Общественный Транспорт
+ FindStuff.Tag.bench: Бак для сиденья
+ FindStuff.Tag.light: Свет
+ FindStuff.Tag.accessory: Аксессуар
+ FindStuff.Tag.trashbin: Мусорный ящик
+ FindStuff.Tag.table: Стол

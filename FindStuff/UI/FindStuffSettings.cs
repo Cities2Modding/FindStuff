@@ -1,5 +1,4 @@
 ﻿using cohtml.Net;
-using Colossal.Localization;
 using Game.SceneFlow;
 using Game.Settings;
 using Game.UI.Widgets;
@@ -16,6 +15,13 @@ namespace FindStuff.UI
             set;
         }
 
+        [SettingsUISection( "Toggles" )]
+        public bool EnableShortcut
+        {
+            get;
+            set;
+        }
+
         [SettingsUIHidden]
         protected override string UIResource => "FindStuff.Resources.settings.xml";
 
@@ -26,6 +32,7 @@ namespace FindStuff.UI
         public override void SetDefaults( )
         {
             OperationMode = "MoveFindStuff";
+            EnableShortcut = false;
         }
 
         [Preserve]

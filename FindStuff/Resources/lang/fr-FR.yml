@@ -5,6 +5,8 @@ lang:
  
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Cacher à la sélection
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Cacher le menu Trouver Objets lors de la sélection d'un prefab.
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut] : Activer le raccourci
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut] : Maintenir CTRL + Clic pour sélectionner un objet.
  
  FindStuff.View: Vue
  FindStuff.Filter: Filtre
@@ -128,3 +130,8 @@ lang:
  FindStuff.Tag.airplane: Avion
  FindStuff.Tag.helicopter: Hélicoptère
  FindStuff.Tag.public-transport: Transport Public
+ FindStuff.Tag.bench : Réservoir de siège
+ FindStuff.Tag.light : Lumière
+ FindStuff.Tag.accessory : Accessoire
+ FindStuff.Tag.trashbin : Corbeille
+ FindStuff.Tag.table : Table

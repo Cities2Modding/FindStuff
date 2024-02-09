@@ -31,6 +31,14 @@ namespace FindStuff.UI
             }
         }
 
+        public bool EnableShortcut
+        {
+            get
+            {
+                return Model.EnableShortcut;
+            }
+        }
+
         private ToolSystem _toolSystem;
         private DefaultToolSystem _defaulToolSystem;
         private PickerToolSystem _pickerToolSystem;
@@ -53,7 +61,7 @@ namespace FindStuff.UI
         private PrefabIndexer _indexer;
         private LocalizationManager _localizationManager;
 
-        private static HashSet<string> TypesWithNoThumbnails = ["Surface", "PropMisc", "Billboards", "Fences", "SignsAndPosters"];
+        private static HashSet<string> TypesWithNoThumbnails = ["Surface", "PropMisc", "Billboards", "Fences", "SignsAndPosters", "Accessory"];
 
         public override FindStuffViewModel Configure( )
         {
@@ -288,6 +296,9 @@ namespace FindStuff.UI
 
                 case "Parking":
                     return "Media/Game/Icons/Parking.svg";
+
+                case "Accessory":
+                    return "fa:solid-tree-city";
             }
 
             return "";
@@ -443,6 +454,12 @@ namespace FindStuff.UI
 
             if ( plugin.Settings is FindStuffSettings settings )
             {
+                if (settings.EnableShortcut != Model.EnableShortcut)
+                {
+                    Model.EnableShortcut = settings.EnableShortcut;
+                    TriggerUpdate( );
+                }
+
                 if ( settings.OperationMode != Model.OperationMode )
                 {
                     Model.OperationMode = settings.OperationMode;

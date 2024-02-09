@@ -5,6 +5,8 @@ lang:
  
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: 選擇預製件時隱藏
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: 當您選擇一個預製件時，隱藏尋找物品菜單。
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: 激活快捷键
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: 按住 CTRL + 单击来选取对象。
  
  FindStuff.View: 查看
  FindStuff.Filter: 篩選
@@ -128,3 +130,8 @@ lang:
  FindStuff.Tag.airplane: 飛機
  FindStuff.Tag.helicopter: 直升機
  FindStuff.Tag.public-transport: 公共交通
+ FindStuff.Tag.bench: 座椅水箱
+ FindStuff.Tag.light: 灯 灯
+ FindStuff.Tag.accessory: 配件 配件
+ FindStuff.Tag.trashbin: 垃圾桶
+ FindStuff.Tag.table: 桌子

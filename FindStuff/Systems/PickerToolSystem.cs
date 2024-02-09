@@ -42,7 +42,7 @@ namespace FindStuff.Systems
             RaycastResult raycastResult;
             PrefabRef prefabRef;
 
-            if (_controller.IsPicking && m_ToolSystem.activeTool == m_DefaultTool &&
+            if ((_controller.IsPicking || ShortcutIsEnabled()) && m_ToolSystem.activeTool == m_DefaultTool &&
                 m_ToolRaycastSystem.GetRaycastResult(out raycastResult) &&
                 (EntityManager.HasComponent<Building>(raycastResult.m_Owner) ||
                 EntityManager.HasComponent<Vehicle>(raycastResult.m_Owner) ||
@@ -53,7 +53,7 @@ namespace FindStuff.Systems
             {
 
                 if ( EntityManager.TryGetComponent<Game.Objects.Transform>( raycastResult.m_Owner, out var transform ) )
-                    _overlay.DrawCircle( UnityEngine.Color.yellow, transform.m_Position, 8f );
+                    _overlay.DrawCircle( UnityEngine.Color.blue, transform.m_Position, 8f );
 
                 Entity prefab = prefabRef.m_Prefab;
                 if (Input.GetKeyDown(KeyCode.Mouse0))
@@ -66,6 +66,11 @@ namespace FindStuff.Systems
                     _controller.UpdatePicker( false );
                 }
             }
+        }
+
+        private bool ShortcutIsEnabled()
+        {
+            return _controller.EnableShortcut && Input.GetKey(KeyCode.LeftControl);
         }
 
         [Preserve]

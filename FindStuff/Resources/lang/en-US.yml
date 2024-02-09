@@ -5,6 +5,8 @@ lang:
  
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.OperationMode]: Operation Mode
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.OperationMode]: Configure how Find Stuff behaves when a tool is opened, it can be be hidden, shift up the screen or hide the vanilla game asset window overriding it.
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Enable Shortcut
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Hold CTRL + Click to pick an object.
  
  FindStuff.FindStuffSettings.MoveFindStuff: Move the window
  FindStuff.FindStuffSettings.HideFindStuff: Hide the window
@@ -132,3 +134,8 @@ lang:
  FindStuff.Tag.airplane: Airplane
  FindStuff.Tag.helicopter: Helicopter
  FindStuff.Tag.public-transport: Public Transport
+ FindStuff.Tag.bench: Bench
+ FindStuff.Tag.light: Light
+ FindStuff.Tag.accessory: Accessory
+ FindStuff.Tag.trashbin: Trashbin
+ FindStuff.Tag.table: Table

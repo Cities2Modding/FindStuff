@@ -85,6 +85,12 @@ namespace FindStuff.UI
             set;
         }
 
+        public bool EnableShortcut
+        {
+            get;
+            set;
+        }
+
         public bool Shifted
         {
             get;
@@ -218,6 +224,7 @@ namespace FindStuff.UI
         SignsAndPosters,
         Fences,
         Billboards,
+        Accessory,
 
         // Networks
         RoadTool,

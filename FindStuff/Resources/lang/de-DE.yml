@@ -1,10 +1,12 @@
 lang:
- FindStuff.FindStuffSettings.ModName: Sachen Finden
- Options.SECTION[FindStuff.FindStuffSettings]: Sachen Finden
- Options.GROUP[FindStuff.FindStuffSettings.Toggles]: Sachen Finden
+ FindStuff.FindStuffSettings.ModName: FindStuff
+ Options.SECTION[FindStuff.FindStuffSettings]: FindStuff
+ Options.GROUP[FindStuff.FindStuffSettings.Toggles]: FindStuff
  
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Bei Auswahl ausblenden
- Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Menü "Sachen Finden" bei Auswahl eines Prefabs ausblenden.
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Menü "FindStuff" bei Auswahl eines Prefabs ausblenden.
+ ptions.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Tastenkombination aktivieren
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Halte STRG + Klick, um ein Objekt auszuwählen.
  
  FindStuff.View: Ansicht
  FindStuff.Filter: Filter
@@ -51,11 +53,11 @@ lang:
  FindStuff.Tag.misc: Verschiedenes
  FindStuff.Tag.surface: Oberfläche
  FindStuff.Tag.grass: Gras
- FindStuff.Tag.agriculture: Bauernhof
+ FindStuff.Tag.agriculture: Landwirtschaft
  FindStuff.Tag.sand: Sand
  FindStuff.Tag.concrete: Beton
  FindStuff.Tag.forestry: Wald
- FindStuff.Tag.pavement: Pflaster
+ FindStuff.Tag.pavement: Gehweg
  FindStuff.Tag.landfill: Mülldeponie
  FindStuff.Tag.tiles: Fliesen
  FindStuff.Tag.oil: Öl
@@ -90,7 +92,7 @@ lang:
  FindStuff.Tag.office: Büro
  FindStuff.Tag.industrial: Industrie
  FindStuff.Tag.service: Dienstleistung
- FindStuff.Tag.signature: Signatur
+ FindStuff.Tag.signature: Spezialgebäude
  FindStuff.Tag.vehicle: Fahrzeug
  FindStuff.Tag.tree: Baum
  FindStuff.Tag.plant: Pflanze
@@ -128,3 +130,8 @@ lang:
  FindStuff.Tag.airplane: Flugzeug
  FindStuff.Tag.helicopter: Hubschrauber
  FindStuff.Tag.public-transport: Öffentlicher Verkehr
+ FindStuff.Tag.bench: Sitzank
+ FindStuff.Tag.light: Licht
+ FindStuff.Tag.accessory: Accessoire
+ FindStuff.Tag.trashbin: Mülleimer
+ FindStuff.Tag.table: Tisch
