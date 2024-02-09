@@ -23,6 +23,14 @@ namespace FindStuff.UI
     [ControllerDepends( SystemUpdatePhase.UIUpdate, typeof( PickerToolSystem ) )]
     public class FindStuffController : Controller<FindStuffViewModel>
     {
+        public bool IsPicking
+        {
+            get
+            {
+                return Model.IsPicking;
+            }
+        }
+
         private ToolSystem _toolSystem;
         private DefaultToolSystem _defaulToolSystem;
         private PickerToolSystem _pickerToolSystem;
@@ -288,11 +296,6 @@ namespace FindStuff.UI
         protected override void OnUpdate( )
         {
             base.OnUpdate( );
-
-            if (_pickerToolSystem.IsPicking == false)
-            {
-                Model.IsPicking = false;
-            }
         }
 
         [OnTrigger]
@@ -304,10 +307,8 @@ namespace FindStuff.UI
         [OnTrigger]
         private void OnTogglePicker( )
         {
-            Model.IsPicking = !Model.IsPicking;
-            _pickerToolSystem.IsPicking = true;
-            _toolSystem.activeTool = World.GetOrCreateSystemManaged<DefaultToolSystem>();
-            TriggerUpdate( );
+            UpdatePicker( !Model.IsPicking );
+            _toolSystem.activeTool = _defaulToolSystem;
         }
 
         [OnTrigger]
@@ -463,6 +464,12 @@ namespace FindStuff.UI
 
             // Provide the results to the client
             GameManager.instance.userInterface.view.View.TriggerEvent( "findstuff.onReceiveResults", key, result.Json );
+        }
+
+        public void UpdatePicker( bool isPicking )
+        {
+            Model.IsPicking = isPicking;
+            TriggerUpdate( );
         }
     }
 }

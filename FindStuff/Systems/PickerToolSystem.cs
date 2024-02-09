@@ -1,4 +1,5 @@
 ﻿using Colossal.Entities;
+using FindStuff.UI;
 using Game.Buildings;
 using Game.Common;
 using Game.Creatures;
@@ -16,13 +17,8 @@ namespace FindStuff.Systems
 {
     public class PickerToolSystem : SystemBase
     {
-        PrefabSystem m_PrefabSystem;
-
-        public bool IsPicking
-        {
-            get;
-            set;
-        } = false;
+        private PrefabSystem _prefabSystem;
+        private FindStuffController _controller;
 
         private OverlayRenderSystem.Buffer _overlay;
 
@@ -32,10 +28,11 @@ namespace FindStuff.Systems
             base.OnCreate();
             m_ToolSystem = World.GetOrCreateSystemManaged<ToolSystem>();
             m_DefaultTool = World.GetOrCreateSystemManaged<DefaultToolSystem>();
-            m_PrefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>();
             m_ToolRaycastSystem = World.GetOrCreateSystemManaged<ToolRaycastSystem>();
-            _overlay = World.GetExistingSystemManaged<OverlayRenderSystem>( ).GetBuffer( out _ );
 
+            _prefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>( );
+            _controller = World.GetOrCreateSystemManaged<FindStuffController>( );
+            _overlay = World.GetExistingSystemManaged<OverlayRenderSystem>( ).GetBuffer( out _ );
             UnityEngine.Debug.Log("[PickerTool]: Created!");
         }
 
@@ -45,7 +42,7 @@ namespace FindStuff.Systems
             RaycastResult raycastResult;
             PrefabRef prefabRef;
 
-            if (IsPicking && m_ToolSystem.activeTool == m_DefaultTool &&
+            if (_controller.IsPicking && m_ToolSystem.activeTool == m_DefaultTool &&
                 m_ToolRaycastSystem.GetRaycastResult(out raycastResult) &&
                 (EntityManager.HasComponent<Building>(raycastResult.m_Owner) ||
                 EntityManager.HasComponent<Vehicle>(raycastResult.m_Owner) ||
@@ -61,12 +58,12 @@ namespace FindStuff.Systems
                 Entity prefab = prefabRef.m_Prefab;
                 if (Input.GetKeyDown(KeyCode.Mouse0))
                 {
-                    if (m_PrefabSystem.TryGetPrefab(prefab, out PrefabBase prefabBase))
+                    if ( _prefabSystem.TryGetPrefab(prefab, out PrefabBase prefabBase))
                     {
                         m_ToolSystem.ActivatePrefabTool(prefabBase);
                     }
-                    
-                    IsPicking = false;
+
+                    _controller.UpdatePicker( false );
                 }
             }
         }
