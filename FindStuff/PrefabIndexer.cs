@@ -62,6 +62,7 @@ namespace FindStuff
                     SubFilter.Billboards,
                     SubFilter.Fences,
                     SubFilter.SignsAndPosters,
+                    SubFilter.Accessory,
                     SubFilter.PropMisc
                 ] 
             },

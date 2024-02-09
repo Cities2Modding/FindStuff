@@ -61,7 +61,7 @@ namespace FindStuff.UI
         private PrefabIndexer _indexer;
         private LocalizationManager _localizationManager;
 
-        private static HashSet<string> TypesWithNoThumbnails = ["Surface", "PropMisc", "Billboards", "Fences", "SignsAndPosters"];
+        private static HashSet<string> TypesWithNoThumbnails = ["Surface", "PropMisc", "Billboards", "Fences", "SignsAndPosters", "Accessory"];
 
         public override FindStuffViewModel Configure( )
         {
@@ -296,6 +296,9 @@ namespace FindStuff.UI
 
                 case "Parking":
                     return "Media/Game/Icons/Parking.svg";
+
+                case "Accessory":
+                    return "fa:solid-tree-city";
             }
 
             return "";

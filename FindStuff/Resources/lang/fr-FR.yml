@@ -130,3 +130,8 @@ lang:
  FindStuff.Tag.airplane: Avion
  FindStuff.Tag.helicopter: Hélicoptère
  FindStuff.Tag.public-transport: Transport Public
+ FindStuff.Tag.bench : Réservoir de siège
+ FindStuff.Tag.light : Lumière
+ FindStuff.Tag.accessory : Accessoire
+ FindStuff.Tag.trashbin : Corbeille
+ FindStuff.Tag.table : Table

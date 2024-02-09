@@ -218,6 +218,7 @@ namespace FindStuff.UI
         SignsAndPosters,
         Fences,
         Billboards,
+        Accessory,
 
         // Networks
         RoadTool,

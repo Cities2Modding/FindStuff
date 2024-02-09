@@ -32,6 +32,10 @@ namespace FindStuff.Helper
             if ( entityManager == null || entity == Entity.Null )
                 return false;
 
+            // Hedges with the Plantdata component are not spawnable
+            if (prefab.name.ToLower().Contains("hedge"))
+                return false;
+
             return entityManager.HasComponent<PlantData>( entity ) && !entityManager.HasComponent<TreeData>( entity );
         }
     }

@@ -10,7 +10,10 @@ namespace FindStuff.Helper
         public string PrefabType => _PrefabType;
         private string _PrefabType = "PropMisc";
 
-        public string CategoryType => "Props";
+        public string CategoryType {
+            get;
+            private set;
+        } = "Props";
 
         public Dictionary<string, object> CreateMeta(PrefabBase prefab, Entity entity)
         {
@@ -23,6 +26,8 @@ namespace FindStuff.Helper
 
             if (entityManager == null)
                 return tags;
+
+            CategoryType = "Props";
 
             tags.Add("prop");
 
@@ -46,6 +51,42 @@ namespace FindStuff.Helper
             {
                 tags.Add("fence");
                 _PrefabType = "Fences";
+            }
+            else if (prefabLowered.Contains("hedge")) // Working hedges are found here
+            {
+                tags.Add("plant");
+                tags.Add("foliage");
+                _PrefabType = "Plant";
+                CategoryType = "Foliage";
+            }
+            else if (prefabLowered.Contains("light") && !prefabLowered.Contains("traffic"))
+            {
+                tags.Add("light");
+                tags.Add("accessory");
+                _PrefabType = "Accessory";
+            }
+            else if (prefabLowered.Contains("bench"))
+            {
+                tags.Add("bench");
+                tags.Add("accessory");
+                _PrefabType = "Accessory";
+            }
+            else if (prefabLowered.Contains("table") || prefabLowered.Contains("tableset"))
+            {
+                tags.Add("table");
+                tags.Add("accessory");
+                _PrefabType = "Accessory";
+            }
+            else if (prefabLowered.Contains("trashbin"))
+            {
+                tags.Add("trashbin");
+                tags.Add("accessory");
+                _PrefabType = "Accessory";
+            }
+            else if (prefabLowered.Contains("gazebo") || prefabLowered.Contains("grill") || prefabLowered.Contains("food store") || prefabLowered.Contains("food cart"))
+            {
+                tags.Add("accessory");
+                _PrefabType = "Accessory";
             }
             else if ( entityManager.HasChunkComponent<BridgeData>( entity ) )
             {
