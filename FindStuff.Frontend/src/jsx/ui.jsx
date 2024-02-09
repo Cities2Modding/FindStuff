@@ -38,7 +38,7 @@ const PickStuffButton = ({ react, setupController }) => {
         <div className="spacer_oEi"></div>
         <button onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onClick={onClick} className={"button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT toggle-states_X82 toggle-states_DTm" + (model.IsPicking ? " selected" : "")}>
 
-            <div className="fa fa-solid-eye-dropper icon-lg"></div>
+            <div className="fa fa-solid-eye-dropper icon-md"></div>
 
             <ToolTip visible={tooltipVisible} float="up" align="right">
                 <ToolTipContent title="PickStuff" description="Activates the picker." />
@@ -80,9 +80,7 @@ const AppButton = ({ react, setupController }) => {
     return <>
         <div className="spacer_oEi"></div>
         <button onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onClick={onClick} className={"button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT toggle-states_X82 toggle-states_DTm" + (model.IsVisible ? " selected" : "")}>
-
-            <div className="fa fa-solid-magnifying-glass icon-lg"></div>
-
+            <div className="fa fa-solid-magnifying-glass icon-md"></div>
             <ToolTip visible={tooltipVisible} float="up" align="right">
                 <ToolTipContent title={_L("FindStuff.FindStuffSettings.ModName")} description="Opens the FindStuff panel." />
             </ToolTip>
