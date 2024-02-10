@@ -1,8 +1,8 @@
 ﻿using Colossal.Entities;
 using FindStuff.UI;
+using Game;
 using Game.Buildings;
 using Game.Common;
-using Game.Creatures;
 using Game.Net;
 using Game.Objects;
 using Game.Prefabs;
@@ -15,11 +15,10 @@ using UnityEngine.Scripting;
 
 namespace FindStuff.Systems
 {
-    public class PickerToolSystem : SystemBase
+    public class PickerToolSystem : GameSystemBase
     {
         private PrefabSystem _prefabSystem;
         private FindStuffController _controller;
-
         private OverlayRenderSystem.Buffer _overlay;
 
         [Preserve]
@@ -33,7 +32,6 @@ namespace FindStuff.Systems
             _prefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>( );
             _controller = World.GetOrCreateSystemManaged<FindStuffController>( );
             _overlay = World.GetExistingSystemManaged<OverlayRenderSystem>( ).GetBuffer( out _ );
-            UnityEngine.Debug.Log("[PickerTool]: Created!");
         }
 
         [Preserve]
@@ -42,18 +40,18 @@ namespace FindStuff.Systems
             RaycastResult raycastResult;
             PrefabRef prefabRef;
 
+            m_ToolRaycastSystem.netLayerMask |= Layer.Road;
+            m_ToolRaycastSystem.typeMask |= TypeMask.Net;
+
             if ((_controller.IsPicking || ShortcutIsEnabled()) && m_ToolSystem.activeTool == m_DefaultTool &&
-                m_ToolRaycastSystem.GetRaycastResult(out raycastResult) &&
-                (EntityManager.HasComponent<Building>(raycastResult.m_Owner) ||
-                EntityManager.HasComponent<Vehicle>(raycastResult.m_Owner) ||
-                EntityManager.HasComponent<Game.Objects.NetObject>(raycastResult.m_Owner) ||
-                EntityManager.HasComponent<Game.Objects.Tree>(raycastResult.m_Owner) ||
-                EntityManager.HasComponent<Plant>(raycastResult.m_Owner)) &&
+                m_ToolRaycastSystem.GetRaycastResult(out raycastResult) && HasComponents(raycastResult) && 
                 EntityManager.TryGetComponent(raycastResult.m_Owner, out prefabRef))
             {
-
                 if ( EntityManager.TryGetComponent<Game.Objects.Transform>( raycastResult.m_Owner, out var transform ) )
-                    _overlay.DrawCircle( UnityEngine.Color.blue, transform.m_Position, 8f );
+                    _overlay.DrawCircle( UnityEngine.Color.yellow, transform.m_Position, 8f );
+
+                if ( EntityManager.TryGetComponent(raycastResult.m_Owner, out Curve curve))
+                    _overlay.DrawCurve( UnityEngine.Color.yellow, curve.m_Bezier, 1f );
 
                 Entity prefab = prefabRef.m_Prefab;
                 if (Input.GetKeyDown(KeyCode.Mouse0))
@@ -66,6 +64,16 @@ namespace FindStuff.Systems
                     _controller.UpdatePicker( false );
                 }
             }
+        }
+
+        bool HasComponents(RaycastResult raycastResult)
+        {
+            return EntityManager.HasComponent<Building>(raycastResult.m_Owner) ||
+                EntityManager.HasComponent<Vehicle>(raycastResult.m_Owner) ||
+                EntityManager.HasComponent<Game.Objects.Tree>(raycastResult.m_Owner) ||
+                EntityManager.HasComponent<Node>(raycastResult.m_Owner) ||
+                EntityManager.HasComponent<Edge>(raycastResult.m_Owner) ||
+                EntityManager.HasComponent<Plant>(raycastResult.m_Owner);
         }
 
         private bool ShortcutIsEnabled()
