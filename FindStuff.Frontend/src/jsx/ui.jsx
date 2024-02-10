@@ -243,12 +243,13 @@ const ToolWindow = ({ react, setupController }) => {
     };
 
     const debouncedSearchUpdate = debounce((val) => {
-        model.Search = val;
-        update("Search", val);
+        
         doResultsUpdate(model);
     }, filteredPrefabs.length > 5_000 ? 500 : 50);
 
     const onSearchInputChanged = (val) => {
+        model.Search = val;
+        update("Search", val);
         setSearch(val);
         debouncedSearchUpdate(val);
     };
