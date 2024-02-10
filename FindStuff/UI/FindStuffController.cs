@@ -138,7 +138,7 @@ namespace FindStuff.UI
                 foreach ( var prefabBase in prefabs )
                 {
                     // Skip potentially crashing prefabs
-                    if (GetEvilPrefabs().Contains(prefabBase.name.ToLower()))
+                    if (GetEvilPrefabs.Contains(prefabBase.name.ToLower()))
                         continue;
 
                     if ( !ProcessPrefab( prefabBase, out var prefabType, out var categoryType, out var tags, out var meta ) )
@@ -519,9 +519,6 @@ namespace FindStuff.UI
             }
         }
 
-        HashSet<string> GetEvilPrefabs()
-        {
-            return ["lane editor container", "traffic spawner"];
-        }
+        static readonly HashSet<string> GetEvilPrefabs = ["lane editor container", "traffic spawner"];
     }
 }
