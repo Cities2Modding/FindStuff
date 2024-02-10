@@ -93,9 +93,9 @@ const SubFilters = ({ model, update, onDoUpdate, _L }) => {
             <Button className={"ml-1" + (model.SubFilter === "Accessory" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Accessory")}>
                 <Icon icon="solid-tree-city" fa />
             </Button>
-            <Button className={"ml-1" + (model.SubFilter === "Vehicle" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Vehicle")}>
+            {model.ExpertMode === true && <Button className={"ml-1" + (model.SubFilter === "Vehicle" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Vehicle")}>
                 <Icon icon="Media/Game/Icons/Traffic.svg" />
-            </Button>
+            </Button>}
             <Button className={"ml-1" + (model.SubFilter === "PropMisc" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("PropMisc")}>
                 <Icon icon="solid-ellipsis" fa/>
             </Button>

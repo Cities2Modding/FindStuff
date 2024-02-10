@@ -7,6 +7,8 @@ lang:
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: 프리팹을 선택할 때 물건 찾기 메뉴를 숨깁니다.
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: 바로 가기 활성화
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: 개체를 선택하려면 CTRL 키를 누른 상태에서 클릭합니다.
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: Enable Expert Mode
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: If activated you have access to potential dangeroues objects crashing the game or breaking save games. You should know what you are doing. Use at your own risk!
  
  FindStuff.View: 보기
  FindStuff.Filter: 필터

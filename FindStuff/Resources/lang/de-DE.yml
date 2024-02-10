@@ -7,6 +7,8 @@ lang:
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Menü "FindStuff" bei Auswahl eines Prefabs ausblenden.
  ptions.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Tastenkombination aktivieren
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Halte STRG + Klick, um ein Objekt auszuwählen.
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: Enable Expert Mode
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: If activated you have access to potential dangeroues objects crashing the game or breaking save games. You should know what you are doing. Use at your own risk!
  
  FindStuff.View: Ansicht
  FindStuff.Filter: Filter

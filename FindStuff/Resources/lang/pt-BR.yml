@@ -5,8 +5,10 @@ lang:
  
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Ocultar ao selecionar prefab
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Oculta o menu Encontrar Coisas quando você seleciona um prefab.
-  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Ativar atalho
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Ativar atalho
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Mantenha pressionado CTRL + Clique para selecionar um objeto.
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: Enable Expert Mode
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: If activated you have access to potential dangeroues objects crashing the game or breaking save games. You should know what you are doing. Use at your own risk!
  
  FindStuff.View: Visualizar
  FindStuff.Filter: Filtro

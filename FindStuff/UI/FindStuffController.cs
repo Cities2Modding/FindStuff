@@ -38,6 +38,14 @@ namespace FindStuff.UI
             }
         }
 
+        public bool ExpertMode
+        {
+            get
+            {
+                return Model.ExpertMode;
+            }
+        }
+
         private ToolSystem _toolSystem;
         private DefaultToolSystem _defaulToolSystem;
         private PickerToolSystem _pickerToolSystem;
@@ -73,19 +81,6 @@ namespace FindStuff.UI
             _pickerToolSystem = World.GetOrCreateSystemManaged<PickerToolSystem>( );
             _localizationManager = GameManager.instance.localizationManager;
 
-            _baseHelper =
-            [
-                new PlantHelper( EntityManager ),
-                new TreeHelper( EntityManager ),
-                new SurfaceHelper( EntityManager ),
-                new CityServiceHelper( EntityManager ),
-                new NetworkHelper( EntityManager ),
-                new SignatureBuildingHelper( EntityManager ),
-                new VehicleHelper( EntityManager ),
-                new ZoneBuildingHelper( EntityManager, _prefabSystem ),
-                new PropHelper( EntityManager ),
-            ];
-
             _toolSystem.EventToolChanged += ( tool =>
             {
                 if ( Model.IsVisible )
@@ -103,7 +98,15 @@ namespace FindStuff.UI
             model.ViewMode = _config.ViewMode;
             model.Filter = _config.Filter;
             model.SubFilter = _config.SubFilter;
+
+            // If expert mode is enabled then don't allow sub filters for vehicles
+            if (_config.ExpertMode == true && model.SubFilter == SubFilter.Vehicle)
+                model.SubFilter = SubFilter.None;
+
             model.OrderByAscending = _config.OrderByAscending;
+            model.EnableShortcut = _config.EnableShortcut;
+            model.ExpertMode = _config.ExpertMode;
+            model.OperationMode = _config.OperationMode;
 
             return model;
         }
@@ -133,6 +136,19 @@ namespace FindStuff.UI
                 UnityEngine.Debug.Log( $"Getting {prefabs.Count} prefabs" );
 
                 var prefabsList = new List<PrefabItem>( );
+
+                _baseHelper =
+                [
+                    new PlantHelper(EntityManager),
+                    new TreeHelper(EntityManager),
+                    new SurfaceHelper(EntityManager),
+                    new CityServiceHelper(EntityManager),
+                    new NetworkHelper(EntityManager, ExpertMode),
+                    new SignatureBuildingHelper(EntityManager),
+                    new VehicleHelper(EntityManager, ExpertMode),
+                    new ZoneBuildingHelper(EntityManager, _prefabSystem),
+                    new PropHelper(EntityManager),
+                ];
 
                 foreach ( var prefabBase in prefabs )
                 {
@@ -442,12 +458,18 @@ namespace FindStuff.UI
             if ( _config.ViewMode != Model.ViewMode ||
                 _config.Filter != Model.Filter ||
                 _config.SubFilter != Model.SubFilter ||
+                _config.ExpertMode != Model.ExpertMode ||
+                _config.OperationMode != Model.OperationMode ||
+                _config.EnableShortcut != Model.EnableShortcut ||
                 _config.OrderByAscending != Model.OrderByAscending )
             {
                 _config.ViewMode = Model.ViewMode;
                 _config.Filter = Model.Filter;
                 _config.SubFilter = Model.SubFilter;
                 _config.OrderByAscending = Model.OrderByAscending;
+                _config.ExpertMode = Model.ExpertMode;
+                _config.OperationMode = Model.OperationMode;
+                _config.EnableShortcut = Model.EnableShortcut;
                 _config.Save( );
             }
 
@@ -469,6 +491,12 @@ namespace FindStuff.UI
                 if ( settings.OperationMode != Model.OperationMode )
                 {
                     Model.OperationMode = settings.OperationMode;
+                    TriggerUpdate( );
+                }
+
+                if ( settings.ExpertMode != Model.ExpertMode )
+                {
+                    Model.ExpertMode = settings.ExpertMode;
                     TriggerUpdate( );
                 }
             }

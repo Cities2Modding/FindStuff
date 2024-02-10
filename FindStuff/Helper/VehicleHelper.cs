@@ -6,7 +6,7 @@ using Unity.Entities;
 
 namespace FindStuff.Helper
 {
-    public class VehicleHelper( EntityManager entityManager ) : IBaseHelper
+    public class VehicleHelper( EntityManager entityManager, bool ExpertMode ) : IBaseHelper
     {
         public string PrefabType => "Vehicle";
 
@@ -145,7 +145,7 @@ namespace FindStuff.Helper
 
         public bool IsValidPrefab( PrefabBase prefab, Entity entity )
         {
-            if ( entityManager == null || entity == Entity.Null )
+            if ( (entityManager == null || entity == Entity.Null) && !ExpertMode)
                 return false;
 
             return entityManager.HasComponent<VehicleData>( entity );

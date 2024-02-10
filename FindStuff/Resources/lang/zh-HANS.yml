@@ -7,6 +7,8 @@ lang:
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: 当您选择一个预制件时，隐藏查找物品菜单。
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: 激活快捷键
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: 按住 CTRL + 单击来选取对象。
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: Enable Expert Mode
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: If activated you have access to potential dangeroues objects crashing the game or breaking save games. You should know what you are doing. Use at your own risk!
  
  FindStuff.View: 查看
  FindStuff.Filter: 筛选

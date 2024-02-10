@@ -22,6 +22,13 @@ namespace FindStuff.UI
             set;
         }
 
+        [SettingsUISection( "Toggles" )]
+        public bool ExpertMode
+        {
+            get;
+            set;
+        }
+
         [SettingsUIHidden]
         protected override string UIResource => "FindStuff.Resources.settings.xml";
 
@@ -32,6 +39,7 @@ namespace FindStuff.UI
         public override void SetDefaults( )
         {
             OperationMode = "HideFindStuff";
+            ExpertMode = false;
             EnableShortcut = false;
         }
 

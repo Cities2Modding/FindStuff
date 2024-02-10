@@ -8,5 +8,8 @@
 		<field title="EnableShortcut_Desc">
 			<checkbox isChecked="EnableShortcut" />
 		</field>
+		<field title="ExpertMode_Desc">
+			<checkbox isChecked="ExpertMode" />
+		</field>
 	</group>
 </settings>

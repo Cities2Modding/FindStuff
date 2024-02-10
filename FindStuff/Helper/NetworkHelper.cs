@@ -5,7 +5,7 @@ using Unity.Entities;
 
 namespace FindStuff.Helper
 {
-    public class NetworkHelper( EntityManager entityManager ) : IBaseHelper
+    public class NetworkHelper( EntityManager entityManager, bool ExpertMode ) : IBaseHelper
     {
         public string PrefabType
         {
@@ -19,7 +19,7 @@ namespace FindStuff.Helper
         {
             Dictionary<string, object> meta = new Dictionary<string, object>( );
 
-            if ( prefab.name.ToLower( ).Contains( "invisible" ) )
+            if ( prefab.name.ToLower( ).Contains( "invisible " ) )
             {
                 meta.Add( IBaseHelper.META_IS_DANGEROUS, true );
                 meta.Add( IBaseHelper.META_IS_DANGEROUS_REASON, "FindStuff.Dangerous.CorruptWarning" );
@@ -140,6 +140,9 @@ namespace FindStuff.Helper
         public bool IsValidPrefab( PrefabBase prefab, Entity entity )
         {
             if ( entityManager == null || entity == Entity.Null )
+                return false;
+
+            if ( prefab.name.ToLower().Contains("invisible") && !ExpertMode )
                 return false;
 
             return entityManager.HasComponent<NetData>( entity ) || prefab is StaticObjectPrefab staticObject && staticObject.components.Find( p => p is NetObject );

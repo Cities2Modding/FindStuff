@@ -91,6 +91,12 @@ namespace FindStuff.UI
             set;
         }
 
+        public bool ExpertMode
+        {
+            get;
+            set;
+        }
+
         public bool Shifted
         {
             get;

@@ -37,5 +37,23 @@ namespace FindStuff.Configuration
             get;
             set;
         } = SubFilter.None;
+
+        public string OperationMode
+        {
+            get;
+            set;
+        } = "HideFindStuff";
+
+        public bool EnableShortcut
+        {
+            get;
+            set;
+        } = false;
+
+        public bool ExpertMode
+        {
+            get;
+            set;
+        } = false;
     }
 }
