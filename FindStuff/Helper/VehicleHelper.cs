@@ -15,11 +15,9 @@ namespace FindStuff.Helper
         public Dictionary<string, object> CreateMeta( PrefabBase prefab, Entity entity )
         {
             Dictionary<string, object> meta = new Dictionary<string, object>( );
-            if ( entityManager.HasComponent<TrainData>( entity ) )
-            {
-                meta.Add( IBaseHelper.META_IS_DANGEROUS, true );
-                meta.Add( IBaseHelper.META_IS_DANGEROUS_REASON, "FindStuff.Dangerous.NoDelete" );
-            }
+
+            meta.Add( IBaseHelper.META_IS_DANGEROUS, true );
+            meta.Add( IBaseHelper.META_IS_DANGEROUS_REASON, "FindStuff.Dangerous.NoDelete" );
 
             return meta;
         }

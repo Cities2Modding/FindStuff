@@ -1,5 +1,4 @@
-﻿using Colossal.IO.AssetDatabase;
-using Colossal.Localization;
+﻿using Colossal.Localization;
 using Colossal.Serialization.Entities;
 using FindStuff.Configuration;
 using FindStuff.Helper;
@@ -519,6 +518,6 @@ namespace FindStuff.UI
             }
         }
 
-        static readonly HashSet<string> GetEvilPrefabs = ["lane editor container", "traffic spawner"];
+        static readonly HashSet<string> GetEvilPrefabs = ["lane editor container", "traffic spawner", "deliveryvan"];
     }
 }
