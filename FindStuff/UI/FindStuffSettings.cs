@@ -31,7 +31,7 @@ namespace FindStuff.UI
 
         public override void SetDefaults( )
         {
-            OperationMode = "MoveFindStuff";
+            OperationMode = "HideFindStuff";
             EnableShortcut = false;
         }
 
