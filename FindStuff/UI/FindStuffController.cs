@@ -19,7 +19,7 @@ using UnityEngine.InputSystem;
 
 namespace FindStuff.UI
 {
-    [ControllerDepends( SystemUpdatePhase.UIUpdate, typeof( PickerToolSystem ) )]
+    [ControllerDepends( SystemUpdatePhase.ToolUpdate, typeof( PickerToolSystem ) )]
     public class FindStuffController : Controller<FindStuffViewModel>
     {
         public bool IsPicking
@@ -341,7 +341,13 @@ namespace FindStuff.UI
         private void OnTogglePicker( )
         {
             UpdatePicker( !Model.IsPicking );
-            _toolSystem.activeTool = _defaulToolSystem;
+
+            if ( Model.IsPicking && _toolSystem.activeTool != _pickerToolSystem )
+            {
+                _toolSystem.activeTool = _pickerToolSystem;
+            }
+            else if ( !Model.IsPicking && _toolSystem.activeTool == _pickerToolSystem )
+                _toolSystem.activeTool = _defaulToolSystem;
         }
 
         [OnTrigger]
@@ -520,6 +526,14 @@ namespace FindStuff.UI
         public void UpdatePicker( bool isPicking )
         {
             Model.IsPicking = isPicking;
+
+            if ( Model.IsPicking && _toolSystem.activeTool != _pickerToolSystem )
+            {
+                _toolSystem.activeTool = _pickerToolSystem;
+            }
+            else if ( !Model.IsPicking && _toolSystem.activeTool == _pickerToolSystem )
+                _toolSystem.activeTool = _defaulToolSystem;
+
             TriggerUpdate( );
         }
 
