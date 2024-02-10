@@ -518,6 +518,6 @@ namespace FindStuff.UI
             }
         }
 
-        static readonly HashSet<string> GetEvilPrefabs = ["lane editor container", "traffic spawner", "deliveryvan"];
+        static readonly HashSet<string> GetEvilPrefabs = ["lane editor container", "traffic spawner", "NA_DeliveryVan01", "EU_DeliveryVan01", "MotorbikeDelivery01"];
     }
 }
