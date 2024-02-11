@@ -1,7 +1,9 @@
-﻿using Colossal.Localization;
+﻿using Colossal.Entities;
+using Colossal.Localization;
 using Colossal.Serialization.Entities;
 using FindStuff.Configuration;
 using FindStuff.Helper;
+using FindStuff.Prefabs;
 using FindStuff.Systems;
 using Game;
 using Game.Prefabs;
@@ -407,9 +409,8 @@ namespace FindStuff.UI
             var prefab = prefabs?.FirstOrDefault( p => p.name == name );
 
             if ( prefab != null )
-            {
+            {  
                 var entity = _prefabSystem.GetEntity( prefab );
-
                 if ( entity != Entity.Null )
                 {
                     _toolSystem.ActivatePrefabTool( prefab );
@@ -436,8 +437,14 @@ namespace FindStuff.UI
                     //    }
                     //}
 
-                    commandBuffer.SetComponent<Unlock>( unlockEntity, new Unlock( entity ) );
+                    // Create ploppable building data
+                    if (_baseHelper.FirstOrDefault(p => p is ZoneBuildingHelper).IsValidPrefab(prefab, entity))
+                    {
+                        commandBuffer.AddComponent(entity, new PloppableBuildingData());
+                        commandBuffer.AddComponent(entity, new SignatureBuildingData());
+                    }
 
+                    commandBuffer.SetComponent<Unlock>(unlockEntity, new Unlock(entity));
                     GameManager.instance.userInterface.view.View.ExecuteScript( $"engine.trigger('toolbar.selectAsset',{{index: {entity.Index}, version: {entity.Version}}});" );
                     //_selectAsset.Invoke( _toolbarUISystem, new object[] { entity } );                    
                 }
