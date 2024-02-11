@@ -9,12 +9,14 @@ using Game.SceneFlow;
 using Game.Tools;
 using Game.UI;
 using Game.UI.InGame;
+using Game.Vehicles;
 using Gooee.Plugins;
 using Gooee.Plugins.Attributes;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Unity.Entities;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace FindStuff.UI
@@ -22,6 +24,12 @@ namespace FindStuff.UI
     [ControllerDepends( SystemUpdatePhase.ToolUpdate, typeof( PickerToolSystem ) )]
     public class FindStuffController : Controller<FindStuffViewModel>
     {
+        private bool IsPickingShortcut
+        {
+            get;
+            set;
+        }
+
         public bool IsPicking
         {
             get
@@ -329,6 +337,18 @@ namespace FindStuff.UI
         protected override void OnUpdate( )
         {
             base.OnUpdate( );
+            if ( !IsPickingShortcut &&
+                _toolSystem.activeTool == _defaulToolSystem
+                && PickerShortcutTrigger( ) && !IsPicking )
+            {
+                IsPickingShortcut = true;
+                UpdatePicker( true );
+            }
+            else if ( IsPickingShortcut && !PickerShortcutTrigger( ) && IsPicking )
+            {
+                IsPickingShortcut = false;
+                UpdatePicker( false );
+            }
         }
 
         [OnTrigger]
@@ -341,13 +361,6 @@ namespace FindStuff.UI
         private void OnTogglePicker( )
         {
             UpdatePicker( !Model.IsPicking );
-
-            if ( Model.IsPicking && _toolSystem.activeTool != _pickerToolSystem )
-            {
-                _toolSystem.activeTool = _pickerToolSystem;
-            }
-            else if ( !Model.IsPicking && _toolSystem.activeTool == _pickerToolSystem )
-                _toolSystem.activeTool = _defaulToolSystem;
         }
 
         [OnTrigger]
@@ -523,6 +536,11 @@ namespace FindStuff.UI
             GameManager.instance.userInterface.view.View.TriggerEvent( "findstuff.onReceiveResults", key, result.Json );
         }
 
+        private bool PickerShortcutTrigger( )
+        {
+            return EnableShortcut && Input.GetKey( KeyCode.LeftControl );
+        }
+
         public void UpdatePicker( bool isPicking )
         {
             Model.IsPicking = isPicking;
@@ -532,7 +550,12 @@ namespace FindStuff.UI
                 _toolSystem.activeTool = _pickerToolSystem;
             }
             else if ( !Model.IsPicking && _toolSystem.activeTool == _pickerToolSystem )
+            {
                 _toolSystem.activeTool = _defaulToolSystem;
+            }
+
+            if ( !Model.IsPicking )
+                IsPickingShortcut = false;
 
             TriggerUpdate( );
         }

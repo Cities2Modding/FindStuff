@@ -2201,8 +2201,8 @@
   var ToolWindow = ({ react, setupController }) => {
     const [sliderValue, setSliderValue] = react.useState(0);
     const [hoverPrefab, setHoverPrefab] = react.useState({ Name: "" });
-    const { Button, Icon, VirtualList, Slider, List, Grid, FormGroup, FormCheckBox, Scrollable, ToolTip, TextBox, Dropdown, ToolTipContent, TabModal, Modal, MarkDown } = window.$_gooee.framework;
-    const { model, update, trigger, _L } = setupController();
+    const { Button, Icon, VirtualList, ProgressBar, PieChart, Slider, List, Grid, FormGroup, FormCheckBox, Scrollable, ToolTip, TextBox, Dropdown, ToolTipContent, TabModal, Modal, MarkDown } = window.$_gooee.framework;
+    const { model, update, trigger, _L, colors } = setupController();
     const [selectedPrefab, setSeletedPrefab] = react.useState(model && model.Selected ? model.Selected : { Name: "" });
     const [filteredPrefabs, setFilteredPrefabs] = react.useState([]);
     const [search, setSearch] = react.useState(model.Search ?? "");

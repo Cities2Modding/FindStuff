@@ -110,9 +110,9 @@ const ToolWindow = ({ react, setupController }) => {
     const [sliderValue, setSliderValue] = react.useState(0);
     const [hoverPrefab, setHoverPrefab] = react.useState({ Name: "" });
 
-    const { Button, Icon, VirtualList, Slider, List, Grid, FormGroup, FormCheckBox, Scrollable, ToolTip, TextBox, Dropdown, ToolTipContent, TabModal, Modal, MarkDown } = window.$_gooee.framework;
+    const { Button, Icon, VirtualList, ProgressBar, PieChart, Slider, List, Grid, FormGroup, FormCheckBox, Scrollable, ToolTip, TextBox, Dropdown, ToolTipContent, TabModal, Modal, MarkDown } = window.$_gooee.framework;
 
-    const { model, update, trigger, _L } = setupController();
+    const { model, update, trigger, _L, colors } = setupController();
     const [selectedPrefab, setSeletedPrefab] = react.useState(model && model.Selected ? model.Selected : { Name: "" });
     const [filteredPrefabs, setFilteredPrefabs] = react.useState([]);
     const [search, setSearch] = react.useState(model.Search ?? "");
@@ -407,7 +407,7 @@ const ToolWindow = ({ react, setupController }) => {
             <HoverWindow model={model} className={shifted ? "mt-2" : "mb-2"} hoverPrefab={hoverPrefab} _L={_L} />
             : null;
     }, [hoverPrefab, model, shifted, model.Search] );
-
+    
     return model.IsVisible ? <div className={isVisibleClass + (shifted? " align-items-start" : "")}>
         <div className="col">
             <FiltersWindow compact={shifted} model={model} update={update} onDoUpdate={doResultsUpdate} _L={_L} />
@@ -436,6 +436,21 @@ const ToolWindow = ({ react, setupController }) => {
             {shifted ? renderHoverWindow() : null}
         </div>
         <div className="col">
+            {/*<div className="progress-bar-group vertical h-25">*/}
+            {/*    <ProgressBar value={0.3} orientation="vertical" className="progress-bar-primary" />*/}
+            {/*    <ProgressBar value={0.12} orientation="vertical" className="progress-bar-secondary" />*/}
+            {/*    <ProgressBar value={0.43} orientation="vertical" className="progress-bar-info" />*/}
+            {/*    <ProgressBar value={0.55} orientation="vertical" className="progress-bar-warning" />*/}
+            {/*    <ProgressBar orientation="vertical" className="progress-bar-danger" />*/}
+            {/*    <ProgressBar value={0.96} orientation="vertical" className="progress-bar-success" />*/}
+            {/*</div>*/}
+            {/*<div className="w-50">*/}
+            {/*    <PieChart data={[*/}
+            {/*        { value: 52, color: colors.trans.primary },*/}
+            {/*        { value: 15, color: colors.trans.secondary },*/}
+            {/*        { value: 20, color: colors.trans.info },*/}
+            {/*        { value: 80, color: colors.trans.danger }]} />*/}
+            {/*</div>*/}
             <div className="d-inline h-x w-x">
                 {/*<Button watch={[shifted]} circular border icon style="trans-faded" onClick={toggleShifter}>*/}
                 {/*    <Icon icon={shifted ? "solid-arrow-down" : "solid-arrow-up"} size="sm" fa />*/}

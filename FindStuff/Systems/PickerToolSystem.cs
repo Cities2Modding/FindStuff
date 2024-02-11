@@ -13,7 +13,6 @@ using Unity.Entities;
 using Unity.Jobs;
 using UnityEngine;
 using UnityEngine.Scripting;
-using static Game.Prefabs.TriggerPrefabData;
 
 namespace FindStuff.Systems
 {
@@ -22,6 +21,7 @@ namespace FindStuff.Systems
         private PrefabSystem _prefabSystem;
         private FindStuffController _controller;
         private OverlayRenderSystem.Buffer _overlay;
+        private Entity _lastEntity = Entity.Null;
 
         public override string toolID => "PickStuff";
 
@@ -89,10 +89,7 @@ namespace FindStuff.Systems
             //if ( _prefabSystem == null )
             //    return base.OnUpdate( inputDeps );
 
-            if ( ShortcutIsEnabled( ) && !_controller.IsPicking )
-                _controller.UpdatePicker( true );
-
-            if ( ( _controller.IsPicking ) && _controller != null && GetRaycastResult( out Entity entity, out Game.Common.RaycastHit hitInfo ) )
+            if ( _controller.IsPicking && _controller != null && GetRaycastResult( out Entity entity, out Game.Common.RaycastHit hitInfo ) )
             {
                 var yellow = new UnityEngine.Color( 1f, 1f, 0f, 0.5f );
 
@@ -123,6 +120,25 @@ namespace FindStuff.Systems
                         }
                     }
                 }
+
+                if ( _lastEntity != entity && _lastEntity != Entity.Null && EntityManager.HasComponent<Highlighted>( _lastEntity ) )
+                {
+                    EntityManager.RemoveComponent<Highlighted>( _lastEntity );
+                    EntityManager.AddComponent<Updated>( _lastEntity );
+                }
+
+                if ( !EntityManager.HasComponent<Highlighted>( entity ) )
+                {
+                    EntityManager.AddComponent<Highlighted>( entity );
+                    EntityManager.AddComponent<Updated>( entity );
+                }
+
+                _lastEntity = entity;
+            }
+            else if ( _lastEntity != Entity.Null && EntityManager.HasComponent<Highlighted>( _lastEntity ) )
+            {
+                EntityManager.RemoveComponent<Highlighted>( _lastEntity );
+                EntityManager.AddComponent<Updated>( _lastEntity );
             }
 
             return base.OnUpdate( inputDeps );
@@ -182,11 +198,6 @@ namespace FindStuff.Systems
                 EntityManager.HasComponent<Node>(raycastResult.m_Owner) ||
                 EntityManager.HasComponent<Edge>(raycastResult.m_Owner) ||
                 EntityManager.HasComponent<Plant>(raycastResult.m_Owner);
-        }
-
-        private bool ShortcutIsEnabled()
-        {
-            return _controller.EnableShortcut && Input.GetKey(KeyCode.LeftControl);
         }
 
         // Unused
