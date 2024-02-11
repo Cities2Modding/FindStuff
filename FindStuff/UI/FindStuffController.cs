@@ -20,6 +20,8 @@ using System.Reflection;
 using Unity.Entities;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static Colossal.AssetPipeline.Diagnostic.Report;
+using static Game.Prefabs.CharacterGroup;
 
 namespace FindStuff.UI
 {
@@ -245,6 +247,19 @@ namespace FindStuff.UI
             }
 
             return isValid;
+        }
+
+        public bool IsValidPrefab( PrefabBase prefabBase, Entity entity )
+        {
+            foreach ( IBaseHelper helper in _baseHelper )
+            {
+                if ( helper.IsValidPrefab( prefabBase, entity ) )
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private string GetTypeIcon( string type, PrefabBase prefabBase, Entity entity )

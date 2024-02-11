@@ -5,106 +5,11 @@ import SubFilters from "./_sub-filters";
 import PrefabItem from "./_prefab-item";
 import LoadingScreen from "./_loading-screen";
 import FavouriteStar from "./_favourite_star";
-
-const PickStuffButton = ({ react, setupController }) => {
-    const [tooltipVisible, setTooltipVisible] = react.useState(false);
-    const onMouseEnter = () => {
-        setTooltipVisible(true);
-        engine.trigger("audio.playSound", "hover-item", 1);
-    };
-
-    const onMouseLeave = () => {
-        setTooltipVisible(false);
-    };
-
-    const { ToolTip, ToolTipContent } = window.$_gooee.framework;
-
-    const { model, update, trigger } = setupController();
-
-    const onClick = () => {
-        const newValue = !model.IsPicking;
-        trigger("OnTogglePicker");
-        engine.trigger("audio.playSound", "select-item", 1);
-
-        if (newValue) {
-            engine.trigger("audio.playSound", "open-panel", 1);
-            //engine.trigger("tool.selectTool", null);
-        }
-        else
-            engine.trigger("audio.playSound", "close-panel", 1);
-    };
-
-    return <>
-        <div className="spacer_oEi"></div>
-        <button onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onClick={onClick} className={"button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT toggle-states_X82 toggle-states_DTm" + (model.IsPicking ? " selected" : "")}>
-
-            <div className="fa fa-solid-eye-dropper icon-md"></div>
-
-            <ToolTip visible={tooltipVisible} float="up" align="right">
-                <ToolTipContent title="PickStuff" description="Activates the picker." />
-            </ToolTip>
-        </button>
-    </>;
-};
-window.$_gooee.register("pickstuff", "PickStuffButton", PickStuffButton, "bottom-right-toolbar", "findstuff");
-
-const AppButton = ({ react, setupController }) => {
-    const [tooltipVisible, setTooltipVisible] = react.useState(false);
-
-    const onMouseEnter = () => {
-        setTooltipVisible(true);
-        engine.trigger("audio.playSound", "hover-item", 1);
-    };
-
-    const onMouseLeave = () => {
-        setTooltipVisible(false);
-    };
-
-    const { ToolTip, ToolTipContent } = window.$_gooee.framework;
-
-    const { model, update, trigger, _L } = setupController();
-
-    const onClick = () => {
-        const newValue = !model.IsVisible;
-        trigger("OnToggleVisible");
-        engine.trigger("audio.playSound", "select-item", 1);
-
-        if (newValue) {
-            engine.trigger("audio.playSound", "open-panel", 1);
-            //engine.trigger("tool.selectTool", null);
-        }
-        else
-            engine.trigger("audio.playSound", "close-panel", 1);
-    };
-
-    return <>
-        <div className="spacer_oEi"></div>
-        <button onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onClick={onClick} className={"button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT toggle-states_X82 toggle-states_DTm" + (model.IsVisible ? " selected" : "")}>
-            <div className="fa fa-solid-magnifying-glass icon-md"></div>
-            <ToolTip visible={tooltipVisible} float="up" align="right">
-                <ToolTipContent title={_L("FindStuff.FindStuffSettings.ModName")} description="Opens the FindStuff panel." />
-            </ToolTip>
-        </button>
-    </>;
-};
-
-window.$_gooee.register("findstuff", "FindStuffAppButton", AppButton, "bottom-right-toolbar", "findstuff");
+import "./_toolbar-buttons";
+import debounce from "lodash.debounce";
 
 if (!window.$_findStuff_cache)
     window.$_findStuff_cache = {};
-;
-
-const debounce = (func, wait) => {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-};
 
 const ToolWindow = ({ react, setupController }) => {
     const [sliderValue, setSliderValue] = react.useState(0);
@@ -119,6 +24,12 @@ const ToolWindow = ({ react, setupController }) => {
     const [expanded, setExpanded] = react.useState(false);
     const [shifted, setShifted] = react.useState(model.Shifted);
     const [mouseOverItem, setMouseOverItem] = react.useState(null);
+    const searchRef = react.useRef(search); // Use a ref to keep track of the latest value
+
+    // Update the ref every time the search state changes
+    react.useEffect(() => {
+        searchRef.current = search;
+    }, [search]);
 
     const updateAssetHide = () => {
         if (model.OperationMode == "HideAssetMenu" && model.IsVisible)
@@ -242,16 +153,18 @@ const ToolWindow = ({ react, setupController }) => {
         triggerResultsUpdate(curQueryKey, model);
     };
 
-    const debouncedSearchUpdate = debounce((val) => {
-        
+    const updateSearchBackend = () => {
+        const currentSearchValue = searchRef.current;
+        model.Search = currentSearchValue;
+        update("Search", model.Search);
         doResultsUpdate(model);
-    }, filteredPrefabs.length > 5_000 ? 500 : 50);
+    };
 
+    const debouncedSearchUpdate = debounce(updateSearchBackend, filteredPrefabs.length > 5_000 ? 500 : 50);
+    
     const onSearchInputChanged = (val) => {
-        model.Search = val;
-        update("Search", val);
         setSearch(val);
-        debouncedSearchUpdate(val);
+        debouncedSearchUpdate();
     };
 
     const closeModal = () => {

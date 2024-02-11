@@ -46,6 +46,7 @@
     <Content Include="src\jsx\_hover-window.jsx" />
     <Content Include="src\jsx\_sub-filters.jsx" />
     <Content Include="src\jsx\_test.js.dump" />
+    <Content Include="src\jsx\_toolbar-buttons.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="src\" />

@@ -471,7 +471,7 @@
               }
             }
           }
-          var ReactElement = function(type, key, ref, self, source, owner, props) {
+          var ReactElement = function(type, key, ref, self2, source, owner, props) {
             var element = {
               // This tag allows us to uniquely identify this as a React Element
               $$typeof: REACT_ELEMENT_TYPE,
@@ -495,7 +495,7 @@
                 configurable: false,
                 enumerable: false,
                 writable: false,
-                value: self
+                value: self2
               });
               Object.defineProperty(element, "_source", {
                 configurable: false,
@@ -515,7 +515,7 @@
             var props = {};
             var key = null;
             var ref = null;
-            var self = null;
+            var self2 = null;
             var source = null;
             if (config != null) {
               if (hasValidRef(config)) {
@@ -530,7 +530,7 @@
                 }
                 key = "" + config.key;
               }
-              self = config.__self === void 0 ? null : config.__self;
+              self2 = config.__self === void 0 ? null : config.__self;
               source = config.__source === void 0 ? null : config.__source;
               for (propName in config) {
                 if (hasOwnProperty.call(config, propName) && !RESERVED_PROPS.hasOwnProperty(propName)) {
@@ -572,7 +572,7 @@
                 }
               }
             }
-            return ReactElement(type, key, ref, self, source, ReactCurrentOwner.current, props);
+            return ReactElement(type, key, ref, self2, source, ReactCurrentOwner.current, props);
           }
           function cloneAndReplaceKey(oldElement, newKey) {
             var newElement = ReactElement(oldElement.type, newKey, oldElement.ref, oldElement._self, oldElement._source, oldElement._owner, oldElement.props);
@@ -586,7 +586,7 @@
             var props = assign({}, element.props);
             var key = element.key;
             var ref = element.ref;
-            var self = element._self;
+            var self2 = element._self;
             var source = element._source;
             var owner = element._owner;
             if (config != null) {
@@ -624,7 +624,7 @@
               }
               props.children = childArray;
             }
-            return ReactElement(element.type, key, ref, self, source, owner, props);
+            return ReactElement(element.type, key, ref, self2, source, owner, props);
           }
           function isValidElement(object) {
             return typeof object === "object" && object !== null && object.$$typeof === REACT_ELEMENT_TYPE;
@@ -1910,8 +1910,141 @@
     }
   });
 
+  // node_modules/lodash.debounce/index.js
+  var require_lodash = __commonJS({
+    "node_modules/lodash.debounce/index.js"(exports, module) {
+      var FUNC_ERROR_TEXT = "Expected a function";
+      var NAN = 0 / 0;
+      var symbolTag = "[object Symbol]";
+      var reTrim = /^\s+|\s+$/g;
+      var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
+      var reIsBinary = /^0b[01]+$/i;
+      var reIsOctal = /^0o[0-7]+$/i;
+      var freeParseInt = parseInt;
+      var freeGlobal = typeof global == "object" && global && global.Object === Object && global;
+      var freeSelf = typeof self == "object" && self && self.Object === Object && self;
+      var root = freeGlobal || freeSelf || Function("return this")();
+      var objectProto = Object.prototype;
+      var objectToString = objectProto.toString;
+      var nativeMax = Math.max;
+      var nativeMin = Math.min;
+      var now = function() {
+        return root.Date.now();
+      };
+      function debounce2(func, wait, options) {
+        var lastArgs, lastThis, maxWait, result, timerId, lastCallTime, lastInvokeTime = 0, leading = false, maxing = false, trailing = true;
+        if (typeof func != "function") {
+          throw new TypeError(FUNC_ERROR_TEXT);
+        }
+        wait = toNumber(wait) || 0;
+        if (isObject(options)) {
+          leading = !!options.leading;
+          maxing = "maxWait" in options;
+          maxWait = maxing ? nativeMax(toNumber(options.maxWait) || 0, wait) : maxWait;
+          trailing = "trailing" in options ? !!options.trailing : trailing;
+        }
+        function invokeFunc(time) {
+          var args = lastArgs, thisArg = lastThis;
+          lastArgs = lastThis = void 0;
+          lastInvokeTime = time;
+          result = func.apply(thisArg, args);
+          return result;
+        }
+        function leadingEdge(time) {
+          lastInvokeTime = time;
+          timerId = setTimeout(timerExpired, wait);
+          return leading ? invokeFunc(time) : result;
+        }
+        function remainingWait(time) {
+          var timeSinceLastCall = time - lastCallTime, timeSinceLastInvoke = time - lastInvokeTime, result2 = wait - timeSinceLastCall;
+          return maxing ? nativeMin(result2, maxWait - timeSinceLastInvoke) : result2;
+        }
+        function shouldInvoke(time) {
+          var timeSinceLastCall = time - lastCallTime, timeSinceLastInvoke = time - lastInvokeTime;
+          return lastCallTime === void 0 || timeSinceLastCall >= wait || timeSinceLastCall < 0 || maxing && timeSinceLastInvoke >= maxWait;
+        }
+        function timerExpired() {
+          var time = now();
+          if (shouldInvoke(time)) {
+            return trailingEdge(time);
+          }
+          timerId = setTimeout(timerExpired, remainingWait(time));
+        }
+        function trailingEdge(time) {
+          timerId = void 0;
+          if (trailing && lastArgs) {
+            return invokeFunc(time);
+          }
+          lastArgs = lastThis = void 0;
+          return result;
+        }
+        function cancel() {
+          if (timerId !== void 0) {
+            clearTimeout(timerId);
+          }
+          lastInvokeTime = 0;
+          lastArgs = lastCallTime = lastThis = timerId = void 0;
+        }
+        function flush() {
+          return timerId === void 0 ? result : trailingEdge(now());
+        }
+        function debounced() {
+          var time = now(), isInvoking = shouldInvoke(time);
+          lastArgs = arguments;
+          lastThis = this;
+          lastCallTime = time;
+          if (isInvoking) {
+            if (timerId === void 0) {
+              return leadingEdge(lastCallTime);
+            }
+            if (maxing) {
+              timerId = setTimeout(timerExpired, wait);
+              return invokeFunc(lastCallTime);
+            }
+          }
+          if (timerId === void 0) {
+            timerId = setTimeout(timerExpired, wait);
+          }
+          return result;
+        }
+        debounced.cancel = cancel;
+        debounced.flush = flush;
+        return debounced;
+      }
+      function isObject(value) {
+        var type = typeof value;
+        return !!value && (type == "object" || type == "function");
+      }
+      function isObjectLike(value) {
+        return !!value && typeof value == "object";
+      }
+      function isSymbol(value) {
+        return typeof value == "symbol" || isObjectLike(value) && objectToString.call(value) == symbolTag;
+      }
+      function toNumber(value) {
+        if (typeof value == "number") {
+          return value;
+        }
+        if (isSymbol(value)) {
+          return NAN;
+        }
+        if (isObject(value)) {
+          var other = typeof value.valueOf == "function" ? value.valueOf() : value;
+          value = isObject(other) ? other + "" : other;
+        }
+        if (typeof value != "string") {
+          return value === 0 ? value : +value;
+        }
+        value = value.replace(reTrim, "");
+        var isBinary = reIsBinary.test(value);
+        return isBinary || reIsOctal.test(value) ? freeParseInt(value.slice(2), isBinary ? 2 : 8) : reIsBadHex.test(value) ? NAN : +value;
+      }
+      module.exports = debounce2;
+    }
+  });
+
   // src/jsx/ui.jsx
-  var import_react7 = __toESM(require_react());
+  var import_react8 = __toESM(require_react());
 
   // src/jsx/_hover-window.jsx
   var import_react = __toESM(require_react());
@@ -2138,42 +2271,28 @@
   };
   var favourite_star_default = FavouriteStar;
 
-  // src/jsx/ui.jsx
-  var PickStuffButton = ({ react, setupController }) => {
-    const [tooltipVisible, setTooltipVisible] = react.useState(false);
-    const onMouseEnter = () => {
-      setTooltipVisible(true);
-      engine.trigger("audio.playSound", "hover-item", 1);
-    };
-    const onMouseLeave = () => {
-      setTooltipVisible(false);
-    };
-    const { ToolTip, ToolTipContent } = window.$_gooee.framework;
-    const { model, update, trigger } = setupController();
-    const onClick = () => {
-      const newValue = !model.IsPicking;
-      trigger("OnTogglePicker");
-      engine.trigger("audio.playSound", "select-item", 1);
-      if (newValue) {
-        engine.trigger("audio.playSound", "open-panel", 1);
-      } else
-        engine.trigger("audio.playSound", "close-panel", 1);
-    };
-    return /* @__PURE__ */ import_react7.default.createElement(import_react7.default.Fragment, null, /* @__PURE__ */ import_react7.default.createElement("div", { className: "spacer_oEi" }), /* @__PURE__ */ import_react7.default.createElement("button", { onMouseEnter, onMouseLeave, onClick, className: "button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT toggle-states_X82 toggle-states_DTm" + (model.IsPicking ? " selected" : "") }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "fa fa-solid-eye-dropper icon-md" }), /* @__PURE__ */ import_react7.default.createElement(ToolTip, { visible: tooltipVisible, float: "up", align: "right" }, /* @__PURE__ */ import_react7.default.createElement(ToolTipContent, { title: "PickStuff", description: "Activates the picker." }))));
-  };
-  window.$_gooee.register("pickstuff", "PickStuffButton", PickStuffButton, "bottom-right-toolbar", "findstuff");
+  // src/jsx/_toolbar-buttons.jsx
+  var import_react7 = __toESM(require_react());
   var AppButton = ({ react, setupController }) => {
-    const [tooltipVisible, setTooltipVisible] = react.useState(false);
-    const onMouseEnter = () => {
-      setTooltipVisible(true);
+    const [fsTooltipVisible, setFSTooltipVisible] = react.useState(false);
+    const [pTooltipVisible, setPTooltipVisible] = react.useState(false);
+    const onFSMouseEnter = () => {
+      setFSTooltipVisible(true);
       engine.trigger("audio.playSound", "hover-item", 1);
     };
-    const onMouseLeave = () => {
-      setTooltipVisible(false);
+    const onFSMouseLeave = () => {
+      setFSTooltipVisible(false);
+    };
+    const onPMouseEnter = () => {
+      setPTooltipVisible(true);
+      engine.trigger("audio.playSound", "hover-item", 1);
+    };
+    const onPMouseLeave = () => {
+      setPTooltipVisible(false);
     };
     const { ToolTip, ToolTipContent } = window.$_gooee.framework;
     const { model, update, trigger, _L } = setupController();
-    const onClick = () => {
+    const onFindStuffClick = () => {
       const newValue = !model.IsVisible;
       trigger("OnToggleVisible");
       engine.trigger("audio.playSound", "select-item", 1);
@@ -2182,22 +2301,23 @@
       } else
         engine.trigger("audio.playSound", "close-panel", 1);
     };
-    return /* @__PURE__ */ import_react7.default.createElement(import_react7.default.Fragment, null, /* @__PURE__ */ import_react7.default.createElement("div", { className: "spacer_oEi" }), /* @__PURE__ */ import_react7.default.createElement("button", { onMouseEnter, onMouseLeave, onClick, className: "button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT toggle-states_X82 toggle-states_DTm" + (model.IsVisible ? " selected" : "") }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "fa fa-solid-magnifying-glass icon-md" }), /* @__PURE__ */ import_react7.default.createElement(ToolTip, { visible: tooltipVisible, float: "up", align: "right" }, /* @__PURE__ */ import_react7.default.createElement(ToolTipContent, { title: _L("FindStuff.FindStuffSettings.ModName"), description: "Opens the FindStuff panel." }))));
+    const onPickerClick = () => {
+      const newValue = !model.IsPicking;
+      trigger("OnTogglePicker");
+      engine.trigger("audio.playSound", "select-item", 1);
+      if (newValue) {
+        engine.trigger("audio.playSound", "open-panel", 1);
+      } else
+        engine.trigger("audio.playSound", "close-panel", 1);
+    };
+    return /* @__PURE__ */ import_react7.default.createElement(import_react7.default.Fragment, null, /* @__PURE__ */ import_react7.default.createElement("div", { className: "spacer_oEi" }), /* @__PURE__ */ import_react7.default.createElement("button", { onMouseEnter: onPMouseEnter, onMouseLeave: onPMouseLeave, onClick: onPickerClick, className: "button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT toggle-states_X82 toggle-states_DTm" + (model.IsPicking ? " selected" : "") }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "fa fa-solid-eye-dropper icon-md" }), /* @__PURE__ */ import_react7.default.createElement(ToolTip, { visible: pTooltipVisible, float: "up", align: "right" }, /* @__PURE__ */ import_react7.default.createElement(ToolTipContent, { title: "Pick Stuff", description: "Hover over items and select them automatically." }))), /* @__PURE__ */ import_react7.default.createElement("div", { className: "spacer_oEi" }), /* @__PURE__ */ import_react7.default.createElement("button", { onMouseEnter: onFSMouseEnter, onMouseLeave: onFSMouseLeave, onClick: onFindStuffClick, className: "button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT toggle-states_X82 toggle-states_DTm" + (model.IsVisible ? " selected" : "") }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "fa fa-solid-magnifying-glass icon-md" }), /* @__PURE__ */ import_react7.default.createElement(ToolTip, { visible: fsTooltipVisible, float: "up", align: "right" }, /* @__PURE__ */ import_react7.default.createElement(ToolTipContent, { title: _L("FindStuff.FindStuffSettings.ModName"), description: "Find stuff you can place in the game." }))));
   };
   window.$_gooee.register("findstuff", "FindStuffAppButton", AppButton, "bottom-right-toolbar", "findstuff");
+
+  // src/jsx/ui.jsx
+  var import_lodash = __toESM(require_lodash());
   if (!window.$_findStuff_cache)
     window.$_findStuff_cache = {};
-  var debounce = (func, wait) => {
-    let timeout;
-    return function executedFunction(...args) {
-      const later = () => {
-        clearTimeout(timeout);
-        func(...args);
-      };
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-    };
-  };
   var ToolWindow = ({ react, setupController }) => {
     const [sliderValue, setSliderValue] = react.useState(0);
     const [hoverPrefab, setHoverPrefab] = react.useState({ Name: "" });
@@ -2209,6 +2329,10 @@
     const [expanded, setExpanded] = react.useState(false);
     const [shifted, setShifted] = react.useState(model.Shifted);
     const [mouseOverItem, setMouseOverItem] = react.useState(null);
+    const searchRef = react.useRef(search);
+    react.useEffect(() => {
+      searchRef.current = search;
+    }, [search]);
     const updateAssetHide = () => {
       if (model.OperationMode == "HideAssetMenu" && model.IsVisible)
         document.body.classList.add("find-stuff-hide");
@@ -2239,7 +2363,7 @@
         updateAssetHide();
       }
     }, [model.IsVisible, model.OperationMode, shifted, model.Shifted]);
-    const triggerResultsUpdate = debounce((curQueryKey, m) => {
+    const triggerResultsUpdate = (0, import_lodash.default)((curQueryKey, m) => {
       console.log("query key: " + curQueryKey);
       if ((!m.Search || m.Search.length == 0) && window.$_findStuff_cache[curQueryKey]) {
         console.log("Got cache for " + curQueryKey);
@@ -2302,14 +2426,16 @@
       const curQueryKey = `${m.Filter}:${m.SubFilter}:${m.Search ? m.Search : ""}:${m.OrderByAscending}${m.Filter === "Favourite" ? ":" + m.Favourites.length : ""}`;
       triggerResultsUpdate(curQueryKey, model);
     };
-    const debouncedSearchUpdate = debounce((val) => {
+    const updateSearchBackend = () => {
+      const currentSearchValue = searchRef.current;
+      model.Search = currentSearchValue;
+      update("Search", model.Search);
       doResultsUpdate(model);
-    }, filteredPrefabs.length > 5e3 ? 500 : 50);
+    };
+    const debouncedSearchUpdate = (0, import_lodash.default)(updateSearchBackend, filteredPrefabs.length > 5e3 ? 500 : 50);
     const onSearchInputChanged = (val) => {
-      model.Search = val;
-      update("Search", val);
       setSearch(val);
-      debouncedSearchUpdate(val);
+      debouncedSearchUpdate();
     };
     const closeModal = () => {
       trigger("OnToggleVisible");
@@ -2341,7 +2467,7 @@
       window.$_findStuff_cache[curQueryKey] = null;
     };
     const onRenderItem = (p, index) => {
-      return /* @__PURE__ */ import_react7.default.createElement(
+      return /* @__PURE__ */ import_react8.default.createElement(
         prefab_item_default,
         {
           key: p.Name,
@@ -2353,7 +2479,7 @@
           onMouseEnter: onMouseEnterItem,
           onMouseLeave: onMouseLeaveItem,
           _L,
-          extraContent: hoverPrefab && hoverPrefab.Name === p.Name ? /* @__PURE__ */ import_react7.default.createElement(favourite_star_default, { model, onUpdateFavourite, prefab: p }) : null
+          extraContent: hoverPrefab && hoverPrefab.Name === p.Name ? /* @__PURE__ */ import_react8.default.createElement(favourite_star_default, { model, onUpdateFavourite, prefab: p }) : null
         }
       );
     };
@@ -2442,9 +2568,9 @@
     const columnCount = gridCounts.c;
     const rowCount = gridCounts.r;
     const renderHoverWindow = react.useCallback(() => {
-      return hoverPrefab && hoverPrefab.Name && hoverPrefab.Name.length > 0 ? /* @__PURE__ */ import_react7.default.createElement(hover_window_default, { model, className: shifted ? "mt-2" : "mb-2", hoverPrefab, _L }) : null;
+      return hoverPrefab && hoverPrefab.Name && hoverPrefab.Name.length > 0 ? /* @__PURE__ */ import_react8.default.createElement(hover_window_default, { model, className: shifted ? "mt-2" : "mb-2", hoverPrefab, _L }) : null;
     }, [hoverPrefab, model, shifted, model.Search]);
-    return model.IsVisible ? /* @__PURE__ */ import_react7.default.createElement("div", { className: isVisibleClass + (shifted ? " align-items-start" : "") }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "col" }, /* @__PURE__ */ import_react7.default.createElement(filters_window_default, { compact: shifted, model, update, onDoUpdate: doResultsUpdate, _L })), /* @__PURE__ */ import_react7.default.createElement("div", { className: "col" }, !shifted ? renderHoverWindow() : null, /* @__PURE__ */ import_react7.default.createElement(Modal, { bodyClassName: "asset-menu p-relative" + (shifted && expanded ? "" : expanded ? " asset-menu-xl" : shifted ? " asset-menu-sm" : ""), title: /* @__PURE__ */ import_react7.default.createElement("div", { className: "d-flex flex-row align-items-center" }, /* @__PURE__ */ import_react7.default.createElement(Button, { watch: [expanded], circular: true, icon: true, style: "trans-faded", onClick: toggleExpander }, /* @__PURE__ */ import_react7.default.createElement(Icon, { icon: expanded ? !shifted ? "solid-chevron-down" : "solid-chevron-up" : shifted ? "solid-chevron-down" : "solid-chevron-up", fa: true })), /* @__PURE__ */ import_react7.default.createElement(Icon, { icon: "solid-magnifying-glass", fa: true, className: "bg-muted ml-2" }), /* @__PURE__ */ import_react7.default.createElement(TextBox, { size: "sm", className: "bg-dark-trans-less-faded w-25 mr-2 ml-4", placeholder: "Search...", text: search, onChange: onSearchInputChanged }), /* @__PURE__ */ import_react7.default.createElement(Button, { circular: true, icon: true, style: "trans-faded", disabled: search && search.length > 0 ? null : true, onClick: clearSearch }, /* @__PURE__ */ import_react7.default.createElement(Icon, { icon: "solid-eraser", fa: true })), /* @__PURE__ */ import_react7.default.createElement(sub_filters_default, { model, update, onDoUpdate: doResultsUpdate, _L })), onClose: closeModal }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "asset-menu-container", onMouseLeave: () => onMouseLeave() }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "flex-1" }, /* @__PURE__ */ import_react7.default.createElement(VirtualList, { watch: [model.Favourites, selectedPrefab, mouseOverItem, model.Search, model.Filter, model.SubFilter, model.ViewMode, model.OrderByAscending], border: isBorderedList, data: filteredPrefabs, onRenderItem, columns: columnCount, rows: rowCount, contentClassName: "d-flex flex-row flex-wrap", size: "sm", itemHeight: 32 })))), shifted ? renderHoverWindow() : null), /* @__PURE__ */ import_react7.default.createElement("div", { className: "col" }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "d-inline h-x w-x" }))) : null;
+    return model.IsVisible ? /* @__PURE__ */ import_react8.default.createElement("div", { className: isVisibleClass + (shifted ? " align-items-start" : "") }, /* @__PURE__ */ import_react8.default.createElement("div", { className: "col" }, /* @__PURE__ */ import_react8.default.createElement(filters_window_default, { compact: shifted, model, update, onDoUpdate: doResultsUpdate, _L })), /* @__PURE__ */ import_react8.default.createElement("div", { className: "col" }, !shifted ? renderHoverWindow() : null, /* @__PURE__ */ import_react8.default.createElement(Modal, { bodyClassName: "asset-menu p-relative" + (shifted && expanded ? "" : expanded ? " asset-menu-xl" : shifted ? " asset-menu-sm" : ""), title: /* @__PURE__ */ import_react8.default.createElement("div", { className: "d-flex flex-row align-items-center" }, /* @__PURE__ */ import_react8.default.createElement(Button, { watch: [expanded], circular: true, icon: true, style: "trans-faded", onClick: toggleExpander }, /* @__PURE__ */ import_react8.default.createElement(Icon, { icon: expanded ? !shifted ? "solid-chevron-down" : "solid-chevron-up" : shifted ? "solid-chevron-down" : "solid-chevron-up", fa: true })), /* @__PURE__ */ import_react8.default.createElement(Icon, { icon: "solid-magnifying-glass", fa: true, className: "bg-muted ml-2" }), /* @__PURE__ */ import_react8.default.createElement(TextBox, { size: "sm", className: "bg-dark-trans-less-faded w-25 mr-2 ml-4", placeholder: "Search...", text: search, onChange: onSearchInputChanged }), /* @__PURE__ */ import_react8.default.createElement(Button, { circular: true, icon: true, style: "trans-faded", disabled: search && search.length > 0 ? null : true, onClick: clearSearch }, /* @__PURE__ */ import_react8.default.createElement(Icon, { icon: "solid-eraser", fa: true })), /* @__PURE__ */ import_react8.default.createElement(sub_filters_default, { model, update, onDoUpdate: doResultsUpdate, _L })), onClose: closeModal }, /* @__PURE__ */ import_react8.default.createElement("div", { className: "asset-menu-container", onMouseLeave: () => onMouseLeave() }, /* @__PURE__ */ import_react8.default.createElement("div", { className: "flex-1" }, /* @__PURE__ */ import_react8.default.createElement(VirtualList, { watch: [model.Favourites, selectedPrefab, mouseOverItem, model.Search, model.Filter, model.SubFilter, model.ViewMode, model.OrderByAscending], border: isBorderedList, data: filteredPrefabs, onRenderItem, columns: columnCount, rows: rowCount, contentClassName: "d-flex flex-row flex-wrap", size: "sm", itemHeight: 32 })))), shifted ? renderHoverWindow() : null), /* @__PURE__ */ import_react8.default.createElement("div", { className: "col" }, /* @__PURE__ */ import_react8.default.createElement("div", { className: "d-inline h-x w-x" }))) : null;
   };
   window.$_gooee.register("findstuff", "FindStuffWindow", ToolWindow, "main-container", "findstuff");
 })();
