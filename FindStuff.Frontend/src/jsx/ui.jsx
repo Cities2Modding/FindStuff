@@ -155,14 +155,14 @@ const ToolWindow = ({ react, setupController }) => {
 
     const updateSearchBackend = () => {
         const currentSearchValue = searchRef.current;
-        model.Search = currentSearchValue;
-        update("Search", model.Search);
         doResultsUpdate(model);
     };
 
     const debouncedSearchUpdate = debounce(updateSearchBackend, filteredPrefabs.length > 5_000 ? 500 : 50);
     
     const onSearchInputChanged = (val) => {
+        model.Search = val;
+        update("Search", val);
         setSearch(val);
         debouncedSearchUpdate();
     };
@@ -328,16 +328,15 @@ const ToolWindow = ({ react, setupController }) => {
         <div className="col">
             {!shifted ? renderHoverWindow() : null}
             <Modal bodyClassName={"asset-menu p-relative" + (shifted && expanded ? "" : expanded ? " asset-menu-xl" : shifted ? " asset-menu-sm" : "")} title={<div className="d-flex flex-row align-items-center">
-                <Button watch={[expanded]} circular icon style="trans-faded" onClick={toggleExpander}>
+                <Button title={_L("FindStuff.Expand")} description={_L("FindStuff.Expand_desc")} watch={[expanded]} circular icon style="trans-faded" onClick={toggleExpander}>
                     <Icon icon={expanded ? (!shifted ? "solid-chevron-down" : "solid-chevron-up") : (shifted ? "solid-chevron-down" : "solid-chevron-up")} fa />
                 </Button>
                 <Icon icon="solid-magnifying-glass" fa className="bg-muted ml-2" />
                 <TextBox size="sm" className="bg-dark-trans-less-faded w-25 mr-2 ml-4" placeholder="Search..." text={search} onChange={onSearchInputChanged} />
-                {<Button circular icon style="trans-faded" disabled={search && search.length > 0 ? null : true} onClick={clearSearch}>
+                {<Button title={_L("FindStuff.ClearSearch")} description={_L("FindStuff.ClearSearch_desc")} circular icon style="trans-faded" disabled={search && search.length > 0 ? null : true} onClick={clearSearch}>
                     <Icon icon="solid-eraser" fa />
                 </Button>}
-                <SubFilters model={model} update={update} onDoUpdate={doResultsUpdate} _L={_L} />
-                
+                <SubFilters model={model} update={update} onDoUpdate={doResultsUpdate} _L={_L} />                
             </div>} onClose={closeModal}>
                 <div className="asset-menu-container" onMouseLeave={() => onMouseLeave()}>
                     <div className="flex-1">

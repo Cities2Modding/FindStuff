@@ -27,7 +27,7 @@ const SubFilters = ({ model, update, onDoUpdate, _L }) => {
     const subOptionsHeader =/* react.useMemo(() => (*/
         <>
             <h5 className="mr-2 text-muted">{computedCategoryName}</h5>
-            <Button className={(!model.SubFilter || model.SubFilter === "None" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("None")}>
+            <Button title={_L("FindStuff.SubFilter.None")} description={_L("FindStuff.SubFilter.None_desc")} className={(!model.SubFilter || model.SubFilter === "None" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("None")}>
                 <Icon icon="solid-asterisk" fa />
             </Button>
         </>
@@ -36,16 +36,16 @@ const SubFilters = ({ model, update, onDoUpdate, _L }) => {
     if (model.Filter === "Zones") {
         return <div className="d-flex flex-row flex-wrap justify-content-end mr-6 flex-1">
             {subOptionsHeader}
-            <Button className={"ml-1" + (model.SubFilter === "ZoneResidential" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("ZoneResidential")}>
+            <Button title={_L("FindStuff.SubFilter.ZoneResidential")} description={_L("FindStuff.SubFilter.ZoneResidential_desc")} className={"ml-1" + (model.SubFilter === "ZoneResidential" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("ZoneResidential")}>
                 <Icon icon="Media/Game/Icons/ZoneResidential.svg" />
             </Button>
-            <Button className={"ml-1" + (model.SubFilter === "ZoneCommercial" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("ZoneCommercial")}>
+            <Button title={_L("FindStuff.SubFilter.ZoneCommercial")} description={_L("FindStuff.SubFilter.ZoneCommercial_desc")} className={"ml-1" + (model.SubFilter === "ZoneCommercial" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("ZoneCommercial")}>
                 <Icon icon="Media/Game/Icons/ZoneCommercial.svg" />
             </Button>
-            <Button className={"ml-1" + (model.SubFilter === "ZoneOffice" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("ZoneOffice")}>
+            <Button title={_L("FindStuff.SubFilter.ZoneOffice")} description={_L("FindStuff.SubFilter.ZoneOffice_desc")} className={"ml-1" + (model.SubFilter === "ZoneOffice" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("ZoneOffice")}>
                 <Icon icon="Media/Game/Icons/ZoneOffice.svg" />
             </Button>
-            <Button className={"ml-1 mr-1" + (model.SubFilter === "ZoneIndustrial" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("ZoneIndustrial")}>
+            <Button title={_L("FindStuff.SubFilter.ZoneIndustrial")} description={_L("FindStuff.SubFilter.ZoneIndustrial_desc")} className={"ml-1 mr-1" + (model.SubFilter === "ZoneIndustrial" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("ZoneIndustrial")}>
                 <Icon icon="Media/Game/Icons/ZoneIndustrial.svg" />
             </Button>
         </div>;
@@ -53,16 +53,16 @@ const SubFilters = ({ model, update, onDoUpdate, _L }) => {
     else if (model.Filter === "Buildings") {
         return <div className="d-flex flex-row flex-wrap justify-content-end mr-6 flex-1">
             {subOptionsHeader}
-            <Button className={"ml-1" + (model.SubFilter === "ServiceBuilding" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("ServiceBuilding")}>
+            <Button title={_L("FindStuff.SubFilter.ServiceBuilding")} description={_L("FindStuff.SubFilter.ServiceBuilding_desc")} className={"ml-1" + (model.SubFilter === "ServiceBuilding" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("ServiceBuilding")}>
                 <Icon icon="Media/Game/Icons/Services.svg" />
             </Button>
-            <Button className={"ml-1" + (model.SubFilter === "SignatureBuilding" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("SignatureBuilding")}>
+            <Button title={_L("FindStuff.SubFilter.SignatureBuilding")} description={_L("FindStuff.SubFilter.SignatureBuilding_desc")} className={"ml-1" + (model.SubFilter === "SignatureBuilding" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("SignatureBuilding")}>
                 <Icon icon="Media/Game/Icons/ZoneSignature.svg" />
             </Button>
-            <Button className={"ml-1" + (model.SubFilter === "Park" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Park")}>
+            <Button title={_L("FindStuff.SubFilter.Park")} description={_L("FindStuff.SubFilter.Park_desc")} className={"ml-1" + (model.SubFilter === "Park" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Park")}>
                 <Icon icon="Media/Game/Icons/ParksAndRecreation.svg" />
             </Button>
-            <Button className={"ml-1" + (model.SubFilter === "Parking" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Parking")}>
+            <Button title={_L("FindStuff.SubFilter.Parking")} description={_L("FindStuff.SubFilter.Parking_desc")} className={"ml-1" + (model.SubFilter === "Parking" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Parking")}>
                 <Icon icon="Media/Game/Icons/Parking.svg" />
             </Button>
         </div>;
@@ -70,10 +70,10 @@ const SubFilters = ({ model, update, onDoUpdate, _L }) => {
     else if (model.Filter === "Foliage") {
         return <div className="d-flex flex-row flex-wrap justify-content-end mr-6 flex-1">
             {subOptionsHeader}
-            <Button className={"ml-1" + (model.SubFilter === "Tree" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Tree")}>
+            <Button title={_L("FindStuff.SubFilter.Tree")} description={_L("FindStuff.SubFilter.Tree_desc")} className={"ml-1" + (model.SubFilter === "Tree" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Tree")}>
                 <Icon icon="Media/Game/Icons/Forest.svg" />
             </Button>
-            <Button className={"ml-1" + (model.SubFilter === "Plant" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Plant")}>
+            <Button title={_L("FindStuff.SubFilter.Plant")} description={_L("FindStuff.SubFilter.Plant_desc")} className={"ml-1" + (model.SubFilter === "Plant" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Plant")}>
                 <Icon icon="Media/Game/Icons/Forest.svg" />
             </Button>
         </div>;
@@ -81,22 +81,22 @@ const SubFilters = ({ model, update, onDoUpdate, _L }) => {
     else if (model.Filter === "Props") {
         return <div className="d-flex flex-row flex-wrap justify-content-end mr-6 flex-1">
             {subOptionsHeader}
-            <Button className={"ml-1" + (model.SubFilter === "Billboards" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Billboards")}>
+            <Button title={_L("FindStuff.SubFilter.Billboards")} description={_L("FindStuff.SubFilter.Billboards_desc")} className={"ml-1" + (model.SubFilter === "Billboards" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Billboards")}>
                 <Icon icon="solid-rectangle-ad" fa />
             </Button>
-            <Button className={"ml-1" + (model.SubFilter === "Fences" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Fences")}>
+            <Button title={_L("FindStuff.SubFilter.Fences")} description={_L("FindStuff.SubFilter.Fences_desc")} className={"ml-1" + (model.SubFilter === "Fences" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Fences")}>
                 <Icon icon="solid-xmarks-lines" fa />
             </Button>
-            <Button className={"ml-1" + (model.SubFilter === "SignsAndPosters" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("SignsAndPosters")}>
+            <Button title={_L("FindStuff.SubFilter.SignsAndPosters")} description={_L("FindStuff.SubFilter.SignsAndPosters_desc")} className={"ml-1" + (model.SubFilter === "SignsAndPosters" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("SignsAndPosters")}>
                 <Icon icon="solid-clipboard-user" fa />
             </Button>
-            <Button className={"ml-1" + (model.SubFilter === "Accessory" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Accessory")}>
+            <Button title={_L("FindStuff.SubFilter.Accessory")} description={_L("FindStuff.SubFilter.Accessory_desc")} className={"ml-1" + (model.SubFilter === "Accessory" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Accessory")}>
                 <Icon icon="solid-tree-city" fa />
             </Button>
-            {model.ExpertMode === true && <Button className={"ml-1" + (model.SubFilter === "Vehicle" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Vehicle")}>
+            {model.ExpertMode === true && <Button title={_L("FindStuff.SubFilter.Vehicle")} description={_L("FindStuff.SubFilter.Vehicle_desc")} className={"ml-1" + (model.SubFilter === "Vehicle" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Vehicle")}>
                 <Icon icon="Media/Game/Icons/Traffic.svg" />
             </Button>}
-            <Button className={"ml-1" + (model.SubFilter === "PropMisc" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("PropMisc")}>
+            <Button title={_L("FindStuff.SubFilter.PropMisc")} description={_L("FindStuff.SubFilter.PropMisc_desc")} className={"ml-1" + (model.SubFilter === "PropMisc" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("PropMisc")}>
                 <Icon icon="solid-ellipsis" fa/>
             </Button>
         </div>;
@@ -105,28 +105,28 @@ const SubFilters = ({ model, update, onDoUpdate, _L }) => {
     else if (model.Filter === "Network") {
         return <div className="d-flex flex-row flex-wrap justify-content-end mr-6 flex-1">
             {subOptionsHeader}
-            <Button className={"ml-1" + (model.SubFilter === "SmallRoad" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("SmallRoad")}>
+            <Button title={_L("FindStuff.SubFilter.SmallRoad")} description={_L("FindStuff.SubFilter.SmallRoad_desc")} className={"ml-1" + (model.SubFilter === "SmallRoad" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("SmallRoad")}>
                 <Icon icon="Media/Game/Icons/SmallRoad.svg" />
             </Button>
-            <Button className={"ml-1" + (model.SubFilter === "MediumRoad" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("MediumRoad")}>
+            <Button title={_L("FindStuff.SubFilter.MediumRoad")} description={_L("FindStuff.SubFilter.MediumRoad_desc")} className={"ml-1" + (model.SubFilter === "MediumRoad" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("MediumRoad")}>
                 <Icon icon="Media/Game/Icons/MediumRoad.svg" />
             </Button>
-            <Button className={"ml-1" + (model.SubFilter === "LargeRoad" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("LargeRoad")}>
+            <Button title={_L("FindStuff.SubFilter.LargeRoad")} description={_L("FindStuff.SubFilter.LargeRoad_desc")} className={"ml-1" + (model.SubFilter === "LargeRoad" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("LargeRoad")}>
                 <Icon icon="Media/Game/Icons/LargeRoad.svg" />
             </Button>
-            <Button className={"ml-1" + (model.SubFilter === "Highway" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Highway")}>
+            <Button title={_L("FindStuff.SubFilter.Highway")} description={_L("FindStuff.SubFilter.Highway_desc")} className={"ml-1" + (model.SubFilter === "Highway" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Highway")}>
                 <Icon icon="Media/Game/Icons/Highways.svg" />
             </Button>
-            <Button className={"ml-1" + (model.SubFilter === "Roundabout" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Roundabout")}>
+            <Button title={_L("FindStuff.SubFilter.Roundabout")} description={_L("FindStuff.SubFilter.Roundabout_desc")} className={"ml-1" + (model.SubFilter === "Roundabout" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Roundabout")}>
                 <Icon icon="Media/Game/Icons/Roundabouts.svg" />
             </Button>
-            <Button className={"ml-1" + (model.SubFilter === "Pavement" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Pavement")}>
+            <Button title={_L("FindStuff.SubFilter.Pavement")} description={_L("FindStuff.SubFilter.Pavement_desc")} className={"ml-1" + (model.SubFilter === "Pavement" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Pavement")}>
                 <Icon icon="Media/Game/Icons/Pathways.svg" />
             </Button>
-            <Button className={"ml-1" + (model.SubFilter === "RoadTool" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("RoadTool")}>
+            <Button title={_L("FindStuff.SubFilter.RoadTool")} description={_L("FindStuff.SubFilter.RoadTool_desc")} className={"ml-1" + (model.SubFilter === "RoadTool" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("RoadTool")}>
                 <Icon icon="Media/Game/Icons/RoadsServices.svg" />
             </Button>
-            <Button className={"ml-1" + (model.SubFilter === "OtherNetwork" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("OtherNetwork")}>
+            <Button title={_L("FindStuff.SubFilter.OtherNetwork")} description={_L("FindStuff.SubFilter.OtherNetwork_desc")} className={"ml-1" + (model.SubFilter === "OtherNetwork" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("OtherNetwork")}>
                 <Icon icon="solid-ellipsis" fa />
             </Button>
         </div>;
@@ -134,7 +134,7 @@ const SubFilters = ({ model, update, onDoUpdate, _L }) => {
     else if (model.Filter === "Misc") {
         return <div className="d-flex flex-row flex-wrap justify-content-end mr-6 flex-1">
             {subOptionsHeader}
-            <Button className={"ml-1" + (model.SubFilter === "Surface" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Surface")}>
+            <Button title={_L("FindStuff.SubFilter.Surface")} description={_L("FindStuff.SubFilter.Surface_desc")} className={"ml-1" + (model.SubFilter === "Surface" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Surface")}>
                 <Icon icon="Media/Game/Icons/LotTool.svg" />
             </Button>
         </div>;

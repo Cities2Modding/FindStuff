@@ -14,6 +14,7 @@ using Unity.Jobs;
 using UnityEngine;
 using UnityEngine.Scripting;
 using static Colossal.AssetPipeline.Diagnostic.Report;
+using static Colossal.IO.AssetDatabase.AtlasFrame;
 
 namespace FindStuff.Systems
 {
@@ -80,8 +81,8 @@ namespace FindStuff.Systems
             {
                 if ( EntityManager.TryGetComponent( entity, out PrefabRef prefabRef ) &&
                      _prefabSystem.TryGetPrefab( prefabRef.m_Prefab, out PrefabBase prefabBase ) &&
-                    ( _controller.IsValidPrefab( prefabBase, entity ) || 
-                    EntityManager.HasComponent<Curve>( entity ) ) )
+                    ( _controller.IsValidPrefab( prefabBase, entity ) ||
+                    HasComponents( entity ) ) )
                 {
                     var yellow = new UnityEngine.Color( 1f, 1f, 0f, 0.2f );
 
@@ -135,6 +136,17 @@ namespace FindStuff.Systems
             }
 
             return base.OnUpdate( inputDeps );
+        }
+
+        private bool HasComponents( Entity entity )
+        {
+            return EntityManager.HasComponent<Building>( entity ) ||
+                EntityManager.HasComponent<Vehicle>( entity ) ||
+                EntityManager.HasComponent<Game.Objects.Tree>( entity ) ||
+                EntityManager.HasComponent<Node>( entity ) ||
+                EntityManager.HasComponent<Edge>( entity ) ||
+                EntityManager.HasComponent<Plant>( entity ) ||
+                EntityManager.HasComponent<Curve>( entity );
         }
 
         // Unused
