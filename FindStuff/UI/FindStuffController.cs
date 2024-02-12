@@ -19,6 +19,8 @@ using System.Reflection;
 using Unity.Entities;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
+using static Colossal.AssetPipeline.Diagnostic.Report;
 
 namespace FindStuff.UI
 {
@@ -425,46 +427,20 @@ namespace FindStuff.UI
                 var entity = _prefabSystem.GetEntity( prefab );
                 if ( entity != Entity.Null )
                 {
-                    _toolSystem.ActivatePrefabTool( prefab );
-
+                    _toolSystem.ActivatePrefabTool(prefab);
                     EntityCommandBuffer commandBuffer = _endFrameBarrier.CreateCommandBuffer();
                     var unlockEntity = commandBuffer.CreateEntity( _entityArchetype );
 
-                    // This is a way to trigger the zone prefab zoning tool for the building
-                    //if ( EntityManager.TryGetComponent( entity, out SpawnableBuildingData spawnableBuildingData ) )
-                    //{
-                    //    if ( spawnableBuildingData.m_ZonePrefab != Entity.Null &&
-                    //        EntityManager.TryGetComponent( spawnableBuildingData.m_ZonePrefab, out ZoneData zoneData ) )
-                    //    {
-                    //        entity = spawnableBuildingData.m_ZonePrefab;
-                    //    }
-                    //}
-                    // This is a way to trigger the zone prefab zoning tool for the building
-                    //if ( EntityManager.TryGetComponent( entity, out SpawnableBuildingData spawnableBuildingData ) )
-                    //{
-                    //    if ( spawnableBuildingData.m_ZonePrefab != Entity.Null &&
-                    //        EntityManager.TryGetComponent( spawnableBuildingData.m_ZonePrefab, out ZoneData zoneData ) )
-                    //    {
-                    //        entity = spawnableBuildingData.m_ZonePrefab;
-                    //    }
-                    //}
-
-                    // Create ploppable building data
-                    if (_baseHelper.FirstOrDefault(p => p is ZoneBuildingHelper).IsValidPrefab(prefab, entity))
+                    // Handle zone buildings (spawnable buildings)
+                    if (_baseHelper.FirstOrDefault(p => p is ZoneBuildingHelper).IsValidPrefab(prefab, entity) && EntityManager.TryGetComponent(entity, out SpawnableBuildingData spawnableBuildingData))
                     {
-                        commandBuffer.AddComponent(entity, new PloppableBuilding());
-
-                        // Add signature building data to the zone prefab to be ignored by the ZoneCheckSystem making them condemned
-                        commandBuffer.AddComponent(entity, new SignatureBuildingData());
-
-                        // Set to level 5 to stop the buildings being part of certain simulation systems (signature buildings use the same technique)
-                        SpawnableBuildingData spawnableBuildingData = EntityManager.GetComponentData<SpawnableBuildingData>(entity);
-                        spawnableBuildingData.m_Level = 5;
-                        commandBuffer.SetComponent(entity, spawnableBuildingData);
+                        MakePloppable(commandBuffer, entity, spawnableBuildingData);
                     }
 
-                    commandBuffer.SetComponent<Unlock>(unlockEntity, new Unlock(entity));
+                    commandBuffer.SetComponent(unlockEntity, new Unlock(entity));
+                    
                     GameManager.instance.userInterface.view.View.ExecuteScript( $"engine.trigger('toolbar.selectAsset',{{index: {entity.Index}, version: {entity.Version}}});" );
+                    
                     //_selectAsset.Invoke( _toolbarUISystem, new object[] { entity } );
                 }
             }
@@ -607,6 +583,18 @@ namespace FindStuff.UI
 
                 TriggerUpdate( );
             }
+        }
+
+        private void MakePloppable(EntityCommandBuffer commandBuffer, Entity entity, SpawnableBuildingData spawnableBuildingData)
+        {
+            commandBuffer.AddComponent(entity, new PloppableBuilding());
+
+            // Add signature building data to the zone prefab to be ignored by the ZoneCheckSystem making them condemned
+            commandBuffer.AddComponent(entity, new SignatureBuildingData());
+
+            // Set to level 5 to stop the buildings being part of certain simulation systems (signature buildings use the same technique)
+            spawnableBuildingData.m_Level = 5;
+            commandBuffer.SetComponent(entity, spawnableBuildingData);
         }
 
         static readonly HashSet<string> GetEvilPrefabs = ["lane editor container", "traffic spawner", "NA_DeliveryVan01", "EU_DeliveryVan01", "MotorbikeDelivery01"];

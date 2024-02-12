@@ -12,7 +12,7 @@ namespace FindStuff.Patches
         [HarmonyPatch(typeof(SystemOrder), nameof(SystemOrder.Initialize))]
         public static void GetSystemOrder(UpdateSystem updateSystem)
         {
-            updateSystem?.UpdateAt<PloppableRICOSystem>(SystemUpdatePhase.Modification5);
+            updateSystem?.UpdateAt<PloppableRICOSystem>(SystemUpdatePhase.GameSimulation);
         }
     }
 }
