@@ -402,7 +402,7 @@ namespace FindStuff.UI
                 {
                     _toolSystem.ActivatePrefabTool( prefab );
 
-                    EntityCommandBuffer commandBuffer = _endFrameBarrier.CreateCommandBuffer( );
+                    EntityCommandBuffer commandBuffer = _endFrameBarrier.CreateCommandBuffer();
                     var unlockEntity = commandBuffer.CreateEntity( _entityArchetype );
 
                     // This is a way to trigger the zone prefab zoning tool for the building
@@ -427,13 +427,16 @@ namespace FindStuff.UI
                     // Create ploppable building data
                     if (_baseHelper.FirstOrDefault(p => p is ZoneBuildingHelper).IsValidPrefab(prefab, entity))
                     {
-                        commandBuffer.AddComponent(entity, new PloppableBuildingData());
+                        commandBuffer.AddComponent(entity, new PloppableBuilding());
                         commandBuffer.AddComponent(entity, new SignatureBuildingData());
+                        SpawnableBuildingData spawnableBuildingData = EntityManager.GetComponentData<SpawnableBuildingData>(entity);
+                        spawnableBuildingData.m_Level = 5;
+                        commandBuffer.SetComponent(entity, spawnableBuildingData);
                     }
 
                     commandBuffer.SetComponent<Unlock>(unlockEntity, new Unlock(entity));
                     GameManager.instance.userInterface.view.View.ExecuteScript( $"engine.trigger('toolbar.selectAsset',{{index: {entity.Index}, version: {entity.Version}}});" );
-                    //_selectAsset.Invoke( _toolbarUISystem, new object[] { entity } );                    
+                    //_selectAsset.Invoke( _toolbarUISystem, new object[] { entity } );
                 }
             }
         }
