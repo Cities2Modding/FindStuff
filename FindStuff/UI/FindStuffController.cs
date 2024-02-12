@@ -428,19 +428,19 @@ namespace FindStuff.UI
                 if ( entity != Entity.Null )
                 {
                     _toolSystem.ActivatePrefabTool(prefab);
-                    EntityCommandBuffer commandBuffer = _endFrameBarrier.CreateCommandBuffer();
-                    var unlockEntity = commandBuffer.CreateEntity( _entityArchetype );
 
                     // Handle zone buildings (spawnable buildings)
+                    EntityCommandBuffer commandBuffer = _endFrameBarrier.CreateCommandBuffer();
                     if (_baseHelper.FirstOrDefault(p => p is ZoneBuildingHelper).IsValidPrefab(prefab, entity) && EntityManager.TryGetComponent(entity, out SpawnableBuildingData spawnableBuildingData))
                     {
                         MakePloppable(commandBuffer, entity, spawnableBuildingData);
                     }
 
+                    // Unlock building
+                    var unlockEntity = commandBuffer.CreateEntity(_entityArchetype);
                     commandBuffer.SetComponent(unlockEntity, new Unlock(entity));
                     
                     GameManager.instance.userInterface.view.View.ExecuteScript( $"engine.trigger('toolbar.selectAsset',{{index: {entity.Index}, version: {entity.Version}}});" );
-                    
                     //_selectAsset.Invoke( _toolbarUISystem, new object[] { entity } );
                 }
             }
