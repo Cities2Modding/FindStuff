@@ -11,7 +11,6 @@ using Game.SceneFlow;
 using Game.Tools;
 using Game.UI;
 using Game.UI.InGame;
-using Game.Vehicles;
 using Gooee.Plugins;
 using Gooee.Plugins.Attributes;
 using System.Collections.Generic;
@@ -20,8 +19,6 @@ using System.Reflection;
 using Unity.Entities;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static Colossal.AssetPipeline.Diagnostic.Report;
-using static Game.Prefabs.CharacterGroup;
 
 namespace FindStuff.UI
 {
@@ -456,7 +453,11 @@ namespace FindStuff.UI
                     if (_baseHelper.FirstOrDefault(p => p is ZoneBuildingHelper).IsValidPrefab(prefab, entity))
                     {
                         commandBuffer.AddComponent(entity, new PloppableBuilding());
+
+                        // Add signature building data to the zone prefab to be ignored by the ZoneCheckSystem making them condemned
                         commandBuffer.AddComponent(entity, new SignatureBuildingData());
+
+                        // Set to level 5 to stop the buildings being part of certain simulation systems (signature buildings use the same technique)
                         SpawnableBuildingData spawnableBuildingData = EntityManager.GetComponentData<SpawnableBuildingData>(entity);
                         spawnableBuildingData.m_Level = 5;
                         commandBuffer.SetComponent(entity, spawnableBuildingData);
