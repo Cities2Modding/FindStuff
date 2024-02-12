@@ -13,7 +13,8 @@ using Unity.Entities;
 using Unity.Jobs;
 using UnityEngine;
 using UnityEngine.Scripting;
-using static Game.Prefabs.TriggerPrefabData;
+using static Colossal.AssetPipeline.Diagnostic.Report;
+using static Colossal.IO.AssetDatabase.AtlasFrame;
 
 namespace FindStuff.Systems
 {
@@ -22,6 +23,7 @@ namespace FindStuff.Systems
         private PrefabSystem _prefabSystem;
         private FindStuffController _controller;
         private OverlayRenderSystem.Buffer _overlay;
+        private Entity _lastEntity = Entity.Null;
 
         public override string toolID => "PickStuff";
 
@@ -58,18 +60,6 @@ namespace FindStuff.Systems
 
             var a2 = NetUtils.OffsetCurveLeftSmooth( edgeGeometry.m_End.m_Left, -halfWidth );
             _overlay.DrawCurve( yellow, a2, compositionData.m_Width );
-
-            //a1 = NetUtils.OffsetCurveLeftSmooth( edgeGeometry.m_Start.m_Left, eighthWidth );
-            //_overlay.DrawCurve( white, a1, 0f );
-
-            //a2 = NetUtils.OffsetCurveLeftSmooth( edgeGeometry.m_End.m_Left, eighthWidth );
-            //_overlay.DrawCurve( white, a2, 0f );
-
-            //var b1 = NetUtils.OffsetCurveLeftSmooth( edgeGeometry.m_Start.m_Right, -eighthWidth );
-            //_overlay.DrawCurve( white, b1, 0f );
-
-            //var b2 = NetUtils.OffsetCurveLeftSmooth( edgeGeometry.m_End.m_Right, -eighthWidth );
-            //_overlay.DrawCurve( white, b2, 0f );
         }
 
         [Preserve]
@@ -85,108 +75,78 @@ namespace FindStuff.Systems
                     _overlay = overlaySystem.GetBuffer( out _ );
                 }
             }
-
-            //if ( _prefabSystem == null )
-            //    return base.OnUpdate( inputDeps );
-
-            if ( ShortcutIsEnabled( ) && !_controller.IsPicking )
-                _controller.UpdatePicker( true );
-
-            if ( ( _controller.IsPicking ) && _controller != null && GetRaycastResult( out Entity entity, out Game.Common.RaycastHit hitInfo ) )
+           
+            if ( _controller.IsPicking && _controller != null &&
+                GetRaycastResult( out Entity entity, out Game.Common.RaycastHit _ ) )
             {
-                var yellow = new UnityEngine.Color( 1f, 1f, 0f, 0.5f );
-
-                if ( EntityManager.TryGetComponent<Game.Objects.Transform>( entity, out var transform ) )
-                    _overlay.DrawCircle( yellow, transform.m_Position, 8f );
-
-                if ( EntityManager.TryGetComponent( entity, out Curve curve ) &&
-                    EntityManager.TryGetComponent<Composition>( entity, out var composition ) &&
-                    EntityManager.TryGetComponent<NetCompositionData>( composition.m_Edge, out var edgeCompositionData ) &&
-                    EntityManager.TryGetComponent<EdgeGeometry>( entity, out var edgeGeometry ) )
+                if ( EntityManager.TryGetComponent( entity, out PrefabRef prefabRef ) &&
+                     _prefabSystem.TryGetPrefab( prefabRef.m_Prefab, out PrefabBase prefabBase ) &&
+                    ( _controller.IsValidPrefab( prefabBase, entity ) ||
+                    HasComponents( entity ) ) )
                 {
-                    DrawNetCurve( edgeCompositionData, edgeGeometry );
-                }
+                    var yellow = new UnityEngine.Color( 1f, 1f, 0f, 0.2f );
 
-                if ( EntityManager.TryGetComponent( entity, out PrefabRef prefabRef ) )
-                {
-                    Entity prefab = prefabRef.m_Prefab;
+                    if ( EntityManager.TryGetComponent<Game.Objects.Transform>( entity, out var transform ) )
+                        _overlay.DrawCircle( yellow, transform.m_Position, 8f );
+
+                    if ( EntityManager.TryGetComponent( entity, out Curve curve ) &&
+                        EntityManager.TryGetComponent<Composition>( entity, out var composition ) &&
+                        EntityManager.TryGetComponent<NetCompositionData>( composition.m_Edge, out var edgeCompositionData ) &&
+                        EntityManager.TryGetComponent<EdgeGeometry>( entity, out var edgeGeometry ) )
+                    {
+                        DrawNetCurve( edgeCompositionData, edgeGeometry );
+                    }
+
                     if ( Input.GetKeyDown( KeyCode.Mouse0 ) )
                     {
-                        UnityEngine.Debug.Log( "GOT PREFAB" );
                         m_ToolSystem.activeTool = m_DefaultToolSystem;
 
                         _controller.UpdatePicker( false );
-
-                        if ( _prefabSystem.TryGetPrefab( prefab, out PrefabBase prefabBase ) )
+                        
+                        m_ToolSystem.ActivatePrefabTool( prefabBase );
+                           
+                        if ( EntityManager.HasComponent<Highlighted>( entity ) )
                         {
-                            m_ToolSystem.ActivatePrefabTool( prefabBase );
+                            EntityManager.RemoveComponent<Highlighted>( entity );
+                            EntityManager.AddComponent<Updated>( entity );
                         }
+
+                        return base.OnUpdate( inputDeps );
+                    }
+
+                    if ( !EntityManager.HasComponent<Highlighted>( entity ) )
+                    {
+                        EntityManager.AddComponent<Highlighted>( entity );
+                        EntityManager.AddComponent<Updated>( entity );
                     }
                 }
+
+                if ( _lastEntity != entity && _lastEntity != Entity.Null && EntityManager.HasComponent<Highlighted>( _lastEntity ) )
+                {
+                    EntityManager.RemoveComponent<Highlighted>( _lastEntity );
+                    EntityManager.AddComponent<Updated>( _lastEntity );
+                }
+
+                _lastEntity = entity;
+            }
+            else if ( _lastEntity != Entity.Null && EntityManager.HasComponent<Highlighted>( _lastEntity ) )
+            {
+                EntityManager.RemoveComponent<Highlighted>( _lastEntity );
+                EntityManager.AddComponent<Updated>( _lastEntity );
             }
 
             return base.OnUpdate( inputDeps );
         }
 
-        //protected override void OnUpdate() 
-        //{
-        //    RaycastResult raycastResult;
-        //    PrefabRef prefabRef;
-
-        //    //m_ToolRaycastSystem.netLayerMask |= Layer.Road;
-        //    //m_ToolRaycastSystem.typeMask |= TypeMask.Net;
-
-        //    m_ToolRaycastSystem.netLayerMask = Layer.All;
-        //    m_ToolRaycastSystem.typeMask = TypeMask.StaticObjects | TypeMask.Net | TypeMask.MovingObjects;
-        //    m_ToolRaycastSystem.raycastFlags |= RaycastFlags.Placeholders | RaycastFlags.SubElements | RaycastFlags.Decals;
-        //    m_ToolRaycastSystem.collisionMask = CollisionMask.Overground | CollisionMask.OnGround;
-
-        //    //if ( GetNetRaycastResult( out var entity, out var hitInfo ) &&
-        //    //    EntityManager.TryGetComponent( entity, out Curve curve ) )
-        //    //     _overlay.DrawCurve( UnityEngine.Color.yellow, curve.m_Bezier, 1f );
-        //    if ( m_ToolRaycastSystem.GetRaycastResult( out raycastResult ) &&
-        //        EntityManager.TryGetComponent( raycastResult.m_Owner, out Curve curve ) &&
-        //        EntityManager.TryGetComponent<Composition>( raycastResult.m_Owner, out var composition ) &&
-        //        EntityManager.TryGetComponent<NetCompositionData>( composition.m_Edge, out var edgeCompositionData ) )
-        //    {
-
-        //        //EntityManager.TryGetComponent( raycastResult.m_Owner, out NetCompositionData compositionData ) )
-        //        _overlay.DrawCurve( UnityEngine.Color.yellow, curve.m_Bezier, edgeCompositionData.m_Width/*compositionData.m_Width*/ );
-        //    }
-
-    //        if ((_controller.IsPicking || ShortcutIsEnabled( )) && m_ToolSystem.activeTool == m_DefaultTool &&
-    //            m_ToolRaycastSystem.GetRaycastResult(out raycastResult) && HasComponents( raycastResult) && 
-    //            EntityManager.TryGetComponent(raycastResult.m_Owner, out prefabRef))
-    //        {
-    //            if (EntityManager.TryGetComponent<Game.Objects.Transform>(raycastResult.m_Owner, out var transform ) )
-    //                _overlay.DrawCircle(UnityEngine.Color.yellow, transform.m_Position, 8f );
-
-    //            Entity prefab = prefabRef.m_Prefab;
-    //            if (Input.GetKeyDown(KeyCode.Mouse0))
-    //            {
-    //                if (_prefabSystem.TryGetPrefab(prefab, out PrefabBase prefabBase))
-    //                {
-    //                    m_ToolSystem.ActivatePrefabTool(prefabBase);
-    //                }
-
-    //_controller.UpdatePicker( false );
-    //            }
-    //        }
-        //}
-
-        bool HasComponents(RaycastResult raycastResult)
+        private bool HasComponents( Entity entity )
         {
-            return EntityManager.HasComponent<Building>(raycastResult.m_Owner) ||
-                EntityManager.HasComponent<Vehicle>(raycastResult.m_Owner) ||
-                EntityManager.HasComponent<Game.Objects.Tree>(raycastResult.m_Owner) ||
-                EntityManager.HasComponent<Node>(raycastResult.m_Owner) ||
-                EntityManager.HasComponent<Edge>(raycastResult.m_Owner) ||
-                EntityManager.HasComponent<Plant>(raycastResult.m_Owner);
-        }
-
-        private bool ShortcutIsEnabled()
-        {
-            return _controller.EnableShortcut && Input.GetKey(KeyCode.LeftControl);
+            return EntityManager.HasComponent<Building>( entity ) ||
+                EntityManager.HasComponent<Vehicle>( entity ) ||
+                EntityManager.HasComponent<Game.Objects.Tree>( entity ) ||
+                EntityManager.HasComponent<Node>( entity ) ||
+                EntityManager.HasComponent<Edge>( entity ) ||
+                EntityManager.HasComponent<Plant>( entity ) ||
+                EntityManager.HasComponent<Curve>( entity );
         }
 
         // Unused

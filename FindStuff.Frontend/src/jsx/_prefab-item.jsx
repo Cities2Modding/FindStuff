@@ -34,15 +34,30 @@ const PrefabItem = ({ model, trigger, prefab, selected, _L, onSelected, onMouseE
     const computedPrefabTypeName = react.useMemo(() => prefabTypeName(), [prefab.Type, _L]);
 
     const highlightSearchTerm = (text) => {
-        const regex = new RegExp(`(${model.Search})`, 'gi');
+        // Check if there's a search term; if not, return the original text
+        if (!model.Search || model.Search.trim().length === 0) return text;
+
+        // Split the search term into individual words and escape regex special characters
+        const words = model.Search.trim().split(/\s+/).map(word =>
+            word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+        );
+
+        // Create a regex to match any of the words, case-insensitively
+        const regex = new RegExp(`(${words.join('|')})`, 'gi');
+
+        // Split the text by the regex, keeping matched parts for highlighting
         const splitText = text.split(regex);
 
-        return (!model.Search || model.Search.length == 0) ? text : splitText.map((part, index) =>
-            regex.test(part) ? <span key={index}>
-                <b className={selected.Name == prefab.Name ? "text-dark bg-warning" : "text-dark bg-warning"}>{part}</b>
-            </span> : part
+        // Map through the split text to highlight matched parts
+        return splitText.map((part, index) =>
+            regex.test(part) ? (
+                <span key={index} className={selected.Name === prefab.Name ? "text-dark bg-warning" : "text-dark bg-warning"}>
+                    <b>{part}</b>
+                </span>
+            ) : part
         );
     };
+
 
     const highlightedName = react.useMemo(() => highlightSearchTerm(computedPrefabName), [computedPrefabName, model.Search]);
     const highlightedType = react.useMemo(() => highlightSearchTerm(computedPrefabTypeName), [computedPrefabTypeName, model.Search]);

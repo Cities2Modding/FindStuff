@@ -5,120 +5,31 @@ import SubFilters from "./_sub-filters";
 import PrefabItem from "./_prefab-item";
 import LoadingScreen from "./_loading-screen";
 import FavouriteStar from "./_favourite_star";
-
-const PickStuffButton = ({ react, setupController }) => {
-    const [tooltipVisible, setTooltipVisible] = react.useState(false);
-    const onMouseEnter = () => {
-        setTooltipVisible(true);
-        engine.trigger("audio.playSound", "hover-item", 1);
-    };
-
-    const onMouseLeave = () => {
-        setTooltipVisible(false);
-    };
-
-    const { ToolTip, ToolTipContent } = window.$_gooee.framework;
-
-    const { model, update, trigger } = setupController();
-
-    const onClick = () => {
-        const newValue = !model.IsPicking;
-        trigger("OnTogglePicker");
-        engine.trigger("audio.playSound", "select-item", 1);
-
-        if (newValue) {
-            engine.trigger("audio.playSound", "open-panel", 1);
-            //engine.trigger("tool.selectTool", null);
-        }
-        else
-            engine.trigger("audio.playSound", "close-panel", 1);
-    };
-
-    return <>
-        <div className="spacer_oEi"></div>
-        <button onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onClick={onClick} className={"button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT toggle-states_X82 toggle-states_DTm" + (model.IsPicking ? " selected" : "")}>
-
-            <div className="fa fa-solid-eye-dropper icon-md"></div>
-
-            <ToolTip visible={tooltipVisible} float="up" align="right">
-                <ToolTipContent title="PickStuff" description="Activates the picker." />
-            </ToolTip>
-        </button>
-    </>;
-};
-window.$_gooee.register("pickstuff", "PickStuffButton", PickStuffButton, "bottom-right-toolbar", "findstuff");
-
-const AppButton = ({ react, setupController }) => {
-    const [tooltipVisible, setTooltipVisible] = react.useState(false);
-
-    const onMouseEnter = () => {
-        setTooltipVisible(true);
-        engine.trigger("audio.playSound", "hover-item", 1);
-    };
-
-    const onMouseLeave = () => {
-        setTooltipVisible(false);
-    };
-
-    const { ToolTip, ToolTipContent } = window.$_gooee.framework;
-
-    const { model, update, trigger, _L } = setupController();
-
-    const onClick = () => {
-        const newValue = !model.IsVisible;
-        trigger("OnToggleVisible");
-        engine.trigger("audio.playSound", "select-item", 1);
-
-        if (newValue) {
-            engine.trigger("audio.playSound", "open-panel", 1);
-            //engine.trigger("tool.selectTool", null);
-        }
-        else
-            engine.trigger("audio.playSound", "close-panel", 1);
-    };
-
-    return <>
-        <div className="spacer_oEi"></div>
-        <button onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave} onClick={onClick} className={"button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT toggle-states_X82 toggle-states_DTm" + (model.IsVisible ? " selected" : "")}>
-            <div className="fa fa-solid-magnifying-glass icon-md"></div>
-            <ToolTip visible={tooltipVisible} float="up" align="right">
-                <ToolTipContent title={_L("FindStuff.FindStuffSettings.ModName")} description="Opens the FindStuff panel." />
-            </ToolTip>
-        </button>
-    </>;
-};
-
-window.$_gooee.register("findstuff", "FindStuffAppButton", AppButton, "bottom-right-toolbar", "findstuff");
+import "./_toolbar-buttons";
+import debounce from "lodash.debounce";
 
 if (!window.$_findStuff_cache)
     window.$_findStuff_cache = {};
-;
-
-const debounce = (func, wait) => {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-};
 
 const ToolWindow = ({ react, setupController }) => {
     const [sliderValue, setSliderValue] = react.useState(0);
     const [hoverPrefab, setHoverPrefab] = react.useState({ Name: "" });
 
-    const { Button, Icon, VirtualList, Slider, List, Grid, FormGroup, FormCheckBox, Scrollable, ToolTip, TextBox, Dropdown, ToolTipContent, TabModal, Modal, MarkDown } = window.$_gooee.framework;
+    const { Button, Icon, VirtualList, ProgressBar, PieChart, Slider, List, Grid, FormGroup, FormCheckBox, Scrollable, ToolTip, TextBox, Dropdown, ToolTipContent, TabModal, Modal, MarkDown } = window.$_gooee.framework;
 
-    const { model, update, trigger, _L } = setupController();
+    const { model, update, trigger, _L, colors } = setupController();
     const [selectedPrefab, setSeletedPrefab] = react.useState(model && model.Selected ? model.Selected : { Name: "" });
     const [filteredPrefabs, setFilteredPrefabs] = react.useState([]);
     const [search, setSearch] = react.useState(model.Search ?? "");
     const [expanded, setExpanded] = react.useState(false);
     const [shifted, setShifted] = react.useState(model.Shifted);
     const [mouseOverItem, setMouseOverItem] = react.useState(null);
+    const searchRef = react.useRef(search); // Use a ref to keep track of the latest value
+
+    // Update the ref every time the search state changes
+    react.useEffect(() => {
+        searchRef.current = search;
+    }, [search]);
 
     const updateAssetHide = () => {
         if (model.OperationMode == "HideAssetMenu" && model.IsVisible)
@@ -242,16 +153,18 @@ const ToolWindow = ({ react, setupController }) => {
         triggerResultsUpdate(curQueryKey, model);
     };
 
-    const debouncedSearchUpdate = debounce((val) => {
-        
+    const updateSearchBackend = () => {
+        const currentSearchValue = searchRef.current;
         doResultsUpdate(model);
-    }, filteredPrefabs.length > 5_000 ? 500 : 50);
+    };
 
+    const debouncedSearchUpdate = debounce(updateSearchBackend, filteredPrefabs.length > 5_000 ? 500 : 50);
+    
     const onSearchInputChanged = (val) => {
         model.Search = val;
         update("Search", val);
         setSearch(val);
-        debouncedSearchUpdate(val);
+        debouncedSearchUpdate();
     };
 
     const closeModal = () => {
@@ -407,7 +320,7 @@ const ToolWindow = ({ react, setupController }) => {
             <HoverWindow model={model} className={shifted ? "mt-2" : "mb-2"} hoverPrefab={hoverPrefab} _L={_L} />
             : null;
     }, [hoverPrefab, model, shifted, model.Search] );
-
+    
     return model.IsVisible ? <div className={isVisibleClass + (shifted? " align-items-start" : "")}>
         <div className="col">
             <FiltersWindow compact={shifted} model={model} update={update} onDoUpdate={doResultsUpdate} _L={_L} />
@@ -415,16 +328,15 @@ const ToolWindow = ({ react, setupController }) => {
         <div className="col">
             {!shifted ? renderHoverWindow() : null}
             <Modal bodyClassName={"asset-menu p-relative" + (shifted && expanded ? "" : expanded ? " asset-menu-xl" : shifted ? " asset-menu-sm" : "")} title={<div className="d-flex flex-row align-items-center">
-                <Button watch={[expanded]} circular icon style="trans-faded" onClick={toggleExpander}>
+                <Button title={_L("FindStuff.Expand")} description={_L("FindStuff.Expand_desc")} watch={[expanded]} circular icon style="trans-faded" onClick={toggleExpander}>
                     <Icon icon={expanded ? (!shifted ? "solid-chevron-down" : "solid-chevron-up") : (shifted ? "solid-chevron-down" : "solid-chevron-up")} fa />
                 </Button>
                 <Icon icon="solid-magnifying-glass" fa className="bg-muted ml-2" />
                 <TextBox size="sm" className="bg-dark-trans-less-faded w-25 mr-2 ml-4" placeholder="Search..." text={search} onChange={onSearchInputChanged} />
-                {<Button circular icon style="trans-faded" disabled={search && search.length > 0 ? null : true} onClick={clearSearch}>
+                {<Button title={_L("FindStuff.ClearSearch")} description={_L("FindStuff.ClearSearch_desc")} circular icon style="trans-faded" disabled={search && search.length > 0 ? null : true} onClick={clearSearch}>
                     <Icon icon="solid-eraser" fa />
                 </Button>}
-                <SubFilters model={model} update={update} onDoUpdate={doResultsUpdate} _L={_L} />
-                
+                <SubFilters model={model} update={update} onDoUpdate={doResultsUpdate} _L={_L} />                
             </div>} onClose={closeModal}>
                 <div className="asset-menu-container" onMouseLeave={() => onMouseLeave()}>
                     <div className="flex-1">
@@ -436,6 +348,21 @@ const ToolWindow = ({ react, setupController }) => {
             {shifted ? renderHoverWindow() : null}
         </div>
         <div className="col">
+            {/*<div className="progress-bar-group vertical h-25">*/}
+            {/*    <ProgressBar value={0.3} orientation="vertical" className="progress-bar-primary" />*/}
+            {/*    <ProgressBar value={0.12} orientation="vertical" className="progress-bar-secondary" />*/}
+            {/*    <ProgressBar value={0.43} orientation="vertical" className="progress-bar-info" />*/}
+            {/*    <ProgressBar value={0.55} orientation="vertical" className="progress-bar-warning" />*/}
+            {/*    <ProgressBar orientation="vertical" className="progress-bar-danger" />*/}
+            {/*    <ProgressBar value={0.96} orientation="vertical" className="progress-bar-success" />*/}
+            {/*</div>*/}
+            {/*<div className="w-50">*/}
+            {/*    <PieChart data={[*/}
+            {/*        { value: 52, color: colors.trans.primary },*/}
+            {/*        { value: 15, color: colors.trans.secondary },*/}
+            {/*        { value: 20, color: colors.trans.info },*/}
+            {/*        { value: 80, color: colors.trans.danger }]} />*/}
+            {/*</div>*/}
             <div className="d-inline h-x w-x">
                 {/*<Button watch={[shifted]} circular border icon style="trans-faded" onClick={toggleShifter}>*/}
                 {/*    <Icon icon={shifted ? "solid-arrow-down" : "solid-arrow-up"} size="sm" fa />*/}

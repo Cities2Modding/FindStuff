@@ -235,6 +235,53 @@ namespace FindStuff
         }
 
         /// <summary>
+        /// Break down the search into words and find matches
+        /// </summary>
+        /// <param name="search"></param>
+        /// <param name="prefabID"></param>
+        /// <returns></returns>
+        private bool WordSearch( string search, int prefabID )
+        {
+            if ( string.IsNullOrEmpty( search ) )
+                return false;
+
+            var words = search.Split( ' ', StringSplitOptions.RemoveEmptyEntries );
+
+            if ( words?.Length > 0 )
+            {
+                foreach ( var word in words )
+                {
+                    if ( StringSearch( word, prefabID ) )
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Search a prefab's info for a string
+        /// </summary>
+        /// <param name="search"></param>
+        /// <param name="prefabID"></param>
+        /// <returns></returns>
+        private bool StringSearch( string search, int prefabID )
+        {
+            if ( string.IsNullOrEmpty( search ) )
+                return false;
+
+            var name = _prefabNames[prefabID].ToLowerInvariant( );
+            var displayName = _prefabDisplayNames[prefabID].ToLowerInvariant( );
+            var typeName = _prefabTypesNames[prefabID].ToLowerInvariant( );
+            var tags = _prefabTags[prefabID];
+
+            return name.Contains( search ) ||
+                displayName.Contains( search ) ||
+                typeName.Contains( search ) ||
+                tags.Count( t => t.Contains( search ) ) > 0;
+        }
+
+        /// <summary>
         /// Add prefabs to the working set, filtering them by search if necessary.
         /// </summary>
         /// <param name="model"></param>
@@ -254,18 +301,10 @@ namespace FindStuff
                 if ( hasSearch )
                 {
                     var search = model.Search.ToLowerInvariant( ).Trim( );
-                    var name = _prefabNames[id].ToLowerInvariant( );
-                    var displayName = _prefabDisplayNames[id].ToLowerInvariant( );
-                    var typeName = _prefabTypesNames[id].ToLowerInvariant( );
-                    var tags = _prefabTags[id];
 
-                    if ( name.Contains( search ) ||
-                        displayName.Contains( search ) ||
-                        typeName.Contains( search ) ||
-                        tags.Count( t => t.Contains( search ) ) > 0 )
-                    {
+                    if ( StringSearch( search, id ) || WordSearch( search, id ) )
                         WorkingSet.Add( id );
-                    }
+                    // else don't include in results
                 }
                 else
                     WorkingSet.Add( id );

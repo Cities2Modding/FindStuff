@@ -8,7 +8,7 @@ lang:
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Enable Picker Shortcut
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Hold CTRL + Click to pick an object.
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: Enable Expert Mode
- Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: If activated you have access to potential dangeroues objects crashing the game or breaking save games. You should know what you are doing. Use at your own risk!
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: If activated you have access to potentially dangerous objects that could crash the game or corrupt save games. You should know what you are doing. Use at your own risk!
  
  FindStuff.FindStuffSettings.MoveFindStuff: Move the window
  FindStuff.FindStuffSettings.HideFindStuff: Hide the window
@@ -51,7 +51,136 @@ lang:
  
  FindStuff.Dangerous.CorruptWarning: This asset could break your save game if not used properly.
  FindStuff.Dangerous.NoDelete: This asset can't be removed with bulldozer tool after placing.
+  
+ FindStuff.View.Rows: List
+ FindStuff.View.Rows_desc: List prefabs as individual rows.
  
+ FindStuff.View.Columns: Two columns
+ FindStuff.View.Columns_desc: List prefabs in a two-column grid.
+
+ FindStuff.View.IconGrid: Small Icon Grid
+ FindStuff.View.IconGrid_desc: Show a grid with small icons.
+
+ FindStuff.View.IconGridLarge: Large Icon Grid
+ FindStuff.View.IconGridLarge_desc: Show a grid with large icons.
+
+ FindStuff.View.Detailed: Detailed
+ FindStuff.View.Detailed_desc: Show a detailed list view.
+
+ FindStuff.Filter.None: All
+ FindStuff.Filter.None_desc: Apply no filters to search results.
+
+ FindStuff.Filter.Favourite: Favourite
+ FindStuff.Filter.Favourite_desc: Filter by your favourite prefabs.
+
+ FindStuff.Filter.Foliage: Foliage
+ FindStuff.Filter.Foliage_desc: Filter by trees and bushes.
+
+ FindStuff.Filter.Buildings: Buildings
+ FindStuff.Filter.Buildings_desc: Filter by non-zone building types.
+
+ FindStuff.Filter.Zones: Zoning
+ FindStuff.Filter.Zones_desc: Filter by zoned building types.
+
+ FindStuff.Filter.Props: Props
+ FindStuff.Filter.Props_desc: Filter by static objects/props.
+
+ FindStuff.Filter.Misc: Misc
+ FindStuff.Filter.Misc_desc: All other categories.
+
+ FindStuff.Filter.Network: Network
+ FindStuff.Filter.Network_desc: Filter by network types.
+ 
+ FindStuff.OrderBy.Ascending: Ascending
+ FindStuff.OrderBy.Ascending_desc: Order prefabs from A-Z.
+  
+ FindStuff.OrderBy.Descending: Descending
+ FindStuff.OrderBy.Descending_desc: Order prefabs from Z-A.
+ 
+ FindStuff.Expand: Expand or shrink the view
+ FindStuff.Expand_desc: You can expand the view to see more results.
+ 
+ FindStuff.ClearSearch: Clear search
+ FindStuff.ClearSearch_desc: Click to clear the text in the search field.
+ 
+ FindStuff.SubFilter.None: All
+ FindStuff.SubFilter.None_desc: Apply no filters to search results.
+ 
+ FindStuff.SubFilter.ZoneResidential: Residential
+ FindStuff.SubFilter.ZoneResidential_desc: Filter by residential buildings.
+ 
+ FindStuff.SubFilter.ZoneCommercial: Commercial
+ FindStuff.SubFilter.ZoneCommercial_desc: Filter by commercial buildings.
+
+ FindStuff.SubFilter.ZoneOffice: Office
+ FindStuff.SubFilter.ZoneOffice_desc: Filter by office buildings.
+
+ FindStuff.SubFilter.ZoneIndustrial: Industrial
+ FindStuff.SubFilter.ZoneIndustrial_desc: Filter by industrial buildings.
+
+ FindStuff.SubFilter.ServiceBuilding: Service Buildings
+ FindStuff.SubFilter.ServiceBuilding_desc: Filter by service buildings.
+
+ FindStuff.SubFilter.SignatureBuilding: Signature Buildings
+ FindStuff.SubFilter.SignatureBuilding_desc: Filter by signature buildings.
+ 
+ FindStuff.SubFilter.Park: Parks & Leisure
+ FindStuff.SubFilter.Park_desc: Filter by parks and leisure buildings.
+
+ FindStuff.SubFilter.Parking: Parking
+ FindStuff.SubFilter.Parking_desc: Filter by parking facilities.
+
+ FindStuff.SubFilter.Tree: Trees
+ FindStuff.SubFilter.Tree_desc: Filter by trees.
+
+ FindStuff.SubFilter.Plant: Plants
+ FindStuff.SubFilter.Plant_desc: Filter by plants.
+
+ FindStuff.SubFilter.Billboards: Billboards
+ FindStuff.SubFilter.Billboards_desc: Filter by billboards.
+
+ FindStuff.SubFilter.Fences: Fences
+ FindStuff.SubFilter.Fences_desc: Filter by fences.
+
+ FindStuff.SubFilter.SignsAndPosters: Signs & Posters
+ FindStuff.SubFilter.SignsAndPosters_desc: Filter by signs and posters.
+
+ FindStuff.SubFilter.Accessory: Static Props (Accessories)
+ FindStuff.SubFilter.Accessory_desc: Filter by commonly used static props.
+
+ FindStuff.SubFilter.Vehicle: Vehicles
+ FindStuff.SubFilter.Vehicle_desc: Filter by vehicles.
+
+ FindStuff.SubFilter.PropMisc: Misc. Props
+ FindStuff.SubFilter.PropMisc_desc: Filter by non-categorised prop types.
+ 
+ FindStuff.SubFilter.SmallRoad: Small Roads
+ FindStuff.SubFilter.SmallRoad_desc: Filter by small roads.
+
+ FindStuff.SubFilter.MediumRoad: Medium Roads
+ FindStuff.SubFilter.MediumRoad_desc: Filter by medium roads.
+
+ FindStuff.SubFilter.LargeRoad: Large Roads
+ FindStuff.SubFilter.LargeRoad_desc: Filter by large roads.
+
+ FindStuff.SubFilter.Highway: Highways
+ FindStuff.SubFilter.Highway_desc: Filter by highways.
+
+ FindStuff.SubFilter.Roundabout: Roundabouts
+ FindStuff.SubFilter.Roundabout_desc: Filter by roundabouts.
+
+ FindStuff.SubFilter.Pavement: Pavements
+ FindStuff.SubFilter.Pavement_desc: Filter by pavements.
+
+ FindStuff.SubFilter.RoadTool: Road Tools
+ FindStuff.SubFilter.RoadTool_desc: Filter by road tools.
+
+ FindStuff.SubFilter.OtherNetwork: Other networks
+ FindStuff.SubFilter.OtherNetwork_desc: Filter by non-categorised networks.
+
+ FindStuff.SubFilter.Surface: Other networks
+ FindStuff.SubFilter.Surface_desc: Filter by surfaces.
+
  FindStuff.Tag.eu: European
  FindStuff.Tag.na: North American
  FindStuff.Tag.foliage: Foliage
