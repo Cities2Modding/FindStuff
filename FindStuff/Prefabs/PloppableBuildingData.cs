@@ -1,8 +1,11 @@
-﻿using Unity.Entities;
+﻿using Colossal.Serialization.Entities;
+using System.Runtime.InteropServices;
+using Unity.Entities;
 
 namespace FindStuff.Prefabs
 {
-    public struct PloppableBuildingData : IComponentData, IQueryTypeParameter
+    [StructLayout(LayoutKind.Sequential, Size = 1)]
+    public struct PloppableBuildingData : IComponentData, IQueryTypeParameter, IEmptySerializable
     {
     }
 }
