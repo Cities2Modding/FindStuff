@@ -229,7 +229,7 @@ namespace FindStuff.Systems
 
         public void MakePloppable(Entity entity, EntityCommandBuffer commandBuffer)
         {
-            if (EntityManager.TryGetComponent(entity, out SpawnableBuildingData spawnableBuildingData) {
+            if (EntityManager.TryGetComponent(entity, out SpawnableBuildingData spawnableBuildingData)) {
                 commandBuffer.AddComponent(entity, new PloppableBuilding());
 
                 // Add signature building data to the zone prefab to be ignored by the ZoneCheckSystem making them condemned
