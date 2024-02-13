@@ -5,6 +5,7 @@ using FindStuff.Prefabs;
 using Game;
 using Game.Buildings;
 using Game.Common;
+using Game.Notifications;
 using Game.Objects;
 using Game.Prefabs;
 using Game.Simulation;
@@ -13,15 +14,16 @@ using System.Runtime.CompilerServices;
 using Unity.Burst.Intrinsics;
 using Unity.Collections;
 using Unity.Entities;
-using UnityEngine.Rendering;
 
 namespace FindStuff.Systems
 {
     public class PloppableRICOSystem : GameSystemBase
     {
         private EndFrameBarrier _barrier;
+        IconCommandSystem _iconCommandSystem;
         EntityQuery _freshlyPlacedBuildingsGroup;
         EntityQuery _ploppedBuildingsGroup;
+        EntityQuery _buildingSettingsQuery;
         MakeSignatureTypeHandle _makeSignatureTypeHandle;
         MakePloppableTypeHandle _makePloppableTypeHandle;
 
@@ -30,6 +32,7 @@ namespace FindStuff.Systems
             base.OnCreate();
 
             _barrier = World.GetOrCreateSystemManaged<EndFrameBarrier>();
+            _iconCommandSystem = World.GetOrCreateSystemManaged<IconCommandSystem>();
             _freshlyPlacedBuildingsGroup = GetEntityQuery(new EntityQueryDesc
             {
                 All =
@@ -58,6 +61,8 @@ namespace FindStuff.Systems
                     ComponentType.Exclude<Temp>(),
                 ],
             });
+
+            _buildingSettingsQuery = GetEntityQuery(new ComponentType[] { ComponentType.ReadOnly<BuildingConfigurationData>() });
 
             _barrier.RequireAnyForUpdate(_ploppedBuildingsGroup, _freshlyPlacedBuildingsGroup);
         }
@@ -92,6 +97,8 @@ namespace FindStuff.Systems
                 MakePloppableJob makePloppableJob = new()
                 {
                     Ecb = _barrier.CreateCommandBuffer().AsParallelWriter(),
+                    Icb = _iconCommandSystem.CreateCommandBuffer(),
+                    BuildingConfigurationData = _buildingSettingsQuery.GetSingleton<BuildingConfigurationData>(),
                     EntityHandle = _makePloppableTypeHandle.EntityTypeHandle,
                     PrefabRefTypeHandle = _makePloppableTypeHandle.PrefabRefTypeHandle,
                     PloppableBuildingLookup = _makePloppableTypeHandle.PloppableBuildingLookup,
@@ -122,6 +129,8 @@ namespace FindStuff.Systems
         public struct MakePloppableJob : IJobChunk
         {
             public EntityCommandBuffer.ParallelWriter Ecb;
+            public IconCommandBuffer Icb;
+            public BuildingConfigurationData BuildingConfigurationData;
             public EntityTypeHandle EntityHandle;
             public ComponentTypeHandle<PrefabRef> PrefabRefTypeHandle;
             public ComponentLookup<PloppableBuilding> PloppableBuildingLookup;
@@ -145,6 +154,7 @@ namespace FindStuff.Systems
 
                         if (CondemnedLookup.HasComponent(entity))
                         {
+                            Icb.Remove(entity, BuildingConfigurationData.m_CondemnedNotification, default, 0);
                             Ecb.RemoveComponent<Condemned>(i, entity);
                         }
                     }
