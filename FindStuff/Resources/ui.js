@@ -2356,10 +2356,9 @@
   if (!window.$_findStuff_cache)
     window.$_findStuff_cache = {};
   var ToolWindow = ({ react, setupController }) => {
-    const [sliderValue, setSliderValue] = react.useState(0);
+    const { Button, Icon, VirtualList, Modal } = window.$_gooee.framework;
+    const { model, update, trigger, _L } = setupController();
     const [hoverPrefab, setHoverPrefab] = react.useState({ Name: "" });
-    const { Button, Icon, VirtualList, ProgressBar, PieChart, Slider, List, Grid, FormGroup, FormCheckBox, Scrollable, ToolTip, TextBox, Dropdown, ToolTipContent, TabModal, Modal, MarkDown } = window.$_gooee.framework;
-    const { model, update, trigger, _L, colors } = setupController();
     const [selectedPrefab, setSeletedPrefab] = react.useState(model && model.Selected ? model.Selected : { Name: "" });
     const [filteredPrefabs, setFilteredPrefabs] = react.useState([]);
     const [expanded, setExpanded] = react.useState(false);
@@ -2398,9 +2397,7 @@
       }
     }, [model.IsVisible, model.OperationMode, shifted, model.Shifted]);
     const triggerResultsUpdate = (0, import_lodash2.default)((curQueryKey, m) => {
-      console.log("query key: " + curQueryKey);
       if ((!m.Search || m.Search.length == 0) && window.$_findStuff_cache[curQueryKey]) {
-        console.log("Got cache for " + curQueryKey);
         setFilteredPrefabs(window.$_findStuff_cache[curQueryKey]);
         setIsWaitingResults(false);
         setShowLoading(false);
@@ -2461,7 +2458,19 @@
         selectToolHandle.clear();
         showLoaderHandle.clear();
       };
-    }, [model.ViewMode, isWaitingResults, showLoading, model.Selected, model.Shifted, model.OperationMode, model.Filter, model.SubFilter, model.Search, model.OrderByAscending, shifted]);
+    }, [
+      model.ViewMode,
+      isWaitingResults,
+      showLoading,
+      model.Selected,
+      model.Shifted,
+      model.OperationMode,
+      model.Filter,
+      model.SubFilter,
+      model.Search,
+      model.OrderByAscending,
+      shifted
+    ]);
     react.useEffect(() => {
       doResultsUpdate(model);
     }, [model]);

@@ -1,4 +1,5 @@
-﻿using Colossal.Localization;
+﻿using Colossal.Entities;
+using Colossal.Localization;
 using Colossal.Serialization.Entities;
 using FindStuff.Configuration;
 using FindStuff.Helper;
