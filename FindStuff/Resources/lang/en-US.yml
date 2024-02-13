@@ -187,7 +187,7 @@ lang:
  FindStuff.SubFilter.OtherNetwork: Other networks
  FindStuff.SubFilter.OtherNetwork_desc: Filter by non-categorised networks.
 
- FindStuff.SubFilter.Surface: Other networks
+ FindStuff.SubFilter.Surface: Surfaces
  FindStuff.SubFilter.Surface_desc: Filter by surfaces.
 
  FindStuff.Tag.eu: European
