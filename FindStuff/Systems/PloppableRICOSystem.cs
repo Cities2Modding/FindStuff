@@ -13,6 +13,7 @@ using System.Runtime.CompilerServices;
 using Unity.Burst.Intrinsics;
 using Unity.Collections;
 using Unity.Entities;
+using UnityEngine.Rendering;
 
 namespace FindStuff.Systems
 {
@@ -208,6 +209,35 @@ namespace FindStuff.Systems
                         }
                     }
                 }
+            }
+        }
+
+        public void MakePloppable(Entity entity)
+        {
+            if (EntityManager.TryGetComponent(entity, out SpawnableBuildingData spawnableBuildingData)) {
+                EntityCommandBuffer buffer = _barrier.CreateCommandBuffer();
+                buffer.AddComponent(entity, new PloppableBuilding());
+
+                // Add signature building data to the zone prefab to be ignored by the ZoneCheckSystem making them condemned
+                buffer.AddComponent(entity, new SignatureBuildingData());
+
+                // Set to level 5 to stop the buildings being part of certain simulation systems (signature buildings use the same technique)
+                spawnableBuildingData.m_Level = 5;
+                buffer.SetComponent(entity, spawnableBuildingData);
+            }
+        }
+
+        public void MakePloppable(Entity entity, EntityCommandBuffer commandBuffer)
+        {
+            if (EntityManager.TryGetComponent(entity, out SpawnableBuildingData spawnableBuildingData) {
+                commandBuffer.AddComponent(entity, new PloppableBuilding());
+
+                // Add signature building data to the zone prefab to be ignored by the ZoneCheckSystem making them condemned
+                commandBuffer.AddComponent(entity, new SignatureBuildingData());
+
+                // Set to level 5 to stop the buildings being part of certain simulation systems (signature buildings use the same technique)
+                spawnableBuildingData.m_Level = 5;
+                commandBuffer.SetComponent(entity, spawnableBuildingData);
             }
         }
     }

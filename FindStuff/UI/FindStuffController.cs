@@ -63,6 +63,7 @@ namespace FindStuff.UI
         private PrefabSystem _prefabSystem;
         private ImageSystem _imageSystem;
         private ToolbarUISystem _toolbarUISystem;
+        private PloppableRICOSystem _ploppableRICOSystem;
         private InputAction _enableAction;
 
         static FieldInfo _prefabsField = typeof( PrefabSystem ).GetField( "m_Prefabs", BindingFlags.Instance | BindingFlags.NonPublic );
@@ -96,6 +97,7 @@ namespace FindStuff.UI
             _endFrameBarrier = World.GetOrCreateSystemManaged<EndFrameBarrier>( );
             _toolbarUISystem = World.GetOrCreateSystemManaged<ToolbarUISystem>( );
             _pickerToolSystem = World.GetOrCreateSystemManaged<PickerToolSystem>( );
+            _ploppableRICOSystem = World.GetOrCreateSystemManaged<PloppableRICOSystem>( );
             _localizationManager = GameManager.instance.localizationManager;
 
             _toolSystem.EventToolChanged += ( tool =>
@@ -265,6 +267,21 @@ namespace FindStuff.UI
             {
                 if ( helper.IsValidPrefab( prefabBase, entity ) )
                 {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool IsValidPrefab(PrefabBase prefabBase, Entity entity, out IBaseHelper prefabHelper)
+        {
+            prefabHelper = _baseHelper.FirstOrDefault();
+            foreach (IBaseHelper helper in _baseHelper)
+            {
+                if (helper.IsValidPrefab(prefabBase, entity))
+                {
+                    prefabHelper = helper;
                     return true;
                 }
             }
@@ -447,13 +464,13 @@ namespace FindStuff.UI
                     _toolSystem.ActivatePrefabTool(prefab);
 
                     // Handle zone buildings (spawnable buildings)
-                    EntityCommandBuffer commandBuffer = _endFrameBarrier.CreateCommandBuffer();
-                    if (_baseHelper.FirstOrDefault(p => p is ZoneBuildingHelper).IsValidPrefab(prefab, entity) && EntityManager.TryGetComponent(entity, out SpawnableBuildingData spawnableBuildingData))
+                    if (IsValidPrefab(prefab, entity, out IBaseHelper helper) && helper is ZoneBuildingHelper)
                     {
-                        MakePloppable(commandBuffer, entity, spawnableBuildingData);
+                        _ploppableRICOSystem.MakePloppable(entity);
                     }
 
                     // Unlock building
+                    EntityCommandBuffer commandBuffer = _endFrameBarrier.CreateCommandBuffer();
                     var unlockEntity = commandBuffer.CreateEntity(_entityArchetype);
                     commandBuffer.SetComponent(unlockEntity, new Unlock(entity));
                     
@@ -629,18 +646,6 @@ namespace FindStuff.UI
 
                 TriggerUpdate( );
             }
-        }
-
-        private void MakePloppable(EntityCommandBuffer commandBuffer, Entity entity, SpawnableBuildingData spawnableBuildingData)
-        {
-            commandBuffer.AddComponent(entity, new PloppableBuilding());
-
-            // Add signature building data to the zone prefab to be ignored by the ZoneCheckSystem making them condemned
-            commandBuffer.AddComponent(entity, new SignatureBuildingData());
-
-            // Set to level 5 to stop the buildings being part of certain simulation systems (signature buildings use the same technique)
-            spawnableBuildingData.m_Level = 5;
-            commandBuffer.SetComponent(entity, spawnableBuildingData);
         }
 
         static readonly HashSet<string> GetEvilPrefabs = ["lane editor container", "traffic spawner", "NA_DeliveryVan01", "EU_DeliveryVan01", "MotorbikeDelivery01"];

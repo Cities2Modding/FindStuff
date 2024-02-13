@@ -1,6 +1,6 @@
 ﻿using Colossal.Entities;
+using FindStuff.Helper;
 using FindStuff.UI;
-using Game;
 using Game.Buildings;
 using Game.Common;
 using Game.Net;
@@ -13,14 +13,13 @@ using Unity.Entities;
 using Unity.Jobs;
 using UnityEngine;
 using UnityEngine.Scripting;
-using static Colossal.AssetPipeline.Diagnostic.Report;
-using static Colossal.IO.AssetDatabase.AtlasFrame;
 
 namespace FindStuff.Systems
 {
     public class PickerToolSystem : ToolBaseSystem
     {
         private PrefabSystem _prefabSystem;
+        private PloppableRICOSystem _ploppableRICOSystem;
         private FindStuffController _controller;
         private OverlayRenderSystem.Buffer _overlay;
         private Entity _lastEntity = Entity.Null;
@@ -36,6 +35,7 @@ namespace FindStuff.Systems
         protected override void OnCreate()
         {
             _prefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>( );
+            _ploppableRICOSystem = World.GetOrCreateSystemManaged<PloppableRICOSystem>( );
             base.OnCreate();
         }
 
@@ -68,7 +68,6 @@ namespace FindStuff.Systems
             if ( _prefabSystem != null )
             {
                 var overlaySystem = World.GetExistingSystemManaged<OverlayRenderSystem>( );
-
                 if ( overlaySystem != null )
                 {
                     _controller = World.GetOrCreateSystemManaged<FindStuffController>( );
@@ -81,7 +80,7 @@ namespace FindStuff.Systems
             {
                 if ( EntityManager.TryGetComponent( entity, out PrefabRef prefabRef ) &&
                      _prefabSystem.TryGetPrefab( prefabRef.m_Prefab, out PrefabBase prefabBase ) &&
-                    ( _controller.IsValidPrefab( prefabBase, entity ) ||
+                    ( _controller.IsValidPrefab( prefabBase, entity, out IBaseHelper helper ) ||
                     HasComponents( entity ) ) )
                 {
                     var yellow = new UnityEngine.Color( 1f, 1f, 0f, 0.2f );
@@ -105,6 +104,11 @@ namespace FindStuff.Systems
                         _controller.UpdatePicker( false );
                         
                         m_ToolSystem.ActivatePrefabTool( prefabBase );
+
+                        if (helper is ZoneBuildingHelper)
+                        {
+                            _ploppableRICOSystem.MakePloppable( entity );
+                        }
                            
                         if ( EntityManager.HasComponent<Highlighted>( entity ) )
                         {
