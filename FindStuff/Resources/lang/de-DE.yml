@@ -1,10 +1,10 @@
 lang:
- FindStuff.FindStuffSettings.ModName: Finde Sachen
- Options.SECTION[FindStuff.FindStuffSettings]: Finde Sachen
- Options.GROUP[FindStuff.FindStuffSettings.Toggles]: Finde Sachen
+ FindStuff.FindStuffSettings.ModName: FindStuff
+ Options.SECTION[FindStuff.FindStuffSettings]: FindStuff
+ Options.GROUP[FindStuff.FindStuffSettings.Toggles]: FindStuff
 
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.OperationMode]: Betriebsmodus
- Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.OperationMode]: Konfiguriere, wie Finde Sachen sich verhält, wenn ein Werkzeug geöffnet wird. Es kann versteckt, nach oben verschoben werden oder das Fenster des Standardspiels ausblenden und ersetzen.
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.OperationMode]: Konfiguriere, wie FindStuff sich verhält, wenn ein Werkzeug geöffnet wird. Es kann versteckt, nach oben verschoben werden oder das Fenster des Standardspiels ausblenden und ersetzen.
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Picker-Verknüpfung aktivieren
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Halte STRG + Klick, um ein Objekt auszuwählen.
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: Expertenmodus aktivieren
@@ -15,7 +15,7 @@ lang:
  FindStuff.FindStuffSettings.HideAssetMenu: Standardfenster überschreiben
 
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.SearchSpeed]: Suchgeschwindigkeit
- Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.SearchSpeed]: Konfiguriere, wie viele Ressourcen für die Suche über Finde Sachen zugewiesen werden. Niedrige Einstellungen verwenden weniger Computerressourcen, sodass die Suche nach vielen Elementen länger dauert, aber weniger belastend für deinen Computer ist. Hohe Einstellungen liefern Ergebnisse schneller, fordern aber mehr von deinem Computer.
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.SearchSpeed]: Konfiguriere, wie viele Ressourcen für die Suche über FindStuff zugewiesen werden. Niedrige Einstellungen verwenden weniger Computerressourcen, sodass die Suche nach vielen Elementen länger dauert, aber weniger belastend für deinen Computer ist. Hohe Einstellungen liefern Ergebnisse schneller, fordern aber mehr von deinem Computer.
 
  FindStuff.FindStuffSettings.SearchSpeed.VeryLow: Sehr Niedrig
  FindStuff.FindStuffSettings.SearchSpeed.Low: Niedrig
@@ -29,17 +29,17 @@ lang:
 
  FindStuff.PrefabCategory.Foliage: Bepflanzung
  FindStuff.PrefabCategory.Buildings: Gebäude
- FindStuff.PrefabCategory.Zones: Zonierung
- FindStuff.PrefabCategory.Misc: Verschiedenes
+ FindStuff.PrefabCategory.Zones: Zonen
+ FindStuff.PrefabCategory.Misc: Sonstiges
 
  FindStuff.PrefabType.Surface: Oberfläche
- FindStuff.PrefabType.Network: Netzwerke
+ FindStuff.PrefabType.Network: Straßenetzwerke
  FindStuff.PrefabType.ZoneResidential: Wohngebiet
  FindStuff.PrefabType.ZoneCommercial: Gewerbegebiet
  FindStuff.PrefabType.ZoneOffice: Bürogebiet
  FindStuff.PrefabType.ZoneIndustrial: Industriegebiet
  FindStuff.PrefabType.ServiceBuilding: Dienstleistungsgebäude
- FindStuff.PrefabType.SignatureBuilding: Markantes Gebäude
+ FindStuff.PrefabType.SignatureBuilding: Spezialgebäude
  FindStuff.PrefabType.ParkBuilding: Park
  FindStuff.PrefabType.Vehicle: Fahrzeug
  FindStuff.PrefabType.Tree: Baum
@@ -49,23 +49,23 @@ lang:
  FindStuff.PrefabType.Train: Zug
  FindStuff.PrefabType.Tram: Straßenbahn
  FindStuff.PrefabType.Pipe: Rohr
- FindStuff.PrefabType.OtherNetwork: Sonstige Netzwerke
+ FindStuff.PrefabType.OtherNetwork: Sonstiges
  FindStuff.PrefabType.SmallRoad: Kleine Straße
  FindStuff.PrefabType.MediumRoad: Mittlere Straße
  FindStuff.PrefabType.LargeRoad: Große Straße
  FindStuff.PrefabType.Highway: Autobahn
  FindStuff.PrefabType.Roundabout: Kreisverkehr
  FindStuff.PrefabType.RoadTool: Straßenwerkzeug
- FindStuff.PrefabType.Pavment: Weg
+ FindStuff.PrefabType.Pavment: Pfad
 
- FindStuff.Dangerous.CorruptWarning: Dieses Asset könnte dein Speicherstand beschädigen, wenn es nicht richtig verwendet wird.
+ FindStuff.Dangerous.CorruptWarning: Dieses Asset könnte deinen Spielstand beschädigen, wenn es nicht richtig verwendet wird.
  FindStuff.Dangerous.NoDelete: Dieses Asset kann nach dem Platzieren nicht mit dem Abrisswerkzeug entfernt werden.
 
  FindStuff.View.Rows: Liste
- FindStuff.View.Rows_desc: Listet Prefabs als einzelne Zeilen auf.
+ FindStuff.View.Rows_desc: Listet Objekte als einzelne Zeilen auf.
 
  FindStuff.View.Columns: Zwei Spalten
- FindStuff.View.Columns_desc: Listet Prefabs in einem Raster mit zwei Spalten auf.
+ FindStuff.View.Columns_desc: Listet Objekte in einem Raster mit zwei Spalten auf.
 
  FindStuff.View.IconGrid: Kleines Icon-Gitter
  FindStuff.View.IconGrid_desc: Zeigt ein Gitter mit kleinen Icons.
@@ -80,7 +80,7 @@ lang:
  FindStuff.Filter.None_desc: Wendet keine Filter auf die Suchergebnisse an.
 
  FindStuff.Filter.Favourite: Favoriten
- FindStuff.Filter.Favourite_desc: Filtert nach deinen Lieblings-Prefabs.
+ FindStuff.Filter.Favourite_desc: Filtert nach deinen favorisierten Objekten.
 
  FindStuff.Filter.Foliage: Bepflanzung
  FindStuff.Filter.Foliage_desc: Filtert nach Bäumen und Büschen.
@@ -187,7 +187,7 @@ lang:
  FindStuff.SubFilter.OtherNetwork: Sonstige Netzwerke
  FindStuff.SubFilter.OtherNetwork_desc: Filtert nach nicht kategorisierten Netzwerken.
 
- FindStuff.SubFilter.Surface: Sonstige Netzwerke
+ FindStuff.SubFilter.Surface: Oberflächen
  FindStuff.SubFilter.Surface_desc: Filtert nach Oberflächen.
 
  FindStuff.Tag.eu: Europäisch
