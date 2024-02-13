@@ -9,10 +9,19 @@ lang:
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Hold CTRL + Click to pick an object.
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: Enable Expert Mode
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: If activated you have access to potentially dangerous objects that could crash the game or corrupt save games. You should know what you are doing. Use at your own risk!
- 
+
  FindStuff.FindStuffSettings.MoveFindStuff: Move the window
  FindStuff.FindStuffSettings.HideFindStuff: Hide the window
  FindStuff.FindStuffSettings.HideAssetMenu: Override vanilla window
+  
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.SearchSpeed]: Search Speed
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.SearchSpeed]: Configure how much resource is allocated to searching via Find Stuff. Low settings use less computer resources so searching lots of items takes longer but has less of a strain on your computer. High settings return results faster but demands more from your computer.
+ 
+ FindStuff.FindStuffSettings.SearchSpeed.VeryLow: Very Low
+ FindStuff.FindStuffSettings.SearchSpeed.Low: Low
+ FindStuff.FindStuffSettings.SearchSpeed.Medium: Medium
+ FindStuff.FindStuffSettings.SearchSpeed.High: High
+ FindStuff.FindStuffSettings.SearchSpeed.VeryHigh: Very High
 
  FindStuff.View: View
  FindStuff.Filter: Filter

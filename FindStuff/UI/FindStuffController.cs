@@ -1,8 +1,8 @@
-﻿using Colossal.Entities;
-using Colossal.Localization;
+﻿using Colossal.Localization;
 using Colossal.Serialization.Entities;
 using FindStuff.Configuration;
 using FindStuff.Helper;
+using FindStuff.Indexing;
 using FindStuff.Prefabs;
 using FindStuff.Systems;
 using Game;
@@ -11,17 +11,15 @@ using Game.SceneFlow;
 using Game.Tools;
 using Game.UI;
 using Game.UI.InGame;
-using Game.Vehicles;
 using Gooee.Plugins;
 using Gooee.Plugins.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Unity.Entities;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static Colossal.AssetPipeline.Diagnostic.Report;
-using static Game.Prefabs.CharacterGroup;
 
 namespace FindStuff.UI
 {
@@ -82,6 +80,12 @@ namespace FindStuff.UI
 
         private static HashSet<string> TypesWithNoThumbnails = ["Surface", "PropMisc", "Billboards", "Fences", "SignsAndPosters", "Accessory"];
 
+        private string _lastQueryKey = "";
+
+        private Queue<(string Key, string Json)> _queryResults = new Queue<(string Key, string Json)>( );
+
+        private FindStuffSettings _modSettings;
+
         public override FindStuffViewModel Configure( )
         {
             _toolSystem = World.GetOrCreateSystemManaged<ToolSystem>( );
@@ -112,7 +116,7 @@ namespace FindStuff.UI
             model.SubFilter = _config.SubFilter;
 
             // If expert mode is enabled then don't allow sub filters for vehicles
-            if (_config.ExpertMode == true && model.SubFilter == SubFilter.Vehicle)
+            if ( _config.ExpertMode == true && model.SubFilter == SubFilter.Vehicle )
                 model.SubFilter = SubFilter.None;
 
             model.OrderByAscending = _config.OrderByAscending;
@@ -129,6 +133,11 @@ namespace FindStuff.UI
 
             if ( mode == GameMode.Game )
             {
+                var plugin = Plugin as FindStuffPlugin;
+
+                if ( plugin.Settings is FindStuffSettings settings )
+                    _modSettings = settings;
+
                 UpdateFromSettings( );
 
                 if ( _enableAction != null )
@@ -151,21 +160,21 @@ namespace FindStuff.UI
 
                 _baseHelper =
                 [
-                    new PlantHelper(EntityManager),
-                    new TreeHelper(EntityManager),
-                    new SurfaceHelper(EntityManager),
-                    new CityServiceHelper(EntityManager),
-                    new NetworkHelper(EntityManager, ExpertMode),
-                    new SignatureBuildingHelper(EntityManager),
-                    new VehicleHelper(EntityManager, ExpertMode),
-                    new ZoneBuildingHelper(EntityManager, _prefabSystem),
-                    new PropHelper(EntityManager),
+                    new PlantHelper( EntityManager ),
+                    new TreeHelper( EntityManager ),
+                    new SurfaceHelper( EntityManager ),
+                    new CityServiceHelper( EntityManager ),
+                    new NetworkHelper( EntityManager, ExpertMode ),
+                    new SignatureBuildingHelper( EntityManager ),
+                    new VehicleHelper( EntityManager, ExpertMode ),
+                    new ZoneBuildingHelper( EntityManager, _prefabSystem ),
+                    new PropHelper( EntityManager ),
                 ];
 
                 foreach ( var prefabBase in prefabs )
                 {
                     // Skip potentially crashing prefabs
-                    if (GetEvilPrefabs.Contains(prefabBase.name.ToLower()))
+                    if ( GetEvilPrefabs.Contains( prefabBase.name.ToLower( ) ) )
                         continue;
 
                     if ( !ProcessPrefab( prefabBase, out var prefabType, out var categoryType, out var tags, out var meta ) )
@@ -201,8 +210,8 @@ namespace FindStuff.UI
                     _prefabInstances.Add( prefabBase.name, prefabBase );
                 }
 
-                _indexer = new PrefabIndexer( prefabsList );
-                _indexer.Build( );
+                _indexer = PrefabIndexer._instance;
+                _indexer.Build( prefabsList );
                 Model.Prefabs = prefabsList;
                 TriggerUpdate( );
             }
@@ -366,6 +375,12 @@ namespace FindStuff.UI
                 IsPickingShortcut = false;
                 UpdatePicker( false );
             }
+
+            if ( _queryResults.Any( ) && _queryResults.TryDequeue( out var result ) )
+            {
+                GameManager.instance.userInterface.view.View.TriggerEvent( "findstuff.onReceiveResults", result.Key, result.Json );
+                //UnityEngine.Debug.Log( $"onReceiveResults: {result.Key}" );
+            }
         }
 
         [OnTrigger]
@@ -424,7 +439,7 @@ namespace FindStuff.UI
             var prefab = prefabs?.FirstOrDefault( p => p.name == name );
 
             if ( prefab != null )
-            {  
+            {
                 var entity = _prefabSystem.GetEntity( prefab );
                 if ( entity != Entity.Null )
                 {
@@ -453,13 +468,13 @@ namespace FindStuff.UI
                     //}
 
                     // Create ploppable building data
-                    if (_baseHelper.FirstOrDefault(p => p is ZoneBuildingHelper).IsValidPrefab(prefab, entity))
+                    if ( _baseHelper.FirstOrDefault( p => p is ZoneBuildingHelper ).IsValidPrefab( prefab, entity ) )
                     {
-                        commandBuffer.AddComponent(entity, new PloppableBuildingData());
-                        commandBuffer.AddComponent(entity, new SignatureBuildingData());
+                        commandBuffer.AddComponent( entity, new PloppableBuildingData( ) );
+                        commandBuffer.AddComponent( entity, new SignatureBuildingData( ) );
                     }
 
-                    commandBuffer.SetComponent<Unlock>(unlockEntity, new Unlock(entity));
+                    commandBuffer.SetComponent<Unlock>( unlockEntity, new Unlock( entity ) );
                     GameManager.instance.userInterface.view.View.ExecuteScript( $"engine.trigger('toolbar.selectAsset',{{index: {entity.Index}, version: {entity.Version}}});" );
                     //_selectAsset.Invoke( _toolbarUISystem, new object[] { entity } );                    
                 }
@@ -519,27 +534,25 @@ namespace FindStuff.UI
 
         private void UpdateFromSettings( )
         {
-            var plugin = Plugin as FindStuffPlugin;
+            if ( _modSettings == null )
+                return;
 
-            if ( plugin.Settings is FindStuffSettings settings )
+            if ( _modSettings.EnableShortcut != Model.EnableShortcut )
             {
-                if (settings.EnableShortcut != Model.EnableShortcut)
-                {
-                    Model.EnableShortcut = settings.EnableShortcut;
-                    TriggerUpdate( );
-                }
+                Model.EnableShortcut = _modSettings.EnableShortcut;
+                TriggerUpdate( );
+            }
 
-                if ( settings.OperationMode != Model.OperationMode )
-                {
-                    Model.OperationMode = settings.OperationMode;
-                    TriggerUpdate( );
-                }
+            if ( _modSettings.OperationMode != Model.OperationMode )
+            {
+                Model.OperationMode = _modSettings.OperationMode;
+                TriggerUpdate( );
+            }
 
-                if ( settings.ExpertMode != Model.ExpertMode )
-                {
-                    Model.ExpertMode = settings.ExpertMode;
-                    TriggerUpdate( );
-                }
+            if ( _modSettings.ExpertMode != Model.ExpertMode )
+            {
+                Model.ExpertMode = _modSettings.ExpertMode;
+                TriggerUpdate( );
             }
         }
 
@@ -549,13 +562,27 @@ namespace FindStuff.UI
             if ( Model == null || _indexer == null )
                 return;
 
-            var result = _indexer.Query( Model, out var key );
+            var currentKey = _indexer.GenerateKey( Model );
 
-            if ( string.IsNullOrEmpty( result.Json ) )
+            if ( currentKey == _lastQueryKey )
                 return;
 
-            // Provide the results to the client
-            GameManager.instance.userInterface.view.View.TriggerEvent( "findstuff.onReceiveResults", key, result.Json );
+            _indexer.Query( Enum.TryParse<SearchSpeed>( _modSettings.SearchSpeed, out var searchSpeed ) ? searchSpeed : SearchSpeed.Medium,
+                Model, ( key, result ) =>
+            {
+                if ( string.IsNullOrEmpty( result.Json ) )
+                {
+                    UnityEngine.Debug.LogWarning( "Empty JSON payload for query" );
+                    return;
+                }
+
+                _queryResults.Enqueue( (key, result.Json) );
+            }, ( ) =>
+            {
+                GameManager.instance.userInterface.view.View.TriggerEvent( "findstuff.onShowLoader" );
+            } );
+
+            _lastQueryKey = currentKey;
         }
 
         private bool PickerShortcutTrigger( )
@@ -580,6 +607,23 @@ namespace FindStuff.UI
                 IsPickingShortcut = false;
 
             TriggerUpdate( );
+        }
+
+        public void UpdatePrefabFromPicker( string prefabName )
+        {
+            var prefabSettings = _indexer.GetPrefab( prefabName );
+
+            if ( prefabSettings.Prefab == null )
+                return;
+
+            Model.Selected = prefabSettings.Prefab;
+
+            // Only set filters when not visible and in hide asset menu mode
+            if ( !Model.IsVisible && Model.OperationMode == "HideAssetMenu" )
+            {
+                Model.Filter = prefabSettings.Filter;
+                Model.SubFilter = prefabSettings.SubFilter;
+            }
         }
 
         [OnTrigger]

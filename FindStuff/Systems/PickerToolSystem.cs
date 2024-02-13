@@ -101,6 +101,7 @@ namespace FindStuff.Systems
                     {
                         m_ToolSystem.activeTool = m_DefaultToolSystem;
 
+                        _controller.UpdatePrefabFromPicker( prefabBase.name );
                         _controller.UpdatePicker( false );
                         
                         m_ToolSystem.ActivatePrefabTool( prefabBase );

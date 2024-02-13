@@ -1931,7 +1931,7 @@
       var now = function() {
         return root.Date.now();
       };
-      function debounce2(func, wait, options) {
+      function debounce3(func, wait, options) {
         var lastArgs, lastThis, maxWait, result, timerId, lastCallTime, lastInvokeTime = 0, leading = false, maxing = false, trailing = true;
         if (typeof func != "function") {
           throw new TypeError(FUNC_ERROR_TEXT);
@@ -2039,12 +2039,12 @@
         var isBinary = reIsBinary.test(value);
         return isBinary || reIsOctal.test(value) ? freeParseInt(value.slice(2), isBinary ? 2 : 8) : reIsBadHex.test(value) ? NAN : +value;
       }
-      module.exports = debounce2;
+      module.exports = debounce3;
     }
   });
 
   // src/jsx/ui.jsx
-  var import_react8 = __toESM(require_react());
+  var import_react9 = __toESM(require_react());
 
   // src/jsx/_hover-window.jsx
   var import_react = __toESM(require_react());
@@ -2253,6 +2253,16 @@
 
   // src/jsx/_loading-screen.jsx
   var import_react5 = __toESM(require_react());
+  var LoadingScreen = ({ isVisible }) => {
+    const react = window.$_gooee.react;
+    const { Icon } = window.$_gooee.framework;
+    const [visible, setVisible] = react.useState(isVisible);
+    react.useEffect(() => {
+      setVisible(isVisible);
+    }, [isVisible]);
+    return visible ? /* @__PURE__ */ import_react5.default.createElement("div", { className: "p-absolute w-100 h-100 p-left-0 p-top-0 bg-dark-trans d-flex align-items-center justify-content-center" }, /* @__PURE__ */ import_react5.default.createElement(Icon, { icon: "solid-spinner", className: "icon-spin", fa: true })) : null;
+  };
+  var loading_screen_default = LoadingScreen;
 
   // src/jsx/_favourite_star.jsx
   var import_react6 = __toESM(require_react());
@@ -2276,8 +2286,41 @@
   };
   var favourite_star_default = FavouriteStar;
 
-  // src/jsx/_toolbar-buttons.jsx
+  // src/jsx/_search-field.jsx
   var import_react7 = __toESM(require_react());
+  var import_lodash = __toESM(require_lodash());
+  var SearchField = ({ className, model, updateModel, onUpdate, debounceDelay = 100, _L }) => {
+    const react = window.$_gooee.react;
+    const { TextBox, Button, Icon } = window.$_gooee.framework;
+    const [search, setSearch] = react.useState(model.Search ?? "");
+    const searchRef = react.useRef(search);
+    react.useEffect(() => {
+      searchRef.current = search;
+    }, [search]);
+    react.useEffect(() => {
+      if (model.Search !== search) {
+        setSearch(model.Search);
+      }
+    }, [model.Search]);
+    const debouncedSearchUpdate = (0, import_lodash.default)(onUpdate, debounceDelay);
+    const onSearchInputChanged = (val) => {
+      model.Search = val;
+      updateModel("Search", val);
+      setSearch(val);
+      debouncedSearchUpdate();
+    };
+    const clearSearch = () => {
+      setSearch("");
+      model.Search = "";
+      updateModel("Search", "");
+      debouncedSearchUpdate();
+    };
+    return /* @__PURE__ */ import_react7.default.createElement(import_react7.default.Fragment, null, /* @__PURE__ */ import_react7.default.createElement(TextBox, { size: "sm", className: "bg-dark-trans-less-faded mr-2 " + className, placeholder: "Search...", text: search, onChange: onSearchInputChanged }), /* @__PURE__ */ import_react7.default.createElement(Button, { title: _L("FindStuff.ClearSearch"), description: _L("FindStuff.ClearSearch_desc"), circular: true, icon: true, style: "trans-faded", disabled: search && search.length > 0 ? null : true, onClick: clearSearch }, /* @__PURE__ */ import_react7.default.createElement(Icon, { icon: "solid-eraser", fa: true })));
+  };
+  var search_field_default = SearchField;
+
+  // src/jsx/_toolbar-buttons.jsx
+  var import_react8 = __toESM(require_react());
   var AppButton = ({ react, setupController }) => {
     const onMouseEnter = () => {
       engine.trigger("audio.playSound", "hover-item", 1);
@@ -2304,12 +2347,12 @@
     };
     const pickerBtnRef = react.useRef(null);
     const findStuffBtnRef = react.useRef(null);
-    return /* @__PURE__ */ import_react7.default.createElement(import_react7.default.Fragment, null, /* @__PURE__ */ import_react7.default.createElement("div", { className: "spacer_oEi" }), /* @__PURE__ */ import_react7.default.createElement("button", { ref: pickerBtnRef, onMouseEnter, onClick: onPickerClick, className: "button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT toggle-states_X82 toggle-states_DTm" + (model.IsPicking ? " selected" : "") }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "fa fa-solid-eye-dropper icon-md" }), /* @__PURE__ */ import_react7.default.createElement(AutoToolTip, { targetRef: pickerBtnRef, float: "up", align: "right" }, /* @__PURE__ */ import_react7.default.createElement(ToolTipContent, { title: "Pick Stuff", description: "Hover over items and select them automatically." }))), /* @__PURE__ */ import_react7.default.createElement("div", { className: "spacer_oEi" }), /* @__PURE__ */ import_react7.default.createElement("button", { ref: findStuffBtnRef, onMouseEnter, onClick: onFindStuffClick, className: "button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT toggle-states_X82 toggle-states_DTm" + (model.IsVisible ? " selected" : "") }, /* @__PURE__ */ import_react7.default.createElement("div", { className: "fa fa-solid-magnifying-glass icon-md" }), /* @__PURE__ */ import_react7.default.createElement(AutoToolTip, { targetRef: findStuffBtnRef, float: "up", align: "right" }, /* @__PURE__ */ import_react7.default.createElement(ToolTipContent, { title: _L("FindStuff.FindStuffSettings.ModName"), description: "Find stuff you can place in the game." }))));
+    return /* @__PURE__ */ import_react8.default.createElement(import_react8.default.Fragment, null, /* @__PURE__ */ import_react8.default.createElement("div", { className: "spacer_oEi" }), /* @__PURE__ */ import_react8.default.createElement("button", { ref: pickerBtnRef, onMouseEnter, onClick: onPickerClick, className: "button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT toggle-states_X82 toggle-states_DTm" + (model.IsPicking ? " selected" : "") }, /* @__PURE__ */ import_react8.default.createElement("div", { className: "fa fa-solid-eye-dropper icon-md" }), /* @__PURE__ */ import_react8.default.createElement(AutoToolTip, { targetRef: pickerBtnRef, float: "up", align: "right" }, /* @__PURE__ */ import_react8.default.createElement(ToolTipContent, { title: "Pick Stuff", description: "Hover over items and select them automatically." }))), /* @__PURE__ */ import_react8.default.createElement("div", { className: "spacer_oEi" }), /* @__PURE__ */ import_react8.default.createElement("button", { ref: findStuffBtnRef, onMouseEnter, onClick: onFindStuffClick, className: "button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT toggle-states_X82 toggle-states_DTm" + (model.IsVisible ? " selected" : "") }, /* @__PURE__ */ import_react8.default.createElement("div", { className: "fa fa-solid-magnifying-glass icon-md" }), /* @__PURE__ */ import_react8.default.createElement(AutoToolTip, { targetRef: findStuffBtnRef, float: "up", align: "right" }, /* @__PURE__ */ import_react8.default.createElement(ToolTipContent, { title: _L("FindStuff.FindStuffSettings.ModName"), description: "Find stuff you can place in the game." }))));
   };
   window.$_gooee.register("findstuff", "FindStuffAppButton", AppButton, "bottom-right-toolbar", "findstuff");
 
   // src/jsx/ui.jsx
-  var import_lodash = __toESM(require_lodash());
+  var import_lodash2 = __toESM(require_lodash());
   if (!window.$_findStuff_cache)
     window.$_findStuff_cache = {};
   var ToolWindow = ({ react, setupController }) => {
@@ -2319,14 +2362,11 @@
     const { model, update, trigger, _L, colors } = setupController();
     const [selectedPrefab, setSeletedPrefab] = react.useState(model && model.Selected ? model.Selected : { Name: "" });
     const [filteredPrefabs, setFilteredPrefabs] = react.useState([]);
-    const [search, setSearch] = react.useState(model.Search ?? "");
     const [expanded, setExpanded] = react.useState(false);
     const [shifted, setShifted] = react.useState(model.Shifted);
     const [mouseOverItem, setMouseOverItem] = react.useState(null);
-    const searchRef = react.useRef(search);
-    react.useEffect(() => {
-      searchRef.current = search;
-    }, [search]);
+    const [isWaitingResults, setIsWaitingResults] = react.useState(false);
+    const [showLoading, setShowLoading] = react.useState(false);
     const updateAssetHide = () => {
       if (model.OperationMode == "HideAssetMenu" && model.IsVisible)
         document.body.classList.add("find-stuff-hide");
@@ -2357,16 +2397,20 @@
         updateAssetHide();
       }
     }, [model.IsVisible, model.OperationMode, shifted, model.Shifted]);
-    const triggerResultsUpdate = (0, import_lodash.default)((curQueryKey, m) => {
+    const triggerResultsUpdate = (0, import_lodash2.default)((curQueryKey, m) => {
       console.log("query key: " + curQueryKey);
       if ((!m.Search || m.Search.length == 0) && window.$_findStuff_cache[curQueryKey]) {
         console.log("Got cache for " + curQueryKey);
         setFilteredPrefabs(window.$_findStuff_cache[curQueryKey]);
+        setIsWaitingResults(false);
+        setShowLoading(false);
       } else {
         trigger("OnUpdateQuery");
       }
     }, 50);
     const onReceiveResults = (curQueryKey, json) => {
+      setIsWaitingResults(false);
+      setShowLoading(false);
       const result = json ? JSON.parse(json) : null;
       if (!result || !result.Prefabs)
         return;
@@ -2395,11 +2439,14 @@
       } else if (model.OperationMode === "MoveFindStuff")
         updateShift(!isDefaultTool);
     };
+    const onShowLoader = () => {
+      if (isWaitingResults)
+        setShowLoading(true);
+      else
+        setShowLoading(false);
+    };
     react.useEffect(() => {
       if (model) {
-        if (model.Search !== search) {
-          setSearch(model.Search);
-        }
         if (model.Selected) {
           setSeletedPrefab(model.Selected);
         }
@@ -2407,12 +2454,14 @@
       const eventHandle = engine.on("findstuff.onReceiveResults", onReceiveResults);
       const selectAssetHandle = engine.on("toolbar.selectAsset", onSelectAsset);
       const selectToolHandle = engine.on("tool.activeTool.update", onSelectTool);
+      const showLoaderHandle = engine.on("findstuff.onShowLoader", onShowLoader);
       return () => {
         eventHandle.clear();
         selectAssetHandle.clear();
         selectToolHandle.clear();
+        showLoaderHandle.clear();
       };
-    }, [model.ViewMode, model.Selected, model.Shifted, model.OperationMode, model.Filter, model.SubFilter, model.Search, model.OrderByAscending, shifted]);
+    }, [model.ViewMode, isWaitingResults, showLoading, model.Selected, model.Shifted, model.OperationMode, model.Filter, model.SubFilter, model.Search, model.OrderByAscending, shifted]);
     react.useEffect(() => {
       doResultsUpdate(model);
     }, [model]);
@@ -2421,15 +2470,8 @@
       triggerResultsUpdate(curQueryKey, model);
     };
     const updateSearchBackend = () => {
-      const currentSearchValue = searchRef.current;
       doResultsUpdate(model);
-    };
-    const debouncedSearchUpdate = (0, import_lodash.default)(updateSearchBackend, filteredPrefabs.length > 5e3 ? 500 : 50);
-    const onSearchInputChanged = (val) => {
-      model.Search = val;
-      update("Search", val);
-      setSearch(val);
-      debouncedSearchUpdate();
+      setIsWaitingResults(true);
     };
     const closeModal = () => {
       trigger("OnToggleVisible");
@@ -2461,7 +2503,7 @@
       window.$_findStuff_cache[curQueryKey] = null;
     };
     const onRenderItem = (p, index) => {
-      return /* @__PURE__ */ import_react8.default.createElement(
+      return /* @__PURE__ */ import_react9.default.createElement(
         prefab_item_default,
         {
           key: p.Name,
@@ -2473,15 +2515,9 @@
           onMouseEnter: onMouseEnterItem,
           onMouseLeave: onMouseLeaveItem,
           _L,
-          extraContent: hoverPrefab && hoverPrefab.Name === p.Name ? /* @__PURE__ */ import_react8.default.createElement(favourite_star_default, { model, onUpdateFavourite, prefab: p }) : null
+          extraContent: hoverPrefab && hoverPrefab.Name === p.Name ? /* @__PURE__ */ import_react9.default.createElement(favourite_star_default, { model, onUpdateFavourite, prefab: p }) : null
         }
       );
-    };
-    const clearSearch = () => {
-      setSearch("");
-      model.Search = "";
-      update("Search", "");
-      doResultsUpdate(model);
     };
     const toggleExpander = react.useCallback(() => {
       const newValue = !expanded;
@@ -2562,9 +2598,9 @@
     const columnCount = gridCounts.c;
     const rowCount = gridCounts.r;
     const renderHoverWindow = react.useCallback(() => {
-      return hoverPrefab && hoverPrefab.Name && hoverPrefab.Name.length > 0 ? /* @__PURE__ */ import_react8.default.createElement(hover_window_default, { model, className: shifted ? "mt-2" : "mb-2", hoverPrefab, _L }) : null;
+      return hoverPrefab && hoverPrefab.Name && hoverPrefab.Name.length > 0 ? /* @__PURE__ */ import_react9.default.createElement(hover_window_default, { model, className: shifted ? "mt-2" : "mb-2", hoverPrefab, _L }) : null;
     }, [hoverPrefab, model, shifted, model.Search]);
-    return model.IsVisible ? /* @__PURE__ */ import_react8.default.createElement("div", { className: isVisibleClass + (shifted ? " align-items-start" : "") }, /* @__PURE__ */ import_react8.default.createElement("div", { className: "col" }, /* @__PURE__ */ import_react8.default.createElement(filters_window_default, { compact: shifted, model, update, onDoUpdate: doResultsUpdate, _L })), /* @__PURE__ */ import_react8.default.createElement("div", { className: "col" }, !shifted ? renderHoverWindow() : null, /* @__PURE__ */ import_react8.default.createElement(Modal, { bodyClassName: "asset-menu p-relative" + (shifted && expanded ? "" : expanded ? " asset-menu-xl" : shifted ? " asset-menu-sm" : ""), title: /* @__PURE__ */ import_react8.default.createElement("div", { className: "d-flex flex-row align-items-center" }, /* @__PURE__ */ import_react8.default.createElement(Button, { title: _L("FindStuff.Expand"), description: _L("FindStuff.Expand_desc"), watch: [expanded], circular: true, icon: true, style: "trans-faded", onClick: toggleExpander }, /* @__PURE__ */ import_react8.default.createElement(Icon, { icon: expanded ? !shifted ? "solid-chevron-down" : "solid-chevron-up" : shifted ? "solid-chevron-down" : "solid-chevron-up", fa: true })), /* @__PURE__ */ import_react8.default.createElement(Icon, { icon: "solid-magnifying-glass", fa: true, className: "bg-muted ml-2" }), /* @__PURE__ */ import_react8.default.createElement(TextBox, { size: "sm", className: "bg-dark-trans-less-faded w-25 mr-2 ml-4", placeholder: "Search...", text: search, onChange: onSearchInputChanged }), /* @__PURE__ */ import_react8.default.createElement(Button, { title: _L("FindStuff.ClearSearch"), description: _L("FindStuff.ClearSearch_desc"), circular: true, icon: true, style: "trans-faded", disabled: search && search.length > 0 ? null : true, onClick: clearSearch }, /* @__PURE__ */ import_react8.default.createElement(Icon, { icon: "solid-eraser", fa: true })), /* @__PURE__ */ import_react8.default.createElement(sub_filters_default, { model, update, onDoUpdate: doResultsUpdate, _L })), onClose: closeModal }, /* @__PURE__ */ import_react8.default.createElement("div", { className: "asset-menu-container", onMouseLeave: () => onMouseLeave() }, /* @__PURE__ */ import_react8.default.createElement("div", { className: "flex-1" }, /* @__PURE__ */ import_react8.default.createElement(VirtualList, { watch: [model.Favourites, selectedPrefab, mouseOverItem, model.Search, model.Filter, model.SubFilter, model.ViewMode, model.OrderByAscending], border: isBorderedList, data: filteredPrefabs, onRenderItem, columns: columnCount, rows: rowCount, contentClassName: "d-flex flex-row flex-wrap", size: "sm", itemHeight: 32 })))), shifted ? renderHoverWindow() : null), /* @__PURE__ */ import_react8.default.createElement("div", { className: "col" }, /* @__PURE__ */ import_react8.default.createElement("div", { className: "d-inline h-x w-x" }))) : null;
+    return model.IsVisible ? /* @__PURE__ */ import_react9.default.createElement("div", { className: isVisibleClass + (shifted ? " align-items-start" : "") }, /* @__PURE__ */ import_react9.default.createElement("div", { className: "col" }, /* @__PURE__ */ import_react9.default.createElement(filters_window_default, { compact: shifted, model, update, onDoUpdate: doResultsUpdate, _L })), /* @__PURE__ */ import_react9.default.createElement("div", { className: "col" }, !shifted ? renderHoverWindow() : null, /* @__PURE__ */ import_react9.default.createElement(Modal, { bodyClassName: "asset-menu p-relative" + (shifted && expanded ? "" : expanded ? " asset-menu-xl" : shifted ? " asset-menu-sm" : ""), title: /* @__PURE__ */ import_react9.default.createElement("div", { className: "d-flex flex-row align-items-center" }, /* @__PURE__ */ import_react9.default.createElement(Button, { title: _L("FindStuff.Expand"), description: _L("FindStuff.Expand_desc"), watch: [expanded], circular: true, icon: true, style: "trans-faded", onClick: toggleExpander }, /* @__PURE__ */ import_react9.default.createElement(Icon, { icon: expanded ? !shifted ? "solid-chevron-down" : "solid-chevron-up" : shifted ? "solid-chevron-down" : "solid-chevron-up", fa: true })), /* @__PURE__ */ import_react9.default.createElement(Icon, { icon: "solid-magnifying-glass", fa: true, className: "bg-muted ml-2" }), /* @__PURE__ */ import_react9.default.createElement(search_field_default, { model, _L, className: "w-25 ml-4", updateModel: update, onUpdate: updateSearchBackend, debounceDelay: filteredPrefabs.length > 5e3 ? 500 : 150 }), /* @__PURE__ */ import_react9.default.createElement(sub_filters_default, { model, update, onDoUpdate: doResultsUpdate, _L })), onClose: closeModal }, /* @__PURE__ */ import_react9.default.createElement("div", { className: "asset-menu-container", onMouseLeave: () => onMouseLeave() }, /* @__PURE__ */ import_react9.default.createElement("div", { className: "flex-1" }, /* @__PURE__ */ import_react9.default.createElement(VirtualList, { watch: [model.Favourites, selectedPrefab, mouseOverItem, model.Search, model.Filter, model.SubFilter, model.ViewMode, model.OrderByAscending], border: isBorderedList, data: filteredPrefabs, onRenderItem, columns: columnCount, rows: rowCount, contentClassName: "d-flex flex-row flex-wrap", size: "sm", itemHeight: 32 }))), /* @__PURE__ */ import_react9.default.createElement(loading_screen_default, { isVisible: showLoading })), shifted ? renderHoverWindow() : null), /* @__PURE__ */ import_react9.default.createElement("div", { className: "col" }, /* @__PURE__ */ import_react9.default.createElement("div", { className: "d-inline h-x w-x" }))) : null;
   };
   window.$_gooee.register("findstuff", "FindStuffWindow", ToolWindow, "main-container", "findstuff");
 })();

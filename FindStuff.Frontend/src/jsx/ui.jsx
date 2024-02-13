@@ -5,6 +5,7 @@ import SubFilters from "./_sub-filters";
 import PrefabItem from "./_prefab-item";
 import LoadingScreen from "./_loading-screen";
 import FavouriteStar from "./_favourite_star";
+import SearchField from "./_search-field";
 import "./_toolbar-buttons";
 import debounce from "lodash.debounce";
 
@@ -12,24 +13,17 @@ if (!window.$_findStuff_cache)
     window.$_findStuff_cache = {};
 
 const ToolWindow = ({ react, setupController }) => {
-    const [sliderValue, setSliderValue] = react.useState(0);
+    const { Button, Icon, VirtualList, Modal } = window.$_gooee.framework;
+    const { model, update, trigger, _L } = setupController();
+
     const [hoverPrefab, setHoverPrefab] = react.useState({ Name: "" });
-
-    const { Button, Icon, VirtualList, ProgressBar, PieChart, Slider, List, Grid, FormGroup, FormCheckBox, Scrollable, ToolTip, TextBox, Dropdown, ToolTipContent, TabModal, Modal, MarkDown } = window.$_gooee.framework;
-
-    const { model, update, trigger, _L, colors } = setupController();
     const [selectedPrefab, setSeletedPrefab] = react.useState(model && model.Selected ? model.Selected : { Name: "" });
     const [filteredPrefabs, setFilteredPrefabs] = react.useState([]);
-    const [search, setSearch] = react.useState(model.Search ?? "");
     const [expanded, setExpanded] = react.useState(false);
     const [shifted, setShifted] = react.useState(model.Shifted);
     const [mouseOverItem, setMouseOverItem] = react.useState(null);
-    const searchRef = react.useRef(search); // Use a ref to keep track of the latest value
-
-    // Update the ref every time the search state changes
-    react.useEffect(() => {
-        searchRef.current = search;
-    }, [search]);
+    const [isWaitingResults, setIsWaitingResults] = react.useState(false);
+    const [showLoading, setShowLoading] = react.useState(false);
 
     const updateAssetHide = () => {
         if (model.OperationMode == "HideAssetMenu" && model.IsVisible)
@@ -70,11 +64,13 @@ const ToolWindow = ({ react, setupController }) => {
 
     const triggerResultsUpdate = debounce((curQueryKey, m) => {
         //if (queryKey !== curQueryKey) {
-        console.log("query key: " + curQueryKey);
+        //console.log("query key: " + curQueryKey);
         // If the local JS cache has a store use that instead but only for non-searches
         if ((!m.Search || m.Search.length == 0) && window.$_findStuff_cache[curQueryKey]) {
-            console.log("Got cache for " + curQueryKey);
+           // console.log("Got cache for " + curQueryKey);
             setFilteredPrefabs(window.$_findStuff_cache[curQueryKey]);
+            setIsWaitingResults(false);
+            setShowLoading(false);
         }
         // Otherwise use C# backend to query it
         else {
@@ -84,6 +80,8 @@ const ToolWindow = ({ react, setupController }) => {
     }, 50);
 
     const onReceiveResults = (curQueryKey, json) => {
+        setIsWaitingResults(false);
+        setShowLoading(false);
         const result = json ? JSON.parse(json) : null;
 
         if (!result || !result.Prefabs)
@@ -122,11 +120,15 @@ const ToolWindow = ({ react, setupController }) => {
             updateShift(!isDefaultTool);
     };
 
+    const onShowLoader = () => {
+        if (isWaitingResults)
+            setShowLoading(true);
+        else
+            setShowLoading(false);
+    };
+
     react.useEffect(() => {
         if (model) {
-            if (model.Search !== search) {
-                setSearch(model.Search);
-            }
             if (model.Selected) {
                 setSeletedPrefab(model.Selected);
             }
@@ -135,14 +137,16 @@ const ToolWindow = ({ react, setupController }) => {
         const eventHandle = engine.on("findstuff.onReceiveResults", onReceiveResults);
         const selectAssetHandle = engine.on("toolbar.selectAsset", onSelectAsset);
         const selectToolHandle = engine.on("tool.activeTool.update", onSelectTool);
-
+        const showLoaderHandle = engine.on("findstuff.onShowLoader", onShowLoader);
 
         return () => {
             eventHandle.clear();
             selectAssetHandle.clear();
             selectToolHandle.clear();
+            showLoaderHandle.clear();
         };
-    }, [model.ViewMode, model.Selected, model.Shifted, model.OperationMode, model.Filter, model.SubFilter, model.Search, model.OrderByAscending, shifted])
+    }, [model.ViewMode, isWaitingResults, showLoading, model.Selected, model.Shifted, model.OperationMode,
+    model.Filter, model.SubFilter, model.Search, model.OrderByAscending, shifted])
 
     react.useEffect(() => {
         doResultsUpdate(model);
@@ -154,18 +158,9 @@ const ToolWindow = ({ react, setupController }) => {
     };
 
     const updateSearchBackend = () => {
-        const currentSearchValue = searchRef.current;
         doResultsUpdate(model);
-    };
-
-    const debouncedSearchUpdate = debounce(updateSearchBackend, filteredPrefabs.length > 5_000 ? 500 : 50);
-    
-    const onSearchInputChanged = (val) => {
-        model.Search = val;
-        update("Search", val);
-        setSearch(val);
-        debouncedSearchUpdate();
-    };
+        setIsWaitingResults(true);
+    };    
 
     const closeModal = () => {
         trigger("OnToggleVisible");
@@ -211,14 +206,7 @@ const ToolWindow = ({ react, setupController }) => {
             onSelected={onSelectPrefab} onMouseEnter={onMouseEnterItem} onMouseLeave={onMouseLeaveItem}
             _L={_L} extraContent={hoverPrefab && hoverPrefab.Name === p.Name ? <FavouriteStar model={model} onUpdateFavourite={onUpdateFavourite} prefab={p} /> : null} />;
     };
-
-    const clearSearch = () => {
-        setSearch("");
-        model.Search = "";
-        update("Search", "");
-        doResultsUpdate(model);
-    };
-
+    
     const toggleExpander = react.useCallback(() => {
         const newValue = !expanded;
         setExpanded(newValue);
@@ -332,10 +320,7 @@ const ToolWindow = ({ react, setupController }) => {
                     <Icon icon={expanded ? (!shifted ? "solid-chevron-down" : "solid-chevron-up") : (shifted ? "solid-chevron-down" : "solid-chevron-up")} fa />
                 </Button>
                 <Icon icon="solid-magnifying-glass" fa className="bg-muted ml-2" />
-                <TextBox size="sm" className="bg-dark-trans-less-faded w-25 mr-2 ml-4" placeholder="Search..." text={search} onChange={onSearchInputChanged} />
-                {<Button title={_L("FindStuff.ClearSearch")} description={_L("FindStuff.ClearSearch_desc")} circular icon style="trans-faded" disabled={search && search.length > 0 ? null : true} onClick={clearSearch}>
-                    <Icon icon="solid-eraser" fa />
-                </Button>}
+                <SearchField model={model} _L={_L} className="w-25 ml-4" updateModel={update} onUpdate={updateSearchBackend} debounceDelay={filteredPrefabs.length > 5_000 ? 500 : 150} />
                 <SubFilters model={model} update={update} onDoUpdate={doResultsUpdate} _L={_L} />                
             </div>} onClose={closeModal}>
                 <div className="asset-menu-container" onMouseLeave={() => onMouseLeave()}>
@@ -344,6 +329,7 @@ const ToolWindow = ({ react, setupController }) => {
                         </VirtualList>
                     </div>
                 </div>
+                <LoadingScreen isVisible={showLoading} />
             </Modal>
             {shifted ? renderHoverWindow() : null}
         </div>

@@ -29,6 +29,13 @@ namespace FindStuff.UI
             set;
         }
 
+        [SettingsUISection( "Toggles" )]
+        public string SearchSpeed
+        {
+            get;
+            set;
+        }
+
         [SettingsUIHidden]
         protected override string UIResource => "FindStuff.Resources.settings.xml";
 
@@ -41,6 +48,7 @@ namespace FindStuff.UI
             OperationMode = "HideFindStuff";
             ExpertMode = false;
             EnableShortcut = false;
+            SearchSpeed = "Medium";
         }
 
         [Preserve]
@@ -68,5 +76,39 @@ namespace FindStuff.UI
             ];
         }
 
+        [Preserve]
+        public static DropdownItem<string>[] GetSearchSpeeds( )
+        {
+            var localisationManager = GameManager.instance.localizationManager;
+
+            return
+            [
+                new DropdownItem<string>
+                {
+                    value = "VeryLow",
+                    displayName = localisationManager.GetLocalizedName( "FindStuff.FindStuffSettings.SearchSpeed.VeryLow" )
+                },
+                new DropdownItem<string>
+                {
+                    value = "Low",
+                    displayName = localisationManager.GetLocalizedName( "FindStuff.FindStuffSettings.SearchSpeed.Low" )
+                },
+                new DropdownItem<string>
+                {
+                    value = "Medium",
+                    displayName = localisationManager.GetLocalizedName( "FindStuff.FindStuffSettings.SearchSpeed.Medium" )
+                },
+                new DropdownItem<string>
+                {
+                    value = "High",
+                    displayName = localisationManager.GetLocalizedName( "FindStuff.FindStuffSettings.SearchSpeed.High" )
+                },
+                new DropdownItem<string>
+                {
+                    value = "VeryHigh",
+                    displayName = localisationManager.GetLocalizedName( "FindStuff.FindStuffSettings.SearchSpeed.VeryHigh" )
+                },
+            ];
+        }
     }
 }

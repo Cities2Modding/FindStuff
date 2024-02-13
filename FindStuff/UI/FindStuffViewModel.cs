@@ -1,4 +1,5 @@
-﻿using Gooee.Plugins;
+﻿using FindStuff.Indexing;
+using Gooee.Plugins;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
@@ -241,5 +242,14 @@ namespace FindStuff.UI
         Pavement,
         Roundabout,
         OtherNetwork
+    }
+
+    public enum SearchSpeed
+    {
+        VeryLow,
+        Low,
+        Medium,
+        High,
+        VeryHigh
     }
 }

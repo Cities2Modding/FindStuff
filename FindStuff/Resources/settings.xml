@@ -11,5 +11,9 @@
 		<field title="ExpertMode_Desc">
 			<checkbox isChecked="ExpertMode" />
 		</field>
+		<field title="SearchSpeed_Desc">
+			<select selected="SearchSpeed" options="GetSearchSpeeds">
+			</select>
+		</field>
 	</group>
 </settings>
