@@ -1,60 +1,202 @@
 lang:
- FindStuff.FindStuffSettings.ModName: アイテム検索
- Options.SECTION[FindStuff.FindStuffSettings]: アイテム検索
- Options.GROUP[FindStuff.FindStuffSettings.Toggles]: アイテム検索
+ FindStuff.FindStuffSettings.ModName: アイテムを探す
+ Options.SECTION[FindStuff.FindStuffSettings]: アイテムを探す
+ Options.GROUP[FindStuff.FindStuffSettings.Toggles]: アイテムを探す
  
- Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: プレファブ選択時に非表示
- Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: プレファブを選択したときにアイテム検索メニューを隠す。
- Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: ショートカットを有効にする
- Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: CTRL + Click キーを押しながらオブジェクトをピックする。
- Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: Enable Expert Mode
- Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: If activated you have access to potential dangeroues objects crashing the game or breaking save games. You should know what you are doing. Use at your own risk!
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.OperationMode]: 操作モード
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.OperationMode]: ツールが開かれたときのアイテムを探すの挙動を設定します。非表示にする、画面を上にシフトする、またはバニラゲームのアセットウィンドウを隠して上書きすることができます。
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: ピッカーショートカットを有効にする
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: CTRL + クリックでオブジェクトを選択します。
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: エキスパートモードを有効にする
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: 有効にすると、ゲームをクラッシュさせたりセーブデータを破損させる可能性のある危険なオブジェクトにアクセスできます。何をしているかを知っている必要があります。自己責任で使用してください！
+
+ FindStuff.FindStuffSettings.MoveFindStuff: ウィンドウを移動
+ FindStuff.FindStuffSettings.HideFindStuff: ウィンドウを隠す
+ FindStuff.FindStuffSettings.HideAssetMenu: バニラウィンドウを上書き
+  
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.SearchSpeed]: 検索速度
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.SearchSpeed]: アイテムを探すを介して検索に割り当てられるリソースの量を設定します。低設定はコンピュータリソースを少なく使用するので、多くのアイテムを検索するのに時間がかかりますが、コンピュータへの負担が少なくなります。高設定は結果をより早く返しますが、コンピュータにより多くの要求をします。
  
+ FindStuff.FindStuffSettings.SearchSpeed.VeryLow: 非常に低い
+ FindStuff.FindStuffSettings.SearchSpeed.Low: 低い
+ FindStuff.FindStuffSettings.SearchSpeed.Medium: 中
+ FindStuff.FindStuffSettings.SearchSpeed.High: 高い
+ FindStuff.FindStuffSettings.SearchSpeed.VeryHigh: 非常に高い
+
  FindStuff.View: 表示
  FindStuff.Filter: フィルター
- FindStuff.OrderBy: 並べ替え
+ FindStuff.OrderBy: 並び替え
  
- FindStuff.PrefabCategory.Foliage: 草木
+ FindStuff.PrefabCategory.Foliage: 植生
  FindStuff.PrefabCategory.Buildings: 建物
  FindStuff.PrefabCategory.Zones: ゾーニング
  FindStuff.PrefabCategory.Misc: その他
 
- FindStuff.PrefabType.Surface: 地表
+ FindStuff.PrefabType.Surface: 表面
  FindStuff.PrefabType.Network: ネットワーク
  FindStuff.PrefabType.ZoneResidential: 住宅
  FindStuff.PrefabType.ZoneCommercial: 商業
  FindStuff.PrefabType.ZoneOffice: オフィス
- FindStuff.PrefabType.ZoneIndustrial: 工業
- FindStuff.PrefabType.ServiceBuilding: サービス施設
+ FindStuff.PrefabType.ZoneIndustrial: 産業
+ FindStuff.PrefabType.ServiceBuilding: サービスビル
  FindStuff.PrefabType.SignatureBuilding: シグネチャービルディング
  FindStuff.PrefabType.ParkBuilding: 公園
  FindStuff.PrefabType.Vehicle: 車両
  FindStuff.PrefabType.Tree: 木
  FindStuff.PrefabType.Plant: 植物
- FindStuff.PrefabType.Prop: プロップ
+ FindStuff.PrefabType.Prop: 小道具
  FindStuff.PrefabType.Bridge: 橋
  FindStuff.PrefabType.Train: 電車
  FindStuff.PrefabType.Tram: トラム
  FindStuff.PrefabType.Pipe: パイプ
- FindStuff.PrefabType.OtherNetwork: その他のネットワーク
+ FindStuff.PrefabType.OtherNetwork: その他
  FindStuff.PrefabType.SmallRoad: 小道
  FindStuff.PrefabType.MediumRoad: 中道
  FindStuff.PrefabType.LargeRoad: 大道
  FindStuff.PrefabType.Highway: 高速道路
- FindStuff.PrefabType.Roundabout: ラウンドアバウト
+ FindStuff.PrefabType.Roundabout: ロータリー
  FindStuff.PrefabType.RoadTool: 道路ツール
  FindStuff.PrefabType.Pavment: 歩道
  
- FindStuff.Dangerous.CorruptWarning: このアセットは正しく使用しないとセーブデータを破損させる可能性があります。
- FindStuff.Dangerous.NoDelete: このアセットは配置後、ブルドーザーツールで削除できません。
+ FindStuff.Dangerous.CorruptWarning: 正しく使用されない場合、このアセットはセーブデータを破壊する可能性があります。
+ FindStuff.Dangerous.NoDelete: 設置後、このアセットはブルドーザーツールで削除できません。
+  
+ FindStuff.View.Rows: リスト
+ FindStuff.View.Rows_desc: 個々の行としてプレファブをリストします。
  
+ FindStuff.View.Columns: 2列
+ FindStuff.View.Columns_desc: 2列のグリッドでプレファブをリストします。
+
+ FindStuff.View.IconGrid: 小さいアイコンのグリッド
+ FindStuff.View.IconGrid_desc: 小さいアイコンのグリッドを表示します。
+
+ FindStuff.View.IconGridLarge: 大きいアイコンのグリッド
+ FindStuff.View.IconGridLarge_desc: 大きいアイコンのグリッドを表示します。
+
+ FindStuff.View.Detailed: 詳細
+ FindStuff.View.Detailed_desc: 詳細なリストビューを表示します。
+
+ FindStuff.Filter.None: すべて
+ FindStuff.Filter.None_desc: 検索結果にフィルターを適用しません。
+
+ FindStuff.Filter.Favourite: お気に入り
+ FindStuff.Filter.Favourite_desc: お気に入りのプレファブによってフィルタリングします。
+
+ FindStuff.Filter.Foliage: 植生
+ FindStuff.Filter.Foliage_desc: 木と低木によってフィルタリングします。
+
+ FindStuff.Filter.Buildings: 建物
+ FindStuff.Filter.Buildings_desc: ゾーン指定されていない建物のタイプによってフィルタリングします。
+
+ FindStuff.Filter.Zones: ゾーニング
+ FindStuff.Filter.Zones_desc: ゾーン指定された建物のタイプによってフィルタリングします。
+
+ FindStuff.Filter.Props: 小道具
+ FindStuff.Filter.Props_desc: 静的オブジェクト/小道具によってフィルタリングします。
+
+ FindStuff.Filter.Misc: その他
+ FindStuff.Filter.Misc_desc: その他のカテゴリすべて。
+
+ FindStuff.Filter.Network: ネットワーク
+ FindStuff.Filter.Network_desc: ネットワークのタイプによってフィルタリングします。
+ 
+ FindStuff.OrderBy.Ascending: 昇順
+ FindStuff.OrderBy.Ascending_desc: プレファブをA-Zで並べ替えます。
+  
+ FindStuff.OrderBy.Descending: 降順
+ FindStuff.OrderBy.Descending_desc: プレファブをZ-Aで並べ替えます。
+ 
+ FindStuff.Expand: ビューの拡大または縮小
+ FindStuff.Expand_desc: より多くの結果を見るためにビューを拡大できます。
+ 
+ FindStuff.ClearSearch: 検索をクリア
+ FindStuff.ClearSearch_desc: 検索フィールドのテキストをクリアするにはクリックします。
+ 
+ FindStuff.SubFilter.None: すべて
+ FindStuff.SubFilter.None_desc: 検索結果にフィルターを適用しません。
+ 
+ FindStuff.SubFilter.ZoneResidential: 住宅
+ FindStuff.SubFilter.ZoneResidential_desc: 住宅ビルによってフィルタリングします。
+ 
+ FindStuff.SubFilter.ZoneCommercial: 商業
+ FindStuff.SubFilter.ZoneCommercial_desc: 商業ビルによってフィルタリングします。
+
+ FindStuff.SubFilter.ZoneOffice: オフィス
+ FindStuff.SubFilter.ZoneOffice_desc: オフィスビルによってフィルタリングします。
+
+ FindStuff.SubFilter.ZoneIndustrial: 産業
+ FindStuff.SubFilter.ZoneIndustrial_desc: 産業ビルによってフィルタリングします。
+
+ FindStuff.SubFilter.ServiceBuilding: サービスビル
+ FindStuff.SubFilter.ServiceBuilding_desc: サービスビルによってフィルタリングします。
+
+ FindStuff.SubFilter.SignatureBuilding: シグネチャービルディング
+ FindStuff.SubFilter.SignatureBuilding_desc: シグネチャービルディングによってフィルタリングします。
+ 
+ FindStuff.SubFilter.Park: 公園とレジャー
+ FindStuff.SubFilter.Park_desc: 公園とレジャービルによってフィルタリングします。
+
+ FindStuff.SubFilter.Parking: 駐車場
+ FindStuff.SubFilter.Parking_desc: 駐車施設によってフィルタリングします。
+
+ FindStuff.SubFilter.Tree: 木
+ FindStuff.SubFilter.Tree_desc: 木によってフィルタリングします。
+
+ FindStuff.SubFilter.Plant: 植物
+ FindStuff.SubFilter.Plant_desc: 植物によってフィルタリングします。
+
+ FindStuff.SubFilter.Billboards: 広告板
+ FindStuff.SubFilter.Billboards_desc: 広告板によってフィルタリングします。
+
+ FindStuff.SubFilter.Fences: フェンス
+ FindStuff.SubFilter.Fences_desc: フェンスによってフィルタリングします。
+
+ FindStuff.SubFilter.SignsAndPosters: 標識とポスター
+ FindStuff.SubFilter.SignsAndPosters_desc: 標識とポスターによってフィルタリングします。
+
+ FindStuff.SubFilter.Accessory: 静的プロップ (アクセサリー)
+ FindStuff.SubFilter.Accessory_desc: 一般的に使用される静的プロップによってフィルタリングします。
+
+ FindStuff.SubFilter.Vehicle: 車両
+ FindStuff.SubFilter.Vehicle_desc: 車両によってフィルタリングします。
+
+ FindStuff.SubFilter.PropMisc: その他のプロップ
+ FindStuff.SubFilter.PropMisc_desc: カテゴリ分けされていないプロップのタイプによってフィルタリングします。
+ 
+ FindStuff.SubFilter.SmallRoad: 小道
+ FindStuff.SubFilter.SmallRoad_desc: 小道によってフィルタリングします。
+
+ FindStuff.SubFilter.MediumRoad: 中道
+ FindStuff.SubFilter.MediumRoad_desc: 中道によってフィルタリングします。
+
+ FindStuff.SubFilter.LargeRoad: 大道
+ FindStuff.SubFilter.LargeRoad_desc: 大道によってフィルタリングします。
+
+ FindStuff.SubFilter.Highway: 高速道路
+ FindStuff.SubFilter.Highway_desc: 高速道路によってフィルタリングします。
+
+ FindStuff.SubFilter.Roundabout: ロータリー
+ FindStuff.SubFilter.Roundabout_desc: ロータリーによってフィルタリングします。
+
+ FindStuff.SubFilter.Pavement: 舗装道路
+ FindStuff.SubFilter.Pavement_desc: 舗装道路によってフィルタリングします。
+
+ FindStuff.SubFilter.RoadTool: 道路ツール
+ FindStuff.SubFilter.RoadTool_desc: 道路ツールによってフィルタリングします。
+
+ FindStuff.SubFilter.OtherNetwork: その他のネットワーク
+ FindStuff.SubFilter.OtherNetwork_desc: カテゴリ分けされていないネットワークによってフィルタリングします。
+
+ FindStuff.SubFilter.Surface: その他のネットワーク
+ FindStuff.SubFilter.Surface_desc: 表面によってフィルタリングします。
+
  FindStuff.Tag.eu: ヨーロッパ
  FindStuff.Tag.na: 北米
- FindStuff.Tag.foliage: 草木
+ FindStuff.Tag.foliage: 植生
  FindStuff.Tag.building: 建物
  FindStuff.Tag.zones: ゾーニング
  FindStuff.Tag.misc: その他
- FindStuff.Tag.surface: 地表
+ FindStuff.Tag.surface: 表面
  FindStuff.Tag.grass: 草
  FindStuff.Tag.agriculture: 農場
  FindStuff.Tag.sand: 砂
@@ -74,7 +216,7 @@ lang:
  FindStuff.Tag.medium-road: 中
  FindStuff.Tag.large-road: 大
  FindStuff.Tag.highway: 高速道路
- FindStuff.Tag.road: 道路
+ FindStuff.Tag.road: 道
  FindStuff.Tag.road-tool: 道路ツール
  FindStuff.Tag.electricity: 電気
  FindStuff.Tag.electricity-connection: 電気接続
@@ -86,25 +228,25 @@ lang:
  FindStuff.Tag.power-plant: 発電所
  FindStuff.Tag.low-density: 低密度
  FindStuff.Tag.medium-density: 中密度
- FindStuff.Tag.mixed-density: 混在密度
+ FindStuff.Tag.mixed-density: 混合密度
  FindStuff.Tag.high-density: 高密度
- FindStuff.Tag.residential: 住宅地
+ FindStuff.Tag.residential: 住宅
  FindStuff.Tag.row: 列
- FindStuff.Tag.low-rent: 安い賃料
+ FindStuff.Tag.low-rent: 低家賃
  FindStuff.Tag.commercial: 商業
  FindStuff.Tag.office: オフィス
- FindStuff.Tag.industrial: 工業
+ FindStuff.Tag.industrial: 産業
  FindStuff.Tag.service: サービス
  FindStuff.Tag.signature: シグネチャー
  FindStuff.Tag.vehicle: 車両
  FindStuff.Tag.tree: 木
  FindStuff.Tag.plant: 植物
- FindStuff.Tag.prop: プロップ
+ FindStuff.Tag.prop: 小道具
  FindStuff.Tag.park: 公園
  FindStuff.Tag.cargo: 貨物
  FindStuff.Tag.parking: 駐車場
  FindStuff.Tag.administration: 行政
- FindStuff.Tag.fire: 消防
+ FindStuff.Tag.fire: 消防署
  FindStuff.Tag.emergency: 緊急
  FindStuff.Tag.police: 警察
  FindStuff.Tag.prison: 刑務所
@@ -112,12 +254,12 @@ lang:
  FindStuff.Tag.garbage: ゴミ
  FindStuff.Tag.fence: フェンス
  FindStuff.Tag.poster: ポスター
- FindStuff.Tag.billboard: 掲示板
+ FindStuff.Tag.billboard: 広告板
  FindStuff.Tag.aircraft: 航空機
  FindStuff.Tag.watercraft: 水上船
  FindStuff.Tag.automobile: 自動車
  FindStuff.Tag.ship: 船
- FindStuff.Tag.post: ポスト
+ FindStuff.Tag.post: 郵便
  FindStuff.Tag.subway: 地下鉄
  FindStuff.Tag.rocket: ロケット
  FindStuff.Tag.sign: 標識
@@ -129,13 +271,13 @@ lang:
  FindStuff.Tag.tram: トラム
  FindStuff.Tag.train: 電車
  FindStuff.Tag.engine: エンジン
- FindStuff.Tag.carriage: 車両
+ FindStuff.Tag.carriage: 客車
  FindStuff.Tag.airplane: 飛行機
  FindStuff.Tag.helicopter: ヘリコプター
  FindStuff.Tag.public-transport: 公共交通
- FindStuff.Tag.roundabout: ラウンドアバウト
- FindStuff.Tag.bench: シートタンク
- FindStuff.Tag.light: ライト
- FindStuff.Tag.accessory: アクセサリー アクセサリー
+ FindStuff.Tag.roundabout: ロータリー
+ FindStuff.Tag.bench: ベンチ
+ FindStuff.Tag.light: 光
+ FindStuff.Tag.accessory: アクセサリー
  FindStuff.Tag.trashbin: ゴミ箱
  FindStuff.Tag.table: テーブル

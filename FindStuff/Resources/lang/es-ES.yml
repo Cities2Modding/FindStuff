@@ -3,13 +3,26 @@ lang:
  Options.SECTION[FindStuff.FindStuffSettings]: Buscar Cosas
  Options.GROUP[FindStuff.FindStuffSettings.Toggles]: Buscar Cosas
  
- Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Ocultar al seleccionar
- Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Oculta el menú Buscar Cosas cuando selecciones un prefab.
- Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Activar acceso directo
- Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Mantén pulsado CTRL + Click para elegir un objeto.
- Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: Enable Expert Mode
- Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: If activated you have access to potential dangeroues objects crashing the game or breaking save games. You should know what you are doing. Use at your own risk!
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.OperationMode]: Modo de Operación
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.OperationMode]: Configura cómo se comporta Buscar Cosas cuando se abre una herramienta, puede estar oculto, desplazar la pantalla hacia arriba o esconder la ventana de activos del juego base sobrescribiéndola.
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Habilitar Atajo de Selector
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Mantén CTRL + Clic para seleccionar un objeto.
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: Habilitar Modo Experto
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: Si se activa, tienes acceso a objetos potencialmente peligrosos que podrían colapsar el juego o corromper las partidas guardadas. Debes saber lo que estás haciendo. ¡Úsalo bajo tu propio riesgo!
+
+ FindStuff.FindStuffSettings.MoveFindStuff: Mover la ventana
+ FindStuff.FindStuffSettings.HideFindStuff: Ocultar la ventana
+ FindStuff.FindStuffSettings.HideAssetMenu: Sobrescribir ventana base
+  
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.SearchSpeed]: Velocidad de Búsqueda
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.SearchSpeed]: Configura cuánto recurso se asigna a buscar mediante Buscar Cosas. Configuraciones bajas usan menos recursos del ordenador, así que buscar muchos ítems toma más tiempo pero tiene menos carga para tu ordenador. Configuraciones altas devuelven resultados más rápido pero demandan más de tu ordenador.
  
+ FindStuff.FindStuffSettings.SearchSpeed.VeryLow: Muy Bajo
+ FindStuff.FindStuffSettings.SearchSpeed.Low: Bajo
+ FindStuff.FindStuffSettings.SearchSpeed.Medium: Medio
+ FindStuff.FindStuffSettings.SearchSpeed.High: Alto
+ FindStuff.FindStuffSettings.SearchSpeed.VeryHigh: Muy Alto
+
  FindStuff.View: Vista
  FindStuff.Filter: Filtro
  FindStuff.OrderBy: Ordenar
@@ -45,9 +58,138 @@ lang:
  FindStuff.PrefabType.RoadTool: Herramienta de Carretera
  FindStuff.PrefabType.Pavment: Camino
  
- FindStuff.Dangerous.CorruptWarning: Este activo podría romper tu juego guardado si no se usa correctamente.
- FindStuff.Dangerous.NoDelete: Este activo no se puede eliminar con la herramienta bulldozer después de colocarlo.
+ FindStuff.Dangerous.CorruptWarning: Este activo podría romper tu partida guardada si no se usa correctamente.
+ FindStuff.Dangerous.NoDelete: Este activo no puede ser removido con la herramienta de bulldozer después de colocarlo.
+  
+ FindStuff.View.Rows: Lista
+ FindStuff.View.Rows_desc: Lista prefabricados como filas individuales.
  
+ FindStuff.View.Columns: Dos columnas
+ FindStuff.View.Columns_desc: Lista prefabricados en una cuadrícula de dos columnas.
+
+ FindStuff.View.IconGrid: Cuadrícula de Iconos Pequeños
+ FindStuff.View.IconGrid_desc: Muestra una cuadrícula con iconos pequeños.
+
+ FindStuff.View.IconGridLarge: Cuadrícula de Iconos Grandes
+ FindStuff.View.IconGridLarge_desc: Muestra una cuadrícula con iconos grandes.
+
+ FindStuff.View.Detailed: Detallado
+ FindStuff.View.Detailed_desc: Muestra una vista de lista detallada.
+
+ FindStuff.Filter.None: Todos
+ FindStuff.Filter.None_desc: No aplicar filtros a los resultados de búsqueda.
+
+ FindStuff.Filter.Favourite: Favorito
+ FindStuff.Filter.Favourite_desc: Filtra por tus prefabricados favoritos.
+
+ FindStuff.Filter.Foliage: Follaje
+ FindStuff.Filter.Foliage_desc: Filtra por árboles y arbustos.
+
+ FindStuff.Filter.Buildings: Edificios
+ FindStuff.Filter.Buildings_desc: Filtra por tipos de edificios no zonificados.
+
+ FindStuff.Filter.Zones: Zonificación
+ FindStuff.Filter.Zones_desc: Filtra por tipos de edificios zonificados.
+
+ FindStuff.Filter.Props: Accesorios
+ FindStuff.Filter.Props_desc: Filtra por objetos/accesorios estáticos.
+
+ FindStuff.Filter.Misc: Varios
+ FindStuff.Filter.Misc_desc: Todas las otras categorías.
+
+ FindStuff.Filter.Network: Red
+ FindStuff.Filter.Network_desc: Filtra por tipos de redes.
+ 
+ FindStuff.OrderBy.Ascending: Ascendente
+ FindStuff.OrderBy.Ascending_desc: Ordena prefabricados de A-Z.
+  
+ FindStuff.OrderBy.Descending: Descendente
+ FindStuff.OrderBy.Descending_desc: Ordena prefabricados de Z-A.
+ 
+ FindStuff.Expand: Expandir o contraer la vista
+ FindStuff.Expand_desc: Puedes expandir la vista para ver más resultados.
+ 
+ FindStuff.ClearSearch: Limpiar búsqueda
+ FindStuff.ClearSearch_desc: Haz clic para limpiar el texto en el campo de búsqueda.
+ 
+ FindStuff.SubFilter.None: Todos
+ FindStuff.SubFilter.None_desc: No aplicar filtros a los resultados de búsqueda.
+ 
+ FindStuff.SubFilter.ZoneResidential: Residencial
+ FindStuff.SubFilter.ZoneResidential_desc: Filtra por edificios residenciales.
+ 
+ FindStuff.SubFilter.ZoneCommercial: Comercial
+ FindStuff.SubFilter.ZoneCommercial_desc: Filtra por edificios comerciales.
+
+ FindStuff.SubFilter.ZoneOffice: Oficina
+ FindStuff.SubFilter.ZoneOffice_desc: Filtra por edificios de oficinas.
+
+ FindStuff.SubFilter.ZoneIndustrial: Industrial
+ FindStuff.SubFilter.ZoneIndustrial_desc: Filtra por edificios industriales.
+
+ FindStuff.SubFilter.ServiceBuilding: Edificios de Servicio
+ FindStuff.SubFilter.ServiceBuilding_desc: Filtra por edificios de servicio.
+
+ FindStuff.SubFilter.SignatureBuilding: Edificios Emblemáticos
+ FindStuff.SubFilter.SignatureBuilding_desc: Filtra por edificios emblemáticos.
+ 
+ FindStuff.SubFilter.Park: Parques y Ocio
+ FindStuff.SubFilter.Park_desc: Filtra por edificios de parques y ocio.
+
+ FindStuff.SubFilter.Parking: Aparcamiento
+ FindStuff.SubFilter.Parking_desc: Filtra por instalaciones de aparcamiento.
+
+ FindStuff.SubFilter.Tree: Árboles
+ FindStuff.SubFilter.Tree_desc: Filtra por árboles.
+
+ FindStuff.SubFilter.Plant: Plantas
+ FindStuff.SubFilter.Plant_desc: Filtra por plantas.
+
+ FindStuff.SubFilter.Billboards: Vallas Publicitarias
+ FindStuff.SubFilter.Billboards_desc: Filtra por vallas publicitarias.
+
+ FindStuff.SubFilter.Fences: Cercas
+ FindStuff.SubFilter.Fences_desc: Filtra por cercas.
+
+ FindStuff.SubFilter.SignsAndPosters: Señales y Posters
+ FindStuff.SubFilter.SignsAndPosters_desc: Filtra por señales y posters.
+
+ FindStuff.SubFilter.Accessory: Accesorios Estáticos
+ FindStuff.SubFilter.Accessory_desc: Filtra por accesorios estáticos de uso común.
+
+ FindStuff.SubFilter.Vehicle: Vehículos
+ FindStuff.SubFilter.Vehicle_desc: Filtra por vehículos.
+
+ FindStuff.SubFilter.PropMisc: Accesorios Varios
+ FindStuff.SubFilter.PropMisc_desc: Filtra por tipos de accesorios no categorizados.
+ 
+ FindStuff.SubFilter.SmallRoad: Calles Pequeñas
+ FindStuff.SubFilter.SmallRoad_desc: Filtra por calles pequeñas.
+
+ FindStuff.SubFilter.MediumRoad: Calles Medianas
+ FindStuff.SubFilter.MediumRoad_desc: Filtra por calles medianas.
+
+ FindStuff.SubFilter.LargeRoad: Calles Grandes
+ FindStuff.SubFilter.LargeRoad_desc: Filtra por calles grandes.
+
+ FindStuff.SubFilter.Highway: Autopistas
+ FindStuff.SubFilter.Highway_desc: Filtra por autopistas.
+
+ FindStuff.SubFilter.Roundabout: Rotondas
+ FindStuff.SubFilter.Roundabout_desc: Filtra por rotondas.
+
+ FindStuff.SubFilter.Pavement: Aceras
+ FindStuff.SubFilter.Pavement_desc: Filtra por aceras.
+
+ FindStuff.SubFilter.RoadTool: Herramientas de Carretera
+ FindStuff.SubFilter.RoadTool_desc: Filtra por herramientas de carretera.
+
+ FindStuff.SubFilter.OtherNetwork: Otras Redes
+ FindStuff.SubFilter.OtherNetwork_desc: Filtra por redes no categorizadas.
+
+ FindStuff.SubFilter.Surface: Otras Redes
+ FindStuff.SubFilter.Surface_desc: Filtra por superficies.
+
  FindStuff.Tag.eu: Europeo
  FindStuff.Tag.na: Norteamericano
  FindStuff.Tag.foliage: Follaje
@@ -55,14 +197,14 @@ lang:
  FindStuff.Tag.zones: Zonificación
  FindStuff.Tag.misc: Varios
  FindStuff.Tag.surface: Superficie
- FindStuff.Tag.grass: Césped
+ FindStuff.Tag.grass: Hierba
  FindStuff.Tag.agriculture: Granja
  FindStuff.Tag.sand: Arena
  FindStuff.Tag.concrete: Concreto
  FindStuff.Tag.forestry: Bosque
- FindStuff.Tag.pavement: Pavimento
+ FindStuff.Tag.pavement: Acera
  FindStuff.Tag.landfill: Vertedero
- FindStuff.Tag.tiles: Baldosas
+ FindStuff.Tag.tiles: Azulejos
  FindStuff.Tag.oil: Petróleo
  FindStuff.Tag.ore: Mineral
  FindStuff.Tag.network: Red
@@ -71,7 +213,7 @@ lang:
  FindStuff.Tag.pipe: Tubería
  FindStuff.Tag.bridge: Puente
  FindStuff.Tag.small-road: Pequeña
- FindStuff.Tag.medium-road: Mediana
+ FindStuff.Tag.medium-road: Media
  FindStuff.Tag.large-road: Grande
  FindStuff.Tag.highway: Autopista
  FindStuff.Tag.road: Carretera
@@ -90,12 +232,12 @@ lang:
  FindStuff.Tag.high-density: Alta Densidad
  FindStuff.Tag.residential: Residencial
  FindStuff.Tag.row: Fila
- FindStuff.Tag.low-rent: Renta Baja
+ FindStuff.Tag.low-rent: Alquiler Bajo
  FindStuff.Tag.commercial: Comercial
  FindStuff.Tag.office: Oficina
  FindStuff.Tag.industrial: Industrial
  FindStuff.Tag.service: Servicio
- FindStuff.Tag.signature: Firma
+ FindStuff.Tag.signature: Emblemático
  FindStuff.Tag.vehicle: Vehículo
  FindStuff.Tag.tree: Árbol
  FindStuff.Tag.plant: Planta
@@ -110,7 +252,7 @@ lang:
  FindStuff.Tag.prison: Prisión
  FindStuff.Tag.hospital: Hospital
  FindStuff.Tag.garbage: Basura
- FindStuff.Tag.fence: Valla
+ FindStuff.Tag.fence: Cerca
  FindStuff.Tag.poster: Póster
  FindStuff.Tag.billboard: Valla Publicitaria
  FindStuff.Tag.aircraft: Aeronave
@@ -134,8 +276,8 @@ lang:
  FindStuff.Tag.helicopter: Helicóptero
  FindStuff.Tag.public-transport: Transporte Público
  FindStuff.Tag.roundabout: Rotonda
- FindStuff.Tag.bench: Depósito de asiento
+ FindStuff.Tag.bench: Banco
  FindStuff.Tag.light: Luz
  FindStuff.Tag.accessory: Accesorio
- FindStuff.Tag.trashbin: Papelera
+ FindStuff.Tag.trashbin: Contenedor de Basura
  FindStuff.Tag.table: Mesa

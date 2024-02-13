@@ -3,16 +3,29 @@ lang:
  Options.SECTION[FindStuff.FindStuffSettings]: Найти Вещи
  Options.GROUP[FindStuff.FindStuffSettings.Toggles]: Найти Вещи
  
- Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Скрыть при выборе префаба
- Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: Скрыть меню Найти Вещи при выборе префаба.
- Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Активируйте ярлык
- Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Удерживайте CTRL + Click, чтобы выбрать объект.
- Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: Enable Expert Mode
- Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: If activated you have access to potential dangeroues objects crashing the game or breaking save games. You should know what you are doing. Use at your own risk!
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.OperationMode]: Режим Работы
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.OperationMode]: Настройте поведение Найти Вещи при открытии инструмента, может быть скрыто, перемещено вверх экрана или скрыть окно игрового ассета, переопределяя его.
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Включить Ярлык Выбора
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Удерживайте CTRL + Клик для выбора объекта.
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: Включить Экспертный Режим
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: Если активировано, у вас есть доступ к потенциально опасным объектам, которые могут вызвать сбой игры или повредить сохраненные игры. Вы должны знать, что делаете. Используйте на свой страх и риск!
+
+ FindStuff.FindStuffSettings.MoveFindStuff: Переместить окно
+ FindStuff.FindStuffSettings.HideFindStuff: Скрыть окно
+ FindStuff.FindStuffSettings.HideAssetMenu: Переопределить стандартное окно
+  
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.SearchSpeed]: Скорость Поиска
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.SearchSpeed]: Настройте, сколько ресурсов выделяется на поиск через Найти Вещи. Низкие настройки используют меньше ресурсов компьютера, поэтому поиск большого количества предметов занимает больше времени, но меньше нагружает ваш компьютер. Высокие настройки возвращают результаты быстрее, но требуют больше от вашего компьютера.
  
+ FindStuff.FindStuffSettings.SearchSpeed.VeryLow: Очень Низкая
+ FindStuff.FindStuffSettings.SearchSpeed.Low: Низкая
+ FindStuff.FindStuffSettings.SearchSpeed.Medium: Средняя
+ FindStuff.FindStuffSettings.SearchSpeed.High: Высокая
+ FindStuff.FindStuffSettings.SearchSpeed.VeryHigh: Очень Высокая
+
  FindStuff.View: Просмотр
  FindStuff.Filter: Фильтр
- FindStuff.OrderBy: Сортировка
+ FindStuff.OrderBy: Сортировать
  
  FindStuff.PrefabCategory.Foliage: Растительность
  FindStuff.PrefabCategory.Buildings: Здания
@@ -21,12 +34,12 @@ lang:
 
  FindStuff.PrefabType.Surface: Поверхность
  FindStuff.PrefabType.Network: Сети
- FindStuff.PrefabType.ZoneResidential: Жилой
- FindStuff.PrefabType.ZoneCommercial: Коммерческий
- FindStuff.PrefabType.ZoneOffice: Офисный
- FindStuff.PrefabType.ZoneIndustrial: Промышленный
- FindStuff.PrefabType.ServiceBuilding: Сервисные Здания
- FindStuff.PrefabType.SignatureBuilding: Знаковые Здания
+ FindStuff.PrefabType.ZoneResidential: Жилые
+ FindStuff.PrefabType.ZoneCommercial: Коммерческие
+ FindStuff.PrefabType.ZoneOffice: Офисные
+ FindStuff.PrefabType.ZoneIndustrial: Промышленные
+ FindStuff.PrefabType.ServiceBuilding: Услуги
+ FindStuff.PrefabType.SignatureBuilding: Фирменные Здания
  FindStuff.PrefabType.ParkBuilding: Парки
  FindStuff.PrefabType.Vehicle: Транспорт
  FindStuff.PrefabType.Tree: Деревья
@@ -36,106 +49,235 @@ lang:
  FindStuff.PrefabType.Train: Поезда
  FindStuff.PrefabType.Tram: Трамваи
  FindStuff.PrefabType.Pipe: Трубы
- FindStuff.PrefabType.OtherNetwork: Прочие Сети
+ FindStuff.PrefabType.OtherNetwork: Разное
  FindStuff.PrefabType.SmallRoad: Малые Дороги
  FindStuff.PrefabType.MediumRoad: Средние Дороги
  FindStuff.PrefabType.LargeRoad: Большие Дороги
  FindStuff.PrefabType.Highway: Шоссе
- FindStuff.PrefabType.Roundabout: Круговой маршрут
+ FindStuff.PrefabType.Roundabout: Кольцевые
  FindStuff.PrefabType.RoadTool: Дорожные Инструменты
- FindStuff.PrefabType.Pavment: Тропинки
+ FindStuff.PrefabType.Pavment: Пути
  
- FindStuff.Dangerous.CorruptWarning: Этот актив может повредить ваше сохранение, если использовать его неправильно.
- FindStuff.Dangerous.NoDelete: Этот актив нельзя удалить с помощью инструмента бульдозера после размещения.
+ FindStuff.Dangerous.CorruptWarning: Этот ассет может сломать вашу сохраненную игру, если использовать его неправильно.
+ FindStuff.Dangerous.NoDelete: Этот ассет нельзя удалить с помощью инструмента бульдозера после размещения.
+  
+ FindStuff.View.Rows: Список
+ FindStuff.View.Rows_desc: Список префабов как отдельных строк.
  
+ FindStuff.View.Columns: Две Колонки
+ FindStuff.View.Columns_desc: Список префабов в сетке из двух колонок.
+
+ FindStuff.View.IconGrid: Сетка Маленьких Иконок
+ FindStuff.View.IconGrid_desc: Показать сетку с маленькими иконками.
+
+ FindStuff.View.IconGridLarge: Сетка Больших Иконок
+ FindStuff.View.IconGridLarge_desc: Показать сетку с большими иконками.
+
+ FindStuff.View.Detailed: Детально
+ FindStuff.View.Detailed_desc: Показать детализированный список просмотра.
+
+ FindStuff.Filter.None: Все
+ FindStuff.Filter.None_desc: Не применять фильтры к результатам поиска.
+
+ FindStuff.Filter.Favourite: Избранное
+ FindStuff.Filter.Favourite_desc: Фильтровать по избранным префабам.
+
+ FindStuff.Filter.Foliage: Растительность
+ FindStuff.Filter.Foliage_desc: Фильтровать по деревьям и кустарникам.
+
+ FindStuff.Filter.Buildings: Здания
+ FindStuff.Filter.Buildings_desc: Фильтровать по типам зданий, не относящихся к зонам.
+
+ FindStuff.Filter.Zones: Зонирование
+ FindStuff.Filter.Zones_desc: Фильтровать по типам зонированных зданий.
+
+ FindStuff.Filter.Props: Пропсы
+ FindStuff.Filter.Props_desc: Фильтровать по статическим объектам/пропсам.
+
+ FindStuff.Filter.Misc: Разное
+ FindStuff.Filter.Misc_desc: Все остальные категории.
+
+ FindStuff.Filter.Network: Сети
+ FindStuff.Filter.Network_desc: Фильтровать по типам сетей.
+ 
+ FindStuff.OrderBy.Ascending: Возрастание
+ FindStuff.OrderBy.Ascending_desc: Сортировать префабы от А до Я.
+  
+ FindStuff.OrderBy.Descending: Убывание
+ FindStuff.OrderBy.Descending_desc: Сортировать префабы от Я до А.
+ 
+ FindStuff.Expand: Расширить или сузить вид
+ FindStuff.Expand_desc: Вы можете расширить вид, чтобы увидеть больше результатов.
+ 
+ FindStuff.ClearSearch: Очистить поиск
+ FindStuff.ClearSearch_desc: Нажмите, чтобы очистить текст в поле поиска.
+ 
+ FindStuff.SubFilter.None: Все
+ FindStuff.SubFilter.None_desc: Не применять фильтры к результатам поиска.
+ 
+ FindStuff.SubFilter.ZoneResidential: Жилые
+ FindStuff.SubFilter.ZoneResidential_desc: Фильтровать по жилым зданиям.
+ 
+ FindStuff.SubFilter.ZoneCommercial: Коммерческие
+ FindStuff.SubFilter.ZoneCommercial_desc: Фильтровать по коммерческим зданиям.
+
+ FindStuff.SubFilter.ZoneOffice: Офисные
+ FindStuff.SubFilter.ZoneOffice_desc: Фильтровать по офисным зданиям.
+
+ FindStuff.SubFilter.ZoneIndustrial: Промышленные
+ FindStuff.SubFilter.ZoneIndustrial_desc: Фильтровать по промышленным зданиям.
+
+ FindStuff.SubFilter.ServiceBuilding: Служебные Здания
+ FindStuff.SubFilter.ServiceBuilding_desc: Фильтровать по служебным зданиям.
+
+ FindStuff.SubFilter.SignatureBuilding: Подписные Здания
+ FindStuff.SubFilter.SignatureBuilding_desc: Фильтровать по подписным зданиям.
+ 
+ FindStuff.SubFilter.Park: Парки и Отдых
+ FindStuff.SubFilter.Park_desc: Фильтровать по зданиям парков и отдыха.
+
+ FindStuff.SubFilter.Parking: Парковки
+ FindStuff.SubFilter.Parking_desc: Фильтровать по парковочным местам.
+
+ FindStuff.SubFilter.Tree: Деревья
+ FindStuff.SubFilter.Tree_desc: Фильтровать по деревьям.
+
+ FindStuff.SubFilter.Plant: Растения
+ FindStuff.SubFilter.Plant_desc: Фильтровать по растениям.
+
+ FindStuff.SubFilter.Billboards: Билборды
+ FindStuff.SubFilter.Billboards_desc: Фильтровать по билбордам.
+
+ FindStuff.SubFilter.Fences: Заборы
+ FindStuff.SubFilter.Fences_desc: Фильтровать по заборам.
+
+ FindStuff.SubFilter.SignsAndPosters: Знаки и Постеры
+ FindStuff.SubFilter.SignsAndPosters_desc: Фильтровать по знакам и постерам.
+
+ FindStuff.SubFilter.Accessory: Статические Пропсы (Аксессуары)
+ FindStuff.SubFilter.Accessory_desc: Фильтровать по часто используемым статическим пропсам.
+
+ FindStuff.SubFilter.Vehicle: Транспортные Средства
+ FindStuff.SubFilter.Vehicle_desc: Фильтровать по транспортным средствам.
+
+ FindStuff.SubFilter.PropMisc: Разные Пропсы
+ FindStuff.SubFilter.PropMisc_desc: Фильтровать по не категоризированным типам пропсов.
+ 
+ FindStuff.SubFilter.SmallRoad: Малые Дороги
+ FindStuff.SubFilter.SmallRoad_desc: Фильтровать по малым дорогам.
+
+ FindStuff.SubFilter.MediumRoad: Средние Дороги
+ FindStuff.SubFilter.MediumRoad_desc: Фильтровать по средним дорогам.
+
+ FindStuff.SubFilter.LargeRoad: Большие Дороги
+ FindStuff.SubFilter.LargeRoad_desc: Фильтровать по большим дорогам.
+
+ FindStuff.SubFilter.Highway: Шоссе
+ FindStuff.SubFilter.Highway_desc: Фильтровать по шоссе.
+
+ FindStuff.SubFilter.Roundabout: Кольцевые
+ FindStuff.SubFilter.Roundabout_desc: Фильтровать по кольцевым дорогам.
+
+ FindStuff.SubFilter.Pavement: Тротуары
+ FindStuff.SubFilter.Pavement_desc: Фильтровать по тротуарам.
+
+ FindStuff.SubFilter.RoadTool: Дорожные Инструменты
+ FindStuff.SubFilter.RoadTool_desc: Фильтровать по дорожным инструментам.
+
+ FindStuff.SubFilter.OtherNetwork: Другие Сети
+ FindStuff.SubFilter.OtherNetwork_desc: Фильтровать по не категоризированным сетям.
+
+ FindStuff.SubFilter.Surface: Другие Сети
+ FindStuff.SubFilter.Surface_desc: Фильтровать по поверхностям.
+
  FindStuff.Tag.eu: Европейский
  FindStuff.Tag.na: Североамериканский
  FindStuff.Tag.foliage: Растительность
- FindStuff.Tag.building: Здания
+ FindStuff.Tag.building: Здание
  FindStuff.Tag.zones: Зонирование
  FindStuff.Tag.misc: Разное
  FindStuff.Tag.surface: Поверхность
  FindStuff.Tag.grass: Трава
- FindStuff.Tag.agriculture: Фермы
+ FindStuff.Tag.agriculture: Ферма
  FindStuff.Tag.sand: Песок
  FindStuff.Tag.concrete: Бетон
  FindStuff.Tag.forestry: Лесное Хозяйство
- FindStuff.Tag.pavement: Мощение
- FindStuff.Tag.landfill: Свалки
+ FindStuff.Tag.pavement: Павильон
+ FindStuff.Tag.landfill: Свалка
  FindStuff.Tag.tiles: Плитка
  FindStuff.Tag.oil: Нефть
  FindStuff.Tag.ore: Руда
- FindStuff.Tag.network: Сети
- FindStuff.Tag.marker: Маркеры
- FindStuff.Tag.power-line: Линии Электропередач
- FindStuff.Tag.pipe: Трубы
- FindStuff.Tag.bridge: Мосты
- FindStuff.Tag.small-road: Малые
- FindStuff.Tag.medium-road: Средние
- FindStuff.Tag.large-road: Большие
- FindStuff.Tag.highway: Шоссе
- FindStuff.Tag.road: Дороги
- FindStuff.Tag.road-tool: Дорожные Инструменты
+ FindStuff.Tag.network: Сеть
+ FindStuff.Tag.marker: Маркер
+ FindStuff.Tag.power-line: Линия Электропередач
+ FindStuff.Tag.pipe: Труба
+ FindStuff.Tag.bridge: Мост
+ FindStuff.Tag.small-road: Малая
+ FindStuff.Tag.medium-road: Средняя
+ FindStuff.Tag.large-road: Большая
+ FindStuff.Tag.highway: Автомагистраль
+ FindStuff.Tag.road: Дорога
+ FindStuff.Tag.road-tool: Дорожный Инструмент
  FindStuff.Tag.electricity: Электричество
- FindStuff.Tag.electricity-connection: Подключение Электричества
- FindStuff.Tag.station: Станции
+ FindStuff.Tag.electricity-connection: Соединение Электричества
+ FindStuff.Tag.station: Станция
  FindStuff.Tag.water: Вода
- FindStuff.Tag.waterway: Водные Пути
- FindStuff.Tag.water-connection: Подключение Воды
- FindStuff.Tag.water-source: Источники Воды
- FindStuff.Tag.power-plant: Электростанции
+ FindStuff.Tag.waterway: Водный Путь
+ FindStuff.Tag.water-connection: Соединение Воды
+ FindStuff.Tag.water-source: Источник Воды
+ FindStuff.Tag.power-plant: Электростанция
  FindStuff.Tag.low-density: Низкая Плотность
  FindStuff.Tag.medium-density: Средняя Плотность
  FindStuff.Tag.mixed-density: Смешанная Плотность
  FindStuff.Tag.high-density: Высокая Плотность
- FindStuff.Tag.residential: Жилые
- FindStuff.Tag.row: Ряды
+ FindStuff.Tag.residential: Жилая Зона
+ FindStuff.Tag.row: Ряд
  FindStuff.Tag.low-rent: Низкая Арендная Плата
- FindStuff.Tag.commercial: Коммерческие
- FindStuff.Tag.office: Офисные
- FindStuff.Tag.industrial: Промышленные
- FindStuff.Tag.service: Сервисные
- FindStuff.Tag.signature: Знаковые
- FindStuff.Tag.vehicle: Транспорт
- FindStuff.Tag.tree: Деревья
- FindStuff.Tag.plant: Растения
- FindStuff.Tag.prop: Пропсы
- FindStuff.Tag.park: Парки
- FindStuff.Tag.cargo: Грузы
- FindStuff.Tag.parking: Парковки
+ FindStuff.Tag.commercial: Коммерческая
+ FindStuff.Tag.office: Офис
+ FindStuff.Tag.industrial: Промышленная
+ FindStuff.Tag.service: Услуга
+ FindStuff.Tag.signature: Подпись
+ FindStuff.Tag.vehicle: Транспортное Средство
+ FindStuff.Tag.tree: Дерево
+ FindStuff.Tag.plant: Растение
+ FindStuff.Tag.prop: Проп
+ FindStuff.Tag.park: Парк
+ FindStuff.Tag.cargo: Груз
+ FindStuff.Tag.parking: Парковка
  FindStuff.Tag.administration: Администрация
- FindStuff.Tag.fire: Пожарные Департаменты
- FindStuff.Tag.emergency: Чрезвычайные Службы
+ FindStuff.Tag.fire: Пожарная Часть
+ FindStuff.Tag.emergency: Экстренная Служба
  FindStuff.Tag.police: Полиция
- FindStuff.Tag.prison: Тюрьмы
- FindStuff.Tag.hospital: Больницы
+ FindStuff.Tag.prison: Тюрьма
+ FindStuff.Tag.hospital: Больница
  FindStuff.Tag.garbage: Мусор
- FindStuff.Tag.fence: Заборы
- FindStuff.Tag.poster: Постеры
- FindStuff.Tag.billboard: Билборды
- FindStuff.Tag.aircraft: Воздушные Суда
- FindStuff.Tag.watercraft: Водные Суда
- FindStuff.Tag.automobile: Автомобили
- FindStuff.Tag.ship: Корабли
+ FindStuff.Tag.fence: Забор
+ FindStuff.Tag.poster: Плакат
+ FindStuff.Tag.billboard: Рекламный Щит
+ FindStuff.Tag.aircraft: Воздушное Судно
+ FindStuff.Tag.watercraft: Водное Судно
+ FindStuff.Tag.automobile: Автомобиль
+ FindStuff.Tag.ship: Корабль
  FindStuff.Tag.post: Почта
  FindStuff.Tag.subway: Метро
- FindStuff.Tag.rocket: Ракеты
- FindStuff.Tag.sign: Знаки
- FindStuff.Tag.van: Фургоны
- FindStuff.Tag.car: Автомобили
+ FindStuff.Tag.rocket: Ракета
+ FindStuff.Tag.sign: Знак
+ FindStuff.Tag.van: Фургон
+ FindStuff.Tag.car: Автомобиль
  FindStuff.Tag.taxi: Такси
- FindStuff.Tag.bus: Автобусы
- FindStuff.Tag.truck: Грузовики
- FindStuff.Tag.tram: Трамваи
- FindStuff.Tag.train: Поезда
- FindStuff.Tag.engine: Двигатели
- FindStuff.Tag.carriage: Вагоны
- FindStuff.Tag.airplane: Самолеты
- FindStuff.Tag.helicopter: Вертолеты
+ FindStuff.Tag.bus: Автобус
+ FindStuff.Tag.truck: Грузовик
+ FindStuff.Tag.tram: Трамвай
+ FindStuff.Tag.train: Поезд
+ FindStuff.Tag.engine: Двигатель
+ FindStuff.Tag.carriage: Вагон
+ FindStuff.Tag.airplane: Самолет
+ FindStuff.Tag.helicopter: Вертолет
  FindStuff.Tag.public-transport: Общественный Транспорт
- FindStuff.Tag.roundabout: Круговой маршрут
- FindStuff.Tag.bench: Бак для сиденья
+ FindStuff.Tag.roundabout: Кольцевая
+ FindStuff.Tag.bench: Скамейка
  FindStuff.Tag.light: Свет
  FindStuff.Tag.accessory: Аксессуар
- FindStuff.Tag.trashbin: Мусорный ящик
+ FindStuff.Tag.trashbin: Мусорный Бак
  FindStuff.Tag.table: Стол
