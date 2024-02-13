@@ -392,6 +392,7 @@ namespace FindStuff.UI
             {
                 IsPickingShortcut = false;
                 UpdatePicker( false );
+                _pickerToolSystem.RemoveLastHighlighted( );
             }
 
             if ( _queryResults.Any( ) && _queryResults.TryDequeue( out var result ) )

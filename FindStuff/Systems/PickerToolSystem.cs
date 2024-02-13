@@ -130,21 +130,25 @@ namespace FindStuff.Systems
                     }
                 }
 
-                if ( _lastEntity != entity && _lastEntity != Entity.Null && EntityManager.HasComponent<Highlighted>( _lastEntity ) )
-                {
-                    EntityManager.RemoveComponent<Highlighted>( _lastEntity );
-                    EntityManager.AddComponent<Updated>( _lastEntity );
-                }
+                RemoveLastHighlighted( );
 
                 _lastEntity = entity;
             }
-            else if ( _lastEntity != Entity.Null && EntityManager.HasComponent<Highlighted>( _lastEntity ) )
+            else
+            {
+                RemoveLastHighlighted( );
+            }
+
+            return base.OnUpdate( inputDeps );
+        }
+
+        public void RemoveLastHighlighted( )
+        {
+            if ( _lastEntity != Entity.Null && EntityManager.HasComponent<Highlighted>( _lastEntity ) )
             {
                 EntityManager.RemoveComponent<Highlighted>( _lastEntity );
                 EntityManager.AddComponent<Updated>( _lastEntity );
             }
-
-            return base.OnUpdate( inputDeps );
         }
 
         private bool HasComponents( Entity entity )
