@@ -13,6 +13,7 @@ using Unity.Entities;
 using Unity.Jobs;
 using UnityEngine;
 using UnityEngine.Scripting;
+using static Colossal.AssetPipeline.Diagnostic.Report;
 
 namespace FindStuff.Systems
 {
@@ -107,14 +108,10 @@ namespace FindStuff.Systems
                         
                         m_ToolSystem.ActivatePrefabTool( prefabBase );
 
-                        if ( EntityManager.HasComponent<SpawnableBuildingData>(prefabRef.m_Prefab) )
+                        if (_ploppableRICOSystem.IsPloppable(prefabBase, prefabRef.m_Prefab, entity))
                         {
-                            UnityEngine.Debug.Log("Make Ploppable.");
                             Entity prefabEntity = _prefabSystem.GetEntity(prefabBase);
-                            if (prefabEntity != Entity.Null)
-                            {
-                                _ploppableRICOSystem.MakePloppable(prefabEntity, _outputBarrier.CreateCommandBuffer());
-                            }
+                            _ploppableRICOSystem.MakePloppable(prefabEntity, _outputBarrier.CreateCommandBuffer());
                         }
                            
                         if ( EntityManager.HasComponent<Highlighted>( entity ) )

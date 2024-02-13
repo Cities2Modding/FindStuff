@@ -222,6 +222,21 @@ namespace FindStuff.Systems
             }
         }
 
+        public bool IsPloppable(PrefabBase prefabBase, Entity prefabEntity, Entity originalEntity)
+        {
+            if (originalEntity == Entity.Null || prefabEntity == Entity.Null)
+                return false;
+
+            if (EntityManager.HasComponent<Signature>(originalEntity))
+                return false;
+
+            // Check if the prefab is a building, has a zone prefab and is not based on a signature building
+            if (prefabBase is not BuildingPrefab)
+                return false;
+
+            return EntityManager.TryGetComponent(prefabEntity, out SpawnableBuildingData spawnable) && spawnable.m_ZonePrefab != Entity.Null;
+        }
+
         public void MakePloppable(Entity entity)
         {
             if (EntityManager.TryGetComponent(entity, out SpawnableBuildingData spawnableBuildingData)) {
