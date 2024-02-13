@@ -22,6 +22,7 @@ namespace FindStuff.Systems
         private PloppableRICOSystem _ploppableRICOSystem;
         private FindStuffController _controller;
         private OverlayRenderSystem.Buffer _overlay;
+        private ToolOutputBarrier _outputBarrier;
         private Entity _lastEntity = Entity.Null;
 
         public override string toolID => "PickStuff";
@@ -36,6 +37,7 @@ namespace FindStuff.Systems
         {
             _prefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>( );
             _ploppableRICOSystem = World.GetOrCreateSystemManaged<PloppableRICOSystem>( );
+            _outputBarrier = World.GetOrCreateSystemManaged<ToolOutputBarrier>( );
             base.OnCreate();
         }
 
@@ -80,7 +82,7 @@ namespace FindStuff.Systems
             {
                 if ( EntityManager.TryGetComponent( entity, out PrefabRef prefabRef ) &&
                      _prefabSystem.TryGetPrefab( prefabRef.m_Prefab, out PrefabBase prefabBase ) &&
-                    ( _controller.IsValidPrefab( prefabBase, entity, out IBaseHelper helper ) ||
+                    ( _controller.IsValidPrefab( prefabBase, entity ) ||
                     HasComponents( entity ) ) )
                 {
                     var yellow = new UnityEngine.Color( 1f, 1f, 0f, 0.2f );
@@ -105,9 +107,14 @@ namespace FindStuff.Systems
                         
                         m_ToolSystem.ActivatePrefabTool( prefabBase );
 
-                        if (helper is ZoneBuildingHelper)
+                        if ( EntityManager.HasComponent<SpawnableBuildingData>(prefabRef.m_Prefab) )
                         {
-                            _ploppableRICOSystem.MakePloppable( entity );
+                            UnityEngine.Debug.Log("Make Ploppable.");
+                            Entity prefabEntity = _prefabSystem.GetEntity(prefabBase);
+                            if (prefabEntity != Entity.Null)
+                            {
+                                _ploppableRICOSystem.MakePloppable(prefabEntity, _outputBarrier.CreateCommandBuffer());
+                            }
                         }
                            
                         if ( EntityManager.HasComponent<Highlighted>( entity ) )
