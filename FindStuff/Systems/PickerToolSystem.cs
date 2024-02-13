@@ -68,6 +68,8 @@ namespace FindStuff.Systems
         [Preserve]
         protected override JobHandle OnUpdate( JobHandle inputDeps )
         {
+            RemoveLastHighlighted( );
+
             if ( _prefabSystem != null )
             {
                 var overlaySystem = World.GetExistingSystemManaged<OverlayRenderSystem>( );
@@ -113,33 +115,38 @@ namespace FindStuff.Systems
                             Entity prefabEntity = _prefabSystem.GetEntity(prefabBase);
                             _ploppableRICOSystem.MakePloppable(prefabEntity, _outputBarrier.CreateCommandBuffer());
                         }
-                           
-                        if ( EntityManager.HasComponent<Highlighted>( entity ) )
-                        {
-                            EntityManager.RemoveComponent<Highlighted>( entity );
-                            EntityManager.AddComponent<Updated>( entity );
-                        }
+
+                        Unhighlight( entity );
 
                         return base.OnUpdate( inputDeps );
                     }
 
-                    if ( !EntityManager.HasComponent<Highlighted>( entity ) )
-                    {
-                        EntityManager.AddComponent<Highlighted>( entity );
-                        EntityManager.AddComponent<Updated>( entity );
-                    }
+                    Highlight( entity );
                 }
 
-                RemoveLastHighlighted( );
 
                 _lastEntity = entity;
             }
-            else
-            {
-                RemoveLastHighlighted( );
-            }
 
             return base.OnUpdate( inputDeps );
+        }
+
+        private void Highlight( Entity entity )
+        {
+            if ( EntityManager.HasComponent<Highlighted>( entity ) )
+                return;
+
+            EntityManager.AddComponent<Highlighted>( entity );
+            EntityManager.AddComponent<Updated>( entity );
+        }
+
+        private void Unhighlight( Entity entity )
+        {
+            if ( !EntityManager.HasComponent<Highlighted>( entity ) )
+                return;
+
+            EntityManager.RemoveComponent<Highlighted>( entity );
+            EntityManager.AddComponent<Updated>( entity );
         }
 
         public void RemoveLastHighlighted( )

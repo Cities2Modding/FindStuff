@@ -391,8 +391,8 @@ namespace FindStuff.UI
             else if ( IsPickingShortcut && !PickerShortcutTrigger( ) && IsPicking )
             {
                 IsPickingShortcut = false;
-                UpdatePicker( false );
                 _pickerToolSystem.RemoveLastHighlighted( );
+                UpdatePicker( false );
             }
 
             if ( _queryResults.Any( ) && _queryResults.TryDequeue( out var result ) )
