@@ -150,6 +150,11 @@ namespace FindStuff.UI
                 _enableAction.performed += ( a ) => OnToggleVisible( );
                 _enableAction.Enable( );
 
+                _enableAction = new InputAction( "FindStuff_Escape" );
+                _enableAction.AddBinding( "<Keyboard>/escape" );
+                _enableAction.performed += ( a ) => OnEscapePressed( );
+                _enableAction.Enable( );
+
                 var prefabs = ( List<PrefabBase> ) _prefabsField.GetValue( _prefabSystem );
                 UnityEngine.Debug.Log( $"Getting {prefabs.Count} prefabs" );
 
@@ -429,6 +434,24 @@ namespace FindStuff.UI
             UpdatePicker( !Model.IsPicking );
         }
 
+        private void OnEscapePressed( )
+        {
+            if ( Model.IsVisible || Model.IsPicking )
+            {
+                // Escape for Pick Stuff
+                if ( Model.IsPicking )
+                {
+                    UpdatePicker( false );
+                    _pickerToolSystem.RemoveLastHighlighted( );
+                }
+                // Escape for Find Stuff
+                else
+                {
+                    OnToggleVisible();
+                }
+            }
+        }
+
         [OnTrigger]
         private void OnToggleVisible( )
         {
@@ -543,6 +566,10 @@ namespace FindStuff.UI
                 _config.EnableShortcut = Model.EnableShortcut;
                 _config.Save( );
             }
+
+            // Ensure if picker is disabled that last highlighted was cleared
+            //if ( !Model.IsPicking && _toolSystem.activeTool == _defaulToolSystem )
+            //    _pickerToolSystem.RemoveLastHighlighted( );
 
             UpdateFromSettings( );
         }
