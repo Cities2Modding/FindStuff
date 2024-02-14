@@ -14,6 +14,8 @@
 	All the buttons on the Find Stuff menu now have tooltips describing functionality.
 - **Surface Texture Icons**
 	Surface textures are automatically exported and stored so textures are now shown for surface icon/thumbnails.	
+- **Escape Key Handling**
+	PickStuff and FindStuff menus now close when escape key is pressed.
 - **Bug fixes and improvements**
 	Minor bug fixes with React UI code and localisation fixes.	
 ### v0.0.3
