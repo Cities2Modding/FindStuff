@@ -11,7 +11,7 @@ namespace FindStuff.Configuration
     /// </summary>
     public abstract class ConfigBase
     {
-        static readonly string MOD_PATH = Path.Combine( Application.persistentDataPath, "Mods", "FindStuff" );
+        public static readonly string MOD_PATH = Path.Combine( Application.persistentDataPath, "Mods", "FindStuff" );
 
         static readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
         {

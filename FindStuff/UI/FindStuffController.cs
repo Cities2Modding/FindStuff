@@ -1,10 +1,11 @@
-﻿using Colossal.Entities;
+﻿using Colossal;
+using Colossal.Entities;
+using Colossal.IO.AssetDatabase;
 using Colossal.Localization;
 using Colossal.Serialization.Entities;
 using FindStuff.Configuration;
 using FindStuff.Helper;
 using FindStuff.Indexing;
-using FindStuff.Prefabs;
 using FindStuff.Systems;
 using Game;
 using Game.Prefabs;
@@ -90,6 +91,8 @@ namespace FindStuff.UI
 
         public override FindStuffViewModel Configure( )
         {
+            SetupResourceHandler( );
+
             _toolSystem = World.GetOrCreateSystemManaged<ToolSystem>( );
             _defaulToolSystem = World.GetOrCreateSystemManaged<DefaultToolSystem>( );
             _prefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>( );
@@ -99,15 +102,6 @@ namespace FindStuff.UI
             _pickerToolSystem = World.GetOrCreateSystemManaged<PickerToolSystem>( );
             _ploppableRICOSystem = World.GetOrCreateSystemManaged<PloppableRICOSystem>( );
             _localizationManager = GameManager.instance.localizationManager;
-
-            _toolSystem.EventToolChanged += ( tool =>
-            {
-                if ( Model.IsVisible )
-                {
-                    //Model.IsVisible = false;
-                    //TriggerUpdate( );
-                }
-            } );
 
             _entityArchetype = this.EntityManager.CreateArchetype( ComponentType.ReadWrite<Unlock>( ), ComponentType.ReadWrite<Game.Common.Event>( ) );
 
@@ -173,19 +167,18 @@ namespace FindStuff.UI
                     new ZoneBuildingHelper( EntityManager, _prefabSystem ),
                     new PropHelper( EntityManager ),
                 ];
-
+                
                 foreach ( var prefabBase in prefabs )
                 {
                     // Skip potentially crashing prefabs
                     if ( GetEvilPrefabs.Contains( prefabBase.name.ToLower( ) ) )
                         continue;
-
-                    if ( !ProcessPrefab( prefabBase, out var prefabType, out var categoryType, out var tags, out var meta ) )
+                    
+                    if ( !ProcessPrefab( prefabBase, out var prefabType, out var categoryType, out var tags, out var meta, out var thumbnailOverride ) )
                         continue;
 
-                    var entity = _prefabSystem.GetEntity( prefabBase );
                     var prefabIcon = "";
-
+                    var entity = _prefabSystem.GetEntity( prefabBase );
                     var thumbnail = _imageSystem.GetThumbnail( entity );
                     var typeIcon = GetTypeIcon( prefabType, prefabBase, entity );
 
@@ -200,7 +193,7 @@ namespace FindStuff.UI
                         Name = prefabBase.name,
                         Type = prefabType,
                         Category = categoryType,
-                        Thumbnail = categoryType == "Zones" ? CheckForZoneIcon( prefabBase, entity ) : TypesWithNoThumbnails.Contains( prefabType ) ? typeIcon : prefabIcon,
+                        Thumbnail = !string.IsNullOrEmpty( thumbnailOverride ) ? thumbnailOverride : categoryType == "Zones" ? CheckForZoneIcon( prefabBase, entity ) : TypesWithNoThumbnails.Contains( prefabType ) ? typeIcon : prefabIcon,
                         TypeIcon = typeIcon,
                         Meta = meta,
                         Tags = tags,
@@ -232,10 +225,11 @@ namespace FindStuff.UI
             base.OnDestroy( );
             _enableAction?.Disable( );
             _enableAction?.Dispose( );
-        }
+        }        
 
-        private bool ProcessPrefab( PrefabBase prefab, out string prefabType, out string categoryType, out List<string> tags, out Dictionary<string, object> meta )
+        private bool ProcessPrefab( PrefabBase prefab, out string prefabType, out string categoryType, out List<string> tags, out Dictionary<string, object> meta, out string thumbnailOverride )
         {
+            thumbnailOverride = null;
             tags = new List<string>( );
             meta = new Dictionary<string, object>( );
 
@@ -253,12 +247,34 @@ namespace FindStuff.UI
                     meta = helper.CreateMeta( prefab, prefabEntity );
                     prefabType = helper.PrefabType;
                     categoryType = helper.CategoryType;
-
                     break;
                 }
             }
 
+            // If the prefab is a surface export its texture
+            if ( prefab is SurfacePrefab &&
+                EntityManager.HasComponent<RenderedAreaData>( prefabEntity )
+                && EntityManager.HasComponent<SurfaceData>( prefabEntity ) &&
+                EntityManager.HasComponent<PrefabData>( prefabEntity) )
+            {
+                thumbnailOverride = SurfaceExporter.Export( prefab );                          
+            }
+
             return isValid;
+        }
+
+        public static void SetupResourceHandler( )
+        {
+            var resourceHandler = ( GameUIResourceHandler ) GameManager.instance.userInterface.view.uiSystem.resourceHandler;
+
+            if ( resourceHandler == null || resourceHandler.HostLocationsMap.ContainsKey( "findstuffui" ) )
+            {
+                UnityEngine.Debug.LogError( "Failed to setup resource handler for FindStuff." );
+                return;
+            }
+
+            UnityEngine.Debug.Log( "Setup resource handler for FindStuff." );
+            resourceHandler.HostLocationsMap.Add( "findstuffui", new List<string> { ConfigBase.MOD_PATH } );
         }
 
         public bool IsValidPrefab( PrefabBase prefabBase, Entity entity )
@@ -398,7 +414,6 @@ namespace FindStuff.UI
             if ( _queryResults.Any( ) && _queryResults.TryDequeue( out var result ) )
             {
                 GameManager.instance.userInterface.view.View.TriggerEvent( "findstuff.onReceiveResults", result.Key, result.Json );
-                //UnityEngine.Debug.Log( $"onReceiveResults: {result.Key}" );
             }
         }
 

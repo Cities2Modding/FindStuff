@@ -45,7 +45,7 @@ const AppButton = ({ react, setupController }) => {
                 <ToolTipContent title="Pick Stuff" description="Hover over items and select them automatically." />
             </AutoToolTip>
         </button>
-        <div className="spacer_oEi"></div>
+        <div className="divider_GaZ"></div>
         <button ref={findStuffBtnRef} onMouseEnter={onMouseEnter} onClick={onFindStuffClick} className={"button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT button_s2g button_ECf item_It6 item-mouse-states_Fmi item-selected_tAM item-focused_FuT toggle-states_X82 toggle-states_DTm" + (model.IsVisible ? " selected" : "")}>
             <div className="fa fa-solid-magnifying-glass icon-md"></div>
             <AutoToolTip targetRef={findStuffBtnRef} float="up" align="right">

@@ -13,7 +13,6 @@ using Unity.Entities;
 using Unity.Jobs;
 using UnityEngine;
 using UnityEngine.Scripting;
-using static Colossal.AssetPipeline.Diagnostic.Report;
 
 namespace FindStuff.Systems
 {
@@ -47,7 +46,7 @@ namespace FindStuff.Systems
             base.InitializeRaycast( );
             m_ToolRaycastSystem.netLayerMask = Layer.All;
             m_ToolRaycastSystem.typeMask = TypeMask.StaticObjects | TypeMask.Net | TypeMask.MovingObjects;
-            m_ToolRaycastSystem.raycastFlags |= RaycastFlags.Placeholders | RaycastFlags.SubElements | RaycastFlags.Decals;
+            m_ToolRaycastSystem.raycastFlags |= RaycastFlags.Placeholders | RaycastFlags.SubElements | RaycastFlags.Decals | RaycastFlags.Markers;
             m_ToolRaycastSystem.collisionMask = CollisionMask.Overground | CollisionMask.OnGround;
             m_ToolRaycastSystem.raycastFlags &= ~RaycastFlags.FreeCameraDisable;
         }
@@ -160,6 +159,9 @@ namespace FindStuff.Systems
 
         private bool HasComponents( Entity entity )
         {
+            if ( EntityManager.HasComponent<Deleted>( entity ) || EntityManager.HasComponent<Temp>( entity ) )
+                return false;
+
             return EntityManager.HasComponent<Building>( entity ) ||
                 EntityManager.HasComponent<Vehicle>( entity ) ||
                 EntityManager.HasComponent<Game.Objects.Tree>( entity ) ||

@@ -44,6 +44,8 @@ Activate FindStuff via the magnifying glass icon or through the HookUI/Gooee mod
 - Development led by [optimus-code](https://github.com/optimus-code) and [89pleasure](https://github.com/89pleasure).
 - Special thanks to Rebecca, CaptainOfCoit, the Cities 2 Modding Community, Colossal Order, and Paradox Interactive.
 
+**NOTE**: We are not officially affiliated with Colossal Order or Paradox Interactive, this is a fan-made project.
+
 **Utilizes [Gooee](https://github.com/Cities2Modding/Gooee), a dedicated UI framework for Cities: Skylines 2 mods.**
 
 ## Feedback and Support

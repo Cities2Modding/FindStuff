@@ -12,6 +12,8 @@
 	Highlighting will now work for sub-objects too.
 - **Tooltips introduced**
 	All the buttons on the Find Stuff menu now have tooltips describing functionality.
+- **Surface Texture Icons**
+	Surface textures are automatically exported and stored so textures are now shown for surface icon/thumbnails.	
 - **Bug fixes and improvements**
 	Minor bug fixes with React UI code and localisation fixes.	
 ### v0.0.3

@@ -2,28 +2,29 @@
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Entities;
+using static Colossal.AssetPipeline.Diagnostic.Report;
 
 namespace FindStuff.Helper
 {
-    public class SurfaceHelper(EntityManager entityManager) : IBaseHelper
+    public class SurfaceHelper( EntityManager entityManager ) : IBaseHelper
     {
         public string PrefabType => "Surface";
 
         public string CategoryType => "Misc";
 
-        public Dictionary<string, object> CreateMeta(PrefabBase prefab, Entity entity)
+        public Dictionary<string, object> CreateMeta( PrefabBase prefab, Entity entity )
         {
-            return new Dictionary<string, object>();
+            return new Dictionary<string, object>( );
         }
 
-        public List<string> CreateTags(PrefabBase prefab, Entity entity)
+        public List<string> CreateTags( PrefabBase prefab, Entity entity )
         {
-            List<string> tags = new List<string>();
+            List<string> tags = new List<string>( );
 
-            if (entityManager == null)
+            if ( entityManager == null )
                 return tags;
 
-            var lowerName = prefab.name.ToLowerInvariant();
+            var lowerName = prefab.name.ToLowerInvariant( );
 
             tags.Add( "surface" );
 
@@ -48,15 +49,17 @@ namespace FindStuff.Helper
             else if ( lowerName.Contains( "ore " ) )
                 tags.Add( "ore" );
 
-            return tags.OrderBy( t => t ).ToList();
+            return tags.OrderBy( t => t ).ToList( );
         }
 
-        public bool IsValidPrefab(PrefabBase prefab, Entity entity)
+        public bool IsValidPrefab( PrefabBase prefab, Entity entity )
         {
-            if (entityManager == null || prefab == null || entity == Entity.Null)
+            if ( entityManager == null || prefab == null || entity == Entity.Null )
                 return false;
 
-            return prefab is SurfacePrefab && entityManager.HasComponent<RenderedAreaData>(entity) && entityManager.HasComponent<SurfaceData>(entity);
+            return prefab is SurfacePrefab && 
+                entityManager.HasComponent<RenderedAreaData>( entity )
+                && entityManager.HasComponent<SurfaceData>( entity );
         }
     }
 }
