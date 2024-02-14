@@ -1,17 +1,30 @@
 lang:
- FindStuff.FindStuffSettings.ModName: 查找物品
- Options.SECTION[FindStuff.FindStuffSettings]: 查找物品
- Options.GROUP[FindStuff.FindStuffSettings.Toggles]: 查找物品
+ FindStuff.FindStuffSettings.ModName: 查找东西
+ Options.SECTION[FindStuff.FindStuffSettings]: 查找东西
+ Options.GROUP[FindStuff.FindStuffSettings.Toggles]: 查找东西
  
- Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: 选定预制件时隐藏
- Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: 当您选择一个预制件时，隐藏查找物品菜单。
- Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: 激活快捷键
- Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: 按住 CTRL + 单击来选取对象。
- Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: Enable Expert Mode
- Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: If activated you have access to potential dangeroues objects crashing the game or breaking save games. You should know what you are doing. Use at your own risk!
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.OperationMode]: 操作模式
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.OperationMode]: 配置当工具被打开时查找东西的行为，它可以被隐藏，上移屏幕或隐藏覆盖它的原版游戏资产窗口。
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: 启用选择器快捷方式
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: 按住CTRL + 点击以选取对象。
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: 启用专家模式
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: 如果激活，您将能够访问可能会崩溃游戏或损坏保存游戏的潜在危险对象。你应该知道你在做什么。使用风险自负！
+
+ FindStuff.FindStuffSettings.MoveFindStuff: 移动窗口
+ FindStuff.FindStuffSettings.HideFindStuff: 隐藏窗口
+ FindStuff.FindStuffSettings.HideAssetMenu: 覆盖原版窗口
+  
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.SearchSpeed]: 搜索速度
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.SearchSpeed]: 配置通过查找东西搜索分配多少资源。低设置使用较少的计算机资源，因此搜索大量项目需要更长时间，但对您的计算机的压力较小。高设置返回结果更快，但要求您的计算机更多。
  
- FindStuff.View: 查看
- FindStuff.Filter: 筛选
+ FindStuff.FindStuffSettings.SearchSpeed.VeryLow: 非常低
+ FindStuff.FindStuffSettings.SearchSpeed.Low: 低
+ FindStuff.FindStuffSettings.SearchSpeed.Medium: 中
+ FindStuff.FindStuffSettings.SearchSpeed.High: 高
+ FindStuff.FindStuffSettings.SearchSpeed.VeryHigh: 非常高
+
+ FindStuff.View: 视图
+ FindStuff.Filter: 过滤器
  FindStuff.OrderBy: 排序
  
  FindStuff.PrefabCategory.Foliage: 植被
@@ -21,18 +34,18 @@ lang:
 
  FindStuff.PrefabType.Surface: 表面
  FindStuff.PrefabType.Network: 网络
- FindStuff.PrefabType.ZoneResidential: 住宅区
- FindStuff.PrefabType.ZoneCommercial: 商业区
- FindStuff.PrefabType.ZoneOffice: 办公区
- FindStuff.PrefabType.ZoneIndustrial: 工业区
- FindStuff.PrefabType.ServiceBuilding: 服务建筑
+ FindStuff.PrefabType.ZoneResidential: 住宅
+ FindStuff.PrefabType.ZoneCommercial: 商业
+ FindStuff.PrefabType.ZoneOffice: 办公
+ FindStuff.PrefabType.ZoneIndustrial: 工业
+ FindStuff.PrefabType.ServiceBuilding: 服务
  FindStuff.PrefabType.SignatureBuilding: 标志性建筑
  FindStuff.PrefabType.ParkBuilding: 公园
  FindStuff.PrefabType.Vehicle: 车辆
- FindStuff.PrefabType.Tree: 树木
+ FindStuff.PrefabType.Tree: 树
  FindStuff.PrefabType.Plant: 植物
  FindStuff.PrefabType.Prop: 道具
- FindStuff.PrefabType.Bridge: 桥梁
+ FindStuff.PrefabType.Bridge: 桥
  FindStuff.PrefabType.Train: 火车
  FindStuff.PrefabType.Tram: 有轨电车
  FindStuff.PrefabType.Pipe: 管道
@@ -41,13 +54,142 @@ lang:
  FindStuff.PrefabType.MediumRoad: 中路
  FindStuff.PrefabType.LargeRoad: 大路
  FindStuff.PrefabType.Highway: 高速公路
- FindStuff.PrefabType.Roundabout: 回旋处
+ FindStuff.PrefabType.Roundabout: 环形交叉路
  FindStuff.PrefabType.RoadTool: 道路工具
- FindStuff.PrefabType.Pavment: 小径
+ FindStuff.PrefabType.Pavment: 路径
  
- FindStuff.Dangerous.CorruptWarning: 如果不正确使用，此资产可能会破坏您的存档游戏。
- FindStuff.Dangerous.NoDelete: 放置后，此资产不能用推土机工具移除。
+ FindStuff.Dangerous.CorruptWarning: 如果不正确使用，此资产可能会破坏您的保存游戏。
+ FindStuff.Dangerous.NoDelete: 放置后，此资产不能用推土机工具删除。
+  
+ FindStuff.View.Rows: 列表
+ FindStuff.View.Rows_desc: 将预制件列为单独的行。
  
+ FindStuff.View.Columns: 两列
+ FindStuff.View.Columns_desc: 在两列网格中列出预制件。
+
+ FindStuff.View.IconGrid: 小图标网格
+ FindStuff.View.IconGrid_desc: 显示带有小图标的网格。
+
+ FindStuff.View.IconGridLarge: 大图标网格
+ FindStuff.View.IconGridLarge_desc: 显示带有大图标的网格。
+
+ FindStuff.View.Detailed: 详细
+ FindStuff.View.Detailed_desc: 显示详细列表视图。
+
+ FindStuff.Filter.None: 全部
+ FindStuff.Filter.None_desc: 对搜索结果不应用过滤器。
+
+ FindStuff.Filter.Favourite: 收藏
+ FindStuff.Filter.Favourite_desc: 按您喜欢的预制件过滤。
+
+ FindStuff.Filter.Foliage: 植被
+ FindStuff.Filter.Foliage_desc: 按树木和灌木过滤。
+
+ FindStuff.Filter.Buildings: 建筑
+ FindStuff.Filter.Buildings_desc: 按非分区建筑类型过滤。
+
+ FindStuff.Filter.Zones: 分区
+ FindStuff.Filter.Zones_desc: 按分区建筑类型过滤。
+
+ FindStuff.Filter.Props: 道具
+ FindStuff.Filter.Props_desc: 按静态对象/道具过滤。
+
+ FindStuff.Filter.Misc: 杂项
+ FindStuff.Filter.Misc_desc: 所有其他类别。
+
+ FindStuff.Filter.Network: 网络
+ FindStuff.Filter.Network_desc: 按网络类型过滤。
+ 
+ FindStuff.OrderBy.Ascending: 升序
+ FindStuff.OrderBy.Ascending_desc: 预制件从A到Z排序。
+  
+ FindStuff.OrderBy.Descending: 降序
+ FindStuff.OrderBy.Descending_desc: 预制件从Z到A排序。
+ 
+ FindStuff.Expand: 展开或缩小视图
+ FindStuff.Expand_desc: 您可以展开视图以查看更多结果。
+ 
+ FindStuff.ClearSearch: 清除搜索
+ FindStuff.ClearSearch_desc: 点击清除搜索字段中的文本。
+ 
+ FindStuff.SubFilter.None: 全部
+ FindStuff.SubFilter.None_desc: 对搜索结果不应用过滤器。
+ 
+ FindStuff.SubFilter.ZoneResidential: 住宅
+ FindStuff.SubFilter.ZoneResidential_desc: 按住宅建筑过滤。
+ 
+ FindStuff.SubFilter.ZoneCommercial: 商业
+ FindStuff.SubFilter.ZoneCommercial_desc: 按商业建筑过滤。
+
+ FindStuff.SubFilter.ZoneOffice: 办公
+ FindStuff.SubFilter.ZoneOffice_desc: 按办公建筑过滤。
+
+ FindStuff.SubFilter.ZoneIndustrial: 工业
+ FindStuff.SubFilter.ZoneIndustrial_desc: 按工业建筑过滤。
+
+ FindStuff.SubFilter.ServiceBuilding: 服务建筑
+ FindStuff.SubFilter.ServiceBuilding_desc: 按服务建筑过滤。
+
+ FindStuff.SubFilter.SignatureBuilding: 标志性建筑
+ FindStuff.SubFilter.SignatureBuilding_desc: 按标志性建筑过滤。
+ 
+ FindStuff.SubFilter.Park: 公园及休闲
+ FindStuff.SubFilter.Park_desc: 按公园和休闲建筑过滤。
+
+ FindStuff.SubFilter.Parking: 停车设施
+ FindStuff.SubFilter.Parking_desc: 按停车设施过滤。
+
+ FindStuff.SubFilter.Tree: 树
+ FindStuff.SubFilter.Tree_desc: 按树过滤。
+
+ FindStuff.SubFilter.Plant: 植物
+ FindStuff.SubFilter.Plant_desc: 按植物过滤。
+
+ FindStuff.SubFilter.Billboards: 广告牌
+ FindStuff.SubFilter.Billboards_desc: 按广告牌过滤。
+
+ FindStuff.SubFilter.Fences: 栅栏
+ FindStuff.SubFilter.Fences_desc: 按栅栏过滤。
+
+ FindStuff.SubFilter.SignsAndPosters: 标志和海报
+ FindStuff.SubFilter.SignsAndPosters_desc: 按标志和海报过滤。
+
+ FindStuff.SubFilter.Accessory: 静态道具（配饰）
+ FindStuff.SubFilter.Accessory_desc: 按常用静态道具过滤。
+
+ FindStuff.SubFilter.Vehicle: 车辆
+ FindStuff.SubFilter.Vehicle_desc: 按车辆过滤。
+
+ FindStuff.SubFilter.PropMisc: 杂项道具
+ FindStuff.SubFilter.PropMisc_desc: 按未分类道具类型过滤。
+ 
+ FindStuff.SubFilter.SmallRoad: 小路
+ FindStuff.SubFilter.SmallRoad_desc: 按小路过滤。
+
+ FindStuff.SubFilter.MediumRoad: 中路
+ FindStuff.SubFilter.MediumRoad_desc: 按中路过滤。
+
+ FindStuff.SubFilter.LargeRoad: 大路
+ FindStuff.SubFilter.LargeRoad_desc: 按大路过滤。
+
+ FindStuff.SubFilter.Highway: 高速公路
+ FindStuff.SubFilter.Highway_desc: 按高速公路过滤。
+
+ FindStuff.SubFilter.Roundabout: 环形交叉路
+ FindStuff.SubFilter.Roundabout_desc: 按环形交叉路过滤。
+
+ FindStuff.SubFilter.Pavement: 人行道
+ FindStuff.SubFilter.Pavement_desc: 按人行道过滤。
+
+ FindStuff.SubFilter.RoadTool: 道路工具
+ FindStuff.SubFilter.RoadTool_desc: 按道路工具过滤。
+
+ FindStuff.SubFilter.OtherNetwork: 其他网络
+ FindStuff.SubFilter.OtherNetwork_desc: 按未分类网络过滤。
+
+ FindStuff.SubFilter.Surface: 其他网络
+ FindStuff.SubFilter.Surface_desc: 按表面过滤。
+
  FindStuff.Tag.eu: 欧洲
  FindStuff.Tag.na: 北美
  FindStuff.Tag.foliage: 植被
@@ -55,9 +197,9 @@ lang:
  FindStuff.Tag.zones: 分区
  FindStuff.Tag.misc: 杂项
  FindStuff.Tag.surface: 表面
- FindStuff.Tag.grass: 草地
+ FindStuff.Tag.grass: 草
  FindStuff.Tag.agriculture: 农场
- FindStuff.Tag.sand: 沙地
+ FindStuff.Tag.sand: 沙
  FindStuff.Tag.concrete: 混凝土
  FindStuff.Tag.forestry: 林业
  FindStuff.Tag.pavement: 铺装
@@ -67,20 +209,20 @@ lang:
  FindStuff.Tag.ore: 矿石
  FindStuff.Tag.network: 网络
  FindStuff.Tag.marker: 标记
- FindStuff.Tag.power-line: 电力线
+ FindStuff.Tag.power-line: 输电线
  FindStuff.Tag.pipe: 管道
- FindStuff.Tag.bridge: 桥梁
- FindStuff.Tag.small-road: 小路
- FindStuff.Tag.medium-road: 中路
- FindStuff.Tag.large-road: 大路
+ FindStuff.Tag.bridge: 桥
+ FindStuff.Tag.small-road: 小型
+ FindStuff.Tag.medium-road: 中型
+ FindStuff.Tag.large-road: 大型
  FindStuff.Tag.highway: 高速公路
  FindStuff.Tag.road: 道路
  FindStuff.Tag.road-tool: 道路工具
- FindStuff.Tag.electricity: 电力
- FindStuff.Tag.electricity-connection: 电力连接
- FindStuff.Tag.station: 车站
+ FindStuff.Tag.electricity: 电
+ FindStuff.Tag.electricity-connection: 电连接
+ FindStuff.Tag.station: 站
  FindStuff.Tag.water: 水
- FindStuff.Tag.waterway: 水路
+ FindStuff.Tag.waterway: 水道
  FindStuff.Tag.water-connection: 水连接
  FindStuff.Tag.water-source: 水源
  FindStuff.Tag.power-plant: 发电厂
@@ -89,15 +231,15 @@ lang:
  FindStuff.Tag.mixed-density: 混合密度
  FindStuff.Tag.high-density: 高密度
  FindStuff.Tag.residential: 住宅
- FindStuff.Tag.row: 行
+ FindStuff.Tag.row: 排
  FindStuff.Tag.low-rent: 低租金
  FindStuff.Tag.commercial: 商业
- FindStuff.Tag.office: 办公
+ FindStuff.Tag.office: 办公室
  FindStuff.Tag.industrial: 工业
  FindStuff.Tag.service: 服务
- FindStuff.Tag.signature: 标志性
+ FindStuff.Tag.signature: 签名
  FindStuff.Tag.vehicle: 车辆
- FindStuff.Tag.tree: 树木
+ FindStuff.Tag.tree: 树
  FindStuff.Tag.plant: 植物
  FindStuff.Tag.prop: 道具
  FindStuff.Tag.park: 公园
@@ -110,14 +252,14 @@ lang:
  FindStuff.Tag.prison: 监狱
  FindStuff.Tag.hospital: 医院
  FindStuff.Tag.garbage: 垃圾
- FindStuff.Tag.fence: 围栏
+ FindStuff.Tag.fence: 栅栏
  FindStuff.Tag.poster: 海报
  FindStuff.Tag.billboard: 广告牌
  FindStuff.Tag.aircraft: 飞机
  FindStuff.Tag.watercraft: 水上船只
  FindStuff.Tag.automobile: 汽车
- FindStuff.Tag.ship: 船舶
- FindStuff.Tag.post: 邮局
+ FindStuff.Tag.ship: 船
+ FindStuff.Tag.post: 邮政
  FindStuff.Tag.subway: 地铁
  FindStuff.Tag.rocket: 火箭
  FindStuff.Tag.sign: 标志
@@ -128,14 +270,14 @@ lang:
  FindStuff.Tag.truck: 卡车
  FindStuff.Tag.tram: 有轨电车
  FindStuff.Tag.train: 火车
- FindStuff.Tag.engine: 发动机
+ FindStuff.Tag.engine: 引擎
  FindStuff.Tag.carriage: 车厢
  FindStuff.Tag.airplane: 飞机
  FindStuff.Tag.helicopter: 直升机
  FindStuff.Tag.public-transport: 公共交通
- FindStuff.Tag.roundabout: 回旋处
- FindStuff.Tag.bench: 座椅水箱
- FindStuff.Tag.light: 灯 灯
- FindStuff.Tag.accessory: 配件 配件
+ FindStuff.Tag.roundabout: 环形交叉路
+ FindStuff.Tag.bench: 长凳
+ FindStuff.Tag.light: 灯
+ FindStuff.Tag.accessory: 配件
  FindStuff.Tag.trashbin: 垃圾桶
  FindStuff.Tag.table: 桌子

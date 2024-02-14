@@ -1,141 +1,283 @@
 lang:
- FindStuff.FindStuffSettings.ModName: 尋找物品
- Options.SECTION[FindStuff.FindStuffSettings]: 尋找物品
- Options.GROUP[FindStuff.FindStuffSettings.Toggles]: 尋找物品
- 
- Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: 選擇預製件時隱藏
- Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.HideMenuOnSelection]: 當您選擇一個預製件時，隱藏尋找物品菜單。
- Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: 激活快捷键
- Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: 按住 CTRL + 单击来选取对象。
- Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: Enable Expert Mode
- Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: If activated you have access to potential dangeroues objects crashing the game or breaking save games. You should know what you are doing. Use at your own risk!
- 
- FindStuff.View: 查看
- FindStuff.Filter: 篩選
- FindStuff.OrderBy: 排序
- 
- FindStuff.PrefabCategory.Foliage: 植被
- FindStuff.PrefabCategory.Buildings: 建築
- FindStuff.PrefabCategory.Zones: 分區
- FindStuff.PrefabCategory.Misc: 雜項
+  FindStuff.FindStuffSettings.ModName: 尋找物品
+  Options.SECTION[FindStuff.FindStuffSettings]: 尋找物品設定
+  Options.GROUP[FindStuff.FindStuffSettings.Toggles]: 尋找物品開關
 
- FindStuff.PrefabType.Surface: 表面
- FindStuff.PrefabType.Network: 網絡
- FindStuff.PrefabType.ZoneResidential: 住宅
- FindStuff.PrefabType.ZoneCommercial: 商業
- FindStuff.PrefabType.ZoneOffice: 辦公
- FindStuff.PrefabType.ZoneIndustrial: 工業
- FindStuff.PrefabType.ServiceBuilding: 服務建築
- FindStuff.PrefabType.SignatureBuilding: 標誌性建築
- FindStuff.PrefabType.ParkBuilding: 公園
- FindStuff.PrefabType.Vehicle: 車輛
- FindStuff.PrefabType.Tree: 樹木
- FindStuff.PrefabType.Plant: 植物
- FindStuff.PrefabType.Prop: 道具
- FindStuff.PrefabType.Bridge: 橋樑
- FindStuff.PrefabType.Train: 火車
- FindStuff.PrefabType.Tram: 電車
- FindStuff.PrefabType.Pipe: 管道
- FindStuff.PrefabType.OtherNetwork: 其他網絡
- FindStuff.PrefabType.SmallRoad: 小路
- FindStuff.PrefabType.MediumRoad: 中路
- FindStuff.PrefabType.LargeRoad: 大路
- FindStuff.PrefabType.Highway: 高速公路
- FindStuff.PrefabType.Roundabout: 回旋处
- FindStuff.PrefabType.RoadTool: 道路工具
- FindStuff.PrefabType.Pavment: 小徑
+  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.OperationMode]: 操作模式
+  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.OperationMode]: 配置工具開啟時尋找物品的行為，可以選擇隱藏、上移屏幕或隱藏遊戲原始資產視窗。
+  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: 啟用快捷方式
+  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: 按住 CTRL + 點擊以選取物體。
+  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: 啟用專家模式
+  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: 啟用後可以訪問可能會導致遊戲崩潰或損壞存檔的危險物體。您應該知道自己在做什麼。風險自負！
+
+  FindStuff.FindStuffSettings.MoveFindStuff: 移動窗口
+  FindStuff.FindStuffSettings.HideFindStuff: 隱藏窗口
+  FindStuff.FindStuffSettings.HideAssetMenu: 覆蓋原始窗口
+
+  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.SearchSpeed]: 搜索速度
+  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.SearchSpeed]: 配置分配給尋找物品搜索的資源量。低設置使用較少的計算資源，因此搜索大量物品需要更長時間，但對您的計算機的負擔較小。高設置返回結果更快，但對您的計算機要求更高。
+
+  FindStuff.FindStuffSettings.SearchSpeed.VeryLow: 非常低
+  FindStuff.FindStuffSettings.SearchSpeed.Low: 低
+  FindStuff.FindStuffSettings.SearchSpeed.Medium: 中
+  FindStuff.FindStuffSettings.SearchSpeed.High: 高
+  FindStuff.FindStuffSettings.SearchSpeed.VeryHigh: 非常高
+
+  FindStuff.View: 查看
+  FindStuff.Filter: 篩選
+  FindStuff.OrderBy: 排序
+
+  FindStuff.PrefabCategory.Foliage: 植被
+  FindStuff.PrefabCategory.Buildings: 建築
+  FindStuff.PrefabCategory.Zones: 分區
+  FindStuff.PrefabCategory.Misc: 雜項
+
+  FindStuff.PrefabType.Surface: 表面
+  FindStuff.PrefabType.Network: 網絡
+  FindStuff.PrefabType.ZoneResidential: 住宅
+  FindStuff.PrefabType.ZoneCommercial: 商業
+  FindStuff.PrefabType.ZoneOffice: 辦公室
+  FindStuff.PrefabType.ZoneIndustrial: 工業
+  FindStuff.PrefabType.ServiceBuilding: 服務
+  FindStuff.PrefabType.SignatureBuilding: 標誌性建築
+  FindStuff.PrefabType.ParkBuilding: 公園
+  FindStuff.PrefabType.Vehicle: 車輛
+  FindStuff.PrefabType.Tree: 樹
+  FindStuff.PrefabType.Plant: 植物
+  FindStuff.PrefabType.Prop: 道具
+  FindStuff.PrefabType.Bridge: 橋樑
+  FindStuff.PrefabType.Train: 火車
+  FindStuff.PrefabType.Tram: 電車
+  FindStuff.PrefabType.Pipe: 管道
+  FindStuff.PrefabType.OtherNetwork: 雜項網絡
+  FindStuff.PrefabType.SmallRoad: 小路
+  FindStuff.PrefabType.MediumRoad: 中路
+  FindStuff.PrefabType.LargeRoad: 大路
+  FindStuff.PrefabType.Highway: 高速公路
+  FindStuff.PrefabType.Roundabout: 環島
+  FindStuff.PrefabType.RoadTool: 道路工具
+  FindStuff.PrefabType.Pavment: 人行道
+
+  FindStuff.Dangerous.CorruptWarning: 如果使用不當，此資產可能會破壞您的存檔。
+  FindStuff.Dangerous.NoDelete: 放置後，此資產不能使用推土機工具移除。
+  
+  FindStuff.View.Rows: 列表
+  FindStuff.View.Rows_desc: 以個別行列出預製件。
+
+  FindStuff.View.Columns: 兩列
+  FindStuff.View.Columns_desc: 以兩列格網列出預製件。
+
+  FindStuff.View.IconGrid: 小圖標網格
+  FindStuff.View.IconGrid_desc: 顯示一個帶有小圖標的網格。
+
+  FindStuff.View.IconGridLarge: 大圖標網格
+  FindStuff.View.IconGridLarge_desc: 顯示一個帶有大圖標的網格。
+
+  FindStuff.View.Detailed: 詳細
+  FindStuff.View.Detailed_desc: 顯示一個詳細的列表視圖。
+
+  FindStuff.Filter.None: 全部
+  FindStuff.Filter.None_desc: 對搜索結果不應用篩選。
+
+  FindStuff.Filter.Favourite: 最愛
+  FindStuff.Filter.Favourite_desc: 依您最愛的預製件進行篩選。
+
+  FindStuff.Filter.Foliage: 植被
+  FindStuff.Filter.Foliage_desc: 依樹木和灌木進行篩選。
+
+  FindStuff.Filter.Buildings: 建築
+  FindStuff.Filter.Buildings_desc: 依非分區建築類型進行篩選。
+
+  FindStuff.Filter.Zones: 分區
+  FindStuff.Filter.Zones_desc: 依分區建築類型進行篩選。
+
+  FindStuff.Filter.Props: 道具
+  FindStuff.Filter.Props_desc: 依靜態物體/道具進行篩選。
+
+  FindStuff.Filter.Misc: 雜項
+  FindStuff.Filter.Misc_desc: 其他所有類別。
+
+  FindStuff.Filter.Network: 網絡
+  FindStuff.Filter.Network_desc: 依網絡類型進行篩選。
  
- FindStuff.Dangerous.CorruptWarning: 如果不正確使用，此資產可能會破壞您的存檔遊戲。
- FindStuff.Dangerous.NoDelete: 放置後，此資產不能用推土機工具移除。
+  FindStuff.OrderBy.Ascending: 升序
+  FindStuff.OrderBy.Ascending_desc: 預製件從A-Z排序。
+  
+  FindStuff.OrderBy.Descending: 降序
+  FindStuff.OrderBy.Descending_desc: 預製件從Z-A排序。
  
- FindStuff.Tag.eu: 歐洲
- FindStuff.Tag.na: 北美
- FindStuff.Tag.foliage: 植被
- FindStuff.Tag.building: 建築
- FindStuff.Tag.zones: 分區
- FindStuff.Tag.misc: 雜項
- FindStuff.Tag.surface: 表面
- FindStuff.Tag.grass: 草地
- FindStuff.Tag.agriculture: 農場
- FindStuff.Tag.sand: 沙地
- FindStuff.Tag.concrete: 混凝土
- FindStuff.Tag.forestry: 林業
- FindStuff.Tag.pavement: 鋪面
- FindStuff.Tag.landfill: 垃圾填埋場
- FindStuff.Tag.tiles: 磁磚
- FindStuff.Tag.oil: 石油
- FindStuff.Tag.ore: 礦石
- FindStuff.Tag.network: 網絡
- FindStuff.Tag.marker: 標記
- FindStuff.Tag.power-line: 電力線
- FindStuff.Tag.pipe: 管道
- FindStuff.Tag.bridge: 橋樑
- FindStuff.Tag.small-road: 小路
- FindStuff.Tag.medium-road: 中路
- FindStuff.Tag.large-road: 大路
- FindStuff.Tag.highway: 高速公路
- FindStuff.Tag.road: 道路
- FindStuff.Tag.road-tool: 道路工具
- FindStuff.Tag.electricity: 電力
- FindStuff.Tag.electricity-connection: 電力連接
- FindStuff.Tag.station: 站點
- FindStuff.Tag.water: 水
- FindStuff.Tag.waterway: 水道
- FindStuff.Tag.water-connection: 水連接
- FindStuff.Tag.water-source: 水源
- FindStuff.Tag.power-plant: 發電廠
- FindStuff.Tag.low-density: 低密度
- FindStuff.Tag.medium-density: 中密度
- FindStuff.Tag.mixed-density: 混合密度
- FindStuff.Tag.high-density: 高密度
- FindStuff.Tag.residential: 住宅
- FindStuff.Tag.row: 排
- FindStuff.Tag.low-rent: 低租金
- FindStuff.Tag.commercial: 商業
- FindStuff.Tag.office: 辦公
- FindStuff.Tag.industrial: 工業
- FindStuff.Tag.service: 服務
- FindStuff.Tag.signature: 簽名
- FindStuff.Tag.vehicle: 車輛
- FindStuff.Tag.tree: 樹木
- FindStuff.Tag.plant: 植物
- FindStuff.Tag.prop: 道具
- FindStuff.Tag.park: 公園
- FindStuff.Tag.cargo: 貨物
- FindStuff.Tag.parking: 停車場
- FindStuff.Tag.administration: 行政
- FindStuff.Tag.fire: 消防部門
- FindStuff.Tag.emergency: 緊急
- FindStuff.Tag.police: 警察
- FindStuff.Tag.prison: 監獄
- FindStuff.Tag.hospital: 醫院
- FindStuff.Tag.garbage: 垃圾
- FindStuff.Tag.fence: 圍欄
- FindStuff.Tag.poster: 海報
- FindStuff.Tag.billboard: 廣告牌
- FindStuff.Tag.aircraft: 飛機
- FindStuff.Tag.watercraft: 水上船隻
- FindStuff.Tag.automobile: 汽車
- FindStuff.Tag.ship: 船
- FindStuff.Tag.post: 郵件
- FindStuff.Tag.subway: 地鐵
- FindStuff.Tag.rocket: 火箭
- FindStuff.Tag.sign: 標誌
- FindStuff.Tag.van: 貨車
- FindStuff.Tag.car: 汽車
- FindStuff.Tag.taxi: 出租車
- FindStuff.Tag.bus: 巴士
- FindStuff.Tag.truck: 卡車
- FindStuff.Tag.tram: 電車
- FindStuff.Tag.train: 火車
- FindStuff.Tag.engine: 引擎
- FindStuff.Tag.carriage: 車廂
- FindStuff.Tag.airplane: 飛機
- FindStuff.Tag.helicopter: 直升機
- FindStuff.Tag.public-transport: 公共交通
- FindStuff.Tag.roundabout: 回旋处
- FindStuff.Tag.bench: 座椅水箱
- FindStuff.Tag.light: 灯 灯
- FindStuff.Tag.accessory: 配件 配件
- FindStuff.Tag.trashbin: 垃圾桶
- FindStuff.Tag.table: 桌子
+  FindStuff.Expand: 展開或縮小視圖
+  FindStuff.Expand_desc: 您可以展開視圖以查看更多結果。
+ 
+  FindStuff.ClearSearch: 清除搜索
+  FindStuff.ClearSearch_desc: 點擊以清除搜索欄中的文字。
+ 
+  FindStuff.SubFilter.None: 全部
+  FindStuff.SubFilter.None_desc: 對搜索結果不應用篩選。
+ 
+  FindStuff.SubFilter.ZoneResidential: 住宅
+  FindStuff.SubFilter.ZoneResidential_desc: 依住宅建築進行篩選。
+ 
+  FindStuff.SubFilter.ZoneCommercial: 商業
+  FindStuff.SubFilter.ZoneCommercial_desc: 依商業建築進行篩選。
+
+  FindStuff.SubFilter.ZoneOffice: 辦公室
+  FindStuff.SubFilter.ZoneOffice_desc: 依辦公室建築進行篩選。
+
+  FindStuff.SubFilter.ZoneIndustrial: 工業
+  FindStuff.SubFilter.ZoneIndustrial_desc: 依工業建築進行篩選。
+
+  FindStuff.SubFilter.ServiceBuilding: 服務建築
+  FindStuff.SubFilter.ServiceBuilding_desc: 依服務建築進行篩選。
+
+  FindStuff.SubFilter.SignatureBuilding: 標誌性建築
+  FindStuff.SubFilter.SignatureBuilding_desc: 依標誌性建築進行篩選。
+ 
+  FindStuff.SubFilter.Park: 公園與休閒
+  FindStuff.SubFilter.Park_desc: 依公園和休閒建築進行篩選。
+
+  FindStuff.SubFilter.Parking: 停車設施
+  FindStuff.SubFilter.Parking_desc: 依停車設施進行篩選。
+
+  FindStuff.SubFilter.Tree: 樹木
+  FindStuff.SubFilter.Tree_desc: 依樹木進行篩選。
+
+  FindStuff.SubFilter.Plant: 植物
+  FindStuff.SubFilter.Plant_desc: 依植物進行篩選。
+
+  FindStuff.SubFilter.Billboards: 廣告牌
+  FindStuff.SubFilter.Billboards_desc: 依廣告牌進行篩選。
+
+  FindStuff.SubFilter.Fences: 圍欄
+  FindStuff.SubFilter.Fences_desc: 依圍欄進行篩選。
+
+  FindStuff.SubFilter.SignsAndPosters: 標誌與海報
+  FindStuff.SubFilter.SignsAndPosters_desc: 依標誌和海報進行篩選。
+
+  FindStuff.SubFilter.Accessory: 靜態道具（配件）
+  FindStuff.SubFilter.Accessory_desc: 依常用靜態道具進行篩選。
+
+  FindStuff.SubFilter.Vehicle: 車輛
+  FindStuff.SubFilter.Vehicle_desc: 依車輛進行篩選。
+
+  FindStuff.SubFilter.PropMisc: 雜項道具
+  FindStuff.SubFilter.PropMisc_desc: 依非分類道具類型進行篩選。
+ 
+  FindStuff.SubFilter.SmallRoad: 小路
+  FindStuff.SubFilter.SmallRoad_desc: 依小路進行篩選。
+
+  FindStuff.SubFilter.MediumRoad: 中路
+  FindStuff.SubFilter.MediumRoad_desc: 依中路進行篩選。
+
+  FindStuff.SubFilter.LargeRoad: 大路
+  FindStuff.SubFilter.LargeRoad_desc: 依大路進行篩選。
+
+  FindStuff.SubFilter.Highway: 高速公路
+  FindStuff.SubFilter.Highway_desc: 依高速公路進行篩選。
+
+  FindStuff.SubFilter.Roundabout: 環島
+  FindStuff.SubFilter.Roundabout_desc: 依環島進行篩選。
+
+  FindStuff.SubFilter.Pavement: 人行道
+  FindStuff.SubFilter.Pavement_desc: 依人行道進行篩選。
+
+  FindStuff.SubFilter.RoadTool: 道路工具
+  FindStuff.SubFilter.RoadTool_desc: 依道路工具進行篩選。
+
+  FindStuff.SubFilter.OtherNetwork: 其他網絡
+  FindStuff.SubFilter.OtherNetwork_desc: 依非分類網絡進行篩選。
+
+  FindStuff.SubFilter.Surface: 其他網絡
+  FindStuff.SubFilter.Surface_desc: 依表面進行篩選。
+  
+  FindStuff.Tag.eu: 歐洲
+  FindStuff.Tag.na: 北美
+  FindStuff.Tag.foliage: 植被
+  FindStuff.Tag.building: 建築
+  FindStuff.Tag.zones: 分區
+  FindStuff.Tag.misc: 雜項
+  FindStuff.Tag.surface: 表面
+  FindStuff.Tag.grass: 草
+  FindStuff.Tag.agriculture: 農場
+  FindStuff.Tag.sand: 沙子
+  FindStuff.Tag.concrete: 混凝土
+  FindStuff.Tag.forestry: 森林
+  FindStuff.Tag.pavement: 人行道
+  FindStuff.Tag.landfill: 垃圾填埋場
+  FindStuff.Tag.tiles: 瓷磚
+  FindStuff.Tag.oil: 石油
+  FindStuff.Tag.ore: 礦石
+  FindStuff.Tag.network: 網絡
+  FindStuff.Tag.marker: 標記
+  FindStuff.Tag.power-line: 電線
+  FindStuff.Tag.pipe: 管道
+  FindStuff.Tag.bridge: 橋樑
+  FindStuff.Tag.small-road: 小
+  FindStuff.Tag.medium-road: 中
+  FindStuff.Tag.large-road: 大
+  FindStuff.Tag.highway: 高速公路
+  FindStuff.Tag.road: 道路
+  FindStuff.Tag.road-tool: 道路工具
+  FindStuff.Tag.electricity: 電力
+  FindStuff.Tag.electricity-connection: 電力連接
+  FindStuff.Tag.station: 車站
+  FindStuff.Tag.water: 水
+  FindStuff.Tag.waterway: 水路
+  FindStuff.Tag.water-connection: 水連接
+  FindStuff.Tag.water-source: 水源
+  FindStuff.Tag.power-plant: 發電廠
+  FindStuff.Tag.low-density: 低密度
+  FindStuff.Tag.medium-density: 中密度
+  FindStuff.Tag.mixed-density: 混合密度
+  FindStuff.Tag.high-density: 高密度
+  FindStuff.Tag.residential: 住宅
+  FindStuff.Tag.row: 行
+  FindStuff.Tag.low-rent: 低租金
+  FindStuff.Tag.commercial: 商業
+  FindStuff.Tag.office: 辦公室
+  FindStuff.Tag.industrial: 工業
+  FindStuff.Tag.service: 服務
+  FindStuff.Tag.signature: 標誌性
+  FindStuff.Tag.vehicle: 車輛
+  FindStuff.Tag.tree: 樹
+  FindStuff.Tag.plant: 植物
+  FindStuff.Tag.prop: 道具
+  FindStuff.Tag.park: 公園
+  FindStuff.Tag.cargo: 貨物
+  FindStuff.Tag.parking: 停車場
+  FindStuff.Tag.administration: 行政
+  FindStuff.Tag.fire: 消防部門
+  FindStuff.Tag.emergency: 緊急
+  FindStuff.Tag.police: 警察
+  FindStuff.Tag.prison: 監獄
+  FindStuff.Tag.hospital: 醫院
+  FindStuff.Tag.garbage: 垃圾
+  FindStuff.Tag.fence: 圍欄
+  FindStuff.Tag.poster: 海報
+  FindStuff.Tag.billboard: 廣告牌
+  FindStuff.Tag.aircraft: 飛機
+  FindStuff.Tag.watercraft: 水上交通工具
+  FindStuff.Tag.automobile: 汽車
+  FindStuff.Tag.ship: 船
+  FindStuff.Tag.post: 郵件
+  FindStuff.Tag.subway: 地鐵
+  FindStuff.Tag.rocket: 火箭
+  FindStuff.Tag.sign: 標誌
+  FindStuff.Tag.van: 廂型車
+  FindStuff.Tag.car: 轎車
+  FindStuff.Tag.taxi: 出租車
+  FindStuff.Tag.bus: 巴士
+  FindStuff.Tag.truck: 卡車
+  FindStuff.Tag.tram: 電車
+  FindStuff.Tag.train: 火車
+  FindStuff.Tag.engine: 引擎
+  FindStuff.Tag.carriage: 車廂
+  FindStuff.Tag.airplane: 飛機
+  FindStuff.Tag.helicopter: 直升機
+  FindStuff.Tag.public-transport: 公共交通
+  FindStuff.Tag.roundabout: 環島
+  FindStuff.Tag.bench: 長椅
+  FindStuff.Tag.light: 燈
+  FindStuff.Tag.accessory: 配件
+  FindStuff.Tag.trashbin: 垃圾桶
+  FindStuff.Tag.table: 桌子
