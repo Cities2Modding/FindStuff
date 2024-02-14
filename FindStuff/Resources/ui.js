@@ -2435,6 +2435,10 @@
         }
       } else if (model.OperationMode === "MoveFindStuff")
         updateShift(!isDefaultTool);
+      if (isDefaultTool && model.IsPicking) {
+        model.IsPicking = false;
+        update("IsPicking", false);
+      }
     };
     const onShowLoader = () => {
       if (isWaitingResults)
