@@ -113,7 +113,7 @@ const PrefabItem = ({ model, trigger, prefab, selected, _L, onSelected, onMouseE
         }
     }, [model.Favourites, model.ViewMode, model.Search, model.Filter, model.SubFilter, extraContent, selected, prefab, prefab.Name, prefab.Type]);
 
-    const borderClass = model.Filter !== "Favourite" && model.Favourites.includes(prefab.Name) ? " border-secondary-trans" : prefab.Meta && prefab.Meta.IsDangerous ? " border-danger-trans" : "";
+    const borderClass = model.Filter !== "Favourite" && model.Favourites.includes(prefab.Name) ? " border-secondary-trans" : prefab.Meta && prefab.Meta.IsDangerous ? " border-danger-trans" : prefab.IsModded ? "border-info-trans" : "";
     
     return <Button color={selected.Name == prefab.Name ? "primary" : "light"} style={selected.Name == prefab.Name ? "trans" : "trans-faded"} onMouseEnter={() => onInternalMouseEnter()} onMouseLeave={() => onInternalMouseLeave()} className={"asset-menu-item auto flex-1 m-mini" + borderClass + (selected.Name == prefab.Name ? " text-dark" : " text-light") + (model.ViewMode !== "IconGrid" && model.ViewMode !== "IconGridLarge" ? " flat" : "") + (model.ViewMode !== "IconGrid" && model.ViewMode !== "IconGridLarge" && selected.Name !== prefab.Name ? " btn-transparent" : "")} onClick={onSelectPrefab}>
         <div className={"d-flex align-items-center justify-content-center p-relative " + (model.ViewMode === "Columns" || model.ViewMode === "Rows" || model.ViewMode === "Detailed" ? " w-x flex-row " : " flex-column")}>

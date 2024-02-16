@@ -48,6 +48,8 @@ namespace FindStuff.Helper
                 tags.Add( "oil" );
             else if ( lowerName.Contains( "ore " ) )
                 tags.Add( "ore" );
+            else if ( lowerName.Contains( "asphalt" ) )
+                tags.Add( "asphalt" );
 
             return tags.OrderBy( t => t ).ToList( );
         }
@@ -57,9 +59,11 @@ namespace FindStuff.Helper
             if ( entityManager == null || prefab == null || entity == Entity.Null )
                 return false;
 
-            return prefab is SurfacePrefab && 
-                entityManager.HasComponent<RenderedAreaData>( entity )
-                && entityManager.HasComponent<SurfaceData>( entity );
+            return prefab is SurfacePrefab &&
+                entityManager.HasComponent<RenderedAreaData>( entity ) && 
+                entityManager.HasComponent<SurfaceData>( entity ) &&
+                !prefab.name.ToLowerInvariant( ).EndsWith( "_placeholder" ) &&
+                !prefab.name.ToLowerInvariant( ).EndsWith( " placeholder" );
         }
     }
 }

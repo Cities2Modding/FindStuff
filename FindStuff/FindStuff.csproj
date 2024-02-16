@@ -33,6 +33,12 @@
 	</PropertyGroup>
 	
 	<ItemGroup>
+	  <Compile Remove="Patches\BulldozeToolSystemPatches.cs" />
+	  <Compile Remove="Patches\SystemOrderPatches.cs" />
+	  <Compile Remove="Systems\PloppableRICOSystem.cs" />
+	</ItemGroup>
+	
+	<ItemGroup>
 	  <None Remove="Resources\changelog.md" />
 	  <None Remove="Resources\lang\de-DE.yml" />
 	  <None Remove="Resources\lang\en-US.yml" />
@@ -70,6 +76,12 @@
 	  <EmbeddedResource Include="Resources\settings.xml" />
 	  <EmbeddedResource Include="Resources\ui.css" />
 	  <EmbeddedResource Include="Resources\ui.js" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <None Include="Patches\BulldozeToolSystemPatches.cs" />
+	  <None Include="Patches\SystemOrderPatches.cs" />
+	  <None Include="Systems\PloppableRICOSystem.cs" />
 	</ItemGroup>
 	
 	<ItemGroup>

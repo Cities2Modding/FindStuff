@@ -24,7 +24,10 @@ namespace FindStuff.Patches
             {
                 Entity entity = nativeArray[i];
                 PrefabRef prefabRef;
-                if ((entityManager.GetComponentData<Temp>(entity).m_Flags & TempFlags.Delete) != (TempFlags)0U && entityManager.TryGetComponent(entity, out prefabRef) && (!entityManager.HasComponent<SpawnableBuildingData>(prefabRef.m_Prefab) || (!entityManager.HasComponent<PloppableBuilding>(prefabRef.m_Prefab) && entityManager.HasComponent<SignatureBuildingData>(prefabRef.m_Prefab))))
+                if ((entityManager.GetComponentData<Temp>(entity).m_Flags & TempFlags.Delete) != (TempFlags)0U && 
+                    entityManager.TryGetComponent(entity, out prefabRef) &&
+                    (!entityManager.HasComponent<SpawnableBuildingData>(prefabRef.m_Prefab) || (!entityManager.HasComponent<PloppableBuilding>(prefabRef.m_Prefab) &&
+                    entityManager.HasComponent<SignatureBuildingData>(prefabRef.m_Prefab))))
                 {
                     flag = true;
                 }

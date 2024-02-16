@@ -5,14 +5,14 @@ using HarmonyLib;
 
 namespace FindStuff.Patches
 {
-    [HarmonyPatch(typeof(SystemOrder))]
+    [HarmonyPatch( typeof( SystemOrder ) )]
     internal class SystemOrderPatches
     {
         [HarmonyPostfix]
-        [HarmonyPatch(typeof(SystemOrder), nameof(SystemOrder.Initialize))]
-        public static void GetSystemOrder(UpdateSystem updateSystem)
+        [HarmonyPatch( typeof( SystemOrder ), nameof( SystemOrder.Initialize ) )]
+        public static void GetSystemOrder( UpdateSystem updateSystem )
         {
-            updateSystem?.UpdateAt<PloppableRICOSystem>(SystemUpdatePhase.GameSimulation);
+            updateSystem?.UpdateAt<PloppableRICOSystem>( SystemUpdatePhase.GameSimulation );
         }
     }
 }

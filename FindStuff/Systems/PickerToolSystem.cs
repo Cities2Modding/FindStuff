@@ -19,7 +19,7 @@ namespace FindStuff.Systems
     public class PickerToolSystem : ToolBaseSystem
     {
         private PrefabSystem _prefabSystem;
-        private PloppableRICOSystem _ploppableRICOSystem;
+        //private PloppableRICOSystem _ploppableRICOSystem;
         private FindStuffController _controller;
         private OverlayRenderSystem.Buffer _overlay;
         private ToolOutputBarrier _outputBarrier;
@@ -36,7 +36,7 @@ namespace FindStuff.Systems
         protected override void OnCreate()
         {
             _prefabSystem = World.GetOrCreateSystemManaged<PrefabSystem>( );
-            _ploppableRICOSystem = World.GetOrCreateSystemManaged<PloppableRICOSystem>( );
+            //_ploppableRICOSystem = World.GetOrCreateSystemManaged<PloppableRICOSystem>( );
             _outputBarrier = World.GetOrCreateSystemManaged<ToolOutputBarrier>( );
             base.OnCreate();
         }
@@ -109,11 +109,11 @@ namespace FindStuff.Systems
                         
                         m_ToolSystem.ActivatePrefabTool( prefabBase );
 
-                        if (_ploppableRICOSystem.IsPloppable(prefabBase, prefabRef.m_Prefab, entity))
-                        {
-                            Entity prefabEntity = _prefabSystem.GetEntity(prefabBase);
-                            _ploppableRICOSystem.MakePloppable(prefabEntity, _outputBarrier.CreateCommandBuffer());
-                        }
+                        //if (_ploppableRICOSystem.IsPloppable(prefabBase, prefabRef.m_Prefab, entity))
+                        //{
+                        //    Entity prefabEntity = _prefabSystem.GetEntity(prefabBase);
+                        //    _ploppableRICOSystem.MakePloppable(prefabEntity, _outputBarrier.CreateCommandBuffer());
+                        //}
 
                         Unhighlight( entity );
 
@@ -179,7 +179,7 @@ namespace FindStuff.Systems
 
         public override System.Boolean TrySetPrefab( PrefabBase prefab )
         {
-            return true;
+            return false;
         }
     }
 }

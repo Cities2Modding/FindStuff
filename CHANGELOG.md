@@ -1,3 +1,5 @@
+### v0.0.5
+- **Temporarily disabled RICO ploppable system due to crashes**
 ### v0.0.4
 - **Extended search functions**
 	Search has been improved and now additionally breaks down your search into individual words and checks those against prefab names, translated names and tags.

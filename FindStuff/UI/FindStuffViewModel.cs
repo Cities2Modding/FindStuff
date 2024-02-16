@@ -155,6 +155,12 @@ namespace FindStuff.UI
             set;
         }
 
+        public bool IsModded
+        {
+            get;
+            set;
+        }
+
         public Dictionary<string, object> Meta
         {
             get;

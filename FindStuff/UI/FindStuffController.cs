@@ -64,7 +64,7 @@ namespace FindStuff.UI
         private PrefabSystem _prefabSystem;
         private ImageSystem _imageSystem;
         private ToolbarUISystem _toolbarUISystem;
-        private PloppableRICOSystem _ploppableRICOSystem;
+        //private PloppableRICOSystem _ploppableRICOSystem;
         private InputAction _enableAction;
 
         static FieldInfo _prefabsField = typeof( PrefabSystem ).GetField( "m_Prefabs", BindingFlags.Instance | BindingFlags.NonPublic );
@@ -82,6 +82,7 @@ namespace FindStuff.UI
         private LocalizationManager _localizationManager;
 
         private static HashSet<string> TypesWithNoThumbnails = ["Surface", "PropMisc", "Billboards", "Fences", "SignsAndPosters", "Accessory"];
+        private static HashSet<string> ModdedComponents = ["CustomSurface", "CustomDecal", "CustomSurfaceComponent"];
 
         private string _lastQueryKey = "";
 
@@ -100,7 +101,7 @@ namespace FindStuff.UI
             _endFrameBarrier = World.GetOrCreateSystemManaged<EndFrameBarrier>( );
             _toolbarUISystem = World.GetOrCreateSystemManaged<ToolbarUISystem>( );
             _pickerToolSystem = World.GetOrCreateSystemManaged<PickerToolSystem>( );
-            _ploppableRICOSystem = World.GetOrCreateSystemManaged<PloppableRICOSystem>( );
+            //_ploppableRICOSystem = World.GetOrCreateSystemManaged<PloppableRICOSystem>( );
             _localizationManager = GameManager.instance.localizationManager;
 
             _entityArchetype = this.EntityManager.CreateArchetype( ComponentType.ReadWrite<Unlock>( ), ComponentType.ReadWrite<Game.Common.Event>( ) );
@@ -122,6 +123,25 @@ namespace FindStuff.UI
             model.OperationMode = _config.OperationMode;
 
             return model;
+        }
+
+        private bool CheckForModdedComponents( Entity entity )
+        {
+            var components = EntityManager.GetComponentTypes( entity )
+                .Select( ct => ct.GetManagedType().FullName ).ToList();
+
+            if ( components?.Count > 0 )
+            {
+                foreach ( var moddedComponent in ModdedComponents )
+                {
+                    if ( components.Count( c => c.ToLowerInvariant( ).EndsWith( moddedComponent.ToLowerInvariant( ) ) ) > 0 )
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         protected override void OnGameLoadingComplete( Purpose purpose, GameMode mode )
@@ -196,6 +216,7 @@ namespace FindStuff.UI
                     {
                         ID = entity.Index,
                         Name = prefabBase.name,
+                        IsModded = CheckForModdedComponents( entity ),
                         Type = prefabType,
                         Category = categoryType,
                         Thumbnail = !string.IsNullOrEmpty( thumbnailOverride ) ? thumbnailOverride : categoryType == "Zones" ? CheckForZoneIcon( prefabBase, entity ) : TypesWithNoThumbnails.Contains( prefabType ) ? typeIcon : prefabIcon,
@@ -262,7 +283,15 @@ namespace FindStuff.UI
                 && EntityManager.HasComponent<SurfaceData>( prefabEntity ) &&
                 EntityManager.HasComponent<PrefabData>( prefabEntity) )
             {
-                thumbnailOverride = SurfaceExporter.Export( prefab );                          
+                var uiObject = prefab.GetComponent<UIObject>();
+
+                // Custom ELT surface
+                if ( uiObject != null && uiObject.m_Icon?.ToLowerInvariant( ).Contains( "customsurfaces/" ) == true )
+                {
+                    thumbnailOverride = uiObject.m_Icon;
+                }
+                else
+                    thumbnailOverride = SurfaceExporter.Export( prefab );                          
             }
 
             return isValid;
@@ -503,10 +532,10 @@ namespace FindStuff.UI
                     _toolSystem.ActivatePrefabTool(prefab);
 
                     // Handle zone buildings (spawnable buildings)
-                    if (IsValidPrefab(prefab, entity, out IBaseHelper helper) && helper is ZoneBuildingHelper)
-                    {
-                        _ploppableRICOSystem.MakePloppable(entity);
-                    }
+                    //if ( IsValidPrefab( prefab, entity, out IBaseHelper helper ) && helper is ZoneBuildingHelper )
+                    //{
+                    //    _ploppableRICOSystem.MakePloppable( entity );
+                    //}
 
                     // Unlock building
                     EntityCommandBuffer commandBuffer = _endFrameBarrier.CreateCommandBuffer();
