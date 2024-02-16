@@ -500,6 +500,6 @@
 	</PropertyGroup>
 	
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Exec Command="if not exist &quot;$(Cities2_Location)\BepInEx\plugins\$(ProjectName)&quot; mkdir &quot;$(Cities2_Location)\BepInEx\plugins\$(ProjectName)&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)0Harmony.dll&quot; &quot;$(Cities2_Location)\BepInEx\plugins\$(ProjectName)\0Harmony.dll&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;$(Cities2_Location)\BepInEx\plugins\$(ProjectName)\$(ProjectName).dll&quot;" />
+		<Exec Command="if not exist &quot;$(Cities2_Location)\BepInEx\plugins\$(ProjectName)&quot; mkdir &quot;$(Cities2_Location)\BepInEx\plugins\$(ProjectName)&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;$(Cities2_Location)\BepInEx\plugins\$(ProjectName)\$(ProjectName).dll&quot;&#xD;&#xA;copy /Y &quot;$(ProjectDir)..\manifest.json&quot; &quot;$(Cities2_Location)\BepInEx\plugins\$(ProjectName)\manifest.json&quot;&#xD;&#xA;copy /Y &quot;$(ProjectDir)..\icon.png&quot; &quot;$(Cities2_Location)\BepInEx\plugins\$(ProjectName)\icon.png&quot;&#xD;&#xA;copy /Y &quot;$(ProjectDir)..\README.md&quot; &quot;$(Cities2_Location)\BepInEx\plugins\$(ProjectName)\README.md&quot;&#xD;&#xA;copy /Y &quot;$(ProjectDir)..\CHANGELOG.md&quot; &quot;$(Cities2_Location)\BepInEx\plugins\$(ProjectName)\CHANGELOG.md&quot;" />
 	</Target>
 </Project>
