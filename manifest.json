@@ -1,0 +1,10 @@
+{
+    "name": "FindStuff",
+    "version_number": "0.0.7",
+    "website_url": "https://github.com/Cities2Modding/FindStuff",
+    "description": "A unified and easy to use asset browser with a user-friendly UI bundled with a picker tool.",
+    "dependencies": [
+        "BepInEx-BepInExPack-5.4.2100",
+        "Cities2Modding-Gooee-0.0.6"
+    ]
+}
