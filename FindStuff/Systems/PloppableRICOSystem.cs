@@ -1,5 +1,4 @@
-﻿
-using Colossal.Entities;
+﻿using Colossal.Entities;
 using Colossal.Serialization.Entities;
 using FindStuff.Prefabs;
 using Game;
@@ -8,18 +7,18 @@ using Game.Common;
 using Game.Notifications;
 using Game.Objects;
 using Game.Prefabs;
-using Game.Simulation;
 using Game.Tools;
 using System.Runtime.CompilerServices;
 using Unity.Burst.Intrinsics;
 using Unity.Collections;
 using Unity.Entities;
+using Unity.Jobs;
 
 namespace FindStuff.Systems
 {
     public class PloppableRICOSystem : GameSystemBase
     {
-        private EndFrameBarrier _barrier;
+        EndFrameBarrier _barrier;
         IconCommandSystem _iconCommandSystem;
         EntityQuery _freshlyPlacedBuildingsGroup;
         EntityQuery _ploppedBuildingsGroup;
@@ -39,11 +38,19 @@ namespace FindStuff.Systems
                 [
                     ComponentType.ReadOnly<Building>(),
                     ComponentType.ReadOnly<PrefabRef>(),
-                    ComponentType.ReadOnly<UpdateFrame>(),
                     ComponentType.ReadOnly<PropertyToBeOnMarket>(),
+                    ComponentType.ReadOnly<BuildingCondition>(),
+                    ComponentType.ReadOnly<Created>(),
+                ],
+                Any = [
+                    ComponentType.ReadOnly<ResidentialProperty>(),
+                    ComponentType.ReadOnly<CommercialProperty>(),
+                    ComponentType.ReadOnly<IndustrialProperty>(),
+                    ComponentType.ReadOnly<OfficeProperty>(),
                 ],
                 None =
                 [
+                    ComponentType.Exclude<PropertyOnMarket>(),
                     ComponentType.Exclude<UnderConstruction>(),
                     ComponentType.Exclude<PloppableBuildingData>(),
                     ComponentType.Exclude<Deleted>(),
@@ -63,15 +70,14 @@ namespace FindStuff.Systems
             });
 
             _buildingSettingsQuery = GetEntityQuery(new ComponentType[] { ComponentType.ReadOnly<BuildingConfigurationData>() });
-
-            _barrier.RequireAnyForUpdate(_ploppedBuildingsGroup, _freshlyPlacedBuildingsGroup);
+            RequireForUpdate(_freshlyPlacedBuildingsGroup);
         }
 
         protected override void OnGameLoadingComplete(Purpose purpose, GameMode mode)
         {
             base.OnGameLoadingComplete(purpose, mode);
 
-            if (mode.IsGame() && !_ploppedBuildingsGroup.IsEmptyIgnoreFilter)
+            if (mode == GameMode.Game && !_ploppedBuildingsGroup.IsEmptyIgnoreFilter)
             {
                 int amount = _ploppedBuildingsGroup.CalculateEntityCount();
                 UnityEngine.Debug.Log($"FindStuff: Found {amount} entities to update...");
@@ -84,15 +90,17 @@ namespace FindStuff.Systems
                     PloppableBuildingLookup = _makeSignatureTypeHandle.PloppableBuildingLookup,
                     SpawnableBuildingDataLookup = _makeSignatureTypeHandle.SpawnableBuildingDataLookup,
                 };
-                Dependency = makeSignatureJob.Schedule(_ploppedBuildingsGroup, Dependency);
-                _barrier.AddJobHandleForProducer(Dependency);
+                JobHandle makeSignatureJobHandle = makeSignatureJob.Schedule(_ploppedBuildingsGroup, Dependency);
+                _barrier.AddJobHandleForProducer(makeSignatureJobHandle);
+                Dependency = makeSignatureJobHandle;
             }
         }
 
         protected override void OnUpdate()
         {
-            if (!_freshlyPlacedBuildingsGroup.IsEmptyIgnoreFilter)
+            if (!_freshlyPlacedBuildingsGroup.IsEmptyIgnoreFilter && !_buildingSettingsQuery.IsEmptyIgnoreFilter)
             {
+                UnityEngine.Debug.Log($"FindStuff: Placed building...");
                 _makePloppableTypeHandle.AssignHandles(ref CheckedStateRef);
                 MakePloppableJob makePloppableJob = new()
                 {
@@ -104,8 +112,10 @@ namespace FindStuff.Systems
                     PloppableBuildingLookup = _makePloppableTypeHandle.PloppableBuildingLookup,
                     CondemnedLookup = _makePloppableTypeHandle.CondemnedLookup,
                 };
-                Dependency = makePloppableJob.Schedule(_freshlyPlacedBuildingsGroup, Dependency);
-                _barrier.AddJobHandleForProducer(Dependency);
+                
+                JobHandle makePloppableJobHandle = makePloppableJob.Schedule(_freshlyPlacedBuildingsGroup, Dependency);
+                _barrier.AddJobHandleForProducer(makePloppableJobHandle);
+                Dependency = makePloppableJobHandle;
             }
         }
 
@@ -148,7 +158,7 @@ namespace FindStuff.Systems
                 {
                     Entity entity = entities[i];
                     Entity prefab = prefabs[i].m_Prefab;
-                    if (PloppableBuildingLookup.HasComponent(prefab))
+                    if (PloppableBuildingLookup.HasComponent(prefab) && entity != Entity.Null)
                     {
                         Ecb.AddComponent<PloppableBuildingData>(i, entity);
 
@@ -159,6 +169,9 @@ namespace FindStuff.Systems
                         }
                     }
                 }
+
+                prefabs.Dispose();
+                entities.Dispose();
             }
         }
 
@@ -167,14 +180,12 @@ namespace FindStuff.Systems
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void AssignHandles(ref SystemState state)
             {
-                EntityTypeHandle = state.GetEntityTypeHandle();
                 PrefabRefTypeHandle = state.GetComponentTypeHandle<PrefabRef>();
                 SignatureBuildingDataLookup = state.GetComponentLookup<SignatureBuildingData>();
                 PloppableBuildingLookup = state.GetComponentLookup<PloppableBuilding>();
                 SpawnableBuildingDataLookup = state.GetComponentLookup<SpawnableBuildingData>();
             }
 
-            public EntityTypeHandle EntityTypeHandle;
             public ComponentTypeHandle<PrefabRef> PrefabRefTypeHandle;
             public ComponentLookup<SignatureBuildingData> SignatureBuildingDataLookup;
             public ComponentLookup<PloppableBuilding> PloppableBuildingLookup;
@@ -184,7 +195,6 @@ namespace FindStuff.Systems
         public struct MakeSignatureJob : IJobChunk
         {
             public EntityCommandBuffer.ParallelWriter Ecb;
-            public EntityTypeHandle EntityTypeHandle;
             public ComponentTypeHandle<PrefabRef> PrefabRefTypeHandle;
             public ComponentLookup<SignatureBuildingData> SignatureBuildingDataLookup;
             public ComponentLookup<PloppableBuilding> PloppableBuildingLookup;
@@ -195,12 +205,10 @@ namespace FindStuff.Systems
                 bool useEnabledMask,
                 in v128 chunkEnabledMask)
             {
-                NativeArray<Entity> entities = chunk.GetNativeArray(EntityTypeHandle);
                 NativeArray<PrefabRef> prefabs = chunk.GetNativeArray(ref PrefabRefTypeHandle);
                 ChunkEntityEnumerator enumerator = new(useEnabledMask, chunkEnabledMask, chunk.Count);
                 while (enumerator.NextEntityIndex(out int i))
                 {
-                    Entity entity = entities[i];
                     Entity prefab = prefabs[i].m_Prefab;
                     if (!SignatureBuildingDataLookup.HasComponent(prefab) && !PloppableBuildingLookup.HasComponent(prefab))
                     {
@@ -219,6 +227,8 @@ namespace FindStuff.Systems
                         }
                     }
                 }
+
+                prefabs.Dispose();
             }
         }
 
@@ -240,7 +250,7 @@ namespace FindStuff.Systems
         public void MakePloppable(Entity entity)
         {
             if (EntityManager.TryGetComponent(entity, out SpawnableBuildingData spawnableBuildingData)) {
-                EntityCommandBuffer buffer = _barrier.CreateCommandBuffer();
+                EntityCommandBuffer buffer = new EntityCommandBuffer();
                 buffer.AddComponent(entity, new PloppableBuilding());
 
                 // Add signature building data to the zone prefab to be ignored by the ZoneCheckSystem making them condemned

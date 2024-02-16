@@ -1,7 +1,4 @@
-﻿using Colossal;
-using Colossal.Entities;
-using Colossal.IO.AssetDatabase;
-using Colossal.Localization;
+﻿using Colossal.Localization;
 using Colossal.Serialization.Entities;
 using FindStuff.Configuration;
 using FindStuff.Helper;
@@ -64,7 +61,7 @@ namespace FindStuff.UI
         private PrefabSystem _prefabSystem;
         private ImageSystem _imageSystem;
         private ToolbarUISystem _toolbarUISystem;
-        //private PloppableRICOSystem _ploppableRICOSystem;
+        private PloppableRICOSystem _ploppableRICOSystem;
         private InputAction _enableAction;
 
         static FieldInfo _prefabsField = typeof( PrefabSystem ).GetField( "m_Prefabs", BindingFlags.Instance | BindingFlags.NonPublic );
@@ -101,7 +98,7 @@ namespace FindStuff.UI
             _endFrameBarrier = World.GetOrCreateSystemManaged<EndFrameBarrier>( );
             _toolbarUISystem = World.GetOrCreateSystemManaged<ToolbarUISystem>( );
             _pickerToolSystem = World.GetOrCreateSystemManaged<PickerToolSystem>( );
-            //_ploppableRICOSystem = World.GetOrCreateSystemManaged<PloppableRICOSystem>( );
+            _ploppableRICOSystem = World.GetOrCreateSystemManaged<PloppableRICOSystem>( );
             _localizationManager = GameManager.instance.localizationManager;
 
             _entityArchetype = this.EntityManager.CreateArchetype( ComponentType.ReadWrite<Unlock>( ), ComponentType.ReadWrite<Game.Common.Event>( ) );
@@ -531,14 +528,16 @@ namespace FindStuff.UI
                 {
                     _toolSystem.ActivatePrefabTool(prefab);
 
+                    // Use barrier to create entity command buffer
+                    EntityCommandBuffer commandBuffer = _endFrameBarrier.CreateCommandBuffer();
+
                     // Handle zone buildings (spawnable buildings)
-                    //if ( IsValidPrefab( prefab, entity, out IBaseHelper helper ) && helper is ZoneBuildingHelper )
-                    //{
-                    //    _ploppableRICOSystem.MakePloppable( entity );
-                    //}
+                    if (IsValidPrefab(prefab, entity, out IBaseHelper helper) && helper is ZoneBuildingHelper)
+                    {
+                        _ploppableRICOSystem.MakePloppable(entity, commandBuffer);
+                    }
 
                     // Unlock building
-                    EntityCommandBuffer commandBuffer = _endFrameBarrier.CreateCommandBuffer();
                     var unlockEntity = commandBuffer.CreateEntity(_entityArchetype);
                     commandBuffer.SetComponent(unlockEntity, new Unlock(entity));
                     

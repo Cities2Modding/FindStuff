@@ -1,3 +1,7 @@
+### v0.0.7
+- Fixed and added back in-house ploppable rico functionality
+### v0.0.6
+- Prevent accidentally blocking other tools from executing prefab-based tool selection
 ### v0.0.5
 - **Temporarily disabled RICO ploppable system due to crashes**
 ### v0.0.4
