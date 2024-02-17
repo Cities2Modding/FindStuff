@@ -1,3 +1,5 @@
+### v0.0.8
+- Hotfix for ploppable rico system
 ### v0.0.7
 - Fixed and added back in-house ploppable rico functionality
 ### v0.0.6
