@@ -40,7 +40,6 @@ namespace FindStuff.Systems
                     ComponentType.ReadOnly<PrefabRef>(),
                     ComponentType.ReadOnly<PropertyToBeOnMarket>(),
                     ComponentType.ReadOnly<BuildingCondition>(),
-                    ComponentType.ReadOnly<Created>(),
                 ],
                 Any = [
                     ComponentType.ReadOnly<ResidentialProperty>(),
@@ -100,7 +99,6 @@ namespace FindStuff.Systems
         {
             if (!_freshlyPlacedBuildingsGroup.IsEmptyIgnoreFilter && !_buildingSettingsQuery.IsEmptyIgnoreFilter)
             {
-                UnityEngine.Debug.Log($"FindStuff: Placed building...");
                 _makePloppableTypeHandle.AssignHandles(ref CheckedStateRef);
                 MakePloppableJob makePloppableJob = new()
                 {
