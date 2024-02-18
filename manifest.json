@@ -1,6 +1,6 @@
 {
     "name": "FindStuff",
-    "version_number": "0.0.8",
+    "version_number": "0.0.9",
     "website_url": "https://github.com/Cities2Modding/FindStuff",
     "description": "A unified and easy to use asset browser with a user-friendly UI bundled with a picker tool.",
     "dependencies": [

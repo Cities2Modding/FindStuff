@@ -1,3 +1,5 @@
+### v0.0.9
+- Fixed placing ploppable rico buildings in pause mode
 ### v0.0.8
 - Hotfix for ploppable rico system
 ### v0.0.7
