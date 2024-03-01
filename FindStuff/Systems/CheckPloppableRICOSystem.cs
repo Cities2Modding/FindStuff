@@ -9,13 +9,17 @@ using Game.Prefabs;
 using System.Runtime.CompilerServices;
 using Unity.Burst.Intrinsics;
 using Unity.Collections;
+using Game.Buildings;
+using Game.Notifications;
 
 namespace FindStuff.Systems
 {
     public class CheckPloppableRICOSystem : GameSystemBase
     {
         EndFrameBarrier _barrier;
+        IconCommandSystem _iconCommandSystem;
         EntityQuery _ploppedBuildingsGroup;
+        EntityQuery _buildingSettingsQuery;
         MakeSignatureTypeHandle _makeSignatureTypeHandle;
 
         protected override void OnCreate()
@@ -23,6 +27,7 @@ namespace FindStuff.Systems
             base.OnCreate();
 
             _barrier = World.GetOrCreateSystemManaged<EndFrameBarrier>();
+            _iconCommandSystem = World.GetOrCreateSystemManaged<IconCommandSystem>();
             _ploppedBuildingsGroup = GetEntityQuery(new EntityQueryDesc
             {
                 All = [
@@ -33,6 +38,7 @@ namespace FindStuff.Systems
                     ComponentType.Exclude<Temp>(),
                 ],
             });
+            _buildingSettingsQuery = GetEntityQuery(new ComponentType[] { ComponentType.ReadOnly<BuildingConfigurationData>() });
         }
 
         protected override void OnGameLoadingComplete(Purpose purpose, GameMode mode)
@@ -47,10 +53,14 @@ namespace FindStuff.Systems
                 MakeSignatureJob makeSignatureJob = new()
                 {
                     Ecb = _barrier.CreateCommandBuffer().AsParallelWriter(),
+                    Icb = _iconCommandSystem.CreateCommandBuffer(),
+                    EntityTypeHandle = GetEntityTypeHandle(),
                     PrefabRefTypeHandle = _makeSignatureTypeHandle.PrefabRefTypeHandle,
                     SignatureBuildingDataLookup = _makeSignatureTypeHandle.SignatureBuildingDataLookup,
                     PloppableBuildingLookup = _makeSignatureTypeHandle.PloppableBuildingLookup,
                     SpawnableBuildingDataLookup = _makeSignatureTypeHandle.SpawnableBuildingDataLookup,
+                    CondemnedLookup = _makeSignatureTypeHandle.CondemnedLookup,
+                    BuildingConfigurationData = _buildingSettingsQuery.GetSingleton<BuildingConfigurationData>(),
                 };
                 JobHandle makeSignatureJobHandle = makeSignatureJob.ScheduleParallel(_ploppedBuildingsGroup, Dependency);
                 _barrier.AddJobHandleForProducer(makeSignatureJobHandle);
@@ -72,32 +82,41 @@ namespace FindStuff.Systems
                 SignatureBuildingDataLookup = state.GetComponentLookup<SignatureBuildingData>();
                 PloppableBuildingLookup = state.GetComponentLookup<PloppableBuilding>();
                 SpawnableBuildingDataLookup = state.GetComponentLookup<SpawnableBuildingData>();
+                CondemnedLookup = state.GetComponentLookup<Condemned>();
             }
 
             public ComponentTypeHandle<PrefabRef> PrefabRefTypeHandle;
             public ComponentLookup<SignatureBuildingData> SignatureBuildingDataLookup;
             public ComponentLookup<PloppableBuilding> PloppableBuildingLookup;
             public ComponentLookup<SpawnableBuildingData> SpawnableBuildingDataLookup;
+            public ComponentLookup<Condemned> CondemnedLookup;
         }
 
         public struct MakeSignatureJob : IJobChunk
         {
             public EntityCommandBuffer.ParallelWriter Ecb;
+            public IconCommandBuffer Icb;
+            public EntityTypeHandle EntityTypeHandle;
             public ComponentTypeHandle<PrefabRef> PrefabRefTypeHandle;
             public ComponentLookup<SignatureBuildingData> SignatureBuildingDataLookup;
             public ComponentLookup<PloppableBuilding> PloppableBuildingLookup;
             public ComponentLookup<SpawnableBuildingData> SpawnableBuildingDataLookup;
+            public ComponentLookup<Condemned> CondemnedLookup;
+            public BuildingConfigurationData BuildingConfigurationData;
 
             public void Execute(in ArchetypeChunk chunk,
             int unfilteredChunkIndex,
                 bool useEnabledMask,
                 in v128 chunkEnabledMask)
             {
+                NativeArray<Entity> entities = chunk.GetNativeArray(EntityTypeHandle);
                 NativeArray<PrefabRef> prefabs = chunk.GetNativeArray(ref PrefabRefTypeHandle);
                 ChunkEntityEnumerator enumerator = new(useEnabledMask, chunkEnabledMask, chunk.Count);
                 while (enumerator.NextEntityIndex(out int i))
                 {
+                    Entity entity = entities[i];
                     Entity prefab = prefabs[i].m_Prefab;
+
                     if (!SignatureBuildingDataLookup.HasComponent(prefab) && !PloppableBuildingLookup.HasComponent(prefab))
                     {
                         // Add the signature building data and ploppable building components
@@ -112,6 +131,12 @@ namespace FindStuff.Systems
                                 spawnableBuildingData.m_Level = 5;
                                 Ecb.SetComponent(i, prefab, spawnableBuildingData);
                             }
+                        }
+
+                        if (CondemnedLookup.HasComponent(entity))
+                        {
+                            Icb.Remove(entity, BuildingConfigurationData.m_CondemnedNotification, default, 0);
+                            Ecb.RemoveComponent<Condemned>(i, entity);
                         }
                     }
                 }

@@ -13,7 +13,7 @@ namespace FindStuff.Patches
         public static void GetSystemOrder( UpdateSystem updateSystem )
         {
             updateSystem?.UpdateAt<CheckPloppableRICOSystem>(SystemUpdatePhase.GameSimulation);
-            updateSystem?.UpdateAt<PloppableRICOSystem>(SystemUpdatePhase.Modification2);
+            updateSystem?.UpdateAt<PloppableRICOSystem>(SystemUpdatePhase.Modification5);
         }
     }
 }
