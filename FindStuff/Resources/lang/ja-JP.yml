@@ -281,3 +281,5 @@ lang:
  FindStuff.Tag.accessory: アクセサリー
  FindStuff.Tag.trashbin: ゴミ箱
  FindStuff.Tag.table: テーブル
+
+ FindStuff.BuildingStaticUpgrade_desc: アップグレードメニューを表示するには、都市の建物を選択する必要があります。そうしない場合、このオプションを選択しても何も起こらないように見えます。（開発ツールでも同じことが起こります）

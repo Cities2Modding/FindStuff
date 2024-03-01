@@ -58,11 +58,13 @@ const PrefabItem = ({ model, trigger, prefab, selected, _L, onSelected, onMouseE
         );
     };
 
-
     const highlightedName = react.useMemo(() => highlightSearchTerm(computedPrefabName), [computedPrefabName, model.Search]);
     const highlightedType = react.useMemo(() => highlightSearchTerm(computedPrefabTypeName), [computedPrefabTypeName, model.Search]);
 
     const onSelectPrefab = () => {
+        if (!model.ExpertMode && prefab.IsExpertMode)
+            return;
+
         trigger("OnSelectPrefab", prefab.Name);
 
         if (onSelected)
@@ -78,27 +80,37 @@ const PrefabItem = ({ model, trigger, prefab, selected, _L, onSelected, onMouseE
         if (onMouseLeave)
             onMouseLeave(prefab);
     };
+    function formatNumber(number) {
+        var parts = number.toString().split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return parts.join(".");
+    }
 
     const render = react.useCallback(() => {
         if (model.ViewMode == "Detailed") {
             return <>
                 <Grid>
-                    <div className="col-7">
-                        <div className="d-flex flex-row">
+                    <div className="col-5">
+                        <div className="d-flex flex-row" style={{ overflowX: "hidden" }}>
                             {prefabIconSrc === iconSrc ? <Icon className="icon-sm ml-1 mr-1" icon={prefabIconSrc} fa={isFAIcon ? true : null} /> : <img className="icon icon-sm ml-1 mr-1" src={prefab.Thumbnail} />}
                             <span className="fs-sm flex-1">{highlightedName}</span>
                         </div>
                     </div>
-                    <div className="col-2">
-                        <span className="fs-xs h-x">
+                    <div className="col-3">
+                        <span className="fs-xs h-x" style={{ overflowX: "hidden" }}>
                             <Icon icon={iconSrc} fa={isTypeFAIcon ? true : null} size="sm" className={(isTypeFAIcon ? "bg-muted " : "") + "mr-1"} style={{ maxHeight: "16rem" }} />
                             {highlightedType}
                         </span>
                     </div>
-                    <div className="col-2">
-                        {prefab.Meta && prefab.Meta.IsDangerous ? <div className="badge badge-xs badge-danger">Dangerous</div> : null}
+                    <div className="col-3">
+                        <div className="d-flex flex-row align-items-start flex-wrap">
+                            {prefab.Meta && prefab.Meta.IsDangerous ? <div className="badge badge-xs badge-danger">Dangerous</div> : null}
+                            {prefab.Meta && prefab.Meta.ZoneLotWidth ? <div className="badge badge-xs badge-black">{prefab.Meta.ZoneLotWidth}x{prefab.Meta.ZoneLotDepth}</div> : null}
+                            {prefab.Meta && prefab.Meta.Cost ? <div className="badge badge-xs badge-black text-secondary">&#162;{formatNumber(prefab.Meta.Cost)}</div> : null}
+                            {prefab.Meta && prefab.Meta.XPReward ? <div className="badge badge-xs badge-black text-success">{formatNumber(prefab.Meta.XPReward)}&nbsp;XP</div> : null}
+                        </div>
                     </div>
-                    <div className="col-1 p-relative pr-2">
+                    <div className="w-5 p-relative pr-2">
                         {extraContent ? extraContent : null}
                     </div>
                 </Grid>
@@ -115,7 +127,7 @@ const PrefabItem = ({ model, trigger, prefab, selected, _L, onSelected, onMouseE
 
     const borderClass = model.Filter !== "Favourite" && model.Favourites.includes(prefab.Name) ? " border-secondary-trans" : prefab.Meta && prefab.Meta.IsDangerous ? " border-danger-trans" : prefab.IsModded ? "border-info-trans" : "";
     
-    return <Button color={selected.Name == prefab.Name ? "primary" : "light"} style={selected.Name == prefab.Name ? "trans" : "trans-faded"} onMouseEnter={() => onInternalMouseEnter()} onMouseLeave={() => onInternalMouseLeave()} className={"asset-menu-item auto flex-1 m-mini" + borderClass + (selected.Name == prefab.Name ? " text-dark" : " text-light") + (model.ViewMode !== "IconGrid" && model.ViewMode !== "IconGridLarge" ? " flat" : "") + (model.ViewMode !== "IconGrid" && model.ViewMode !== "IconGridLarge" && selected.Name !== prefab.Name ? " btn-transparent" : "")} onClick={onSelectPrefab}>
+    return <Button color={selected.Name == prefab.Name ? "primary" : "light"} style={selected.Name == prefab.Name ? "trans" : "trans-faded"} onMouseEnter={() => onInternalMouseEnter()} onMouseLeave={() => onInternalMouseLeave()} className={"asset-menu-item auto flex-1 m-mini" + borderClass + (selected.Name == prefab.Name ? " text-dark" : " text-light") + (model.ViewMode !== "IconGrid" && model.ViewMode !== "IconGridLarge" ? " flat" : "") + (model.ViewMode !== "IconGrid" && model.ViewMode !== "IconGridLarge" && selected.Name !== prefab.Name ? " btn-transparent" : "") + (!model.ExpertMode && prefab.IsExpertMode ? " opacity-50" : "")} onClick={onSelectPrefab}>
         <div className={"d-flex align-items-center justify-content-center p-relative " + (model.ViewMode === "Columns" || model.ViewMode === "Rows" || model.ViewMode === "Detailed" ? " w-x flex-row " : " flex-column")}>
             {render()}
         </div>

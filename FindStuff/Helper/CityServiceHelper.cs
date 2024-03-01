@@ -17,7 +17,21 @@ namespace FindStuff.Helper
 
         public Dictionary<string, object> CreateMeta( PrefabBase prefab, Entity entity )
         {
-            return new Dictionary<string, object>( );
+            var meta = new Dictionary<string, object>();
+
+            if ( entityManager.HasComponent<ServiceUpgradeData>( entity ) && entityManager.HasComponent<StaticObjectData>( entity ) )
+            {                
+                meta.Add( IBaseHelper.META_BUILDING_STATIC_UPGRADE, true );
+            }
+
+            var placeableObject = prefab.GetComponent<PlaceableObject>( );
+
+            if ( placeableObject != null )
+            {
+                meta.Add( "Cost", placeableObject.m_ConstructionCost );
+                meta.Add( "XPReward", placeableObject.m_XPReward );
+            }
+            return meta;
         }
 
         public List<string> CreateTags( PrefabBase prefab, Entity entity )
@@ -31,6 +45,11 @@ namespace FindStuff.Helper
 
             Tags.Add( "building" );
             Tags.Add( "service" );
+
+            if ( entityManager.HasComponent<ServiceUpgradeData>( entity ) )
+            {
+                Tags.Add( "upgrade" );
+            }
 
             if ( entityManager.HasComponent<FireStationData>( entity ) )
             {
@@ -139,7 +158,13 @@ namespace FindStuff.Helper
             if ( entityManager == null || entity == Entity.Null )
                 return false;
 
-            return entityManager.HasComponent<BuildingData>( entity ) && entityManager.HasComponent<ServiceObjectData>( entity );
+            return (entityManager.HasComponent<BuildingData>( entity ) && (entityManager.HasComponent<ServiceObjectData>( entity ) || entityManager.HasComponent<ServiceUpgradeData>( entity )) ||
+                entityManager.HasComponent<ServiceUpgradeData>( entity ) && entityManager.HasComponent<StaticObjectData>( entity ) );
+        }
+
+        public bool IsExpertMode( PrefabBase prefab, Entity entity )
+        {
+            return false;
         }
     }
 }

@@ -246,7 +246,7 @@ lang:
  FindStuff.Tag.cargo: Cargo
  FindStuff.Tag.parking: Parking
  FindStuff.Tag.administration: Administration
- FindStuff.Tag.fire: Fire Deptartment
+ FindStuff.Tag.fire: Fire Department
  FindStuff.Tag.emergency: Emergency
  FindStuff.Tag.police: Police
  FindStuff.Tag.prison: Prison
@@ -281,3 +281,9 @@ lang:
  FindStuff.Tag.accessory: Accessory
  FindStuff.Tag.trashbin: Garbage Dumpster
  FindStuff.Tag.table: Table
+
+ FindStuff.HowToBuild: How to build
+
+ FindStuff.BuildingStaticUpgrade_desc: You need to select the building in your city to get the upgrade menu. If you do not, selecting this will seem to do nothing. (Same occurs in dev tools)
+ 
+ FindStuff.Tag.upgrade: Upgrade

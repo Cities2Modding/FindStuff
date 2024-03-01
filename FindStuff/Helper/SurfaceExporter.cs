@@ -1,6 +1,7 @@
 ﻿using FindStuff.Configuration;
 using Game.Prefabs;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 
 namespace FindStuff.Helper
@@ -12,7 +13,7 @@ namespace FindStuff.Helper
         /// </summary>
         /// <param name="prefab"></param>
         /// <returns></returns>
-        public static string Export( PrefabBase prefab )
+        public static string ExportSurface( SurfacePrefab prefab )
         {            
             var components = prefab.components;
 
@@ -35,6 +36,36 @@ namespace FindStuff.Helper
             }
 
             return null;
+        }
+
+        public static string ExportMeshTexture( RenderPrefab prefab )
+        {
+            var surfaceAsset = prefab.surfaceAssets.FirstOrDefault( );
+
+            if ( surfaceAsset == null )
+                return null;
+
+            var material = surfaceAsset.Load( useVT: false );
+
+            if ( material == null )
+                return null;
+
+            var tex = ( Texture2D ) material.GetTexture( "_BaseColorMap" );
+
+            if ( tex == null )
+                return null;
+
+            var texture = CropTexture( tex );
+            var fileName = prefab.name.Replace( " ", "" );
+            var texturePath = Path.Combine( ConfigBase.MOD_PATH, "Meshes" );
+            var path = Path.Combine( texturePath, fileName + ".png" );
+
+            Directory.CreateDirectory( texturePath );
+
+            if ( !File.Exists( path ) )
+                ExportToPNG( texture, path );
+
+            return $"coui://findstuffui/Meshes/{fileName}.png";
         }
 
         /// <summary>

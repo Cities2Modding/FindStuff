@@ -13,7 +13,15 @@ namespace FindStuff.Helper
 
         public Dictionary<string, object> CreateMeta(PrefabBase prefab, Entity entity)
         {
-            return new Dictionary<string, object>();
+            var meta = new Dictionary<string, object>( );
+            var placeableObject = prefab.GetComponent<PlaceableObject>( );
+
+            if ( placeableObject != null )
+            {
+                meta.Add( "Cost", placeableObject.m_ConstructionCost );
+                meta.Add( "XPReward", placeableObject.m_XPReward );
+            }
+            return meta;
         }
 
         public List<string> CreateTags(PrefabBase prefab, Entity entity)
@@ -40,6 +48,11 @@ namespace FindStuff.Helper
             }
 
             return entityManager.HasComponent<TreeData>(entity);
+        }
+
+        public bool IsExpertMode( PrefabBase prefab, Entity entity )
+        {
+            return false;
         }
     }
 }

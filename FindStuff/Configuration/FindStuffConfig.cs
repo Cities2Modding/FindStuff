@@ -1,4 +1,5 @@
 ﻿using FindStuff.UI;
+using System;
 using System.Collections.Generic;
 
 namespace FindStuff.Configuration
@@ -38,12 +39,6 @@ namespace FindStuff.Configuration
             set;
         } = SubFilter.None;
 
-        public string OperationMode
-        {
-            get;
-            set;
-        } = "HideFindStuff";
-
         public bool EnableShortcut
         {
             get;
@@ -55,5 +50,17 @@ namespace FindStuff.Configuration
             get;
             set;
         } = false;
+
+        public DateTime LastSearchHistoryPurge
+        {
+            get;
+            set;
+        }
+
+        public Dictionary<string, ushort> RecentSearches
+        {
+            get;
+            set;
+        } = [];
     }
 }

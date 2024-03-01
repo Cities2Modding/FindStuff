@@ -70,9 +70,9 @@ const HoverWindow = ({ className, model, hoverPrefab, _L }) => {
                 return name;
         };
                 
-        return hoverPrefab.Tags ? hoverPrefab.Tags.map((tag, index) => <div key={index + "_" + tag} className="badge badge-dark">
+        return hoverPrefab.Tags ? hoverPrefab.Tags.map((tag, index) => <span key={index + "_" + tag} className="badge badge-dark">
             {highlightSearchTerm(getName(tag))}
-        </div>) : null;
+        </span>) : null;
         
     }, [hoverPrefab.Tags, _L, model.Search]);
 
@@ -93,13 +93,39 @@ const HoverWindow = ({ className, model, hoverPrefab, _L }) => {
                     <p className="mb-4 fs-sm" cohinline="cohinline">
                         {prefabDescText}
                     </p> : null}
-                {hoverPrefab.Meta && hoverPrefab.Meta.IsDangerous ? <div className="alert alert-danger fs-sm d-flex flex-row flex-wrap align-items-center p-2 mb-4">
-                    <Icon className="mr-2" icon="solid-circle-exclamation" fa />
-                    {computedDangerousReason}
+                {hoverPrefab.Meta && hoverPrefab.Meta.IsDangerous ? <div className="alert alert-danger fs-sm d-inline p-2 mb-4">
+                    <Icon className="mr-2" icon="solid-circle-exclamation" fa />                    
+                    <div className="flex-1 d-flex flex-column align-items-start justify-content-start">
+                        <p cohinline="cohinline">
+                            <b>{computedDangerousReason}</b>
+                        </p>
+                        {!model.ExpertMode && hoverPrefab.IsExpertMode ? <p className="mt-0 mb-0" cohinline="cohinline">
+                            You need to enable Expert Mode in the Find Stuff options menu to use this asset.
+                        </p> : null}
+                    </div>
+                </div> :
+                    !model.ExpertMode && hoverPrefab.IsExpertMode ? <div className="alert alert-danger fs-sm d-inline p-2 mb-4">
+                        <Icon className="mr-2" icon="solid-circle-exclamation" fa />
+                        <p className="flex-1" cohinline="cohinline">
+                            You need to enable Expert Mode in the Find Stuff options menu to use this asset.
+                        </p>
                 </div> : null}
-                <div className="d-inline">
+                {hoverPrefab.Meta && hoverPrefab.Meta.BuildingStaticUpgrade ? <div className="alert alert-info fs-sm d-inline p-2 mb-4">
+                    <Icon className="mr-2" icon="solid-circle-exclamation" fa />
+                    <div className="flex-1 d-flex flex-column align-items-start justify-content-start">
+                        <p cohinline="cohinline">
+                            <b>
+                                {_L("FindStuff.HowToBuild")}
+                            </b>
+                        </p>
+                        <p className="mt-0 mb-0" cohinline="cohinline">
+                            {_L("FindStuff.BuildingStaticUpgrade_desc")}
+                        </p>
+                    </div>
+                </div> : null}
+                <p className="m-0" cohinline="cohinline">
                     {renderTags()}
-                </div>
+                </p>
             </div>
         </Grid>
     }, [hoverPrefab, prefabDescText, model.Search]);

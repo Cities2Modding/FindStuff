@@ -281,3 +281,5 @@ lang:
  FindStuff.Tag.accessory: 配件
  FindStuff.Tag.trashbin: 垃圾桶
  FindStuff.Tag.table: 桌子
+
+ FindStuff.BuildingStaticUpgrade_desc: 您需要在您的城市中选择建筑物以获取升级菜单。如果您不这样做，选择此项似乎无效。(开发工具中也是如此)

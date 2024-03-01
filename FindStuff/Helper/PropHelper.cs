@@ -5,87 +5,96 @@ using Unity.Entities;
 
 namespace FindStuff.Helper
 {
-    public class PropHelper(EntityManager entityManager) : IBaseHelper
+    public class PropHelper( EntityManager entityManager ) : IBaseHelper
     {
         public string PrefabType => _PrefabType;
         private string _PrefabType = "PropMisc";
 
-        public string CategoryType {
+        public string CategoryType
+        {
             get;
             private set;
         } = "Props";
 
-        public Dictionary<string, object> CreateMeta(PrefabBase prefab, Entity entity)
+        public Dictionary<string, object> CreateMeta( PrefabBase prefab, Entity entity )
         {
-            return new Dictionary<string, object>();
+            var meta = new Dictionary<string, object>( );
+            var placeableObject = prefab.GetComponent<PlaceableObject>( );
+
+            if ( placeableObject != null )
+            {
+                meta.Add( "Cost", placeableObject.m_ConstructionCost );
+                meta.Add( "XPReward", placeableObject.m_XPReward );
+            }
+            return meta;
         }
 
-        public List<string> CreateTags(PrefabBase prefab, Entity entity)
+        public List<string> CreateTags( PrefabBase prefab, Entity entity )
         {
-            List<string> tags = new List<string>();
+            List<string> tags = new List<string>( );
 
-            if (entityManager == null)
+            if ( entityManager == null )
                 return tags;
 
             CategoryType = "Props";
 
-            tags.Add("prop");
+            tags.Add( "prop" );
 
-            string prefabLowered = prefab.name.ToLower();
-            if (prefabLowered.StartsWith("sign"))
+            string prefabLowered = prefab.name.ToLower( );
+            if ( prefabLowered.StartsWith( "sign" ) )
             {
                 _PrefabType = "SignsAndPosters";
-                tags.Add("sign");
+                tags.Add( "sign" );
             }
-            else if (prefabLowered.StartsWith("poster"))
+            else if ( prefabLowered.StartsWith( "poster" ) )
             {
-                tags.Add("poster");
+                tags.Add( "poster" );
                 _PrefabType = "SignsAndPosters";
             }
-            else if (prefabLowered.StartsWith("billboard"))
+            else if ( prefabLowered.StartsWith( "billboard" ) )
             {
-                tags.Add("billboard");
+                tags.Add( "billboard" );
                 _PrefabType = "Billboards";
             }
-            else if (prefabLowered.StartsWith("fence"))
+            else if ( prefabLowered.StartsWith( "fence" ) )
             {
-                tags.Add("fence");
+                tags.Add( "fence" );
                 _PrefabType = "Fences";
             }
-            else if (prefabLowered.Contains("hedge")) // Working hedges are found here
+            else if ( prefabLowered.Contains( "hedge" ) ) // Working hedges are found here
             {
-                tags.Add("plant");
-                tags.Add("foliage");
+                tags.Add( "plant" );
+                tags.Add( "foliage" );
                 _PrefabType = "Plant";
                 CategoryType = "Foliage";
             }
-            else if (prefabLowered.Contains("light") && !prefabLowered.Contains("traffic"))
+            else if ( prefabLowered.Contains( "light" ) && !prefabLowered.Contains( "traffic" ) )
             {
-                tags.Add("light");
-                tags.Add("accessory");
+                tags.Add( "light" );
+                tags.Add( "accessory" );
                 _PrefabType = "Accessory";
             }
-            else if (prefabLowered.Contains("bench"))
+            else if ( prefabLowered.Contains( "bench" ) )
             {
-                tags.Add("bench");
-                tags.Add("accessory");
+                tags.Add( "bench" );
+                tags.Add( "accessory" );
                 _PrefabType = "Accessory";
             }
-            else if (prefabLowered.Contains("table") || prefabLowered.Contains("tableset"))
+            else if ( prefabLowered.Contains( "table" ) || prefabLowered.Contains( "tableset" ) )
             {
-                tags.Add("table");
-                tags.Add("accessory");
+                tags.Add( "table" );
+                tags.Add( "accessory" );
                 _PrefabType = "Accessory";
             }
-            else if (prefabLowered.Contains("trashbin"))
+            else if ( prefabLowered.Contains( "trashbin" ) )
             {
-                tags.Add("trashbin");
-                tags.Add("accessory");
+                tags.Add( "trashbin" );
+                tags.Add( "accessory" );
                 _PrefabType = "Accessory";
             }
-            else if (prefabLowered.Contains("gazebo") || prefabLowered.Contains("grill") || prefabLowered.Contains("food store") || prefabLowered.Contains("food cart"))
+            else if ( prefabLowered.Contains( "gazebo" ) || prefabLowered.Contains( "grill" ) || prefabLowered.Contains( "food store" ) || prefabLowered.Contains( "food cart" ) )
             {
-                tags.Add("accessory");
+                tags.Add( "accessory" );
                 _PrefabType = "Accessory";
             }
             else if ( entityManager.HasChunkComponent<BridgeData>( entity ) )
@@ -100,12 +109,17 @@ namespace FindStuff.Helper
             return tags.OrderBy( t => t ).ToList( );
         }
 
-        public bool IsValidPrefab(PrefabBase prefab, Entity entity)
+        public bool IsValidPrefab( PrefabBase prefab, Entity entity )
         {
-            if (entityManager == null || entity == Entity.Null)
+            if ( entityManager == null || entity == Entity.Null )
                 return false;
 
-            return prefab is StaticObjectPrefab staticObjectPrefab && staticObjectPrefab.m_Meshes.Length > 0 && staticObjectPrefab.isDirty == true && staticObjectPrefab.active == true && staticObjectPrefab.components.Find(p => p is SpawnableObject);
+            return prefab is StaticObjectPrefab staticObjectPrefab && staticObjectPrefab.m_Meshes.Length > 0 && staticObjectPrefab.isDirty == true && staticObjectPrefab.active == true && staticObjectPrefab.components.Count( p => p is SpawnableObject ) > 0;
+        }
+
+        public bool IsExpertMode( PrefabBase prefab, Entity entity )
+        {
+            return false;
         }
     }
 }

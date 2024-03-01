@@ -80,11 +80,11 @@ namespace FindStuff.UI
             set;
         } = new List<string>( );
 
-        public string OperationMode
+        public ViewOperationMode OperationMode
         {
             get;
             set;
-        }
+        } = ViewOperationMode.HideFindStuff;
 
         public bool EnableShortcut
         {
@@ -105,6 +105,24 @@ namespace FindStuff.UI
         }
 
         public PrefabItem Selected
+        {
+            get;
+            set;
+        }
+
+        public bool SearchWords
+        {
+            get;
+            set;
+        }
+
+        public bool SearchTags
+        {
+            get;
+            set;
+        }
+
+        public HashSet<string> RecentSearches
         {
             get;
             set;
@@ -161,6 +179,12 @@ namespace FindStuff.UI
             set;
         }
 
+        public bool IsExpertMode
+        {
+            get;
+            set;
+        }
+
         public Dictionary<string, object> Meta
         {
             get;
@@ -188,6 +212,14 @@ namespace FindStuff.UI
             get;
             set;
         }
+    }
+
+    public enum ViewOperationMode
+    {
+        HideFindStuff,
+        MoveFindStuff,
+        HideAssetMenu,
+        HideFindStuffSideMenu
     }
 
     public enum ViewMode
@@ -226,6 +258,8 @@ namespace FindStuff.UI
         // Buildings
         ServiceBuilding,
         SignatureBuilding,
+        MiscBuilding,
+
         Park,
         Parking,
 
@@ -234,6 +268,8 @@ namespace FindStuff.UI
         Plant,
         PropMisc,
         Surface,
+        Area,
+
         SignsAndPosters,
         Fences,
         Billboards,

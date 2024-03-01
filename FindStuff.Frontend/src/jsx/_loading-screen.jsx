@@ -10,7 +10,7 @@ const LoadingScreen = ({ isVisible }) => {
         setVisible(isVisible);
     }, [isVisible]);
 
-    return visible ? <div className="p-absolute w-100 h-100 p-left-0 p-top-0 bg-dark-trans d-flex align-items-center justify-content-center">
+    return visible ? <div className="p-absolute w-100 h-100 p-left-0 p-top-0 d-flex align-items-center justify-content-center">
         <Icon icon="solid-spinner" className="icon-spin" fa />
     </div> : null;
 };

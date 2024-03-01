@@ -13,12 +13,20 @@ namespace FindStuff.Helper
         const string META_ZONE_LOT_DEPTH = "ZoneLotDepth";
         const string META_ZONE_LOT_WIDTH = "ZoneLotWidth";
         const string META_ZONE_LOT_SUM = "ZoneLotSum";
+        const string META_BUILDING_STATIC_UPGRADE = "BuildingStaticUpgrade";
 
-        public string PrefabType { get; }
-        public string CategoryType { get; }
+        public string PrefabType
+        {
+            get;
+        }
+        public string CategoryType
+        {
+            get;
+        }
 
-        bool IsValidPrefab(PrefabBase prefab, Entity entity);
-        List<string> CreateTags(PrefabBase prefab, Entity entity);
-        Dictionary<string, object> CreateMeta(PrefabBase prefab, Entity entity);
+        bool IsValidPrefab( PrefabBase prefab, Entity entity );
+        bool IsExpertMode( PrefabBase prefab, Entity entity );
+        List<string> CreateTags( PrefabBase prefab, Entity entity );
+        Dictionary<string, object> CreateMeta( PrefabBase prefab, Entity entity );
     }
 }

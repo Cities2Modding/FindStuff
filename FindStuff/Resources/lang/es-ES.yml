@@ -281,3 +281,5 @@ lang:
  FindStuff.Tag.accessory: Accesorio
  FindStuff.Tag.trashbin: Contenedor de Basura
  FindStuff.Tag.table: Mesa
+
+ FindStuff.BuildingStaticUpgrade_desc: Necesitas seleccionar el edificio en tu ciudad para obtener el menú de actualización. Si no lo haces, seleccionar esto parecerá no hacer nada. (Lo mismo ocurre en las herramientas de desarrollo)

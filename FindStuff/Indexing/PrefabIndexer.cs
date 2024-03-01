@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using Unity.Entities;
 using UnityEngine;
 
 namespace FindStuff.Indexing
@@ -46,7 +47,8 @@ namespace FindStuff.Indexing
                     SubFilter.ServiceBuilding,
                     SubFilter.SignatureBuilding,
                     SubFilter.Park,
-                    SubFilter.Parking
+                    SubFilter.Parking,
+                    SubFilter.MiscBuilding
                 ]
             },
             {
@@ -84,7 +86,8 @@ namespace FindStuff.Indexing
             {
                 Filter.Misc,
                 [
-                    SubFilter.Surface
+                    SubFilter.Surface,
+                    SubFilter.Area
                 ]
             }
         };
@@ -183,7 +186,9 @@ namespace FindStuff.Indexing
                 {
                     WorkingSet.Add( id, ( search, orderByAscending ) =>
                     {
-                        return StringSearch( search, id ) || WordSearch( search, id );
+                        var stringSearch = StringSearch( search, id );
+                        var wordSearch = (false, int.MaxValue );//WordSearch( search, id );
+                        return (stringSearch.IsMatch || wordSearch.Item1, ( stringSearch.IsMatch ? stringSearch.Score : 0 ) + ( wordSearch.Item1 ? wordSearch.MaxValue : 0 ));
                     } );
                 }
 
@@ -370,29 +375,90 @@ namespace FindStuff.Indexing
             return _prefabs.Select( kvp => kvp.Value ).FirstOrDefault( n => n.Name == name );
         }
 
+
+        /// <summary>
+        /// Computes the Levenshtein distance between two strings, optimized for memory usage.
+        /// Treats null strings as empty strings.
+        /// </summary>
+        /// <param name="source">The source string to compare from, treated as empty if null.</param>
+        /// <param name="target">The target string to compare to, treated as empty if null.</param>
+        /// <returns>The minimum number of single-character edits required to change the source into the target.</returns>
+        public int LevenshteinDistance( string source, string target )
+        {
+            // Treat null strings as empty strings.
+            source ??= string.Empty;
+            target ??= string.Empty;
+
+            // Ensure the source string is shorter than the target string to optimize space.
+            if ( source.Length > target.Length )
+            {
+                var temp = source;
+                source = target;
+                target = temp;
+            }
+
+            int sourceLength = source.Length;
+            int targetLength = target.Length;
+            int[] previousRowDistances = new int[sourceLength + 1];
+            int[] currentRowDistances = new int[sourceLength + 1];
+
+            for ( int i = 0; i <= sourceLength; i++ )
+                previousRowDistances[i] = i;
+
+            for ( int targetIndex = 1; targetIndex <= targetLength; targetIndex++ )
+            {
+                currentRowDistances[0] = targetIndex;
+
+                for ( int sourceIndex = 1; sourceIndex <= sourceLength; sourceIndex++ )
+                {
+                    int cost = ( source[sourceIndex - 1] == target[targetIndex - 1] ) ? 0 : 1;
+                    currentRowDistances[sourceIndex] = Math.Min(
+                        Math.Min( currentRowDistances[sourceIndex - 1] + 1, previousRowDistances[sourceIndex] + 1 ),
+                        previousRowDistances[sourceIndex - 1] + cost );
+                }
+
+                var temp = previousRowDistances;
+                previousRowDistances = currentRowDistances;
+                currentRowDistances = temp;
+            }
+
+            return previousRowDistances[sourceLength];
+        }
+
         /// <summary>
         /// Break down the search into words and find matches
         /// </summary>
         /// <param name="search"></param>
         /// <param name="prefabID"></param>
         /// <returns></returns>
-        private bool WordSearch( string search, int prefabID )
+        private (bool IsMatch, int Score) WordSearch( string search, int prefabID )
         {
             if ( string.IsNullOrEmpty( search ) )
-                return false;
+                return (false, int.MinValue);
 
             var words = search.Split( ' ', StringSplitOptions.RemoveEmptyEntries );
+            var hasMatch = false;
+
+            var score = int.MinValue;
 
             if ( words?.Length > 0 )
             {
+                score = 0;
+
                 foreach ( var word in words )
                 {
-                    if ( StringSearch( word, prefabID ) )
-                        return true;
+                    var stringSearch = StringSearch( word, prefabID );
+
+                    // Word searches are less influential than top level searches
+                    if ( stringSearch.IsMatch )
+                    {
+                        score += ( stringSearch.Score * 100 );
+                        hasMatch = true;
+                    }
                 }
             }
 
-            return false;
+            return (hasMatch, score);
         }
 
         /// <summary>
@@ -401,51 +467,161 @@ namespace FindStuff.Indexing
         /// <param name="search"></param>
         /// <param name="prefabID"></param>
         /// <returns></returns>
-        private bool StringSearch( string search, int prefabID )
+        private (bool IsMatch, int Score) StringSearch(string search, int prefabID)
         {
-            if ( string.IsNullOrEmpty( search ) )
-                return false;
+            if (string.IsNullOrEmpty(search))
+                return (false, int.MaxValue);
 
-            var name = _prefabNames[prefabID].ToLowerInvariant( );
-            var displayName = _prefabDisplayNames[prefabID].ToLowerInvariant( );
-            var typeName = _prefabTypesNames[prefabID].ToLowerInvariant( );
+            search = search.ToLowerInvariant();
+
+            var name = _prefabNames[prefabID].ToLowerInvariant();
+            var displayName = _prefabDisplayNames[prefabID].ToLowerInvariant();
+            var typeName = _prefabTypesNames[prefabID].ToLowerInvariant();
             var tags = _prefabTags[prefabID];
 
-            return name.Contains( search ) ||
-                displayName.Contains( search ) ||
-                typeName.Contains( search ) ||
-                tags.Count( t => t.Contains( search ) ) > 0;
-        }
+            if ( displayName == search || displayName == search.Replace( " ", "" ) || displayName == search.Replace( "-", "" )
+                || name == search  || name == search.Replace( " ", "" ) || name == search.Replace( "-", "" ) )
+                return (true, int.MinValue);
 
-        /// <summary>
-        /// Add prefabs to the working set, filtering them by search if necessary.
-        /// </summary>
-        /// <param name="model"></param>
-        /// <param name="prefabIDs"></param>
-        private void AddToWorkingSet( FindStuffViewModel model, int[] prefabIDs )
-        {
-            if ( prefabIDs == null || prefabIDs.Length == 0 )
-                return;
+            var hasMatches = false;
+            var curScore = 0;
 
-            var hasSearch = !string.IsNullOrEmpty( model.Search );
-
-            foreach ( var id in prefabIDs )
+            if ( displayName.Contains( search ) )
             {
-                if ( WorkingSet.Data.Contains( id ) )
-                    continue;
-
-                if ( hasSearch )
-                {
-                    var search = model.Search.ToLowerInvariant( ).Trim( );
-
-                    if ( StringSearch( search, id ) || WordSearch( search, id ) )
-                        WorkingSet.Data.Add( id );
-                    // else don't include in results
-                }
-                else
-                    WorkingSet.Data.Add( id );
+                hasMatches = true;
+                curScore += LevenshteinDistance( displayName, search );
             }
+            else
+                curScore += LevenshteinDistance( displayName, search ) * 10;
+
+            if ( name.Contains( search ) )
+            {
+                hasMatches = true;
+                curScore += LevenshteinDistance( name, search ) * 2;
+            }
+            else
+                curScore += LevenshteinDistance( name, search ) * 20;
+
+            if ( typeName.Contains( search ) )
+            {
+                hasMatches = true;
+                curScore += LevenshteinDistance( typeName, search ) * 3;
+            }
+            else
+                curScore += LevenshteinDistance( typeName, search ) * 30;
+
+            var searchWords = search.Split( ' ', StringSplitOptions.RemoveEmptyEntries );
+            var displayNameWords = displayName.Split( ' ', StringSplitOptions.RemoveEmptyEntries );
+
+            if ( searchWords?.Length > 1 && displayNameWords.Length > 1 )
+            {
+                hasMatches = displayNameWords.Sum( w => searchWords.Count( sw => w.Contains( sw ) ) ) >= searchWords.Length;
+               
+                var subWordScores = new List<int>( );
+
+                foreach ( var displayNameWord in displayNameWords )
+                {
+                    foreach ( var searchWord in searchWords )
+                    {
+                        if ( searchWord == displayNameWord )
+                            subWordScores.Add( 0 );
+                        else
+                            subWordScores.Add( LevenshteinDistance( displayNameWord, searchWord ) );
+                    }
+                }
+
+                curScore += (subWordScores.Sum( ) * 15);
+                curScore = Math.Max( curScore, int.MinValue );
+            }
+
+            var matchingTags = tags.Where( t => t.Contains( search ) )
+                .Select( t => t == search ? 0 : LevenshteinDistance( t, search ));
+
+            if ( matchingTags.Any( ) )
+            {
+                hasMatches = true;
+                curScore += matchingTags.Sum( ) * 40;
+            }
+
+            return (hasMatches, !hasMatches ? int.MaxValue : curScore);
         }
+        //private (bool IsMatch, int Score) StringSearch( string search, int prefabID )
+        //{
+        //    if ( string.IsNullOrEmpty( search ) )
+        //        return (false, int.MinValue);
+
+        //    var name = _prefabNames[prefabID].ToLowerInvariant( );
+        //    var displayName = _prefabDisplayNames[prefabID].ToLowerInvariant( );
+        //    var typeName = _prefabTypesNames[prefabID].ToLowerInvariant( );
+        //    var tags = _prefabTags[prefabID];
+
+        //    // If it's an exact match give it the best score (0)
+        //    //if ( name == search || displayName == search ||
+        //    //     name == search.Replace( " ", "" ) )
+        //     //   return (true, 0);
+
+        //    var nameContains = name.Contains( search );
+        //    var displayNameContains = displayName.Contains( search );
+        //    var typeNameContains = typeName.Contains( search );
+
+        //    var nameDistance = /*!nameContains ? 1000 :*/ LevenshteinDistance( name, search );
+        //    var displayNameDistance = /*!displayNameContains ? 1000 : */LevenshteinDistance( displayName, search );
+        //    var typeNameDistance = /*!typeNameContains ? 50 :*/ LevenshteinDistance( typeName, search );
+
+        //    var totalDistance = ( nameDistance + displayNameDistance + typeNameDistance );
+
+        //    if ( search.Length >= 6 && totalDistance < 30 )
+        //        UnityEngine.Debug.Log( $"Leven: name = {name}, totalDistance = {totalDistance}, nameDistance = {nameDistance}, displayNameDistance = {displayNameDistance}, typeNameDistance = {typeNameDistance}" );
+            
+        //    var matchingTags = tags.Where( t => t.Contains( search ) );
+
+        //    var tagsDistance = 0;
+
+        //    if ( matchingTags.Any( ) )
+        //    {
+        //        foreach ( var matchingTag in matchingTags )
+        //        {
+        //            tagsDistance += LevenshteinDistance( matchingTag, search );
+        //        }
+        //    }
+        //    else
+        //        tagsDistance = 100;
+
+        //    var score = nameDistance + displayNameDistance + typeNameDistance + tagsDistance;
+        //    return (nameContains || displayNameContains || typeNameContains || matchingTags.Any(), score);
+        //}
+
+        ///// <summary>
+        ///// Add prefabs to the working set, filtering them by search if necessary.
+        ///// </summary>
+        ///// <param name="model"></param>
+        ///// <param name="prefabIDs"></param>
+        //private void AddToWorkingSet( FindStuffViewModel model, int[] prefabIDs )
+        //{
+        //    if ( prefabIDs == null || prefabIDs.Length == 0 )
+        //        return;
+
+        //    var hasSearch = !string.IsNullOrEmpty( model.Search );
+
+        //    foreach ( var id in prefabIDs )
+        //    {
+        //        if ( WorkingSet.Data.Count( d => d.ID == id ) > 0 )
+        //            continue;
+
+        //        if ( hasSearch )
+        //        {
+        //            var search = model.Search.ToLowerInvariant( ).Trim( );
+        //            var stringSearch = StringSearch( search, id );
+        //            var wordSearch = WordSearch( search, id );
+
+        //            if ( stringSearch.IsMatch || wordSearch.IsMatch )
+        //                WorkingSet.Data.Add( (id, ( stringSearch.IsMatch ? stringSearch.Score : 0 ) + ( wordSearch.IsMatch ? wordSearch.Score : 0 )) );
+        //            // else don't include in results
+        //        }
+        //        else
+        //            WorkingSet.Data.Add( (id, 0) );
+        //    }
+        //}
 
         /// <summary>
         /// Update the favourites list
@@ -468,16 +644,22 @@ namespace FindStuff.Indexing
             if ( WorkingSet == null || WorkingSet.Data == null )
                 return;
 
-            if ( WorkingSet.Parameters.OrderByAscending )
+            if ( !string.IsNullOrEmpty( WorkingSet.CurrentSearch ) )
             {
                 WorkingSet.Data = WorkingSet.Data
-                    .OrderBy( id => _prefabNames[id].ToLowerInvariant( ) )
+                    .OrderBy( d => d.Score )
+                    .ToHashSet( );
+            }
+            else if ( WorkingSet.Parameters.OrderByAscending )
+            {
+                WorkingSet.Data = WorkingSet.Data
+                    .OrderBy( d => _prefabDisplayNames[d.ID].ToLowerInvariant( ) )
                     .ToHashSet( );
             }
             else
             {
                 WorkingSet.Data = WorkingSet.Data
-                    .OrderByDescending( id => _prefabNames[id].ToLowerInvariant( ) )
+                    .OrderByDescending( d => _prefabDisplayNames[d.ID].ToLowerInvariant( ) )
                     .ToHashSet( );
             }
         }
@@ -500,7 +682,7 @@ namespace FindStuff.Indexing
             var result = new PrefabQueryResult
             {
                 Prefabs = WorkingSet.Data
-                           .Select( id => _prefabs[id] )
+                           .Select( d => _prefabs[d.ID] )
                            .ToArray( )
             };
 
@@ -574,9 +756,13 @@ namespace FindStuff.Indexing
             {
                 Key = workingSetKey,
                 OnComplete = onComplete,
+                SearchWords = model.SearchWords,
+                SearchTags = model.SearchTags,
+                CurrentSearch = model.Search,
                 Parameters = (model.Search == null ? "" : model.Search.ToLowerInvariant( ).Trim( ), model.OrderByAscending)
             };
 
+            UnityEngine.Debug.Log( "Search:" + model.Search );
             var hasTriggeredLoader = false;
 
             if ( !BigQueryCache.ContainsKey( workingSetKey ) || !string.IsNullOrEmpty( model.Search ) || model.Filter == Filter.Favourite )
@@ -594,15 +780,15 @@ namespace FindStuff.Indexing
                     if ( model.OrderByAscending )
                     {
                         WorkingSet.Data = _prefabs.Values
-                            .OrderBy( p => ResolvePrefabName( _localisationManager, p.Name ) )
-                            .Select( p => p.ID )
+                            .OrderBy( p => _prefabDisplayNames[p.ID].ToLowerInvariant( ) )
+                            .Select( p => (p.ID, 0) )
                             .ToHashSet( );
                     }
                     else
                     {
                         WorkingSet.Data = _prefabs.Values
-                            .OrderByDescending( p => ResolvePrefabName( _localisationManager, p.Name ) )
-                            .Select( p => p.ID )
+                            .OrderByDescending( p => _prefabDisplayNames[p.ID].ToLowerInvariant( ) )
+                            .Select( p => (p.ID, 0) )
                             .ToHashSet( );
                     }
                 }
@@ -672,7 +858,6 @@ namespace FindStuff.Indexing
                                 if ( _filterMappings.ContainsKey( model.Filter ) )
                                 {
                                     var filterChildren = _filterMappings[model.Filter];
-
 
                                     if ( filterChildren?.Length > 0 )
                                     {

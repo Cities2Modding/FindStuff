@@ -36,6 +36,13 @@ namespace FindStuff.UI
             set;
         }
 
+        [SettingsUISection( "Toggles" )]
+        public bool AutomaticUnlocks
+        {
+            get;
+            set;
+        }
+
         [SettingsUIHidden]
         protected override string UIResource => "FindStuff.Resources.settings.xml";
 
@@ -49,6 +56,7 @@ namespace FindStuff.UI
             ExpertMode = false;
             EnableShortcut = false;
             SearchSpeed = "Medium";
+            AutomaticUnlocks = false;
         }
 
         [Preserve]
@@ -60,17 +68,22 @@ namespace FindStuff.UI
             [
                 new DropdownItem<string>
                 {
-                    value = "MoveFindStuff",
+                    value = ViewOperationMode.MoveFindStuff.ToString(),
                     displayName = localisationManager.GetLocalizedName( "FindStuff.FindStuffSettings.MoveFindStuff" )
                 },
                 new DropdownItem<string>
                 {
-                    value = "HideFindStuff",
+                    value = ViewOperationMode.HideFindStuff.ToString( ),
                     displayName = localisationManager.GetLocalizedName( "FindStuff.FindStuffSettings.HideFindStuff" )
                 },
                 new DropdownItem<string>
                 {
-                    value = "HideAssetMenu",
+                    value = ViewOperationMode.HideFindStuffSideMenu.ToString( ),
+                    displayName = localisationManager.GetLocalizedName( "FindStuff.FindStuffSettings.HideFindStuffSideMenu" )
+                },
+                new DropdownItem<string>
+                {
+                    value = ViewOperationMode.HideAssetMenu.ToString( ),
                     displayName = localisationManager.GetLocalizedName( "FindStuff.FindStuffSettings.HideAssetMenu" )
                 },
             ];

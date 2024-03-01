@@ -1,19 +1,20 @@
-﻿using Game.Prefabs;
+﻿using Colossal.Entities;
+using Game.Prefabs;
 using System.Collections.Generic;
 using Unity.Entities;
-using static Game.Prefabs.CharacterGroup;
 
 namespace FindStuff.Helper
 {
-    public class PlantHelper( EntityManager entityManager ) : IBaseHelper
+    internal class BuildingHelper( EntityManager entityManager ) : IBaseHelper
     {
-        public string PrefabType => "Plant";
+        public string PrefabType => "MiscBuilding";
 
-        public string CategoryType => "Foliage";
+        public string CategoryType => "Buildings";
 
         public Dictionary<string, object> CreateMeta( PrefabBase prefab, Entity entity )
         {
-            var meta = new Dictionary<string, object>();
+            var meta = new Dictionary<string, object>( );
+
             var placeableObject = prefab.GetComponent<PlaceableObject>( );
 
             if ( placeableObject != null )
@@ -21,6 +22,7 @@ namespace FindStuff.Helper
                 meta.Add( "Cost", placeableObject.m_ConstructionCost );
                 meta.Add( "XPReward", placeableObject.m_XPReward );
             }
+
             return meta;
         }
 
@@ -31,7 +33,7 @@ namespace FindStuff.Helper
             if ( entityManager == null )
                 return tags;
 
-            tags.Add( "plant" );
+            tags.Add( "building" );
 
             return tags;
         }
@@ -41,11 +43,10 @@ namespace FindStuff.Helper
             if ( entityManager == null || entity == Entity.Null )
                 return false;
 
-            // Hedges with the Plantdata component are not spawnable
-            if (prefab.name.ToLower().Contains("hedge"))
-                return false;
-
-            return entityManager.HasComponent<PlantData>( entity ) && !entityManager.HasComponent<TreeData>( entity );
+            return prefab is BuildingPrefab
+                && (!entityManager.TryGetComponent( entity, out SpawnableBuildingData spawnableBuildingData ) ||
+                spawnableBuildingData.m_ZonePrefab == Entity.Null ||
+                !entityManager.HasComponent<ZoneData>( spawnableBuildingData.m_ZonePrefab ) );
         }
 
         public bool IsExpertMode( PrefabBase prefab, Entity entity )

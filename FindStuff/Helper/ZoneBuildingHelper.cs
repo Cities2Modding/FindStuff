@@ -6,49 +6,58 @@ using Unity.Entities;
 
 namespace FindStuff.Helper
 {
-    public class ZoneBuildingHelper(EntityManager entityManager, PrefabSystem prefabSystem) : IBaseHelper
+    public class ZoneBuildingHelper( EntityManager entityManager, PrefabSystem prefabSystem ) : IBaseHelper
     {
         public string PrefabType => _PrefabType;
         private string _PrefabType = "Unknown";
 
         public string CategoryType => "Zones";
 
-        public Dictionary<string, object> CreateMeta(PrefabBase prefab, Entity entity)
+        public Dictionary<string, object> CreateMeta( PrefabBase prefab, Entity entity )
         {
-            Dictionary<string, object> meta = new Dictionary<string, object>();
+            Dictionary<string, object> meta = new Dictionary<string, object>( );
 
             try
             {
-                SpawnableBuildingData spawnableBuildingData = entityManager.GetComponentData<SpawnableBuildingData>(entity);
-                BuildingPrefab buildingPrefab = (BuildingPrefab)prefab;
+                SpawnableBuildingData spawnableBuildingData = entityManager.GetComponentData<SpawnableBuildingData>( entity );
+                BuildingPrefab buildingPrefab = ( BuildingPrefab ) prefab;
 
-                meta.Add(IBaseHelper.META_ZONE_LEVEL, spawnableBuildingData.m_Level);
-                meta.Add(IBaseHelper.META_ZONE_LOT_DEPTH, buildingPrefab.m_LotDepth);
-                meta.Add(IBaseHelper.META_ZONE_LOT_WIDTH, buildingPrefab.m_LotWidth);
-                meta.Add(IBaseHelper.META_ZONE_LOT_SUM, buildingPrefab.m_LotDepth * buildingPrefab.m_LotWidth);
-            } catch (Exception e)
+                meta.Add( IBaseHelper.META_ZONE_LEVEL, spawnableBuildingData.m_Level );
+                meta.Add( IBaseHelper.META_ZONE_LOT_DEPTH, buildingPrefab.m_LotDepth );
+                meta.Add( IBaseHelper.META_ZONE_LOT_WIDTH, buildingPrefab.m_LotWidth );
+                meta.Add( IBaseHelper.META_ZONE_LOT_SUM, buildingPrefab.m_LotDepth * buildingPrefab.m_LotWidth );
+
+                var placeableObject = prefab.GetComponent<PlaceableObject>( );
+
+                if ( placeableObject != null )
+                {
+                    meta.Add( "Cost", placeableObject.m_ConstructionCost );
+                    meta.Add( "XPReward", placeableObject.m_XPReward );
+                }
+            }
+            catch ( Exception e )
             {
-                UnityEngine.Debug.Log("ZoneBuildingHelper.CreateMeta: " + e);
+                UnityEngine.Debug.Log( "ZoneBuildingHelper.CreateMeta: " + e );
             }
 
             return meta;
         }
 
-        public List<string> CreateTags(PrefabBase prefab, Entity entity)
+        public List<string> CreateTags( PrefabBase prefab, Entity entity )
         {
-            List<string> tags = new List<string>();
+            List<string> tags = new List<string>( );
 
-            if (entityManager == null)
+            if ( entityManager == null )
                 return tags;
 
-            SpawnableBuildingData spawnableBuildingData = entityManager.GetComponentData<SpawnableBuildingData>(entity);
-            ZoneData zoneData = entityManager.GetComponentData<ZoneData>(spawnableBuildingData.m_ZonePrefab);
+            SpawnableBuildingData spawnableBuildingData = entityManager.GetComponentData<SpawnableBuildingData>( entity );
+            ZoneData zoneData = entityManager.GetComponentData<ZoneData>( spawnableBuildingData.m_ZonePrefab );
             var zonePrefab = World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<PrefabSystem>( )
                 .GetPrefab<ZonePrefab>( spawnableBuildingData.m_ZonePrefab );
 
             tags.Add( "zones" );
 
-            switch ( zoneData.m_AreaType)
+            switch ( zoneData.m_AreaType )
             {
                 case Game.Zones.AreaType.Commercial:
                     _PrefabType = "ZoneCommercial";
@@ -63,7 +72,7 @@ namespace FindStuff.Helper
                     tags.Add( zonePrefab.m_Office ? "office" : "industrial" );
                     break;
             }
-            
+
             var name = zonePrefab.name;
             var theme = "";
 
@@ -93,15 +102,15 @@ namespace FindStuff.Helper
             return tags;
         }
 
-        public bool IsValidPrefab(PrefabBase prefab, Entity entity)
+        public bool IsValidPrefab( PrefabBase prefab, Entity entity )
         {
-            if (entityManager == null || entity == Entity.Null)
+            if ( entityManager == null || entity == Entity.Null )
                 return false;
 
             return prefab is BuildingPrefab
-                && entityManager.TryGetComponent(entity, out SpawnableBuildingData spawnableBuildingData)
+                && entityManager.TryGetComponent( entity, out SpawnableBuildingData spawnableBuildingData )
                 && spawnableBuildingData.m_ZonePrefab != Entity.Null
-                && entityManager.HasComponent<ZoneData>(spawnableBuildingData.m_ZonePrefab);
+                && entityManager.HasComponent<ZoneData>( spawnableBuildingData.m_ZonePrefab );
         }
 
         public string GetZoneTypeIcon( PrefabBase prefab, Entity entity )
@@ -112,7 +121,7 @@ namespace FindStuff.Helper
                 && entityManager.TryGetComponent<ZoneData>( spawnableBuildingData.m_ZonePrefab, out var zoneData ) )
             {
                 var zonePrefab = World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<PrefabSystem>( ).GetPrefab<ZonePrefab>( spawnableBuildingData.m_ZonePrefab );
-                
+
                 var name = zonePrefab.name;
 
                 if ( name.StartsWith( "EU " ) || name.StartsWith( "NA " ) )
@@ -132,6 +141,11 @@ namespace FindStuff.Helper
                 return $"Media/Game/Icons/{name}.svg";
             }
             return null;
+        }
+
+        public bool IsExpertMode( PrefabBase prefab, Entity entity )
+        {
+            return false;
         }
     }
 }

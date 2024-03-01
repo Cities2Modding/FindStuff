@@ -1,4 +1,5 @@
 ﻿using Colossal.Entities;
+using Colossal.Mathematics;
 using FindStuff.UI;
 using Game.Buildings;
 using Game.Common;
@@ -89,7 +90,27 @@ namespace FindStuff.Systems
                     var yellow = new UnityEngine.Color( 1f, 1f, 0f, 0.2f );
 
                     if ( EntityManager.TryGetComponent<Game.Objects.Transform>( entity, out var transform ) )
-                        _overlay.DrawCircle( yellow, transform.m_Position, 8f );
+                    {
+                        var pos = new Unity.Mathematics.float3( );
+                        var bounds = new Bounds3( );
+
+                        if ( _prefabSystem.TryGetComponentData<ObjectGeometryData>( prefabBase, out var geometryData ) )
+                        {
+                            pos.y -= geometryData.m_Pivot.y;
+                            bounds = geometryData.m_Bounds;
+                        }
+
+                        if ( _prefabSystem.TryGetComponentData<PlaceableObjectData>( prefabBase, out var objectData ) )
+                        {
+                            pos.y -= objectData.m_PlacementOffset.y;
+                            if ( ( objectData.m_Flags & Game.Objects.PlacementFlags.Hanging ) != Game.Objects.PlacementFlags.None )
+                                pos.y += bounds.max.y;
+                        }
+
+                        var sizeXY = bounds.xy.max - bounds.xy.min;
+                        var size = ( sizeXY.x + sizeXY.y ) / 2f;
+                        _overlay.DrawCircle( yellow, transform.m_Position, size > 0 ? size : 8f );
+                    }
 
                     if ( EntityManager.TryGetComponent( entity, out Curve curve ) &&
                         EntityManager.TryGetComponent<Composition>( entity, out var composition ) &&
@@ -164,6 +185,8 @@ namespace FindStuff.Systems
             return EntityManager.HasComponent<Building>( entity ) ||
                 EntityManager.HasComponent<Vehicle>( entity ) ||
                 EntityManager.HasComponent<Game.Objects.Tree>( entity ) ||
+                ( EntityManager.HasComponent<Game.Objects.Object>( entity ) &&
+                EntityManager.HasComponent<SpawnableObjectData>( entity ) ) ||
                 EntityManager.HasComponent<Node>( entity ) ||
                 EntityManager.HasComponent<Edge>( entity ) ||
                 EntityManager.HasComponent<Plant>( entity ) ||

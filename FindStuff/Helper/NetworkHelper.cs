@@ -5,7 +5,7 @@ using Unity.Entities;
 
 namespace FindStuff.Helper
 {
-    public class NetworkHelper( EntityManager entityManager, bool ExpertMode ) : IBaseHelper
+    public class NetworkHelper( EntityManager entityManager ) : IBaseHelper
     {
         public string PrefabType
         {
@@ -23,6 +23,14 @@ namespace FindStuff.Helper
             {
                 meta.Add( IBaseHelper.META_IS_DANGEROUS, true );
                 meta.Add( IBaseHelper.META_IS_DANGEROUS_REASON, "FindStuff.Dangerous.CorruptWarning" );
+            }
+
+            var placeableObject = prefab.GetComponent<PlaceableObject>( );
+
+            if ( placeableObject != null )
+            {
+                meta.Add( "Cost", placeableObject.m_ConstructionCost );
+                meta.Add( "XPReward", placeableObject.m_XPReward );
             }
 
             return meta;
@@ -137,12 +145,14 @@ namespace FindStuff.Helper
             return tags.OrderBy( t => t ).ToList( );
         }
 
+        public bool IsExpertMode( PrefabBase prefab, Entity entity )
+        {
+            return prefab.name.ToLower( ).Contains( "invisible" );
+        }
+
         public bool IsValidPrefab( PrefabBase prefab, Entity entity )
         {
             if ( entityManager == null || entity == Entity.Null )
-                return false;
-
-            if ( prefab.name.ToLower().Contains("invisible") && !ExpertMode )
                 return false;
 
             return entityManager.HasComponent<NetData>( entity ) || prefab is StaticObjectPrefab staticObject && staticObject.components.Find( p => p is NetObject );

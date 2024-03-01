@@ -281,3 +281,5 @@ lang:
  FindStuff.Tag.accessory: Akcesorium
  FindStuff.Tag.trashbin: Kosz na Śmieci
  FindStuff.Tag.table: Stół
+
+ FindStuff.BuildingStaticUpgrade_desc: Musisz wybrać budynek w swoim mieście, aby uzyskać menu ulepszeń. Jeśli tego nie zrobisz, wybranie tej opcji będzie wydawać się nic nie robić. (To samo występuje w narzędziach deweloperskich)

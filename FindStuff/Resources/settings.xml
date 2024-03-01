@@ -15,5 +15,8 @@
 			<select selected="SearchSpeed" options="GetSearchSpeeds">
 			</select>
 		</field>
+		<field title="AutomaticUnlocks_Desc">
+			<checkbox isChecked="AutomaticUnlocks" />
+		</field>		
 	</group>
 </settings>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FindStuff.Indexing
 {
@@ -11,7 +12,13 @@ namespace FindStuff.Indexing
             set;
         }
 
-        public HashSet<int> Data
+        public string CurrentSearch
+        {
+            get;
+            set;
+        }
+
+        public HashSet<(int ID, int Score)> Data
         {
             get;
             set;
@@ -35,24 +42,38 @@ namespace FindStuff.Indexing
             set;
         }
 
-        public void Add( int prefabID, Func<string, int, bool> onDoSearch )
+        public bool SearchWords
+        {
+            get;
+            set;
+        }
+
+        public bool SearchTags
+        {
+            get;
+            set;
+        }
+
+        public void Add( int prefabID, Func<string, int, (bool IsMatch, int Score)> onDoSearch )
         {
             if ( prefabID < 0 )
                 return;
 
             var hasSearch = !string.IsNullOrEmpty( Parameters.Search );
 
-            if ( Data.Contains( prefabID ) )
+            if ( Data.Count( d => d.ID == prefabID ) > 0 )
                 return;
 
             if ( hasSearch )
             {
-                if ( onDoSearch( Parameters.Search, prefabID ) )
-                    Data.Add( prefabID );
+                var searchResult = onDoSearch( Parameters.Search, prefabID );
+
+                if ( searchResult.IsMatch )
+                    Data.Add( (prefabID, searchResult.Score) );
                 // else don't include in results
             }
             else
-                Data.Add( prefabID );
+                Data.Add( (prefabID, 0) );
         }
     }
 }

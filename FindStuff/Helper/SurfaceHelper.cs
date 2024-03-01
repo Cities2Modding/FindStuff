@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Entities;
-using static Colossal.AssetPipeline.Diagnostic.Report;
 
 namespace FindStuff.Helper
 {
@@ -64,6 +63,11 @@ namespace FindStuff.Helper
                 entityManager.HasComponent<SurfaceData>( entity ) &&
                 !prefab.name.ToLowerInvariant( ).EndsWith( "_placeholder" ) &&
                 !prefab.name.ToLowerInvariant( ).EndsWith( " placeholder" );
+        }
+
+        public bool IsExpertMode( PrefabBase prefab, Entity entity )
+        {
+            return false;
         }
     }
 }

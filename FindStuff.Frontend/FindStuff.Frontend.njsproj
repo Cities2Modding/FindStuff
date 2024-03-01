@@ -48,6 +48,7 @@
     <Content Include="src\jsx\_sub-filters.jsx" />
     <Content Include="src\jsx\_test.js.dump" />
     <Content Include="src\jsx\_toolbar-buttons.jsx" />
+    <Content Include="src\jsx\_tool-window.jsx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="src\" />

@@ -6,7 +6,6 @@ namespace FindStuff.UI
 {
     [ControllerTypes( typeof( FindStuffController ) )]
     [GooeeSettingsMenu( typeof( FindStuffSettings ) )]
-    [PluginToolbar( typeof( FindStuffController ), "OnToggleVisible", icon: "Media/Game/Icons/Zones.svg" )]
     public class FindStuffPlugin : IGooeePluginWithControllers, IGooeeChangeLog, IGooeeSettings, IGooeeLanguages, IGooeeStyleSheet
     {
         public string Name => "FindStuff";
