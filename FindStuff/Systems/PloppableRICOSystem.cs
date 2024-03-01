@@ -18,7 +18,7 @@ namespace FindStuff.Systems
 {
     public class PloppableRICOSystem : GameSystemBase
     {
-        ModificationBarrier2 _barrier;
+        ModificationBarrier5 _barrier;
         IconCommandSystem _iconCommandSystem;
         EntityQuery _freshlyPlacedBuildingsGroup;
         EntityQuery _buildingSettingsQuery;
@@ -28,7 +28,7 @@ namespace FindStuff.Systems
         {
             base.OnCreate();
 
-            _barrier = World.GetOrCreateSystemManaged<ModificationBarrier2>();
+            _barrier = World.GetOrCreateSystemManaged<ModificationBarrier5>();
             _iconCommandSystem = World.GetOrCreateSystemManaged<IconCommandSystem>();
             _freshlyPlacedBuildingsGroup = GetEntityQuery(new EntityQueryDesc
             {
