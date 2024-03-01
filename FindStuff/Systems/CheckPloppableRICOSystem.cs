@@ -56,9 +56,7 @@ namespace FindStuff.Systems
                     Icb = _iconCommandSystem.CreateCommandBuffer(),
                     EntityTypeHandle = GetEntityTypeHandle(),
                     PrefabRefTypeHandle = _makeSignatureTypeHandle.PrefabRefTypeHandle,
-                    SignatureBuildingDataLookup = _makeSignatureTypeHandle.SignatureBuildingDataLookup,
                     PloppableBuildingLookup = _makeSignatureTypeHandle.PloppableBuildingLookup,
-                    SpawnableBuildingDataLookup = _makeSignatureTypeHandle.SpawnableBuildingDataLookup,
                     CondemnedLookup = _makeSignatureTypeHandle.CondemnedLookup,
                     BuildingConfigurationData = _buildingSettingsQuery.GetSingleton<BuildingConfigurationData>(),
                 };
@@ -79,16 +77,14 @@ namespace FindStuff.Systems
             public void AssignHandles(ref SystemState state)
             {
                 PrefabRefTypeHandle = state.GetComponentTypeHandle<PrefabRef>();
-                SignatureBuildingDataLookup = state.GetComponentLookup<SignatureBuildingData>();
                 PloppableBuildingLookup = state.GetComponentLookup<PloppableBuilding>();
-                SpawnableBuildingDataLookup = state.GetComponentLookup<SpawnableBuildingData>();
+                BuildingConditionLookup = state.GetComponentLookup<BuildingCondition>();
                 CondemnedLookup = state.GetComponentLookup<Condemned>();
             }
 
             public ComponentTypeHandle<PrefabRef> PrefabRefTypeHandle;
-            public ComponentLookup<SignatureBuildingData> SignatureBuildingDataLookup;
             public ComponentLookup<PloppableBuilding> PloppableBuildingLookup;
-            public ComponentLookup<SpawnableBuildingData> SpawnableBuildingDataLookup;
+            public ComponentLookup<BuildingCondition> BuildingConditionLookup;
             public ComponentLookup<Condemned> CondemnedLookup;
         }
 
@@ -98,9 +94,7 @@ namespace FindStuff.Systems
             public IconCommandBuffer Icb;
             public EntityTypeHandle EntityTypeHandle;
             public ComponentTypeHandle<PrefabRef> PrefabRefTypeHandle;
-            public ComponentLookup<SignatureBuildingData> SignatureBuildingDataLookup;
             public ComponentLookup<PloppableBuilding> PloppableBuildingLookup;
-            public ComponentLookup<SpawnableBuildingData> SpawnableBuildingDataLookup;
             public ComponentLookup<Condemned> CondemnedLookup;
             public BuildingConfigurationData BuildingConfigurationData;
 
@@ -117,21 +111,10 @@ namespace FindStuff.Systems
                     Entity entity = entities[i];
                     Entity prefab = prefabs[i].m_Prefab;
 
-                    if (!SignatureBuildingDataLookup.HasComponent(prefab) && !PloppableBuildingLookup.HasComponent(prefab))
+                    if (!PloppableBuildingLookup.HasComponent(prefab))
                     {
-                        // Add the signature building data and ploppable building components
-                        Ecb.AddComponent<SignatureBuildingData>(i, prefab);
+                        // Add ploppable building component
                         Ecb.AddComponent<PloppableBuilding>(i, prefab);
-
-                        // Set the level to 5
-                        if (SpawnableBuildingDataLookup.TryGetComponent(prefab, out SpawnableBuildingData spawnableBuildingData))
-                        {
-                            if (spawnableBuildingData.m_Level < 5)
-                            {
-                                spawnableBuildingData.m_Level = 5;
-                                Ecb.SetComponent(i, prefab, spawnableBuildingData);
-                            }
-                        }
 
                         if (CondemnedLookup.HasComponent(entity))
                         {

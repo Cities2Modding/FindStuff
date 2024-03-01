@@ -7,6 +7,7 @@ using Game.Common;
 using Game.Notifications;
 using Game.Objects;
 using Game.Prefabs;
+using Game.Simulation;
 using Game.Tools;
 using System.Runtime.CompilerServices;
 using Unity.Burst.Intrinsics;
@@ -20,9 +21,21 @@ namespace FindStuff.Systems
     {
         ModificationBarrier5 _barrier;
         IconCommandSystem _iconCommandSystem;
+        SimulationSystem _simulationSystem;
         EntityQuery _freshlyPlacedBuildingsGroup;
         EntityQuery _buildingSettingsQuery;
+        EntityQuery _ploppableBuildlingsGroup;
         MakePloppableTypeHandle _makePloppableTypeHandle;
+        StopLevelingUpDownTypeHandle _stopLevelingUpDownTypeHandle;
+
+        public static readonly int kComponentVersion = 1;
+
+        public static readonly int kUpdatesPerDay = 16;
+
+        public override int GetUpdateInterval(SystemUpdatePhase phase)
+        {
+            return 262144 / (PropertyRenterSystem.kUpdatesPerDay * 16);
+        }
 
         protected override void OnCreate()
         {
@@ -30,6 +43,7 @@ namespace FindStuff.Systems
 
             _barrier = World.GetOrCreateSystemManaged<ModificationBarrier5>();
             _iconCommandSystem = World.GetOrCreateSystemManaged<IconCommandSystem>();
+            _simulationSystem = World.GetOrCreateSystemManaged<SimulationSystem>();
             _freshlyPlacedBuildingsGroup = GetEntityQuery(new EntityQueryDesc
             {
                 All =
@@ -55,8 +69,22 @@ namespace FindStuff.Systems
                 ],
             });
 
+            _ploppableBuildlingsGroup = GetEntityQuery(new EntityQueryDesc
+            {
+                All =
+                [
+                    ComponentType.ReadOnly<PloppableBuildingData>(),
+                    ComponentType.ReadOnly<UpdateFrame>(),
+                ],
+                None =
+                [
+                    ComponentType.Exclude<Deleted>(),
+                    ComponentType.Exclude<Temp>(),
+                ],
+            });
+
             _buildingSettingsQuery = GetEntityQuery(new ComponentType[] { ComponentType.ReadOnly<BuildingConfigurationData>() });
-            RequireForUpdate(_freshlyPlacedBuildingsGroup);
+            RequireAnyForUpdate(_freshlyPlacedBuildingsGroup, _ploppableBuildlingsGroup);
         }
 
         protected override void OnGameLoadingComplete(Purpose purpose, GameMode mode)
@@ -66,6 +94,7 @@ namespace FindStuff.Systems
 
         protected override void OnUpdate()
         {
+            uint updateFrame = SimulationUtils.GetUpdateFrame(_simulationSystem.frameIndex, kUpdatesPerDay, 16);
 
             if (!_freshlyPlacedBuildingsGroup.IsEmptyIgnoreFilter && !_buildingSettingsQuery.IsEmptyIgnoreFilter)
             {
@@ -78,12 +107,31 @@ namespace FindStuff.Systems
                     EntityHandle = _makePloppableTypeHandle.EntityTypeHandle,
                     PrefabRefTypeHandle = _makePloppableTypeHandle.PrefabRefTypeHandle,
                     PloppableBuildingLookup = _makePloppableTypeHandle.PloppableBuildingLookup,
+                    BuildingConditionLookup = _makePloppableTypeHandle.BuildingConditionLookup,
                     CondemnedLookup = _makePloppableTypeHandle.CondemnedLookup,
                 };
                 
                 JobHandle makePloppableJobHandle = makePloppableJob.ScheduleParallel(_freshlyPlacedBuildingsGroup, Dependency);
                 _barrier.AddJobHandleForProducer(makePloppableJobHandle);
                 Dependency = makePloppableJobHandle;
+            }
+
+            if (!_ploppableBuildlingsGroup.IsEmptyIgnoreFilter)
+            {
+                _stopLevelingUpDownTypeHandle.AssignHandles(ref CheckedStateRef);
+                StopLevelingUpDownJob stopLevelingUpDownJob = new()
+                {
+                    Ecb = _barrier.CreateCommandBuffer().AsParallelWriter(),
+                    EntityHandle = _stopLevelingUpDownTypeHandle.EntityTypeHandle,
+                    PloppableBuildingDataTypeHandle = _stopLevelingUpDownTypeHandle.PloppableBuildingDataTypeHandle,
+                    UpdateFrameType = GetSharedComponentTypeHandle<UpdateFrame>(),
+                    UpdateFrameIndex = updateFrame,
+                    BuildingConditionLookup = _stopLevelingUpDownTypeHandle.BuildingConditionLookup,
+                };
+
+                JobHandle stopLevelingUpDownHandle = stopLevelingUpDownJob.ScheduleParallel(_ploppableBuildlingsGroup, Dependency);
+                _barrier.AddJobHandleForProducer(stopLevelingUpDownHandle);
+                Dependency = stopLevelingUpDownHandle;
             }
         }
 
@@ -95,12 +143,14 @@ namespace FindStuff.Systems
                 EntityTypeHandle = state.GetEntityTypeHandle();
                 PrefabRefTypeHandle = state.GetComponentTypeHandle<PrefabRef>();
                 PloppableBuildingLookup = state.GetComponentLookup<PloppableBuilding>();
+                BuildingConditionLookup = state.GetComponentLookup<BuildingCondition>();
                 CondemnedLookup = state.GetComponentLookup<Condemned>();
             }
 
             public EntityTypeHandle EntityTypeHandle;
             public ComponentTypeHandle<PrefabRef> PrefabRefTypeHandle;
             public ComponentLookup<PloppableBuilding> PloppableBuildingLookup;
+            public ComponentLookup<BuildingCondition> BuildingConditionLookup;
             public ComponentLookup<Condemned> CondemnedLookup;
         }
 
@@ -112,6 +162,7 @@ namespace FindStuff.Systems
             public EntityTypeHandle EntityHandle;
             public ComponentTypeHandle<PrefabRef> PrefabRefTypeHandle;
             public ComponentLookup<PloppableBuilding> PloppableBuildingLookup;
+            public ComponentLookup<BuildingCondition> BuildingConditionLookup;
             public ComponentLookup<Condemned> CondemnedLookup;
 
             public void Execute(in ArchetypeChunk chunk,
@@ -128,7 +179,12 @@ namespace FindStuff.Systems
                     Entity prefab = prefabs[i].m_Prefab;
                     if (PloppableBuildingLookup.HasComponent(prefab) && entity != Entity.Null)
                     {
-                        Ecb.AddComponent<PloppableBuildingData>(i, entity);
+                        PloppableBuildingData ploppableBuildingData = new()
+                        {
+                            version = kComponentVersion,
+                            historical = false,
+                        };
+                        Ecb.AddComponent(i, entity, ploppableBuildingData);
 
                         if (CondemnedLookup.HasComponent(entity))
                         {
@@ -139,6 +195,59 @@ namespace FindStuff.Systems
                 }
 
                 prefabs.Dispose();
+                entities.Dispose();
+            }
+        }
+
+        public struct StopLevelingUpDownTypeHandle
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            public void AssignHandles(ref SystemState state)
+            {
+                EntityTypeHandle = state.GetEntityTypeHandle();
+                PloppableBuildingDataTypeHandle = state.GetComponentTypeHandle<PloppableBuildingData>();
+                BuildingConditionLookup = state.GetComponentLookup<BuildingCondition>();
+            }
+
+            public EntityTypeHandle EntityTypeHandle;
+            public ComponentTypeHandle<PloppableBuildingData> PloppableBuildingDataTypeHandle;
+            public ComponentLookup<BuildingCondition> BuildingConditionLookup;
+        }
+
+        public struct StopLevelingUpDownJob : IJobChunk
+        {
+            public EntityCommandBuffer.ParallelWriter Ecb;
+            public EntityTypeHandle EntityHandle;
+            public ComponentTypeHandle<PloppableBuildingData> PloppableBuildingDataTypeHandle;
+            public ComponentLookup<BuildingCondition> BuildingConditionLookup;
+
+            [ReadOnly]
+            public SharedComponentTypeHandle<UpdateFrame> UpdateFrameType;
+
+            public uint UpdateFrameIndex;
+
+            public void Execute(in ArchetypeChunk chunk, int unfilteredChunkIndex, bool useEnabledMask, in v128 chunkEnabledMask)
+            {
+                if (chunk.GetSharedComponent(UpdateFrameType).m_Index != UpdateFrameIndex)
+                {
+                    return;
+                }
+
+                NativeArray<Entity> entities = chunk.GetNativeArray(EntityHandle);
+                NativeArray<PloppableBuildingData> ploppableBuildings = chunk.GetNativeArray(ref PloppableBuildingDataTypeHandle);
+                ChunkEntityEnumerator enumerator = new(useEnabledMask, chunkEnabledMask, chunk.Count);
+                while (enumerator.NextEntityIndex(out int i))
+                {
+                    Entity entity = entities[i];
+                    PloppableBuildingData ploppableBuildingData = ploppableBuildings[i];
+                    if (ploppableBuildingData.historical && BuildingConditionLookup.TryGetComponent(entity, out BuildingCondition buildingCondition))
+                    {
+                        // Reset the building condition to 100 so buildings do not level up or down (historical)
+                        buildingCondition.m_Condition = 100;
+                        Ecb.SetComponent(i, entity, buildingCondition);
+                    }
+                }
+
                 entities.Dispose();
             }
         }
@@ -160,31 +269,13 @@ namespace FindStuff.Systems
 
         public void MakePloppable(Entity entity)
         {
-            if (EntityManager.TryGetComponent(entity, out SpawnableBuildingData spawnableBuildingData)) {
-                EntityCommandBuffer buffer = _barrier.CreateCommandBuffer();
-                buffer.AddComponent(entity, new PloppableBuilding());
-
-                // Add signature building data to the zone prefab to be ignored by the ZoneCheckSystem making them condemned
-                buffer.AddComponent(entity, new SignatureBuildingData());
-
-                // Set to level 5 to stop the buildings being part of certain simulation systems (signature buildings use the same technique)
-                spawnableBuildingData.m_Level = 5;
-                buffer.SetComponent(entity, spawnableBuildingData);
-            }
+            EntityCommandBuffer buffer = _barrier.CreateCommandBuffer();
+            buffer.AddComponent(entity, new PloppableBuilding());
         }
 
         public void MakePloppable(Entity entity, EntityCommandBuffer commandBuffer)
         {
-            if (EntityManager.TryGetComponent(entity, out SpawnableBuildingData spawnableBuildingData)) {
-                commandBuffer.AddComponent(entity, new PloppableBuilding());
-
-                // Add signature building data to the zone prefab to be ignored by the ZoneCheckSystem making them condemned
-                commandBuffer.AddComponent(entity, new SignatureBuildingData());
-
-                // Set to level 5 to stop the buildings being part of certain simulation systems (signature buildings use the same technique)
-                spawnableBuildingData.m_Level = 5;
-                commandBuffer.SetComponent(entity, spawnableBuildingData);
-            }
+            commandBuffer.AddComponent(entity, new PloppableBuilding());
         }
     }
 }

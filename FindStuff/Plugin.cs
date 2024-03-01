@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace FindStuff
 {
-    [BepInPlugin( MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, "0.0.9" )]
+    [BepInPlugin( MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, "0.0.10" )]
     public class Plugin : BaseUnityPlugin
     {
         private void Awake( )

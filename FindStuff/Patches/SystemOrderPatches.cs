@@ -1,5 +1,6 @@
 ﻿using FindStuff.Systems;
 using Game;
+using Game.Buildings;
 using Game.Common;
 using HarmonyLib;
 
@@ -14,6 +15,7 @@ namespace FindStuff.Patches
         {
             updateSystem?.UpdateAt<CheckPloppableRICOSystem>(SystemUpdatePhase.GameSimulation);
             updateSystem?.UpdateAt<PloppableRICOSystem>(SystemUpdatePhase.Modification5);
+            updateSystem?.UpdateAt<CustomZoneCheckSystem>(SystemUpdatePhase.ModificationEnd);
         }
     }
 }
