@@ -23,6 +23,8 @@ lang:
   FindStuff.FindStuffSettings.SearchSpeed.High: 高
   FindStuff.FindStuffSettings.SearchSpeed.VeryHigh: 非常高
 
+  FindStuff.Options.Historical: 历史
+  FindStuff.Options.Historical_desc: 停用建筑物的平整度，使其在视觉上不会发生变化。在 CS2 修改社区中通常称为 "历史"。
   FindStuff.View: 查看
   FindStuff.Filter: 篩選
   FindStuff.OrderBy: 排序

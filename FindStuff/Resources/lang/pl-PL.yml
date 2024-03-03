@@ -23,6 +23,8 @@ lang:
  FindStuff.FindStuffSettings.SearchSpeed.High: Wysoko
  FindStuff.FindStuffSettings.SearchSpeed.VeryHigh: Bardzo Wysoko
 
+ FindStuff.Options.Historical: Historyczny
+ FindStuff.Options.Historical_desc: Dezaktywuje poziomowanie budynku, aby nie zmieniał się wizualnie. Zwykle nazywana "historyczną" w społeczności modderów CS2.
  FindStuff.View: Widok
  FindStuff.Filter: Filtr
  FindStuff.OrderBy: Sortuj

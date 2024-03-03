@@ -24,7 +24,7 @@ using UnityEngine.InputSystem;
 
 namespace FindStuff.UI
 {
-    [ControllerDepends( SystemUpdatePhase.ToolUpdate, typeof( PickerToolSystem ) )]
+    [ControllerDepends(SystemUpdatePhase.ToolUpdate, typeof(PickerToolSystem))]
     public class FindStuffController : Controller<FindStuffViewModel>
     {
         private bool IsPickingShortcut
@@ -46,6 +46,14 @@ namespace FindStuff.UI
             get
             {
                 return Model.EnableShortcut;
+            }
+        }
+
+        public bool IsHistorical
+        {
+            get
+            {
+                return Model.IsHistorical;
             }
         }
 
@@ -115,6 +123,7 @@ namespace FindStuff.UI
             model.OrderByAscending = _config.OrderByAscending;
             model.EnableShortcut = _config.EnableShortcut;
             model.ExpertMode = _config.ExpertMode;
+            model.IsHistorical = _config.IsHistorical;
             model.OperationMode = Enum.Parse<ViewOperationMode>( _modSettings.OperationMode );
 
             if ( _config.RecentSearches == null )
@@ -701,7 +710,8 @@ namespace FindStuff.UI
                 _config.SubFilter != Model.SubFilter ||
                 _config.ExpertMode != Model.ExpertMode ||
                 _config.EnableShortcut != Model.EnableShortcut ||
-                _config.OrderByAscending != Model.OrderByAscending )
+                _config.OrderByAscending != Model.OrderByAscending ||
+                _config.IsHistorical != Model.IsHistorical)
             {
                 _config.ViewMode = Model.ViewMode;
                 _config.Filter = Model.Filter;
@@ -709,6 +719,7 @@ namespace FindStuff.UI
                 _config.OrderByAscending = Model.OrderByAscending;
                 _config.ExpertMode = Model.ExpertMode;
                 _config.EnableShortcut = Model.EnableShortcut;
+                _config.IsHistorical = Model.IsHistorical;
                 _config.Save( );
             }
         }

@@ -20,6 +20,12 @@ namespace FindStuff.UI
             set;
         }
 
+        public bool IsHistorical
+        {
+            get;
+            set;
+        } = false;
+
         public List<Category> Categories
         {
             get;

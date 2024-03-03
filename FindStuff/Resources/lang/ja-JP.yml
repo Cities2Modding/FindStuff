@@ -23,6 +23,8 @@ lang:
  FindStuff.FindStuffSettings.SearchSpeed.High: 高い
  FindStuff.FindStuffSettings.SearchSpeed.VeryHigh: 非常に高い
 
+ FindStuff.Options.Historical: 歴史的
+ FindStuff.Options.Historical_desc: 建物のレベリングを無効にして、視覚的に変化しないようにする。通常、CS2改造コミュニティでは「ヒストリカル」と呼ばれる。
  FindStuff.View: 表示
  FindStuff.Filter: フィルター
  FindStuff.OrderBy: 並び替え

@@ -23,6 +23,8 @@ lang:
  FindStuff.FindStuffSettings.SearchSpeed.High: Высокая
  FindStuff.FindStuffSettings.SearchSpeed.VeryHigh: Очень Высокая
 
+ FindStuff.Options.Historical: Исторический
+ FindStuff.Options.Historical_desc: Деактивирует выравнивание здания, чтобы оно не менялось визуально. В сообществе моддеров CS2 обычно называется "Историческим".
  FindStuff.View: Просмотр
  FindStuff.Filter: Фильтр
  FindStuff.OrderBy: Сортировать

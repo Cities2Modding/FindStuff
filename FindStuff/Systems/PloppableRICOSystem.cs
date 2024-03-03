@@ -1,6 +1,7 @@
 ﻿using Colossal.Entities;
 using Colossal.Serialization.Entities;
 using FindStuff.Prefabs;
+using FindStuff.UI;
 using Game;
 using Game.Buildings;
 using Game.Common;
@@ -22,6 +23,7 @@ namespace FindStuff.Systems
         ModificationBarrier5 _barrier;
         IconCommandSystem _iconCommandSystem;
         SimulationSystem _simulationSystem;
+        FindStuffController _controller;
         EntityQuery _freshlyPlacedBuildingsGroup;
         EntityQuery _buildingSettingsQuery;
         EntityQuery _ploppableBuildlingsGroup;
@@ -44,6 +46,8 @@ namespace FindStuff.Systems
             _barrier = World.GetOrCreateSystemManaged<ModificationBarrier5>();
             _iconCommandSystem = World.GetOrCreateSystemManaged<IconCommandSystem>();
             _simulationSystem = World.GetOrCreateSystemManaged<SimulationSystem>();
+            _controller = World.GetOrCreateSystemManaged<FindStuffController>();
+
             _freshlyPlacedBuildingsGroup = GetEntityQuery(new EntityQueryDesc
             {
                 All =
@@ -107,7 +111,7 @@ namespace FindStuff.Systems
                     EntityHandle = _makePloppableTypeHandle.EntityTypeHandle,
                     PrefabRefTypeHandle = _makePloppableTypeHandle.PrefabRefTypeHandle,
                     PloppableBuildingLookup = _makePloppableTypeHandle.PloppableBuildingLookup,
-                    BuildingConditionLookup = _makePloppableTypeHandle.BuildingConditionLookup,
+                    AllowLeveling = !_controller.IsHistorical,
                     CondemnedLookup = _makePloppableTypeHandle.CondemnedLookup,
                 };
                 
@@ -162,8 +166,8 @@ namespace FindStuff.Systems
             public EntityTypeHandle EntityHandle;
             public ComponentTypeHandle<PrefabRef> PrefabRefTypeHandle;
             public ComponentLookup<PloppableBuilding> PloppableBuildingLookup;
-            public ComponentLookup<BuildingCondition> BuildingConditionLookup;
             public ComponentLookup<Condemned> CondemnedLookup;
+            public bool AllowLeveling;
 
             public void Execute(in ArchetypeChunk chunk,
             int unfilteredChunkIndex,
@@ -182,7 +186,7 @@ namespace FindStuff.Systems
                         PloppableBuildingData ploppableBuildingData = new()
                         {
                             version = kComponentVersion,
-                            historical = false,
+                            allowLeveling = AllowLeveling,
                         };
                         Ecb.AddComponent(i, entity, ploppableBuildingData);
 
@@ -240,7 +244,7 @@ namespace FindStuff.Systems
                 {
                     Entity entity = entities[i];
                     PloppableBuildingData ploppableBuildingData = ploppableBuildings[i];
-                    if (ploppableBuildingData.historical && BuildingConditionLookup.TryGetComponent(entity, out BuildingCondition buildingCondition))
+                    if (ploppableBuildingData.allowLeveling && BuildingConditionLookup.TryGetComponent(entity, out BuildingCondition buildingCondition))
                     {
                         // Reset the building condition to 100 so buildings do not level up or down (historical)
                         buildingCondition.m_Condition = 100;
