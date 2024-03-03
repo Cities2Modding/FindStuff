@@ -30,9 +30,7 @@ const FiltersWindow = ({ compact = null, model, update, _L, onDoUpdate }) => {
     return <div className={"bg-panel text-light rounded-sm" + (compact ? " align-self-end w-x p-2" : " p-4") + (isVertical ? " mb-2" : "")}>
         {!compact && model.Filter == "Zones" ?
             <div className="d-flex flex-row align-items-center justify-content-center fs-tool-text mb-4">
-                <div className="flex-1">
-                    Historical
-                </div>
+                <div className="flex-1">{_L("FindStuff.Options.Historical")}</div>
                 <div className="w-x" ref={historicalCheckboxRef}>
                     <CheckBox checked={model.IsHistorical} onToggle={() => update("IsHistorical", !model.IsHistorical)} />
                 </div>
