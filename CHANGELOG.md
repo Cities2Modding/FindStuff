@@ -1,6 +1,7 @@
 ### v0.0.10
 - Fixes bug not spawning buildings which have been plopped with Ploppable RICO before
 - Adds historical option to placing ploppable rico buildings
+- Adds random props for rocks, boulders, benches, and other props
 ### v0.0.9
 - Fixed placing ploppable rico buildings in pause mode
 ### v0.0.8
