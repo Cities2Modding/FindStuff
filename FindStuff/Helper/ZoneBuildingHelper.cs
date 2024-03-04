@@ -55,6 +55,9 @@ namespace FindStuff.Helper
             var zonePrefab = World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<PrefabSystem>( )
                 .GetPrefab<ZonePrefab>( spawnableBuildingData.m_ZonePrefab );
 
+            var buildingPrefab = ( BuildingPrefab ) prefab;
+
+            tags.Add( $"{buildingPrefab.m_LotWidth}x{buildingPrefab.m_LotDepth}" );
             tags.Add( "zones" );
 
             switch ( zoneData.m_AreaType )

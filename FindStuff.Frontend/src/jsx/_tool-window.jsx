@@ -114,6 +114,11 @@ const ToolWindow = ({ type, model, update, trigger, _L }) => {
 
     const onSelectTool = (tool) => {
         const isDefaultTool = tool.id === "Default Tool";
+        const isPickerTool = tool.id === "PickStuff";
+
+        // Do nothing if it's the picker tool
+        if (isPickerTool)
+            return;
 
         if (model.OperationMode === "HideFindStuff" || model.OperationMode === "HideFindStuffSideMenu") {
             if (!isDefaultTool) {
