@@ -5,6 +5,7 @@ using FindStuff.UI;
 using Game;
 using Game.Buildings;
 using Game.Common;
+using Game.Companies;
 using Game.Notifications;
 using Game.Objects;
 using Game.Prefabs;
@@ -32,11 +33,11 @@ namespace FindStuff.Systems
 
         public static readonly int kComponentVersion = 1;
 
-        public static readonly int kUpdatesPerDay = 16;
+        public static readonly int kUpdatesPerDay = 128;
 
         public override int GetUpdateInterval(SystemUpdatePhase phase)
         {
-            return 262144 / (PropertyRenterSystem.kUpdatesPerDay * 16);
+            return 262144 / (PropertyRenterSystem.kUpdatesPerDay * 128);
         }
 
         protected override void OnCreate()
@@ -98,7 +99,7 @@ namespace FindStuff.Systems
 
         protected override void OnUpdate()
         {
-            uint updateFrame = SimulationUtils.GetUpdateFrame(_simulationSystem.frameIndex, kUpdatesPerDay, 16);
+            uint updateFrame = SimulationUtils.GetUpdateFrame(_simulationSystem.frameIndex, kUpdatesPerDay, 128);
 
             if (!_freshlyPlacedBuildingsGroup.IsEmptyIgnoreFilter && !_buildingSettingsQuery.IsEmptyIgnoreFilter)
             {
@@ -131,6 +132,8 @@ namespace FindStuff.Systems
                     UpdateFrameType = GetSharedComponentTypeHandle<UpdateFrame>(),
                     UpdateFrameIndex = updateFrame,
                     BuildingConditionLookup = _stopLevelingUpDownTypeHandle.BuildingConditionLookup,
+                    RenterBufferLookup = _stopLevelingUpDownTypeHandle.RenterBufferLookup,
+                    ProfitabilityLookup = _stopLevelingUpDownTypeHandle.ProfitabilityLookup,
                 };
 
                 JobHandle stopLevelingUpDownHandle = stopLevelingUpDownJob.ScheduleParallel(_ploppableBuildlingsGroup, Dependency);
@@ -211,11 +214,15 @@ namespace FindStuff.Systems
                 EntityTypeHandle = state.GetEntityTypeHandle();
                 PloppableBuildingDataTypeHandle = state.GetComponentTypeHandle<PloppableBuildingData>();
                 BuildingConditionLookup = state.GetComponentLookup<BuildingCondition>();
+                ProfitabilityLookup = state.GetComponentLookup<Profitability>();
+                RenterBufferLookup = state.GetBufferLookup<Renter>();
             }
 
             public EntityTypeHandle EntityTypeHandle;
             public ComponentTypeHandle<PloppableBuildingData> PloppableBuildingDataTypeHandle;
             public ComponentLookup<BuildingCondition> BuildingConditionLookup;
+            public BufferLookup<Renter> RenterBufferLookup;
+            public ComponentLookup<Profitability> ProfitabilityLookup;
         }
 
         public struct StopLevelingUpDownJob : IJobChunk
@@ -224,6 +231,8 @@ namespace FindStuff.Systems
             public EntityTypeHandle EntityHandle;
             public ComponentTypeHandle<PloppableBuildingData> PloppableBuildingDataTypeHandle;
             public ComponentLookup<BuildingCondition> BuildingConditionLookup;
+            public BufferLookup<Renter> RenterBufferLookup;
+            public ComponentLookup<Profitability> ProfitabilityLookup;
 
             [ReadOnly]
             public SharedComponentTypeHandle<UpdateFrame> UpdateFrameType;
@@ -243,12 +252,24 @@ namespace FindStuff.Systems
                 while (enumerator.NextEntityIndex(out int i))
                 {
                     Entity entity = entities[i];
-                    PloppableBuildingData ploppableBuildingData = ploppableBuildings[i];
-                    if (ploppableBuildingData.allowLeveling && BuildingConditionLookup.TryGetComponent(entity, out BuildingCondition buildingCondition))
+                    if (ploppableBuildings[i].allowLeveling == false && BuildingConditionLookup.TryGetComponent(entity, out BuildingCondition buildingCondition))
                     {
-                        // Reset the building condition to 100 so buildings do not level up or down (historical)
-                        buildingCondition.m_Condition = 100;
+                        // Reset the building condition to 0 so buildings do not level up or down (historical)
+                        buildingCondition.m_Condition = 0;
                         Ecb.SetComponent(i, entity, buildingCondition);
+
+                        if (RenterBufferLookup.TryGetBuffer(entity, out DynamicBuffer<Renter> renters))
+                        {
+                            for (int j = 0; j < renters.Length; j++)
+                            {
+                                Renter renter = renters[j];
+                                if (ProfitabilityLookup.TryGetComponent(renter.m_Renter, out Profitability profitability))
+                                {
+                                    profitability.m_Profitability = 5;
+                                    Ecb.SetComponent(i, renter.m_Renter, profitability);
+                                }
+                            }
+                        }
                     }
                 }
 

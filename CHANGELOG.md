@@ -1,3 +1,6 @@
+### v0.0.10
+- Fixes bug not spawning buildings which have been plopped with Ploppable RICO before
+- Adds historical option to placing ploppable rico buildings
 ### v0.0.9
 - Fixed placing ploppable rico buildings in pause mode
 ### v0.0.8
