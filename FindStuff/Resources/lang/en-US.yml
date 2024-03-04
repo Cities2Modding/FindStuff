@@ -9,10 +9,13 @@ lang:
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Hold CTRL + Click to pick an object.
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: Enable Expert Mode
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: If activated you have access to potentially dangerous objects that could crash the game or corrupt save games. You should know what you are doing. Use at your own risk!
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.AutomaticUnlocks]: Automatic Unlocks
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.AutomaticUnlocks]: This will automatically unlock the asset you're picking.
 
  FindStuff.FindStuffSettings.MoveFindStuff: Move the window
  FindStuff.FindStuffSettings.HideFindStuff: Hide the window
  FindStuff.FindStuffSettings.HideAssetMenu: Override vanilla window
+ FindStuff.FindStuffSettings.HideFindStuffSideMenu: Hide the side menu
   
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.SearchSpeed]: Search Speed
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.SearchSpeed]: Configure how much resource is allocated to searching via Find Stuff. Low settings use less computer resources so searching lots of items takes longer but has less of a strain on your computer. High settings return results faster but demands more from your computer.

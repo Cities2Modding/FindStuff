@@ -9,10 +9,13 @@ lang:
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Tieni premuto CTRL + Clic per selezionare un oggetto.
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: Abilita Modalità Esperto
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: Se attivato hai accesso a oggetti potenzialmente pericolosi che potrebbero far crashare il gioco o corrompere i salvataggi. Dovresti sapere cosa stai facendo. Usalo a tuo rischio!
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.AutomaticUnlocks]: Sblocco automatico
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.AutomaticUnlocks]: Questo sbloccherà automaticamente la risorsa che si sta cercando di piazzare.
 
  FindStuff.FindStuffSettings.MoveFindStuff: Sposta la finestra
  FindStuff.FindStuffSettings.HideFindStuff: Nascondi la finestra
  FindStuff.FindStuffSettings.HideAssetMenu: Sovrascrivi finestra base
+ FindStuff.FindStuffSettings.HideFindStuffSideMenu: Nascondere il menu laterale
   
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.SearchSpeed]: Velocità di Ricerca
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.SearchSpeed]: Configura quanta risorsa è allocata alla ricerca tramite Trova Oggetti. Impostazioni basse usano meno risorse del computer quindi cercare molti oggetti richiede più tempo ma ha meno impatto sul tuo computer. Impostazioni alte restituiscono risultati più velocemente ma richiedono più dal tuo computer.

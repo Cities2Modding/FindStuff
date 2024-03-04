@@ -9,10 +9,13 @@ lang:
   Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: 按住 CTRL + 點擊以選取物體。
   Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: 啟用專家模式
   Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: 啟用後可以訪問可能會導致遊戲崩潰或損壞存檔的危險物體。您應該知道自己在做什麼。風險自負！
+  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.AutomaticUnlocks]: 自动解锁
+  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.AutomaticUnlocks]: 这将自动解锁您要放置的资产。
 
   FindStuff.FindStuffSettings.MoveFindStuff: 移動窗口
   FindStuff.FindStuffSettings.HideFindStuff: 隱藏窗口
   FindStuff.FindStuffSettings.HideAssetMenu: 覆蓋原始窗口
+  FindStuff.FindStuffSettings.HideFindStuffSideMenu: 隐藏侧边菜单
 
   Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.SearchSpeed]: 搜索速度
   Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.SearchSpeed]: 配置分配給尋找物品搜索的資源量。低設置使用較少的計算資源，因此搜索大量物品需要更長時間，但對您的計算機的負擔較小。高設置返回結果更快，但對您的計算機要求更高。

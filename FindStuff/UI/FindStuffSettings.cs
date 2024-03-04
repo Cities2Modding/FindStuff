@@ -68,7 +68,7 @@ namespace FindStuff.UI
             [
                 new DropdownItem<string>
                 {
-                    value = ViewOperationMode.MoveFindStuff.ToString(),
+                    value = ViewOperationMode.MoveFindStuff.ToString( ),
                     displayName = localisationManager.GetLocalizedName( "FindStuff.FindStuffSettings.MoveFindStuff" )
                 },
                 new DropdownItem<string>
