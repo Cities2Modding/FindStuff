@@ -114,7 +114,7 @@ namespace FindStuff.Helper
             if ( entityManager == null || entity == Entity.Null )
                 return false;
 
-            return prefab is StaticObjectPrefab staticObjectPrefab && staticObjectPrefab.m_Meshes.Length > 0 && staticObjectPrefab.isDirty == true && staticObjectPrefab.active == true && staticObjectPrefab.components.Count( p => p is SpawnableObject ) > 0;
+            return prefab is StaticObjectPrefab staticObjectPrefab && staticObjectPrefab.m_Meshes.Length > 0 && staticObjectPrefab.isDirty == true && staticObjectPrefab.active == true && (staticObjectPrefab.components.Count( p => p is SpawnableObject ) > 0 || staticObjectPrefab.name.Contains("Random"));
         }
 
         public bool IsExpertMode( PrefabBase prefab, Entity entity )
