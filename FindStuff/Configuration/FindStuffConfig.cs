@@ -21,6 +21,12 @@ namespace FindStuff.Configuration
             set;
         } = true;
 
+        public bool IsHistorical
+        {
+            get;
+            set;
+        } = false;
+
         public ViewMode ViewMode
         {
             get;

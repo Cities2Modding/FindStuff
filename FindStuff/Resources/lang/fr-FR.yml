@@ -23,6 +23,8 @@ lang:
  FindStuff.FindStuffSettings.SearchSpeed.High: Haut
  FindStuff.FindStuffSettings.SearchSpeed.VeryHigh: Très Haut
 
+ FindStuff.Options.Historical: Historique
+ FindStuff.Options.Historical_desc: Désactive le nivellement du bâtiment afin qu'il ne change pas visuellement. Généralement appelé "Historique" dans la communauté de modding CS2.
  FindStuff.View: Vue
  FindStuff.Filter: Filtre
  FindStuff.OrderBy: Ordonner

@@ -23,6 +23,8 @@ lang:
  FindStuff.FindStuffSettings.SearchSpeed.High: 높음
  FindStuff.FindStuffSettings.SearchSpeed.VeryHigh: 매우 높음
 
+ FindStuff.Options.Historical: 역사
+ FindStuff.Options.Historical_desc: 건물의 레벨링을 비활성화하여 시각적으로 변경되지 않도록 합니다. 일반적으로 CS2 모딩 커뮤니티에서는 "역사"라고 부릅니다.
  FindStuff.View: 보기
  FindStuff.Filter: 필터
  FindStuff.OrderBy: 정렬

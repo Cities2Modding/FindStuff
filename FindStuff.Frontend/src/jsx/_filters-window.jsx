@@ -2,10 +2,10 @@ import React from "react";
 
 const FiltersWindow = ({ compact = null, model, update, _L, onDoUpdate }) => {
     const react = window.$_gooee.react;
-    const { Icon, Button, AutoToolTip } = window.$_gooee.framework;    
+    const { Icon, Button, AutoToolTip, ToolTipContent, CheckBox } = window.$_gooee.framework;
 
     const isVertical = model.OperationMode === "HideFindStuffSideMenu";
-    
+
     const updateFilter = react.useCallback((filter) => {
         model.Filter = filter;
         update("Filter", filter);
@@ -24,8 +24,20 @@ const FiltersWindow = ({ compact = null, model, update, _L, onDoUpdate }) => {
         if (onDoUpdate)
             onDoUpdate(model, false);
     }, [model.OrderByAscending, update]);
-    
+
+    const historicalCheckboxRef = react.useRef(null);
+
     return <div className={"bg-panel text-light rounded-sm" + (compact ? " align-self-end w-x p-2" : " p-4") + (isVertical ? " mb-2" : "")}>
+        {!compact && model.Filter == "Zones" ?
+            <div className="d-flex flex-row align-items-center justify-content-center fs-tool-text mb-4">
+                <div className="flex-1">{_L("FindStuff.Options.Historical")}</div>
+                <div className="w-x" ref={historicalCheckboxRef}>
+                    <CheckBox checked={model.IsHistorical} onToggle={() => update("IsHistorical", !model.IsHistorical)} />
+                </div>
+                <AutoToolTip targetRef={historicalCheckboxRef} float={isVertical ? "down" : "up"} align="center">
+                    <ToolTipContent title={_L("FindStuff.Options.Historical")} description={_L("FindStuff.Options.Historical_desc")} />
+                </AutoToolTip>
+            </div> : null}
         {!compact ?
             <div className="d-flex flex-row align-items-center justify-content-center fs-tool-text">
                 <div className="flex-1">

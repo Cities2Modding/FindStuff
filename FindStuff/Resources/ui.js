@@ -2126,7 +2126,7 @@
   var import_react2 = __toESM(require_react());
   var FiltersWindow = ({ compact = null, model, update, _L, onDoUpdate }) => {
     const react = window.$_gooee.react;
-    const { Icon, Button, AutoToolTip } = window.$_gooee.framework;
+    const { Icon, Button, AutoToolTip, ToolTipContent, CheckBox } = window.$_gooee.framework;
     const isVertical = model.OperationMode === "HideFindStuffSideMenu";
     const updateFilter = react.useCallback((filter) => {
       model.Filter = filter;
@@ -2142,7 +2142,8 @@
       if (onDoUpdate)
         onDoUpdate(model, false);
     }, [model.OrderByAscending, update]);
-    return /* @__PURE__ */ import_react2.default.createElement("div", { className: "bg-panel text-light rounded-sm" + (compact ? " align-self-end w-x p-2" : " p-4") + (isVertical ? " mb-2" : "") }, !compact ? /* @__PURE__ */ import_react2.default.createElement("div", { className: "d-flex flex-row align-items-center justify-content-center fs-tool-text" }, /* @__PURE__ */ import_react2.default.createElement("div", { className: "flex-1" }, _L("FindStuff.View")), /* @__PURE__ */ import_react2.default.createElement(
+    const historicalCheckboxRef = react.useRef(null);
+    return /* @__PURE__ */ import_react2.default.createElement("div", { className: "bg-panel text-light rounded-sm" + (compact ? " align-self-end w-x p-2" : " p-4") + (isVertical ? " mb-2" : "") }, !compact && model.Filter == "Zones" ? /* @__PURE__ */ import_react2.default.createElement("div", { className: "d-flex flex-row align-items-center justify-content-center fs-tool-text mb-4" }, /* @__PURE__ */ import_react2.default.createElement("div", { className: "flex-1" }, "Historical"), /* @__PURE__ */ import_react2.default.createElement("div", { className: "w-x", ref: historicalCheckboxRef }, /* @__PURE__ */ import_react2.default.createElement(CheckBox, { checked: model.IsHistorical, onToggle: () => update("IsHistorical", !model.IsHistorical) })), /* @__PURE__ */ import_react2.default.createElement(AutoToolTip, { targetRef: historicalCheckboxRef, float: isVertical ? "down" : "up", align: "center" }, /* @__PURE__ */ import_react2.default.createElement(ToolTipContent, { title: _L("FindStuff.Options.Historical"), description: _L("FindStuff.Options.Historical_desc") }))) : null, !compact ? /* @__PURE__ */ import_react2.default.createElement("div", { className: "d-flex flex-row align-items-center justify-content-center fs-tool-text" }, /* @__PURE__ */ import_react2.default.createElement("div", { className: "flex-1" }, _L("FindStuff.View")), /* @__PURE__ */ import_react2.default.createElement(
       Button,
       {
         title: _L("FindStuff.View.Rows"),
