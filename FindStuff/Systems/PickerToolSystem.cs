@@ -27,6 +27,8 @@ namespace FindStuff.Systems
 
         public override string toolID => "PickStuff";
 
+        static readonly UnityEngine.Color yellow = new UnityEngine.Color( 1f, 1f, 0f, 0.2f );
+
         [Preserve]
         public PickerToolSystem( )
         {
@@ -53,7 +55,6 @@ namespace FindStuff.Systems
 
         private void DrawNetCurve( NetCompositionData compositionData,  EdgeGeometry edgeGeometry )
         {
-            var yellow = new UnityEngine.Color( 1f, 1f, 0f, 0.5f );
 
             var halfWidth = compositionData.m_Width / 2f;
 
@@ -87,8 +88,6 @@ namespace FindStuff.Systems
                     ( _controller.IsValidPrefab( prefabBase, entity ) ||
                     HasComponents( entity ) ) )
                 {
-                    var yellow = new UnityEngine.Color( 1f, 1f, 0f, 0.2f );
-
                     if ( EntityManager.TryGetComponent<Game.Objects.Transform>( entity, out var transform ) )
                     {
                         var pos = new Unity.Mathematics.float3( );
@@ -156,7 +155,7 @@ namespace FindStuff.Systems
                 return;
 
             EntityManager.AddComponent<Highlighted>( entity );
-            EntityManager.AddComponent<Updated>( entity );
+            EntityManager.AddComponent<BatchesUpdated>( entity );
         }
 
         private void Unhighlight( Entity entity )
@@ -165,7 +164,7 @@ namespace FindStuff.Systems
                 return;
 
             EntityManager.RemoveComponent<Highlighted>( entity );
-            EntityManager.AddComponent<Updated>( entity );
+            EntityManager.AddComponent<BatchesUpdated>( entity );
         }
 
         public void RemoveLastHighlighted( )
@@ -173,7 +172,7 @@ namespace FindStuff.Systems
             if ( _lastEntity != Entity.Null && EntityManager.HasComponent<Highlighted>( _lastEntity ) )
             {
                 EntityManager.RemoveComponent<Highlighted>( _lastEntity );
-                EntityManager.AddComponent<Updated>( _lastEntity );
+                EntityManager.AddComponent<BatchesUpdated>( _lastEntity );
             }
         }
 

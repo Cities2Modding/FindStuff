@@ -204,7 +204,7 @@ namespace FindStuff.UI
                     if ( GetEvilPrefabs.Contains( prefabBase.name.ToLower( ) ) )
                         continue;
 
-                    //if ( prefabBase.name.ToLower( ).Contains( "forestry" ) )
+                    //if ( prefabBase.name.ToLower( ).Contains( "alley" ) )
                     //{
                     //    var components = EntityManager.GetComponentTypes( _prefabSystem.GetEntity( prefabBase ) );
 

@@ -1,4 +1,6 @@
-﻿using Game.Prefabs;
+﻿using Colossal.Entities;
+using Game.Prefabs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Entities;
@@ -28,9 +30,15 @@ namespace FindStuff.Helper
 
             if ( placeableObject != null )
             {
-                meta.Add( "Cost", placeableObject.m_ConstructionCost );
+                meta.Add( "Cost", Convert.ToInt32( placeableObject.m_ConstructionCost ) );
                 meta.Add( "XPReward", placeableObject.m_XPReward );
             }
+            else if ( entityManager.TryGetComponent<ServiceUpgradeData>( entity, out var serviceUpgradeData ) )
+            {
+                meta.Add( "Cost", Convert.ToInt32( serviceUpgradeData.m_UpgradeCost ) );
+                meta.Add( "XPReward", serviceUpgradeData.m_XPReward );
+            }
+
             return meta;
         }
 

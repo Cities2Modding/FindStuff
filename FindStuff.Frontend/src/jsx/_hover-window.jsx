@@ -76,64 +76,93 @@ const HoverWindow = ({ className, model, hoverPrefab, _L }) => {
         
     }, [hoverPrefab.Tags, _L, model.Search]);
 
+    const formatNumber = (number) => {
+        var parts = number.toString().split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return parts.join(".");
+    };
+
+    const metaContent = <div className="mt-4 fs-sm">
+        <Grid auto>
+            <div>
+                {hoverPrefab.Meta.XPReward ? <div className="d-flex flex-row justify-content-center bg-section-light rounded p-1">
+                    <span className="text-light mr-1">{formatNumber(hoverPrefab.Meta.XPReward)}</span>
+                    <span className="text-muted">XP</span>
+                </div> : null}
+            </div>
+            <div></div>
+            <div></div>
+        </Grid>
+    </div>;
+
     const renderHoverContents = react.useCallback( () => {
         if (!hoverPrefab)
             return;
 
         const computedDangerousReason = react.useMemo(() => dangerousReason(hoverPrefab), [hoverPrefab, hoverPrefab.Meta, hoverPrefab.Meta.IsDangerous, hoverPrefab.Meta.IsDangerousReason, _L]);
 
-        return <Grid>
-            <div className="col-3">
-                <div className="bg-dark-trans-mid rounded-sm w-x">
+        return <>
+            <div className="d-flex flex-row align-items-start justify-content-start">
+                <div className="bg-dark-trans-mid rounded-sm w-x mr-3 ml-3">
                     <Icon icon={prefabIconSrc} fa={isFAIcon} className="icon-xxxl" />
                 </div>
-            </div>
-            <div className="col-9">
-                {prefabDescText ?
-                    <p className="mb-4 fs-sm" cohinline="cohinline">
-                        {prefabDescText}
-                    </p> : null}
-                {hoverPrefab.Meta && hoverPrefab.Meta.IsDangerous ? <div className="alert alert-danger fs-sm d-inline p-2 mb-4">
-                    <Icon className="mr-2" icon="solid-circle-exclamation" fa />                    
-                    <div className="flex-1 d-flex flex-column align-items-start justify-content-start">
-                        <p cohinline="cohinline">
-                            <b>{computedDangerousReason}</b>
-                        </p>
-                        {!model.ExpertMode && hoverPrefab.IsExpertMode ? <p className="mt-0 mb-0" cohinline="cohinline">
-                            You need to enable Expert Mode in the Find Stuff options menu to use this asset.
+                <div className="flex-1 ml-3">
+                    {prefabDescText ?
+                        <p className="mb-4 fs-sm" cohinline="cohinline">
+                            {prefabDescText}
                         </p> : null}
-                    </div>
-                </div> :
-                    !model.ExpertMode && hoverPrefab.IsExpertMode ? <div className="alert alert-danger fs-sm d-inline p-2 mb-4">
+                    {hoverPrefab.Meta && hoverPrefab.Meta.IsDangerous ? <div className="alert alert-danger fs-sm d-inline p-2 mb-4">
                         <Icon className="mr-2" icon="solid-circle-exclamation" fa />
-                        <p className="flex-1" cohinline="cohinline">
-                            You need to enable Expert Mode in the Find Stuff options menu to use this asset.
-                        </p>
-                </div> : null}
-                {hoverPrefab.Meta && hoverPrefab.Meta.BuildingStaticUpgrade ? <div className="alert alert-info fs-sm d-inline p-2 mb-4">
-                    <Icon className="mr-2" icon="solid-circle-exclamation" fa />
-                    <div className="flex-1 d-flex flex-column align-items-start justify-content-start">
-                        <p cohinline="cohinline">
-                            <b>
-                                {_L("FindStuff.HowToBuild")}
-                            </b>
-                        </p>
-                        <p className="mt-0 mb-0" cohinline="cohinline">
-                            {_L("FindStuff.BuildingStaticUpgrade_desc")}
-                        </p>
-                    </div>
-                </div> : null}
-                <p className="m-0" cohinline="cohinline">
-                    {renderTags()}
-                </p>
+                        <div className="flex-1 d-flex flex-column align-items-start justify-content-start">
+                            <p cohinline="cohinline">
+                                <b>{computedDangerousReason}</b>
+                            </p>
+                            {!model.ExpertMode && hoverPrefab.IsExpertMode ? <p className="mt-0 mb-0" cohinline="cohinline">
+                                You need to enable Expert Mode in the Find Stuff options menu to use this asset.
+                            </p> : null}
+                        </div>
+                    </div> :
+                        !model.ExpertMode && hoverPrefab.IsExpertMode ? <div className="alert alert-danger fs-sm d-inline p-2 mb-4">
+                            <Icon className="mr-2" icon="solid-circle-exclamation" fa />
+                            <p className="flex-1" cohinline="cohinline">
+                                You need to enable Expert Mode in the Find Stuff options menu to use this asset.
+                            </p>
+                        </div> : null}
+                    {hoverPrefab.Meta && hoverPrefab.Meta.BuildingStaticUpgrade ? <div className="alert alert-info fs-sm d-inline p-2 mb-4">
+                        <Icon className="mr-2" icon="solid-circle-exclamation" fa />
+                        <div className="flex-1 d-flex flex-column align-items-start justify-content-start">
+                            <p cohinline="cohinline">
+                                <b>
+                                    {_L("FindStuff.HowToBuild")}
+                                </b>
+                            </p>
+                            <p className="mt-0 mb-0" cohinline="cohinline">
+                                {_L("FindStuff.BuildingStaticUpgrade_desc")}
+                            </p>
+                        </div>
+                    </div> : null}
+                    <p className="m-0" cohinline="cohinline">
+                        {renderTags()}
+                    </p>
+                    {hoverPrefab.Meta ? metaContent : null}
+                </div>
             </div>
-        </Grid>
+        </>;
     }, [hoverPrefab, prefabDescText, model.Search]);
 
     const modalTypeIconIsFAIcon = hoverPrefab && hoverPrefab.TypeIcon ? hoverPrefab.TypeIcon.includes("fa:") : false;
     const modalTypeIconSrc = modalTypeIconIsFAIcon ? hoverPrefab.TypeIcon.replaceAll("fa:", "") : hoverPrefab ? hoverPrefab.TypeIcon : null;
+    
+    const titleContent = <div className="d-flex flex-row align-items-center justify-content-start fs-normal">
+        <Icon className="mr-2 ml-2" icon={modalTypeIconSrc} fa={modalTypeIconIsFAIcon ? true : null} />
+        <span className="flex-1 mr-2">{prefabName(hoverPrefab)}</span>
+        {hoverPrefab.Meta.Cost ? <span className="ml-x">
+            <span className="text-success mr-2">&#162;{formatNumber(hoverPrefab.Meta.Cost)}</span>
+            <Icon className="bg-success mr-2" icon="money" mask />
+        </span> : null}
+    </div>;
 
-    return <Modal className={className} icon={<><Icon icon={modalTypeIconSrc} fa={modalTypeIconIsFAIcon ? true : null} /></>} title={prefabName(hoverPrefab)} noClose>
+    return <Modal className={className} title={titleContent} noClose>
         {renderHoverContents()}
     </Modal>;
 };

@@ -80,11 +80,6 @@ const PrefabItem = ({ model, trigger, prefab, selected, _L, onSelected, onMouseE
         if (onMouseLeave)
             onMouseLeave(prefab);
     };
-    function formatNumber(number) {
-        var parts = number.toString().split(".");
-        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        return parts.join(".");
-    }
 
     const render = react.useCallback(() => {
         if (model.ViewMode == "Detailed") {
@@ -106,8 +101,6 @@ const PrefabItem = ({ model, trigger, prefab, selected, _L, onSelected, onMouseE
                         <div className="d-flex flex-row align-items-start flex-wrap">
                             {prefab.Meta && prefab.Meta.IsDangerous ? <div className="badge badge-xs badge-danger">Dangerous</div> : null}
                             {prefab.Meta && prefab.Meta.ZoneLotWidth ? <div className="badge badge-xs badge-black">{prefab.Meta.ZoneLotWidth}x{prefab.Meta.ZoneLotDepth}</div> : null}
-                            {prefab.Meta && prefab.Meta.Cost ? <div className="badge badge-xs badge-black text-secondary">&#162;{formatNumber(prefab.Meta.Cost)}</div> : null}
-                            {prefab.Meta && prefab.Meta.XPReward ? <div className="badge badge-xs badge-black text-success">{formatNumber(prefab.Meta.XPReward)}&nbsp;XP</div> : null}
                         </div>
                     </div>
                     <div className="w-5 p-relative pr-2">

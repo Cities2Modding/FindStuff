@@ -1,6 +1,9 @@
-﻿using Game.Prefabs;
+﻿using Colossal.Entities;
+using Game.Prefabs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Unity.Entities;
 
 namespace FindStuff.Helper
@@ -25,12 +28,10 @@ namespace FindStuff.Helper
                 meta.Add( IBaseHelper.META_IS_DANGEROUS_REASON, "FindStuff.Dangerous.CorruptWarning" );
             }
 
-            var placeableObject = prefab.GetComponent<PlaceableObject>( );
-
-            if ( placeableObject != null )
+            if ( entityManager.TryGetComponent<PlaceableNetData>( entity, out var placeableNetData ) )
             {
-                meta.Add( "Cost", placeableObject.m_ConstructionCost );
-                meta.Add( "XPReward", placeableObject.m_XPReward );
+                meta.Add( "Cost", Convert.ToInt32( placeableNetData.m_DefaultConstructionCost ) * 125 );
+                meta.Add( "XPReward", placeableNetData.m_XPReward );
             }
 
             return meta;
@@ -46,6 +47,62 @@ namespace FindStuff.Helper
             PrefabType = "OtherNetwork";
 
             tags.Add( "network" );
+
+            //var prefabSystem = World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<PrefabSystem>( );
+
+            //if ( entityManager.TryGetComponent<RoadData>( entity, out var roadData ) )
+            //{
+            //    tags.Add( $"{roadData.m_SpeedLimit} km/h" );
+            //}
+
+            //if ( prefab is NetPrefab && prefab is NetGeometryPrefab geometryPrefab )
+            //{
+            //    if ( geometryPrefab.m_Sections?.Length > 0 )
+            //    {
+            //        foreach ( var section in geometryPrefab.m_Sections )
+            //        {
+            //            if ( section?.m_Section?.m_Pieces?.Length > 0 )
+            //            {
+            //                foreach ( var sectionPiece in section.m_Section.m_Pieces )
+            //                {
+            //                    var piecePrefab = sectionPiece.m_Piece;
+
+            //                    if ( piecePrefab == null )
+            //                        continue;
+                                
+            //                    var lanes = piecePrefab.GetComponent<NetPieceLanes>( );
+            //                    if ( lanes?.m_Lanes?.Length > 0 )
+            //                    {
+            //                        var isValid = false;
+
+            //                        var lanePrefabs = lanes.m_Lanes.Select( l => l.m_Lane );
+
+            //                        foreach ( var lanePrefab in lanePrefabs )
+            //                        {
+            //                            var laneEntity = prefabSystem.GetEntity( lanePrefab );
+            //                            var netLaneData = entityManager.GetComponentData<NetLaneData>( laneEntity );
+
+            //                            if ( !entityManager.TryGetComponent<CarLaneData>( laneEntity, out var carLaneData ) )
+            //                                continue;
+
+            //                            var carLanePrefab = lanePrefab.GetComponent<CarLane>( );
+
+            //                            if ( carLanePrefab?.m_RoadType != Game.Net.RoadTypes.Car )
+            //                                continue;
+
+            //                            isValid = true;
+            //                        }
+                                    
+            //                        if ( isValid )
+            //                        {
+            //                            tags.Add( $"{piecePrefab.name} {lanes.m_Lanes.Length} - {piecePrefab.m_Layer}" );
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
 
             if ( prefab.name.ToLower( ).Contains( "bridge" ) )
             {
