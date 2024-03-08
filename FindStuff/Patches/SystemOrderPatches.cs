@@ -15,6 +15,7 @@ namespace FindStuff.Patches
         {
             updateSystem?.UpdateAt<CheckPloppableRICOSystem>(SystemUpdatePhase.GameSimulation);
             updateSystem?.UpdateAt<PloppableRICOSystem>(SystemUpdatePhase.Modification5);
+            updateSystem?.UpdateAt<PloppableRICORentSystem>(SystemUpdatePhase.GameSimulation);
             updateSystem?.UpdateAt<CustomZoneCheckSystem>(SystemUpdatePhase.ModificationEnd);
         }
     }

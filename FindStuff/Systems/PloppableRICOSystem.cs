@@ -1,21 +1,19 @@
 ﻿using Colossal.Entities;
-using Colossal.Serialization.Entities;
 using FindStuff.Prefabs;
 using FindStuff.UI;
 using Game;
 using Game.Buildings;
 using Game.Common;
-using Game.Companies;
 using Game.Notifications;
 using Game.Objects;
 using Game.Prefabs;
-using Game.Simulation;
 using Game.Tools;
 using System.Runtime.CompilerServices;
 using Unity.Burst.Intrinsics;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
+using UnityEngine.Scripting;
 
 namespace FindStuff.Systems
 {
@@ -23,30 +21,22 @@ namespace FindStuff.Systems
     {
         ModificationBarrier5 _barrier;
         IconCommandSystem _iconCommandSystem;
-        SimulationSystem _simulationSystem;
         FindStuffController _controller;
-        EntityQuery _freshlyPlacedBuildingsGroup;
-        EntityQuery _buildingSettingsQuery;
-        EntityQuery _ploppableBuildlingsGroup;
+
+        private EntityQuery _buildingSettingsQuery;
+        private EntityQuery _freshlyPlacedBuildingsGroup;
+
         MakePloppableTypeHandle _makePloppableTypeHandle;
-        StopLevelingUpDownTypeHandle _stopLevelingUpDownTypeHandle;
 
         public static readonly int kComponentVersion = 1;
 
-        public static readonly int kUpdatesPerDay = 128;
-
-        public override int GetUpdateInterval(SystemUpdatePhase phase)
-        {
-            return 262144 / (PropertyRenterSystem.kUpdatesPerDay * 128);
-        }
-
+        [Preserve]
         protected override void OnCreate()
         {
             base.OnCreate();
 
             _barrier = World.GetOrCreateSystemManaged<ModificationBarrier5>();
             _iconCommandSystem = World.GetOrCreateSystemManaged<IconCommandSystem>();
-            _simulationSystem = World.GetOrCreateSystemManaged<SimulationSystem>();
             _controller = World.GetOrCreateSystemManaged<FindStuffController>();
 
             _freshlyPlacedBuildingsGroup = GetEntityQuery(new EntityQueryDesc
@@ -73,34 +63,13 @@ namespace FindStuff.Systems
                     ComponentType.Exclude<Temp>(),
                 ],
             });
-
-            _ploppableBuildlingsGroup = GetEntityQuery(new EntityQueryDesc
-            {
-                All =
-                [
-                    ComponentType.ReadOnly<PloppableBuildingData>(),
-                    ComponentType.ReadOnly<UpdateFrame>(),
-                ],
-                None =
-                [
-                    ComponentType.Exclude<Deleted>(),
-                    ComponentType.Exclude<Temp>(),
-                ],
-            });
-
             _buildingSettingsQuery = GetEntityQuery(new ComponentType[] { ComponentType.ReadOnly<BuildingConfigurationData>() });
-            RequireAnyForUpdate(_freshlyPlacedBuildingsGroup, _ploppableBuildlingsGroup);
-        }
 
-        protected override void OnGameLoadingComplete(Purpose purpose, GameMode mode)
-        {
-            base.OnGameLoadingComplete(purpose, mode);
+            RequireForUpdate(_freshlyPlacedBuildingsGroup);
         }
 
         protected override void OnUpdate()
         {
-            uint updateFrame = SimulationUtils.GetUpdateFrame(_simulationSystem.frameIndex, kUpdatesPerDay, 128);
-
             if (!_freshlyPlacedBuildingsGroup.IsEmptyIgnoreFilter && !_buildingSettingsQuery.IsEmptyIgnoreFilter)
             {
                 _makePloppableTypeHandle.AssignHandles(ref CheckedStateRef);
@@ -112,33 +81,13 @@ namespace FindStuff.Systems
                     EntityHandle = _makePloppableTypeHandle.EntityTypeHandle,
                     PrefabRefTypeHandle = _makePloppableTypeHandle.PrefabRefTypeHandle,
                     PloppableBuildingLookup = _makePloppableTypeHandle.PloppableBuildingLookup,
-                    AllowLeveling = !_controller.IsHistorical,
+                    IsHistorical = _controller.IsHistorical,
                     CondemnedLookup = _makePloppableTypeHandle.CondemnedLookup,
                 };
                 
                 JobHandle makePloppableJobHandle = makePloppableJob.ScheduleParallel(_freshlyPlacedBuildingsGroup, Dependency);
                 _barrier.AddJobHandleForProducer(makePloppableJobHandle);
                 Dependency = makePloppableJobHandle;
-            }
-
-            if (!_ploppableBuildlingsGroup.IsEmptyIgnoreFilter)
-            {
-                _stopLevelingUpDownTypeHandle.AssignHandles(ref CheckedStateRef);
-                StopLevelingUpDownJob stopLevelingUpDownJob = new()
-                {
-                    Ecb = _barrier.CreateCommandBuffer().AsParallelWriter(),
-                    EntityHandle = _stopLevelingUpDownTypeHandle.EntityTypeHandle,
-                    PloppableBuildingDataTypeHandle = _stopLevelingUpDownTypeHandle.PloppableBuildingDataTypeHandle,
-                    UpdateFrameType = GetSharedComponentTypeHandle<UpdateFrame>(),
-                    UpdateFrameIndex = updateFrame,
-                    BuildingConditionLookup = _stopLevelingUpDownTypeHandle.BuildingConditionLookup,
-                    RenterBufferLookup = _stopLevelingUpDownTypeHandle.RenterBufferLookup,
-                    ProfitabilityLookup = _stopLevelingUpDownTypeHandle.ProfitabilityLookup,
-                };
-
-                JobHandle stopLevelingUpDownHandle = stopLevelingUpDownJob.ScheduleParallel(_ploppableBuildlingsGroup, Dependency);
-                _barrier.AddJobHandleForProducer(stopLevelingUpDownHandle);
-                Dependency = stopLevelingUpDownHandle;
             }
         }
 
@@ -170,7 +119,7 @@ namespace FindStuff.Systems
             public ComponentTypeHandle<PrefabRef> PrefabRefTypeHandle;
             public ComponentLookup<PloppableBuilding> PloppableBuildingLookup;
             public ComponentLookup<Condemned> CondemnedLookup;
-            public bool AllowLeveling;
+            public bool IsHistorical;
 
             public void Execute(in ArchetypeChunk chunk,
             int unfilteredChunkIndex,
@@ -189,9 +138,14 @@ namespace FindStuff.Systems
                         PloppableBuildingData ploppableBuildingData = new()
                         {
                             version = kComponentVersion,
-                            allowLeveling = AllowLeveling,
                         };
                         Ecb.AddComponent(i, entity, ploppableBuildingData);
+
+                        if (IsHistorical)
+                        {
+                            Historical historical = new();
+                            Ecb.AddComponent(i, entity, historical);
+                        }
 
                         if (CondemnedLookup.HasComponent(entity))
                         {
@@ -202,77 +156,6 @@ namespace FindStuff.Systems
                 }
 
                 prefabs.Dispose();
-                entities.Dispose();
-            }
-        }
-
-        public struct StopLevelingUpDownTypeHandle
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            public void AssignHandles(ref SystemState state)
-            {
-                EntityTypeHandle = state.GetEntityTypeHandle();
-                PloppableBuildingDataTypeHandle = state.GetComponentTypeHandle<PloppableBuildingData>();
-                BuildingConditionLookup = state.GetComponentLookup<BuildingCondition>();
-                ProfitabilityLookup = state.GetComponentLookup<Profitability>();
-                RenterBufferLookup = state.GetBufferLookup<Renter>();
-            }
-
-            public EntityTypeHandle EntityTypeHandle;
-            public ComponentTypeHandle<PloppableBuildingData> PloppableBuildingDataTypeHandle;
-            public ComponentLookup<BuildingCondition> BuildingConditionLookup;
-            public BufferLookup<Renter> RenterBufferLookup;
-            public ComponentLookup<Profitability> ProfitabilityLookup;
-        }
-
-        public struct StopLevelingUpDownJob : IJobChunk
-        {
-            public EntityCommandBuffer.ParallelWriter Ecb;
-            public EntityTypeHandle EntityHandle;
-            public ComponentTypeHandle<PloppableBuildingData> PloppableBuildingDataTypeHandle;
-            public ComponentLookup<BuildingCondition> BuildingConditionLookup;
-            public BufferLookup<Renter> RenterBufferLookup;
-            public ComponentLookup<Profitability> ProfitabilityLookup;
-
-            [ReadOnly]
-            public SharedComponentTypeHandle<UpdateFrame> UpdateFrameType;
-
-            public uint UpdateFrameIndex;
-
-            public void Execute(in ArchetypeChunk chunk, int unfilteredChunkIndex, bool useEnabledMask, in v128 chunkEnabledMask)
-            {
-                if (chunk.GetSharedComponent(UpdateFrameType).m_Index != UpdateFrameIndex)
-                {
-                    return;
-                }
-
-                NativeArray<Entity> entities = chunk.GetNativeArray(EntityHandle);
-                NativeArray<PloppableBuildingData> ploppableBuildings = chunk.GetNativeArray(ref PloppableBuildingDataTypeHandle);
-                ChunkEntityEnumerator enumerator = new(useEnabledMask, chunkEnabledMask, chunk.Count);
-                while (enumerator.NextEntityIndex(out int i))
-                {
-                    Entity entity = entities[i];
-                    if (ploppableBuildings[i].allowLeveling == false && BuildingConditionLookup.TryGetComponent(entity, out BuildingCondition buildingCondition))
-                    {
-                        // Reset the building condition to 0 so buildings do not level up or down (historical)
-                        buildingCondition.m_Condition = 0;
-                        Ecb.SetComponent(i, entity, buildingCondition);
-
-                        if (RenterBufferLookup.TryGetBuffer(entity, out DynamicBuffer<Renter> renters))
-                        {
-                            for (int j = 0; j < renters.Length; j++)
-                            {
-                                Renter renter = renters[j];
-                                if (ProfitabilityLookup.TryGetComponent(renter.m_Renter, out Profitability profitability))
-                                {
-                                    profitability.m_Profitability = 5;
-                                    Ecb.SetComponent(i, renter.m_Renter, profitability);
-                                }
-                            }
-                        }
-                    }
-                }
-
                 entities.Dispose();
             }
         }
