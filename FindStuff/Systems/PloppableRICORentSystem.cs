@@ -37,7 +37,6 @@ namespace FindStuff.Systems
 
         private EndFrameBarrier _barrier;
 
-        public bool _debugFastLeveling = false;
         public static readonly int kUpdatesPerDay = 16;
 
         public override int GetUpdateInterval(SystemUpdatePhase phase)

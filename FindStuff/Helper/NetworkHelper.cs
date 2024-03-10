@@ -39,6 +39,7 @@ namespace FindStuff.Helper
 
         public List<string> CreateTags( PrefabBase prefab, Entity entity )
         {
+
             List<string> tags = new List<string>( );
 
             if ( entityManager == null )
@@ -109,7 +110,7 @@ namespace FindStuff.Helper
                 tags.Add( "bridge" );
             }
             
-            if ( prefab.TryGet<UIObject>( out var uiObject ))
+            if ( prefab.TryGet<UIObject>( out var uiObject ) && uiObject.m_Group != null)
             {
                 switch ( uiObject.m_Group.name )
                 {
@@ -175,12 +176,12 @@ namespace FindStuff.Helper
                         break;
 
                     default:
-                        tags.Add( uiObject.m_Group.name );
+                        tags.Add(uiObject.m_Group.name);
                         break;
                 }
             }
 
-            if ( entityManager.HasComponent<MarkerNetData>( entity ) )
+            if ( entityManager.HasComponent<MarkerNetData>( entity ) || prefab is MarkerObjectPrefab)
             {
                 tags.Add( "marker" );
             }
@@ -212,7 +213,14 @@ namespace FindStuff.Helper
             if ( entityManager == null || entity == Entity.Null )
                 return false;
 
-            return entityManager.HasComponent<NetData>( entity ) || prefab is StaticObjectPrefab staticObject && staticObject.components.Find( p => p is NetObject );
+            // Adds integrated bus, train, tramm, ect. stops
+            if ( prefab is MarkerObjectPrefab && prefab.name.Contains("Integrated"))
+                return true;
+
+            if (entityManager.HasComponent<NetData>(entity))
+                return true;
+
+            return prefab is StaticObjectPrefab staticObject && staticObject.components.Find( p => p is NetObject );
         }
     }
 }

@@ -8,11 +8,8 @@ using FindStuff.Prefabs;
 
 namespace FindStuff.Patches
 {
-    [HarmonyPatch(typeof(PropertyRenterSystem))]
-    public static class PropertyRenterSystem_OnCreate_Patch
+    public static class PropertyRenterSystemPatch
     {
-        [HarmonyPatch("OnCreate")]
-        [HarmonyPostfix]
         public static void Postfix(PropertyRenterSystem __instance)
         {
             if (__instance == null)
