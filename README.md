@@ -21,6 +21,11 @@
 - **Enhanced Filtering**: Utilize category and sub-category filters through intuitive icon buttons to streamline your search process.
 - **Sorting Functionality**: Order assets by name in ascending or descending format for easier navigation and selection.
 
+### Integrated "Plop the Growables" or PloppableRICO supprt
+- **Placing residentials, industrials, commercials and offices directly**
+- **Adds the ability to set the buildings "Historical" - means they do not level up/down**
+- **Compatibility support for LandValueOverhaul**
+
 ### Shortcuts and Language Support
 - Leverage shortcuts like CTRL + F for quick searching and CTRL + Click for direct Picker tool access, with customizable options in settings.
 - Full language support for all default Cities Skylines 2 locales, ensuring accessibility for a global player base.
