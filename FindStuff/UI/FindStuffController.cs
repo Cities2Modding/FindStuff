@@ -345,18 +345,9 @@ namespace FindStuff.UI
             transform.m_Position.y = TerrainUtils.SampleHeight( ref heightData, transform.m_Position );
         }
 
-        public static void SetupResourceHandler( )
+        public void SetupResourceHandler( )
         {
-            var resourceHandler = ( GameUIResourceHandler ) GameManager.instance.userInterface.view.uiSystem.resourceHandler;
-
-            if ( resourceHandler == null || resourceHandler.HostLocationsMap.ContainsKey( "findstuffui" ) )
-            {
-                UnityEngine.Debug.LogError( "Failed to setup resource handler for FindStuff." );
-                return;
-            }
-
-            UnityEngine.Debug.Log( "Setup resource handler for FindStuff." );
-            resourceHandler.HostLocationsMap.Add( "findstuffui", new List<string> { ConfigBase.MOD_PATH } );
+            MountResources( "findstuffui", ConfigBase.MOD_PATH );
         }
 
         public bool IsValidPrefab( PrefabBase prefabBase, Entity entity )
