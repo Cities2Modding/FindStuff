@@ -1,3 +1,13 @@
+### v0.0.10
+- Reworked PloppableRICO feature
+	- Fixes the issue certain buildings with a particular lot size do not spawn anymore
+	- Big shoutout to the our awesome testers (leyo_07, DanielNotFound22, Bruceboy240804, Uecki)
+- Adds historical (stay at the lvl) option to placing ploppable rico buildings
+- Adds integrated stops for trams, trains, busses and more
+- Adds random props for rocks, boulders, benches, and other props
+- Improved search algorythm
+- Performance improvement
+- Cleanup
 ### v0.0.9
 - Fixed placing ploppable rico buildings in pause mode
 ### v0.0.8

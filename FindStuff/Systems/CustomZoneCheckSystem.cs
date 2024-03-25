@@ -306,7 +306,7 @@ namespace Game.Buildings
                     m_CommandBuffer.AddComponent(index, entity, default(Condemned));
                     if (!m_DestroyedData.HasComponent(entity) && !m_AbandonedData.HasComponent(entity))
                     {
-                        m_IconCommandBuffer.Add(entity, m_BuildingConfigurationData.m_CondemnedNotification, IconPriority.FatalProblem, IconClusterLayer.Default, (IconFlags)0, default(Entity), false, false, false, 0f);
+                        m_IconCommandBuffer.Add(entity, m_BuildingConfigurationData.m_CondemnedNotification, IconPriority.FatalProblem, IconClusterLayer.Default, 0, default, false, false, false, 0f);
                     }
                 }
             }

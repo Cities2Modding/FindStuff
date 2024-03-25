@@ -9,10 +9,13 @@ lang:
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Maintenez CTRL + Clic pour sélectionner un objet.
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: Activer le Mode Expert
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: Si activé, vous avez accès à des objets potentiellement dangereux qui pourraient faire planter le jeu ou corrompre les sauvegardes. Vous devriez savoir ce que vous faites. Utilisez à vos propres risques !
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.AutomaticUnlocks]: Déverrouillage automatique
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.AutomaticUnlocks]: Cela déverrouillera automatiquement le bien que vous essayez de placer.
 
  FindStuff.FindStuffSettings.MoveFindStuff: Déplacer la fenêtre
  FindStuff.FindStuffSettings.HideFindStuff: Cacher la fenêtre
  FindStuff.FindStuffSettings.HideAssetMenu: Remplacer la fenêtre de base
+ FindStuff.FindStuffSettings.HideFindStuffSideMenu: Masquer le menu latéral
   
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.SearchSpeed]: Vitesse de Recherche
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.SearchSpeed]: Configurez la quantité de ressources allouées à la recherche via Trouver des Objets. Les paramètres bas utilisent moins de ressources informatiques donc la recherche de nombreux objets prend plus de temps mais est moins contraignante pour votre ordinateur. Les paramètres élevés retournent les résultats plus rapidement mais exigent plus de votre ordinateur.

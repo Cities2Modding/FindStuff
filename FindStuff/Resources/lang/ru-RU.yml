@@ -9,10 +9,13 @@ lang:
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: Удерживайте CTRL + Клик для выбора объекта.
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: Включить Экспертный Режим
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: Если активировано, у вас есть доступ к потенциально опасным объектам, которые могут вызвать сбой игры или повредить сохраненные игры. Вы должны знать, что делаете. Используйте на свой страх и риск!
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.AutomaticUnlocks]: Автоматическая разблокировка
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.AutomaticUnlocks]: Это автоматически разблокирует актив, который вы пытаетесь разместить.
 
  FindStuff.FindStuffSettings.MoveFindStuff: Переместить окно
  FindStuff.FindStuffSettings.HideFindStuff: Скрыть окно
  FindStuff.FindStuffSettings.HideAssetMenu: Переопределить стандартное окно
+ FindStuff.FindStuffSettings.HideFindStuffSideMenu: Скрыть боковое меню
   
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.SearchSpeed]: Скорость Поиска
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.SearchSpeed]: Настройте, сколько ресурсов выделяется на поиск через Найти Вещи. Низкие настройки используют меньше ресурсов компьютера, поэтому поиск большого количества предметов занимает больше времени, но меньше нагружает ваш компьютер. Высокие настройки возвращают результаты быстрее, но требуют больше от вашего компьютера.

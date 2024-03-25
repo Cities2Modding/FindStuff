@@ -9,10 +9,13 @@ lang:
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: CTRL + クリックでオブジェクトを選択します。
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: エキスパートモードを有効にする
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: 有効にすると、ゲームをクラッシュさせたりセーブデータを破損させる可能性のある危険なオブジェクトにアクセスできます。何をしているかを知っている必要があります。自己責任で使用してください！
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.AutomaticUnlocks]: 自動ロック解除
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.AutomaticUnlocks]: これで、配置しようとしているアセットのロックが自動的に解除されます。
 
  FindStuff.FindStuffSettings.MoveFindStuff: ウィンドウを移動
  FindStuff.FindStuffSettings.HideFindStuff: ウィンドウを隠す
  FindStuff.FindStuffSettings.HideAssetMenu: バニラウィンドウを上書き
+ FindStuff.FindStuffSettings.HideFindStuffSideMenu: サイドメニューを隠す
   
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.SearchSpeed]: 検索速度
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.SearchSpeed]: アイテムを探すを介して検索に割り当てられるリソースの量を設定します。低設定はコンピュータリソースを少なく使用するので、多くのアイテムを検索するのに時間がかかりますが、コンピュータへの負担が少なくなります。高設定は結果をより早く返しますが、コンピュータにより多くの要求をします。

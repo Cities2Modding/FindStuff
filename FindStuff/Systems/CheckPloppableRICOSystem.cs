@@ -11,6 +11,7 @@ using Unity.Burst.Intrinsics;
 using Unity.Collections;
 using Game.Buildings;
 using Game.Notifications;
+using System.Linq;
 
 namespace FindStuff.Systems
 {
@@ -48,21 +49,21 @@ namespace FindStuff.Systems
             if (mode == GameMode.Game && !_ploppedBuildingsGroup.IsEmptyIgnoreFilter)
             {
                 int amount = _ploppedBuildingsGroup.CalculateEntityCount();
-                UnityEngine.Debug.Log($"FindStuff: Found {amount} entities to update...");
+                UnityEngine.Debug.Log($"FindStuff: Found {amount} buildings to check...");
                 _makeSignatureTypeHandle.AssignHandles(ref CheckedStateRef);
-                MakeSignatureJob makeSignatureJob = new()
+                CheckPloppedBuildingsJob checkPloppedBuildingsJob = new()
                 {
                     Ecb = _barrier.CreateCommandBuffer().AsParallelWriter(),
                     Icb = _iconCommandSystem.CreateCommandBuffer(),
                     EntityTypeHandle = GetEntityTypeHandle(),
-                    PrefabRefTypeHandle = _makeSignatureTypeHandle.PrefabRefTypeHandle,
-                    PloppableBuildingLookup = _makeSignatureTypeHandle.PloppableBuildingLookup,
+                    PloppableBuildingDataLookup = _makeSignatureTypeHandle.PloppableBuildingDataLookup,
+                    HistoricalLookup = _makeSignatureTypeHandle.HistoricalLookup,
                     CondemnedLookup = _makeSignatureTypeHandle.CondemnedLookup,
                     BuildingConfigurationData = _buildingSettingsQuery.GetSingleton<BuildingConfigurationData>(),
                 };
-                JobHandle makeSignatureJobHandle = makeSignatureJob.ScheduleParallel(_ploppedBuildingsGroup, Dependency);
-                _barrier.AddJobHandleForProducer(makeSignatureJobHandle);
-                Dependency = makeSignatureJobHandle;
+                JobHandle makePloppableJobHandle = checkPloppedBuildingsJob.ScheduleParallel(_ploppedBuildingsGroup, Dependency);
+                _barrier.AddJobHandleForProducer(makePloppableJobHandle);
+                Dependency = makePloppableJobHandle;
             }
         }
 
@@ -76,25 +77,27 @@ namespace FindStuff.Systems
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public void AssignHandles(ref SystemState state)
             {
-                PrefabRefTypeHandle = state.GetComponentTypeHandle<PrefabRef>();
-                PloppableBuildingLookup = state.GetComponentLookup<PloppableBuilding>();
-                BuildingConditionLookup = state.GetComponentLookup<BuildingCondition>();
+                PloppableBuildingDataLookup = state.GetComponentLookup<PloppableBuildingData>();
+                HistoricalLookup = state.GetComponentLookup<Historical>();
                 CondemnedLookup = state.GetComponentLookup<Condemned>();
             }
 
-            public ComponentTypeHandle<PrefabRef> PrefabRefTypeHandle;
-            public ComponentLookup<PloppableBuilding> PloppableBuildingLookup;
-            public ComponentLookup<BuildingCondition> BuildingConditionLookup;
+            public ComponentLookup<PloppableBuildingData> PloppableBuildingDataLookup;
+            public ComponentLookup<Historical> HistoricalLookup;
             public ComponentLookup<Condemned> CondemnedLookup;
         }
 
-        public struct MakeSignatureJob : IJobChunk
+        /**
+         * This jobs checks all plopped buildings for the Historical component and adds it if it's necessary.
+         * Also removes the Condemned component if it's present.
+         */
+        public struct CheckPloppedBuildingsJob : IJobChunk
         {
             public EntityCommandBuffer.ParallelWriter Ecb;
             public IconCommandBuffer Icb;
             public EntityTypeHandle EntityTypeHandle;
-            public ComponentTypeHandle<PrefabRef> PrefabRefTypeHandle;
-            public ComponentLookup<PloppableBuilding> PloppableBuildingLookup;
+            public ComponentLookup<PloppableBuildingData> PloppableBuildingDataLookup;
+            public ComponentLookup<Historical> HistoricalLookup;
             public ComponentLookup<Condemned> CondemnedLookup;
             public BuildingConfigurationData BuildingConfigurationData;
 
@@ -104,27 +107,25 @@ namespace FindStuff.Systems
                 in v128 chunkEnabledMask)
             {
                 NativeArray<Entity> entities = chunk.GetNativeArray(EntityTypeHandle);
-                NativeArray<PrefabRef> prefabs = chunk.GetNativeArray(ref PrefabRefTypeHandle);
                 ChunkEntityEnumerator enumerator = new(useEnabledMask, chunkEnabledMask, chunk.Count);
                 while (enumerator.NextEntityIndex(out int i))
                 {
                     Entity entity = entities[i];
-                    Entity prefab = prefabs[i].m_Prefab;
+                    PloppableBuildingData ploppableBuildingData = PloppableBuildingDataLookup[entity];
 
-                    if (!PloppableBuildingLookup.HasComponent(prefab))
+                    // Update to version 1 (adds historical feature)
+                    if (ploppableBuildingData.GetType().GetFields().Any(f => f.Name == "version") && ploppableBuildingData.version == 0 && !HistoricalLookup.HasComponent(entity)) {
+                        Ecb.AddComponent<Historical>(i, entity);
+                        ploppableBuildingData.version = PloppableRICOSystem.kComponentVersion;
+                        Ecb.SetComponent(i, entity, ploppableBuildingData);
+                    }
+
+                    if (CondemnedLookup.HasComponent(entity))
                     {
-                        // Add ploppable building component
-                        Ecb.AddComponent<PloppableBuilding>(i, prefab);
-
-                        if (CondemnedLookup.HasComponent(entity))
-                        {
-                            Icb.Remove(entity, BuildingConfigurationData.m_CondemnedNotification, default, 0);
-                            Ecb.RemoveComponent<Condemned>(i, entity);
-                        }
+                        Icb.Remove(entity, BuildingConfigurationData.m_CondemnedNotification, default, 0);
+                        Ecb.RemoveComponent<Condemned>(i, entity);
                     }
                 }
-
-                prefabs.Dispose();
             }
         }
     }

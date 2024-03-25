@@ -9,10 +9,13 @@ lang:
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.EnableShortcut]: CTRL + 클릭으로 객체를 선택합니다.
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: 전문가 모드 활성화
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.ExpertMode]: 활성화하면 게임을 충돌시키거나 저장 게임을 손상시킬 수 있는 잠재적으로 위험한 객체에 액세스할 수 있습니다. 무엇을 하고 있는지 알아야 합니다. 자신의 책임하에 사용하세요!
+ Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.AutomaticUnlocks]: 자동 잠금 해제
+ Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.AutomaticUnlocks]: 이렇게 하면 배치하려는 에셋의 잠금이 자동으로 해제됩니다.
 
  FindStuff.FindStuffSettings.MoveFindStuff: 창 이동
  FindStuff.FindStuffSettings.HideFindStuff: 창 숨기기
  FindStuff.FindStuffSettings.HideAssetMenu: 바닐라 창 덮어쓰기
+ FindStuff.FindStuffSettings.HideFindStuffSideMenu: 사이드 메뉴 숨기기
   
  Options.OPTION[FindStuff.FindStuffSettings.FindStuffSettings.SearchSpeed]: 검색 속도
  Options.OPTION_DESCRIPTION[FindStuff.FindStuffSettings.FindStuffSettings.SearchSpeed]: 물건 찾기를 통한 검색에 할당된 리소스의 양을 구성합니다. 낮은 설정은 더 적은 컴퓨터 자원을 사용하므로 많은 항목을 검색하는 데 더 오래 걸리지만 컴퓨터에 대한 부담이 덜합니다. 높은 설정은 결과를 더 빨리 반환하지만 컴퓨터에 더 많은 요구를 합니다.
