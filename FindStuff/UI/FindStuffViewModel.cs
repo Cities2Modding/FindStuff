@@ -289,7 +289,10 @@ namespace FindStuff.UI
         Highway,
         Pavement,
         Roundabout,
-        OtherNetwork
+        OtherNetwork,
+
+        // Misc
+        TransportStop
     }
 
     public enum SearchSpeed

@@ -288,3 +288,7 @@ lang:
  FindStuff.Tag.table: 탁자
 
  FindStuff.BuildingStaticUpgrade_desc: 업그레이드 메뉴를 얻으려면 도시의 건물을 선택해야 합니다. 그렇지 않으면 이 옵션을 선택해도 아무 일도 일어나지 않는 것처럼 보일 것입니다. (개발 도구에서도 동일하게 발생합니다)
+
+ FindStuff.Tag.stop: 정지
+ FindStuff.SubFilter.TransportStop: 교통 정류장
+ FindStuff.SubFilter.TransportStop_desc: 교통 정류장으로 필터링

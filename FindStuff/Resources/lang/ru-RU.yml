@@ -288,3 +288,7 @@ lang:
  FindStuff.Tag.table: Стол
 
  FindStuff.BuildingStaticUpgrade_desc: Вам необходимо выбрать здание в вашем городе, чтобы получить меню обновления. Если вы этого не сделаете, выбор этой опции будет казаться бесполезным. (То же самое происходит в инструментах разработчика)
+
+ FindStuff.Tag.stop: Остановить
+ FindStuff.SubFilter.TransportStop: Транспортная остановка
+ FindStuff.SubFilter.TransportStop_desc: Фильтровать по транспортным остановкам

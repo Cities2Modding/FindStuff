@@ -177,6 +177,10 @@ const SubFilters = ({ model, update, onDoUpdate, _L }) => {
                 toolTipFloat={isVertical ? "down" : "up"} className={"ml-1" + (model.SubFilter === "Area" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("Area")}>
                 <Icon icon="Media/Game/Icons/LotTool.svg" />
             </Button>
+            <Button title={_L("FindStuff.SubFilter.TransportStop")} description={_L("FindStuff.TransportStop.Area_desc")}
+                toolTipFloat={isVertical ? "down" : "up"} className={"ml-1" + (model.SubFilter === "TransportStop" ? " active" : "")} color="tool" size="sm" icon onClick={() => updateBackend("TransportStop")}>
+                <Icon icon="Media/Game/Icons/Bus Stop.svg" />
+            </Button>
         </div>;
     }
 

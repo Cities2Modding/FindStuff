@@ -1,12 +1,12 @@
 ﻿using BepInEx;
-using HarmonyLib;
-using System.Reflection;
-using System.Linq;
-using Game.Simulation;
-using System;
 using FindStuff.Patches;
-using Game.Common;
 using Game.Buildings;
+using Game.Common;
+using Game.Simulation;
+using HarmonyLib;
+using System;
+using System.Linq;
+using System.Reflection;
 
 #if BEPINEX_V6
     using BepInEx.Unity.Mono;
@@ -14,43 +14,45 @@ using Game.Buildings;
 
 namespace FindStuff
 {
-    [BepInPlugin( MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, "0.0.10" )]
-    [BepInDependency("Gooee", BepInDependency.DependencyFlags.HardDependency)]
-    [BepInDependency("LandValueOverhaul", BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInPlugin( MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION )]
+    [BepInDependency( "Gooee", BepInDependency.DependencyFlags.HardDependency )]
+    [BepInDependency( "LandValueOverhaul", BepInDependency.DependencyFlags.SoftDependency )]
     public class Plugin : BaseUnityPlugin
     {
         public static Type customPropertyRenterSystemType = null;
-        public static Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+        public static Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies( );
 
-        private void Awake()
+        private void Awake( )
         {
-            var harmony = new Harmony(MyPluginInfo.PLUGIN_GUID + "_Cities2Harmony");
+            var harmony = new Harmony( MyPluginInfo.PLUGIN_GUID + "_Cities2Harmony" );
 
             /*
              * This adds LandValueOverhaul support by running a specific patch only 
              */
-            if (HasLandValueOverhaul())
+            if ( HasLandValueOverhaul( ) )
             {
-                UnityEngine.Debug.Log("LandValueOverhaul found. Patch CustomPropertyRenterSystem instead.");
-                harmony.Patch(customPropertyRenterSystemType
-                    .GetMethod("OnCreate", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy), postfix: new HarmonyMethod(typeof(CustomPropertyRenterSystemPatch).GetMethod("Postfix")) {
+                UnityEngine.Debug.Log( "LandValueOverhaul found. Patch CustomPropertyRenterSystem instead." );
+                harmony.Patch( customPropertyRenterSystemType
+                    .GetMethod( "OnCreate", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy ), postfix: new HarmonyMethod( typeof( CustomPropertyRenterSystemPatch ).GetMethod( "Postfix" ) )
+                    {
                         after = ["LandValueOverhaul_Cities2Harmony"],
-                    });
-            } else
+                    } );
+            }
+            else
             {
-                UnityEngine.Debug.Log("LandValueOverhaul not found. Patch original PropertyRenterSystem.");
-                harmony.Patch(typeof(PropertyRenterSystem).GetMethod("OnCreate", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy), postfix: new HarmonyMethod(typeof(PropertyRenterSystemPatch).GetMethod(nameof(PropertyRenterSystemPatch.Postfix))));
+                UnityEngine.Debug.Log( "LandValueOverhaul not found. Patch original PropertyRenterSystem." );
+                harmony.Patch( typeof( PropertyRenterSystem ).GetMethod( "OnCreate", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy ), postfix: new HarmonyMethod( typeof( PropertyRenterSystemPatch ).GetMethod( nameof( PropertyRenterSystemPatch.Postfix ) ) ) );
             }
 
-            harmony.Patch(typeof(SystemOrder).GetMethod("Initialize"), postfix: new HarmonyMethod(typeof(SystemOrderPatches).GetMethod("Postfix")));
-            harmony.Patch(typeof(ZoneCheckSystem).GetMethod("OnCreate", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy), postfix: new HarmonyMethod(typeof(ZoneCheckSystem_Patches).GetMethod("Postfix")));
+            harmony.Patch( typeof( SystemOrder ).GetMethod( "Initialize" ), postfix: new HarmonyMethod( typeof( SystemOrderPatches ).GetMethod( "Postfix" ) ) );
+            harmony.Patch( typeof( ZoneCheckSystem ).GetMethod( "OnCreate", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy ), postfix: new HarmonyMethod( typeof( ZoneCheckSystem_Patches ).GetMethod( "Postfix" ) ) );
 
             var patchedMethods = harmony.GetPatchedMethods( ).ToArray( );
 
             Logger.LogInfo( System.Environment.NewLine + @" +-+-+-+-+ +-+-+-+-+-+
  |F|i|n|d| |S|t|u|f|f|
  +-+-+-+-+ +-+-+-+-+-+" );
-            
+
             // Plugin startup logic
             Logger.LogInfo( $"Plugin {MyPluginInfo.PLUGIN_GUID} is loaded! Patched methods: " + patchedMethods.Length );
 
@@ -60,12 +62,12 @@ namespace FindStuff
             }
         }
 
-        public static bool HasLandValueOverhaul()
+        public static bool HasLandValueOverhaul( )
         {
-            Assembly landValueOverhaulAssembly = assemblies.FirstOrDefault(a => a.GetName().Name == "LandValueOverhaul");
-            if (landValueOverhaulAssembly != null )
+            Assembly landValueOverhaulAssembly = assemblies.FirstOrDefault( a => a.GetName( ).Name == "LandValueOverhaul" );
+            if ( landValueOverhaulAssembly != null )
             {
-                customPropertyRenterSystemType = landValueOverhaulAssembly.GetTypes().FirstOrDefault(a => a.Name == "CustomPropertyRenterSystem");
+                customPropertyRenterSystemType = landValueOverhaulAssembly.GetTypes( ).FirstOrDefault( a => a.Name == "CustomPropertyRenterSystem" );
                 return true;
             }
 

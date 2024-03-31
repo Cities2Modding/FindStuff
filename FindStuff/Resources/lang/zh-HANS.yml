@@ -288,3 +288,7 @@ lang:
  FindStuff.Tag.table: 桌子
 
  FindStuff.BuildingStaticUpgrade_desc: 您需要在您的城市中选择建筑物以获取升级菜单。如果您不这样做，选择此项似乎无效。(开发工具中也是如此)
+
+ FindStuff.Tag.stop: 停止
+ FindStuff.SubFilter.TransportStop: 交通站
+ FindStuff.SubFilter.TransportStop_desc: 按交通站过滤

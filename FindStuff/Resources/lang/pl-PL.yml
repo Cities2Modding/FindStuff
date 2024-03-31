@@ -288,3 +288,7 @@ lang:
  FindStuff.Tag.table: Stół
 
  FindStuff.BuildingStaticUpgrade_desc: Musisz wybrać budynek w swoim mieście, aby uzyskać menu ulepszeń. Jeśli tego nie zrobisz, wybranie tej opcji będzie wydawać się nic nie robić. (To samo występuje w narzędziach deweloperskich)
+
+ FindStuff.Tag.stop: Zatrzymać
+ FindStuff.SubFilter.TransportStop: Przystanek transportowy
+ FindStuff.SubFilter.TransportStop_desc: Filtruj według przystanków transportowych

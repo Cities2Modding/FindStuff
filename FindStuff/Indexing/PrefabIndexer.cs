@@ -87,7 +87,8 @@ namespace FindStuff.Indexing
                 Filter.Misc,
                 [
                     SubFilter.Surface,
-                    SubFilter.Area
+                    SubFilter.Area,
+                    SubFilter.TransportStop
                 ]
             }
         };

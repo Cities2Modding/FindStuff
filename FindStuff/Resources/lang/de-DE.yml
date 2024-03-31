@@ -288,3 +288,7 @@ lang:
  FindStuff.Tag.table: Tisch
 
  FindStuff.BuildingStaticUpgrade_desc: Sie müssen das Gebäude in Ihrer Stadt auswählen, um das Upgrade-Menü zu erhalten. Wenn Sie dies nicht tun, scheint die Auswahl dieser Option nichts zu bewirken. (Gleiches tritt in Entwicklertools auf)
+
+ FindStuff.Tag.stop: Stopp
+ FindStuff.SubFilter.TransportStop: Haltestelle
+ FindStuff.SubFilter.TransportStop_desc: Nach Verkehrshaltestellen filtern

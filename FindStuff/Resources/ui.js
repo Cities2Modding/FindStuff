@@ -2745,6 +2745,19 @@
           onClick: () => updateBackend("Area")
         },
         /* @__PURE__ */ import_react3.default.createElement(Icon, { icon: "Media/Game/Icons/LotTool.svg" })
+      ), /* @__PURE__ */ import_react3.default.createElement(
+        Button,
+        {
+          title: _L("FindStuff.SubFilter.TransportStop"),
+          description: _L("FindStuff.TransportStop.Area_desc"),
+          toolTipFloat: isVertical ? "down" : "up",
+          className: "ml-1" + (model.SubFilter === "TransportStop" ? " active" : ""),
+          color: "tool",
+          size: "sm",
+          icon: true,
+          onClick: () => updateBackend("TransportStop")
+        },
+        /* @__PURE__ */ import_react3.default.createElement(Icon, { icon: "Media/Game/Icons/Bus Stop.svg" })
       ));
     }
     return /* @__PURE__ */ import_react3.default.createElement(import_react3.default.Fragment, null);

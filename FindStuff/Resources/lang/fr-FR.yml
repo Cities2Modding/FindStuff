@@ -288,3 +288,7 @@ lang:
  FindStuff.Tag.table: Table
 
  FindStuff.BuildingStaticUpgrade_desc: Vous devez sélectionner le bâtiment dans votre ville pour obtenir le menu de mise à niveau. Si vous ne le faites pas, sélectionner ceci semblera ne rien faire. (La même chose se produit dans les outils de développement)
+
+ FindStuff.Tag.stop: Arrêter
+ FindStuff.SubFilter.TransportStop: Arrêt de transport
+ FindStuff.SubFilter.TransportStop_desc: Filtrer par arrêts de transport

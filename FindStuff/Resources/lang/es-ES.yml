@@ -288,3 +288,7 @@ lang:
  FindStuff.Tag.table: Mesa
 
  FindStuff.BuildingStaticUpgrade_desc: Necesitas seleccionar el edificio en tu ciudad para obtener el menú de actualización. Si no lo haces, seleccionar esto parecerá no hacer nada. (Lo mismo ocurre en las herramientas de desarrollo)
+
+ FindStuff.Tag.stop: Detener
+ FindStuff.SubFilter.TransportStop: Parada de transporte
+ FindStuff.SubFilter.TransportStop_desc: Filtrar por paradas de transporte

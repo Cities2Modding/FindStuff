@@ -199,12 +199,13 @@ namespace FindStuff.UI
                     new SurfaceHelper( EntityManager ),
                     new AreaHelper( EntityManager ),
                     new CityServiceHelper( EntityManager ),
+                    new TransportStopHelper( EntityManager ),
                     new NetworkHelper( EntityManager ),
                     new SignatureBuildingHelper( EntityManager ),
                     new BuildingHelper( EntityManager ),
                     new VehicleHelper( EntityManager ),
                     new ZoneBuildingHelper( EntityManager, _prefabSystem ),
-                    new PropHelper( EntityManager ),
+                    new PropHelper( EntityManager )
                 ];
 
                 foreach ( var prefabBase in prefabs )
@@ -466,6 +467,9 @@ namespace FindStuff.UI
 
                 case "Accessory":
                     return "fa:solid-tree-city";
+
+                case "TransportStop":
+                    return "Media/Game/Icons/Bus Stop.svg";
             }
 
             return "";

@@ -12,6 +12,7 @@
 		<RootNamespace>FindStuff</RootNamespace>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
 		<Configurations>Debug;Release;Debug - 89;Release - 89</Configurations>
+		<Version>1.1.0</Version>
 	</PropertyGroup> 
 	
 	<PropertyGroup Condition="'$(Configuration)' == 'Debug - 89' or '$(Configuration)' == 'Release - 89'">
@@ -122,10 +123,6 @@
 		</Reference>
 		<Reference Include="Colossal.OdinSerializer">
 			<HintPath>$(Cities2_Location)\Cities2_Data\Managed\Colossal.OdinSerializer.dll</HintPath>
-			<Private>False</Private>
-		</Reference>
-		<Reference Include="Colossal.Plugins">
-			<HintPath>$(Cities2_Location)\Cities2_Data\Managed\Colossal.Plugins.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="Colossal.PSI.Common">

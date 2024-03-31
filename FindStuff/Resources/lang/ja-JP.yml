@@ -288,3 +288,7 @@ lang:
  FindStuff.Tag.table: テーブル
 
  FindStuff.BuildingStaticUpgrade_desc: アップグレードメニューを表示するには、都市の建物を選択する必要があります。そうしない場合、このオプションを選択しても何も起こらないように見えます。（開発ツールでも同じことが起こります）
+
+ FindStuff.Tag.stop: 止める
+ FindStuff.SubFilter.TransportStop: 交通停留所
+ FindStuff.SubFilter.TransportStop_desc: 交通停留所でフィルター
