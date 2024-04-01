@@ -13,10 +13,12 @@ namespace FindStuff.Patches
     /// </summary>
     public static class CustomPropertyRenterSystemPatch
     {
-        public static void Postfix()
+        private static bool hasInitialize = false;
+
+        public static void Prefix()
         {
             ComponentSystemBase __instance = World.DefaultGameObjectInjectionWorld?.GetOrCreateSystemManaged(Mod.customPropertyRenterSystemType);
-            if (__instance == null)
+            if (__instance == null || hasInitialize)
                 return;
 
             Traverse.Create(__instance).Field("m_BuildingGroup").SetValue(__instance.EntityManager.CreateEntityQuery(new EntityQueryDesc[]
@@ -37,6 +39,8 @@ namespace FindStuff.Patches
                     ]
                 }
             }));
+
+            hasInitialize = true;
         }
     }
 }

@@ -10,9 +10,11 @@ namespace FindStuff.Patches
 {
     public static class PropertyRenterSystemPatch
     {
-        public static void Postfix(PropertyRenterSystem __instance)
+        private static bool hasInitialize = false;
+
+        public static void Prefix(PropertyRenterSystem __instance)
         {
-            if (__instance == null)
+            if (__instance == null || hasInitialize == true)
                 return;
 
             Traverse.Create(__instance).Field("m_BuildingGroup").SetValue(__instance.EntityManager.CreateEntityQuery(new EntityQueryDesc[]
@@ -33,6 +35,9 @@ namespace FindStuff.Patches
                     ]
                 }
             }));
+
+            UnityEngine.Debug.Log("Original PropertyRenterSystems m_BuildingGroup patched.");
+            hasInitialize = true;
         }
     }
 }

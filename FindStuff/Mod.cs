@@ -1,14 +1,12 @@
 ﻿using Colossal.Logging;
-using FindStuff.Patches;
 using Game;
 using Game.Buildings;
-using Game.Common;
 using Game.Modding;
-using Game.Simulation;
 using HarmonyLib;
 using System;
 using System.Linq;
 using System.Reflection;
+using FindStuff.Systems;
 
 namespace FindStuff
 {
@@ -18,36 +16,23 @@ namespace FindStuff
         public static Type customPropertyRenterSystemType = null;
         public static Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies( );
 
-        private Harmony _harmony;
+        public static Harmony _harmony;
 
         public void OnLoad( UpdateSystem updateSystem )
         {
             _harmony = new Harmony( "cities2modding_findstuff" );
 
-            ///*
-            // * This adds LandValueOverhaul support by running a specific patch only 
-            // */
-            //if ( HasLandValueOverhaul( ) )
-            //{
-            //    UnityEngine.Debug.Log( "LandValueOverhaul found. Patch CustomPropertyRenterSystem instead." );
-            //    _harmony.Patch( customPropertyRenterSystemType
-            //        .GetMethod( "OnCreate", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy ), postfix: new HarmonyMethod( typeof( CustomPropertyRenterSystemPatch ).GetMethod( "Postfix" ) )
-            //        {
-            //            after = ["LandValueOverhaul_Cities2Harmony"],
-            //        } );
-            //}
-            //else
-            //{
-            //    UnityEngine.Debug.Log( "LandValueOverhaul not found. Patch original PropertyRenterSystem." );
-            //    _harmony.Patch( typeof( PropertyRenterSystem ).GetMethod( "OnCreate", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy ), postfix: new HarmonyMethod( typeof( PropertyRenterSystemPatch ).GetMethod( nameof( PropertyRenterSystemPatch.Postfix ) ) ) );
-            //}
-
-            //_harmony.Patch( typeof( SystemOrder ).GetMethod( "Initialize" ), postfix: new HarmonyMethod( typeof( SystemOrderPatches ).GetMethod( "Postfix" ) ) );
-            //_harmony.Patch( typeof( ZoneCheckSystem ).GetMethod( "OnCreate", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy ), postfix: new HarmonyMethod( typeof( ZoneCheckSystem_Patches ).GetMethod( "Postfix" ) ) );
-
             _log.Info( System.Environment.NewLine + @" +-+-+-+-+ +-+-+-+-+-+
  |F|i|n|d| |S|t|u|f|f|
  +-+-+-+-+ +-+-+-+-+-+" );
+
+            _harmony.PatchAll();
+
+            updateSystem.World.GetOrCreateSystemManaged<ZoneCheckSystem>().Enabled = false;
+            updateSystem?.UpdateAt<CheckPloppableRICOSystem>(SystemUpdatePhase.GameSimulation);
+            updateSystem?.UpdateAt<PloppableRICOSystem>(SystemUpdatePhase.Modification5);
+            updateSystem?.UpdateAt<PloppableRICORentSystem>(SystemUpdatePhase.GameSimulation);
+            updateSystem?.UpdateAt<CustomZoneCheckSystem>(SystemUpdatePhase.ModificationEnd);
         }
 
         public void OnDispose( )

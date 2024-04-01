@@ -1,7 +1,6 @@
 ﻿using Game.Prefabs;
 using System.Collections.Generic;
 using Unity.Entities;
-using static Game.Prefabs.CharacterGroup;
 
 namespace FindStuff.Helper
 {

@@ -6,136 +6,137 @@ using Unity.Entities;
 
 namespace FindStuff.Helper
 {
-    public class ZoneBuildingHelper( EntityManager entityManager, PrefabSystem prefabSystem ) : BaseHelper
+    public class ZoneBuildingHelper(EntityManager entityManager, PrefabSystem prefabSystem) : BaseHelper
     {
-        public override string PrefabType => "Unknown";
+        public override string PrefabType => _PrefabType;
+        private string _PrefabType = "Unknown";
 
         public override string CategoryType => "Zones";
 
-        public override Dictionary<string, object> CreateMeta( PrefabBase prefab, Entity entity )
+        public override Dictionary<string, object> CreateMeta(PrefabBase prefab, Entity entity)
         {
-            Dictionary<string, object> meta = new Dictionary<string, object>( );
+            Dictionary<string, object> meta = new Dictionary<string, object>();
 
             try
             {
-                SpawnableBuildingData spawnableBuildingData = entityManager.GetComponentData<SpawnableBuildingData>( entity );
-                BuildingPrefab buildingPrefab = ( BuildingPrefab ) prefab;
+                SpawnableBuildingData spawnableBuildingData = entityManager.GetComponentData<SpawnableBuildingData>(entity);
+                BuildingPrefab buildingPrefab = (BuildingPrefab)prefab;
 
-                meta.Add( META_ZONE_LEVEL, spawnableBuildingData.m_Level );
-                meta.Add( META_ZONE_LOT_DEPTH, buildingPrefab.m_LotDepth );
-                meta.Add( META_ZONE_LOT_WIDTH, buildingPrefab.m_LotWidth );
-                meta.Add( META_ZONE_LOT_SUM, buildingPrefab.m_LotDepth * buildingPrefab.m_LotWidth );
+                meta.Add(META_ZONE_LEVEL, spawnableBuildingData.m_Level);
+                meta.Add(META_ZONE_LOT_DEPTH, buildingPrefab.m_LotDepth);
+                meta.Add(META_ZONE_LOT_WIDTH, buildingPrefab.m_LotWidth);
+                meta.Add(META_ZONE_LOT_SUM, buildingPrefab.m_LotDepth * buildingPrefab.m_LotWidth);
 
-                var placeableObject = prefab.GetComponent<PlaceableObject>( );
+                var placeableObject = prefab.GetComponent<PlaceableObject>();
 
-                if ( placeableObject != null )
+                if (placeableObject != null)
                 {
-                    meta.Add( "Cost", placeableObject.m_ConstructionCost );
-                    meta.Add( "XPReward", placeableObject.m_XPReward );
+                    meta.Add("Cost", placeableObject.m_ConstructionCost);
+                    meta.Add("XPReward", placeableObject.m_XPReward);
                 }
             }
-            catch ( Exception e )
+            catch (Exception e)
             {
-                UnityEngine.Debug.Log( "ZoneBuildingHelper.CreateMeta: " + e );
+                UnityEngine.Debug.Log("ZoneBuildingHelper.CreateMeta: " + e);
             }
 
             return meta;
         }
 
-        public override List<string> CreateTags( PrefabBase prefab, Entity entity )
+        public override List<string> CreateTags(PrefabBase prefab, Entity entity)
         {
-            List<string> tags = new List<string>( );
+            List<string> tags = new List<string>();
 
-            if ( entityManager == null )
+            if (entityManager == null)
                 return tags;
 
-            SpawnableBuildingData spawnableBuildingData = entityManager.GetComponentData<SpawnableBuildingData>( entity );
-            ZoneData zoneData = entityManager.GetComponentData<ZoneData>( spawnableBuildingData.m_ZonePrefab );
-            var zonePrefab = World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<PrefabSystem>( )
-                .GetPrefab<ZonePrefab>( spawnableBuildingData.m_ZonePrefab );
+            SpawnableBuildingData spawnableBuildingData = entityManager.GetComponentData<SpawnableBuildingData>(entity);
+            ZoneData zoneData = entityManager.GetComponentData<ZoneData>(spawnableBuildingData.m_ZonePrefab);
+            var zonePrefab = World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<PrefabSystem>()
+                .GetPrefab<ZonePrefab>(spawnableBuildingData.m_ZonePrefab);
 
-            var buildingPrefab = ( BuildingPrefab ) prefab;
+            var buildingPrefab = (BuildingPrefab)prefab;
 
-            tags.Add( $"{buildingPrefab.m_LotWidth}x{buildingPrefab.m_LotDepth}" );
-            tags.Add( "zones" );
+            tags.Add($"{buildingPrefab.m_LotWidth}x{buildingPrefab.m_LotDepth}");
+            tags.Add("zones");
 
-            switch ( zoneData.m_AreaType )
+            switch (zoneData.m_AreaType)
             {
                 case Game.Zones.AreaType.Commercial:
-                    PrefabType = "ZoneCommercial";
-                    tags.Add( "commercial" );
+                    _PrefabType = "ZoneCommercial";
+                    tags.Add("commercial");
                     break;
                 case Game.Zones.AreaType.Residential:
-                    PrefabType = "ZoneResidential";
-                    tags.Add( "residential" );
+                    _PrefabType = "ZoneResidential";
+                    tags.Add("residential");
                     break;
                 case Game.Zones.AreaType.Industrial:
-                    PrefabType = zonePrefab.m_Office ? "ZoneOffice" : "ZoneIndustrial";
-                    tags.Add( zonePrefab.m_Office ? "office" : "industrial" );
+                    _PrefabType = zonePrefab.m_Office ? "ZoneOffice" : "ZoneIndustrial";
+                    tags.Add(zonePrefab.m_Office ? "office" : "industrial");
                     break;
             }
 
             var name = zonePrefab.name;
             var theme = "";
 
-            if ( name.StartsWith( "EU " ) || name.StartsWith( "NA " ) )
-                theme = name.Substring( 0, 3 ).ToLower( );
+            if (name.StartsWith("EU ") || name.StartsWith("NA "))
+                theme = name.Substring(0, 2).ToLower();
 
-            if ( !string.IsNullOrEmpty( theme ) )
-                tags.Add( theme );
+            if (!string.IsNullOrEmpty(theme))
+                tags.Add(theme);
 
-            if ( name.ToLower( ).Contains( " high" ) )
-                tags.Add( "high-density" );
-            else if ( name.ToLower( ).Contains( " low" ) )
-                tags.Add( "low-density" );
-            else if ( name.ToLower( ).Contains( " mixed" ) )
-                tags.Add( "mixed-density" );
-            else if ( name.ToLower( ).Contains( " lowrent" ) )
-                tags.Add( "low-rent" );
-            else if ( name.ToLower( ).Contains( " medium row" ) )
+            if (name.ToLower().Contains(" high"))
+                tags.Add("high-density");
+            else if (name.ToLower().Contains(" low"))
+                tags.Add("low-density");
+            else if (name.ToLower().Contains(" mixed"))
+                tags.Add("mixed-density");
+            else if (name.ToLower().Contains(" lowrent"))
+                tags.Add("low-rent");
+            else if (name.ToLower().Contains(" medium row"))
             {
-                tags.Add( "medium-density" );
-                tags.Add( "row" );
+                tags.Add("medium-density");
+                tags.Add("row");
             }
-            else if ( name.ToLower( ).Contains( " medium" ) )
-                tags.Add( "medium-density" );
+            else if (name.ToLower().Contains(" medium"))
+                tags.Add("medium-density");
 
 
             return tags;
         }
 
-        public override bool IsValidPrefab( PrefabBase prefab, Entity entity )
+        public override bool IsValidPrefab(PrefabBase prefab, Entity entity)
         {
-            if ( entityManager == null || entity == Entity.Null )
+            if (entityManager == null || entity == Entity.Null)
                 return false;
 
             return prefab is BuildingPrefab
-                && entityManager.TryGetComponent( entity, out SpawnableBuildingData spawnableBuildingData )
+                && entityManager.TryGetComponent(entity, out SpawnableBuildingData spawnableBuildingData)
                 && spawnableBuildingData.m_ZonePrefab != Entity.Null
-                && entityManager.HasComponent<ZoneData>( spawnableBuildingData.m_ZonePrefab );
+                && entityManager.HasComponent<ZoneData>(spawnableBuildingData.m_ZonePrefab);
         }
 
-        public string GetZoneTypeIcon( PrefabBase prefab, Entity entity )
+        public string GetZoneTypeIcon(PrefabBase prefab, Entity entity)
         {
-            if ( prefab is BuildingPrefab
-                && entityManager.TryGetComponent( entity, out SpawnableBuildingData spawnableBuildingData )
+            if (prefab is BuildingPrefab
+                && entityManager.TryGetComponent(entity, out SpawnableBuildingData spawnableBuildingData)
                 && spawnableBuildingData.m_ZonePrefab != Entity.Null
-                && entityManager.TryGetComponent<ZoneData>( spawnableBuildingData.m_ZonePrefab, out var zoneData ) )
+                && entityManager.TryGetComponent<ZoneData>(spawnableBuildingData.m_ZonePrefab, out var zoneData))
             {
-                var zonePrefab = World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<PrefabSystem>( ).GetPrefab<ZonePrefab>( spawnableBuildingData.m_ZonePrefab );
+                var zonePrefab = World.DefaultGameObjectInjectionWorld.GetOrCreateSystemManaged<PrefabSystem>().GetPrefab<ZonePrefab>(spawnableBuildingData.m_ZonePrefab);
 
                 var name = zonePrefab.name;
 
-                if ( name.StartsWith( "EU " ) || name.StartsWith( "NA " ) )
-                    name = name.Substring( 0, 3 );
+                if (name.StartsWith("EU ") || name.StartsWith("NA "))
+                    name = name.Substring(3);
 
-                name = name.Replace( " ", "" );
+                name = name.Replace(" ", "");
 
-                if ( name == "IndustrialAgriculture" )
+                if (name == "IndustrialAgriculture")
                     name = "ZoneAgricultureArea";
-                else if ( name == "IndustrialOil" )
+                else if (name == "IndustrialOil")
                     name = "Oil";
-                else if ( name == "IndustrialOre" )
+                else if (name == "IndustrialOre")
                     name = "ZoneOreArea";
                 else
                     name = "Zone" + name;
@@ -145,7 +146,7 @@ namespace FindStuff.Helper
             return null;
         }
 
-        public override bool IsExpertMode( PrefabBase prefab, Entity entity )
+        public override bool IsExpertMode(PrefabBase prefab, Entity entity)
         {
             return false;
         }

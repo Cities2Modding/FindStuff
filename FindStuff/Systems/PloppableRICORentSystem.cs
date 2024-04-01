@@ -185,53 +185,55 @@ namespace FindStuff.Systems
                 {
                     DynamicBuffer<Renter> renterBuffer = renterAccessor[i];
                     Entity prefab = prefabRefs[i].m_Prefab;
-                    if (m_SpawnableBuildingData.HasComponent(prefab))
+                    if (!m_SpawnableBuildingData.HasComponent(prefab))
                     {
-                        BuildingPropertyData buildingPropertyData = m_BuildingProperties[prefab];
-                        int num2 = 0;
-                        for (int j = 0; j < renterBuffer.Length; j++)
+                        continue;
+                    }
+
+                    BuildingPropertyData buildingPropertyData = m_BuildingProperties[prefab];
+                    int num2 = 0;
+                    for (int j = 0; j < renterBuffer.Length; j++)
+                    {
+                        Entity renter = renterBuffer[j].m_Renter;
+                        if (m_PropertyRenters.HasComponent(renter))
                         {
-                            Entity renter = renterBuffer[j].m_Renter;
-                            if (m_PropertyRenters.HasComponent(renter))
+                            PropertyRenter propertyRenter = m_PropertyRenters[renter];
+                            int num3;
+                            if (m_Storages.HasComponent(renter))
                             {
-                                PropertyRenter propertyRenter = m_PropertyRenters[renter];
-                                int num3;
-                                if (m_Storages.HasComponent(renter))
-                                {
-                                    num3 = EconomyUtils.GetResources(Resource.Money, m_Resources[renter]);
-                                }
-                                else
-                                {
-                                    num3 = MathUtils.RoundToIntRandom(ref random, propertyRenter.m_Rent * 1f / kUpdatesPerDay);
-                                    num2 += num3;
-                                }
-                                EconomyUtils.AddResources(Resource.Money, -num3, m_Resources[renter]);
+                                num3 = EconomyUtils.GetResources(Resource.Money, m_Resources[renter]);
                             }
-                        }
-                        m_LandlordQueue.Enqueue(num2);
-                        bool notAbandonedOrDestroyed = !m_Abandoned.HasComponent(entities[i]) && !m_Destroyed.HasComponent(entities[i]);
-                        for (int k = renterBuffer.Length - 1; k >= 0; k--)
-                        {
-                            Entity renter2 = renterBuffer[k].m_Renter;
-                            if (!m_PropertyRenters.HasComponent(renter2))
+                            else
                             {
-                                renterBuffer.RemoveAt(k);
+                                num3 = MathUtils.RoundToIntRandom(ref random, propertyRenter.m_Rent * 1f / kUpdatesPerDay);
+                                num2 += num3;
                             }
+                            EconomyUtils.AddResources(Resource.Money, -num3, m_Resources[renter]);
                         }
-                        if (renterBuffer.Length < buildingPropertyData.CountProperties() && !m_PropertiesOnMarket.HasComponent(entities[i]) && notAbandonedOrDestroyed)
+                    }
+                    m_LandlordQueue.Enqueue(num2);
+                    bool notAbandonedOrDestroyed = !m_Abandoned.HasComponent(entities[i]) && !m_Destroyed.HasComponent(entities[i]);
+                    for (int k = renterBuffer.Length - 1; k >= 0; k--)
+                    {
+                        Entity renter2 = renterBuffer[k].m_Renter;
+                        if (!m_PropertyRenters.HasComponent(renter2))
                         {
-                            m_CommandBuffer.AddComponent(unfilteredChunkIndex, entities[i], default(PropertyToBeOnMarket));
+                            renterBuffer.RemoveAt(k);
                         }
-                        int propertiesCount = buildingPropertyData.CountProperties();
-                        while ((renterBuffer.Length > 0 && !notAbandonedOrDestroyed) || renterBuffer.Length > propertiesCount)
+                    }
+                    if (renterBuffer.Length < buildingPropertyData.CountProperties() && !m_PropertiesOnMarket.HasComponent(entities[i]) && notAbandonedOrDestroyed)
+                    {
+                        m_CommandBuffer.AddComponent(unfilteredChunkIndex, entities[i], default(PropertyToBeOnMarket));
+                    }
+                    int propertiesCount = buildingPropertyData.CountProperties();
+                    while ((renterBuffer.Length > 0 && !notAbandonedOrDestroyed) || renterBuffer.Length > propertiesCount)
+                    {
+                        Entity renter3 = renterBuffer[renterBuffer.Length - 1].m_Renter;
+                        if (m_PropertyRenters.HasComponent(renter3))
                         {
-                            Entity renter3 = renterBuffer[renterBuffer.Length - 1].m_Renter;
-                            if (m_PropertyRenters.HasComponent(renter3))
-                            {
-                                m_CommandBuffer.RemoveComponent<PropertyRenter>(unfilteredChunkIndex, renter3);
-                            }
-                            renterBuffer.RemoveAt(renterBuffer.Length - 1);
+                            m_CommandBuffer.RemoveComponent<PropertyRenter>(unfilteredChunkIndex, renter3);
                         }
+                        renterBuffer.RemoveAt(renterBuffer.Length - 1);
                     }
                 }
             }

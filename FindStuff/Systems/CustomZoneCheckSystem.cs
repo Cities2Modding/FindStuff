@@ -9,7 +9,6 @@ using Game.Objects;
 using Game.Prefabs;
 using Game.Tools;
 using Game.Zones;
-using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Jobs;
@@ -146,7 +145,6 @@ namespace Game.Buildings
 
         private TypeHandle __TypeHandle;
 
-        [BurstCompile]
         private struct FindSpawnableBuildingsJob : IJobParallelForDefer
         {
             public void Execute(int index)
@@ -227,7 +225,6 @@ namespace Game.Buildings
             }
         }
 
-        [BurstCompile]
         private struct CollectEntitiesJob : IJob
         {
             public void Execute()
@@ -274,7 +271,6 @@ namespace Game.Buildings
             }
         }
 
-        [BurstCompile]
         private struct CheckBuildingZonesJob : IJobParallelForDefer
         {
             public void Execute(int index)

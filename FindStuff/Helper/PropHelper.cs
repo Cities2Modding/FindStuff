@@ -7,7 +7,8 @@ namespace FindStuff.Helper
 {
     public class PropHelper( EntityManager entityManager ) : BaseHelper
     {
-        public override string PrefabType => "PropMisc";
+        public override string PrefabType => _PrefabType;
+        private string _PrefabType = "PropMisc";
 
         public override string CategoryType
         {
@@ -42,59 +43,59 @@ namespace FindStuff.Helper
             string prefabLowered = prefab.name.ToLower( );
             if ( prefabLowered.StartsWith( "sign" ) )
             {
-                PrefabType = "SignsAndPosters";
+                _PrefabType = "SignsAndPosters";
                 tags.Add( "sign" );
             }
             else if ( prefabLowered.StartsWith( "poster" ) )
             {
                 tags.Add( "poster" );
-                PrefabType = "SignsAndPosters";
+                _PrefabType = "SignsAndPosters";
             }
             else if ( prefabLowered.StartsWith( "billboard" ) )
             {
                 tags.Add( "billboard" );
-                PrefabType = "Billboards";
+                _PrefabType = "Billboards";
             }
             else if ( prefabLowered.StartsWith( "fence" ) )
             {
                 tags.Add( "fence" );
-                PrefabType = "Fences";
+                _PrefabType = "Fences";
             }
             else if ( prefabLowered.Contains( "hedge" ) ) // Working hedges are found here
             {
                 tags.Add( "plant" );
                 tags.Add( "foliage" );
-                PrefabType = "Plant";
+                _PrefabType = "Plant";
                 CategoryType = "Foliage";
             }
             else if ( prefabLowered.Contains( "light" ) && !prefabLowered.Contains( "traffic" ) )
             {
                 tags.Add( "light" );
                 tags.Add( "accessory" );
-                PrefabType = "Accessory";
+                _PrefabType = "Accessory";
             }
             else if ( prefabLowered.Contains( "bench" ) )
             {
                 tags.Add( "bench" );
                 tags.Add( "accessory" );
-                PrefabType = "Accessory";
+                _PrefabType = "Accessory";
             }
             else if ( prefabLowered.Contains( "table" ) || prefabLowered.Contains( "tableset" ) )
             {
                 tags.Add( "table" );
                 tags.Add( "accessory" );
-                PrefabType = "Accessory";
+                _PrefabType = "Accessory";
             }
             else if ( prefabLowered.Contains( "trashbin" ) )
             {
                 tags.Add( "trashbin" );
                 tags.Add( "accessory" );
-                PrefabType = "Accessory";
+                _PrefabType = "Accessory";
             }
             else if ( prefabLowered.Contains( "gazebo" ) || prefabLowered.Contains( "grill" ) || prefabLowered.Contains( "food store" ) || prefabLowered.Contains( "food cart" ) )
             {
                 tags.Add( "accessory" );
-                PrefabType = "Accessory";
+                _PrefabType = "Accessory";
             }
             else if ( entityManager.HasChunkComponent<BridgeData>( entity ) )
             {
@@ -102,7 +103,7 @@ namespace FindStuff.Helper
             }
             else
             {
-                PrefabType = "PropMisc";
+                _PrefabType = "PropMisc";
             }
 
             return tags.OrderBy( t => t ).ToList( );

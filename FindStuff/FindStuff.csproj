@@ -27,14 +27,8 @@
 		<!--The file where mod information which is required for publishing mod on PDX mods are stored-->
 		<PublishConfigurationPath>Properties\PublishConfiguration.xml</PublishConfigurationPath>
 
-		<LocalMods_Location>$(UserProfile)\AppData\LocalLow\Colossal Order\Cities Skylines II\Mods</LocalMods_Location>
+		<LocalMods_Location>$(USERPROFILE)\AppData\LocalLow\Colossal Order\Cities Skylines II\Mods</LocalMods_Location>
 	</PropertyGroup>
-
-	<ItemGroup>
-	  <Compile Remove="Systems\CheckPloppableRICOSystem.cs" />
-	  <Compile Remove="Systems\CustomZoneCheckSystem.cs" />
-	  <Compile Remove="Systems\PloppableRICORentSystem.cs" />
-	</ItemGroup>
 	
 	<ItemGroup>
 	  <None Remove="Resources\changelog.md" />
@@ -77,7 +71,6 @@
 	</ItemGroup>
 	
 	<ItemGroup>
-	  <None Include="Patches\SystemOrderPatches.cs" />
 	  <None Include="Systems\CheckPloppableRICOSystem.cs" />
 	  <None Include="Systems\CustomZoneCheckSystem.cs" />
 	  <None Include="Systems\PloppableRICORentSystem.cs" />
@@ -91,7 +84,7 @@
 	
 	<ItemGroup>
 		<Reference Include="Gooee">
-			<HintPath>$(LocalMods_Location)\Gooee\Gooee.dll</HintPath>
+			<HintPath>C:\Users\lenna\AppData\LocalLow\Colossal Order\Cities Skylines II\.cache\Mods\mods_subscribed\77225_2\Gooee.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="Game">
