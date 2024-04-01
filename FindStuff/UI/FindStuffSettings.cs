@@ -55,8 +55,8 @@ namespace FindStuff.UI
             OperationMode = "HideFindStuff";
             ExpertMode = false;
             EnableShortcut = false;
-            SearchSpeed = "Medium";
-            AutomaticUnlocks = false;
+            SearchSpeed = "VeryHigh";
+            AutomaticUnlocks = true;
         }
 
         [Preserve]

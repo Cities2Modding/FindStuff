@@ -8,65 +8,85 @@
 	<!--Long description of the mod. Single line or multi line. Supports minimal markdown subset-->
 	<!--LongDescription Value="Shared dependency pack for Cities Skylines 2, includes HarmonyX 2.2.2" /-->
 	<LongDescription>
-		# FindStuff Mod for Cities: Skylines 2
+# FindStuff Mod for Cities: Skylines 2
 
-		## Overview
-		**FindStuff** elevates your Cities: Skylines 2 experience by introducing an advanced mod that streamlines the search and management of game objects. As we continue to refine its features and interface in its alpha phase, FindStuff aims to seamlessly integrate with your gameplay, offering powerful functionalities designed for efficiency and convenience.
+## Overview
+**FindStuff** elevates your Cities: Skylines 2 experience by introducing an advanced mod that streamlines the search and management of game objects. As we continue to refine its features and interface in its alpha phase, FindStuff aims to seamlessly integrate with your gameplay, offering powerful functionalities designed for efficiency and convenience.
 
-		## Features
+## Features
 
-		### Enhanced GameObject Finder and UI Interactivity
-		- **Unified Interface**: A singular window for easy access to game objects, coupled with an integrated Picker tool for precise selection.
-		- **Menu Behavior Configuration**: Customize how FindStuff interacts with the game's vanilla menus. Options include:
-		- Hide FindStuff when a vanilla menu is opened.
-		- Move FindStuff to the top of the screen, displaying a compact version, when vanilla menus are active.
-		- Override and hide the vanilla asset window, replacing it with FindStuff for a unified experience.
-		- **Prefab Selection Memory**: In override mode, if a prefab is selected outside FindStuff when closed, reopening FindStuff will have that prefab pre-selected.
-		- **Dynamic UI Resizing**: Adjust the FindStuff menu size for an expanded or compact view, enhancing visibility and access to a wider range of assets.
+### Enhanced prefab finder and UI Interactivity
+- **Unified Interface**: A singular window for easy access to game objects, coupled with an integrated Picker tool for precise selection.
+- **Menu Behavior Configuration**: Customize how FindStuff interacts with the game's vanilla menus. Options include:
+- **Prefab Selection Memory**: In override mode, if a prefab is selected outside FindStuff when closed, reopening FindStuff will have that prefab pre-selected.
+- **Dynamic UI Resizing**: Adjust the FindStuff menu size for an expanded or compact view, enhancing visibility and access to a wider range of assets.
+- **Hover menus showing detailed information for prefabs.**
+- **Hide FindStuff when a vanilla menu is opened.**
+- **Automatic unlock functionality**: Controllable via options menu.
+- **Move FindStuff to the top of the screen**: Displaying a compact version, when vanilla menus are active.
+- **Override and hide the vanilla asset window**: Replacing it with FindStuff for a unified experience.
 
-		### Advanced Search and Filtering Capabilities
-		- **Comprehensive Search Options**: Perform full-text searches on asset names, translated names, tags, and categories for precise findings.
-		- **Enhanced Filtering**: Utilize category and sub-category filters through intuitive icon buttons to streamline your search process.
-		- **Sorting Functionality**: Order assets by name in ascending or descending format for easier navigation and selection.
+### PickStuff tool
+- **Easily select prefabs in your city**: Use the droplet tool and easily select your desired prefab, reducing repeating yourself.
+- **Integration with FindStuff**: If you have FindStuff to configured to override vanilla prefab/prop menus; PickStuff will automatically highlight it in FindStuff.
 
-		### Integrated "Plop the Growables" or PloppableRICO supprt
-		- **Placing residentials, industrials, commercials and offices directly**
-		- **Adds the ability to set the buildings "Historical" - means they do not level up/down**
-		- **Compatibility support for LandValueOverhaul**
+### Advanced Search and Filtering Capabilities
+- **Optimised for varied hardware**: You have full control of the search speed; which means if you have less capable hardware you can scale back the intensity of searching to lessen the load on your computer.
+- **Search indexing and scoring**: Searching is more sophisticated than a direct name match. We use Levenshtein distance algorithim along with a priortisation scoring system to ensure the results most relevant to your search are at the top of the list.
+- **Comprehensive Search Options**: Perform full-text searches on asset names, translated names, tags, and categories for precise findings.
+- **Enhanced Filtering**: Utilize category and sub-category filters through intuitive icon buttons to streamline your search process.
+- **Sorting Functionality**: Order assets by name in ascending or descending format for easier navigation and selection.
+- **Autocomplete**: Commonly searched terms are presented if they match your search query as you type it; allowing easy selection.
 
-		### Shortcuts and Language Support
-		- Leverage shortcuts like CTRL + F for quick searching and CTRL + Click for direct Picker tool access, with customizable options in settings.
-		- Full language support for all default Cities Skylines 2 locales, ensuring accessibility for a global player base.
+### Integrated "Plop the Growables" or PloppableRICO support
+- **Non-intrusive growables system**
+- **You have full control of which buildings are tagged with RICO support**
+- **More efficient than other RICO mods as it doesn't process all buildings; only those tagged with our RICO component.**
+- **Placing residentials, industrials, commercials and offices directly**
+- **Adds the ability to set the buildings "Historical" - means they do not level up/down**
+- **Compatibility support for LandValueOverhaul**
 
-		### Performance, Optimization, and Configuration
-		- Experience optimized performance for handling extensive game objects lists, with features to identify potentially harmful objects.
-		- Enjoy an extended UI developed with the Gooee framework, with configurations remembered and restored on each game load for a seamless experience.
+### Persistent configuration
+- **Don't repeat yourself!**: FindStuff stores your most searched prefabs, last used filtering and view settings so you don't have to repeat the same process whenever you hide/show FindStuff.
 
-		## Usage
-		Activate FindStuff via the magnifying glass icon or through the HookUI/Gooee mod backpack icon in the upper left corner of the game, the picker tool is accessed through the eye drop icon.
+### Shortcuts and Language Support
+- Leverage shortcuts like CTRL + F for quick searching and CTRL + Click for direct Picker tool access, with customizable options in settings.
+- Full language support for all default Cities Skylines 2 locales, ensuring accessibility for a global player base.
 
-		### Important Notes
-		- **Experimental Phase**: FindStuff is currently in development, focusing on expanding and refining its features. Not all assets/prefabs may be visible, and while custom modded assets are likely to appear if vanilla methods are used, this is not guaranteed.
-		- Ensure downloads are from Thunderstore.io or the official GitHub page for authenticity.
-		- This mod is a collaborative effort within the Cities 2 Modding community.
+### Performance, Optimization, and Configuration
+- Experience optimized performance for handling extensive game objects lists, with features to identify potentially harmful objects.
+- Enjoy an extended UI developed with the Gooee framework, with configurations remembered and restored on each game load for a seamless experience.
 
-		## Development Team and Credits
-		- Development led by [optimus-code](https://github.com/optimus-code) and [89pleasure](https://github.com/89pleasure).
-		- Special thanks to Rebecca, CaptainOfCoit, the Cities 2 Modding Community, Colossal Order, and Paradox Interactive.
+## Usage
+Activate FindStuff via the magnifying glass icon or through the HookUI/Gooee mod backpack icon in the upper left corner of the game, the picker tool is accessed through the eye drop icon.
 
-		**NOTE**: We are not officially affiliated with Colossal Order or Paradox Interactive, this is a fan-made project.
+## Support and Feedback
+- For support, questions, or feedback, feel free to reach out by joining the Cities2Modding Discord, linked under Cities Skylines II on [Thunderstore.io](https://thunderstore.io).
 
-		**Utilizes [Gooee](https://github.com/Cities2Modding/Gooee), a dedicated UI framework for Cities: Skylines 2 mods.**
+**Please Note**: Comments on Paradox Mods are not the best place for reporting issues or getting help. Joining our discord will be the best way to get resolve any issues you may encounter.
 
-		## Feedback and Support
-		We value your input and encourage feedback to continually improve FindStuff. For issues, suggestions, or to connect with the team, join our Discord at [https://discord.gg/M9rgRtGcRa](https://discord.gg/M9rgRtGcRa).
+### Important Notes
+- **Experimental Phase**: FindStuff is currently in development, focusing on expanding and refining its features. Not all assets/prefabs may be visible, and while custom modded assets are likely to appear if vanilla methods are used, this is not guaranteed.
+- Ensure downloads are from Thunderstore.io or the official GitHub page for authenticity.
+- This mod is a collaborative effort within the Cities 2 Modding community.
 
-		Thank you for choosing FindStuff for an enhanced Cities Skylines gameplay experience.
+## Development Team and Credits
+- Development led by [optimus-code (H3llb0und)](https://github.com/optimus-code) and [89pleasure](https://github.com/89pleasure).
+- Special thanks to Rebecca, CaptainOfCoit, the Cities2Modding Community, Colossal Order, and Paradox Interactive.
+
+**NOTE**: We are not officially affiliated with Colossal Order or Paradox Interactive, this is a fan-made project.
+
+**Utilizes [Gooee](https://github.com/Cities2Modding/Gooee), a dedicated UI framework for Cities: Skylines 2 mods.**
+
+## Feedback and Support
+We value your input and encourage feedback to continually improve FindStuff. For issues, suggestions, or to connect with the team, join our Discord at [https://discord.gg/M9rgRtGcRa](https://discord.gg/M9rgRtGcRa).
+
+Thank you for choosing FindStuff for an enhanced Cities Skylines gameplay experience.
 	</LongDescription>
 	<!--Thumbnail-->
 	<Thumbnail Value="Properties/Thumbnail.png" />
 	<!--Screenshot, can be set multiple times-->
-	<Screenshot Value="" />
+	<Screenshot Value="Properties/findstuffss.png" />
 	<!--Tag, can be set multiple times-->
 	<Tag Value="Code Mod" />
 	<!--Link to the forum post where the mod can be discussed-->
@@ -75,8 +95,13 @@
 	<ModVersion Value="1.1.1" />
 	<!--Recommended version of the base game to use the mod-->
 	<GameVersion Value="1.1.*" />
-	<!--Dependency for the mod, can be set multiple times-->
-	<Dependency Id="" />
+	
+	<!-- Dependency Pack -->
+	<Dependency Id="77209" />
+
+	<!-- Gooee -->
+	<Dependency Id="77225" Version="1.1.*" />
+	
 	<!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
 	<ChangeLog Value="" />
 	<!--ChangeLog>

@@ -28,6 +28,7 @@
 		<PublishConfigurationPath>Properties\PublishConfiguration.xml</PublishConfigurationPath>
 
 		<LocalMods_Location>$(USERPROFILE)\AppData\LocalLow\Colossal Order\Cities Skylines II\Mods</LocalMods_Location>
+		<PDXMods_Location>$(USERPROFILE)\AppData\LocalLow\Colossal Order\Cities Skylines II\.cache\Mods\mods_subscribed\</PDXMods_Location>
 	</PropertyGroup>
 	
 	<ItemGroup>
@@ -84,7 +85,7 @@
 	
 	<ItemGroup>
 		<Reference Include="Gooee">
-			<HintPath>C:\Users\lenna\AppData\LocalLow\Colossal Order\Cities Skylines II\.cache\Mods\mods_subscribed\77225_2\Gooee.dll</HintPath>
+			<HintPath>$(PDXMods_Location)\77225_2\Gooee.dll</HintPath>
 			<Private>False</Private>
 		</Reference>
 		<Reference Include="Game">
@@ -186,8 +187,4 @@
 	<ItemGroup>
 		<PackageReference Include="Lib.Harmony" Version="2.2.2" Exclude="runtime" />
 	</ItemGroup>
-	
-	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Exec Command="if not exist &quot;$(Cities2_Location)\BepInEx\plugins\$(ProjectName)&quot; mkdir &quot;$(Cities2_Location)\BepInEx\plugins\$(ProjectName)&quot;&#xD;&#xA;copy /Y &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;$(Cities2_Location)\BepInEx\plugins\$(ProjectName)\$(ProjectName).dll&quot;&#xD;&#xA;copy /Y &quot;$(ProjectDir)..\manifest.json&quot; &quot;$(Cities2_Location)\BepInEx\plugins\$(ProjectName)\manifest.json&quot;&#xD;&#xA;copy /Y &quot;$(ProjectDir)..\icon.png&quot; &quot;$(Cities2_Location)\BepInEx\plugins\$(ProjectName)\icon.png&quot;&#xD;&#xA;copy /Y &quot;$(ProjectDir)..\README.md&quot; &quot;$(Cities2_Location)\BepInEx\plugins\$(ProjectName)\README.md&quot;&#xD;&#xA;copy /Y &quot;$(ProjectDir)..\CHANGELOG.md&quot; &quot;$(Cities2_Location)\BepInEx\plugins\$(ProjectName)\CHANGELOG.md&quot;" />
-	</Target>
 </Project>
