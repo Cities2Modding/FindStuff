@@ -25,7 +25,7 @@ using UnityEngine.InputSystem;
 namespace FindStuff.UI
 {
     [ControllerDepends(SystemUpdatePhase.ToolUpdate, typeof(PickerToolSystem))]
-    public class FindStuffController : Controller<FindStuffViewModel>
+    public partial class FindStuffController : Controller<FindStuffViewModel>
     {
         private bool IsPickingShortcut
         {
@@ -124,7 +124,7 @@ namespace FindStuff.UI
             model.EnableShortcut = _config.EnableShortcut;
             model.ExpertMode = _config.ExpertMode;
             model.IsHistorical = _config.IsHistorical;
-            model.OperationMode = Enum.Parse<ViewOperationMode>( _modSettings.OperationMode );
+            model.OperationMode = ( ViewOperationMode ) Enum.Parse( typeof( ViewOperationMode ), _modSettings.OperationMode );
 
             if ( _config.RecentSearches == null )
                 _config.RecentSearches = [];
@@ -508,8 +508,9 @@ namespace FindStuff.UI
                 UpdatePicker( false );
             }
 
-            if ( _queryResults.Any( ) && _queryResults.TryDequeue( out var result ) )
+            if ( _queryResults.Any( ) )
             {
+                var result = _queryResults.Dequeue( );
                 GameManager.instance.userInterface.view.View.TriggerEvent( "findstuff.onReceiveResults", result.Key, result.Json );
             }
 
@@ -739,7 +740,7 @@ namespace FindStuff.UI
 
             if ( _modSettings.OperationMode != Model.OperationMode.ToString( ) )
             {
-                Model.OperationMode = Enum.Parse<ViewOperationMode>( _modSettings.OperationMode );
+                Model.OperationMode = ( ViewOperationMode ) Enum.Parse( typeof( ViewOperationMode ), _modSettings.OperationMode );
                 hasUpdate = true;
             }
 

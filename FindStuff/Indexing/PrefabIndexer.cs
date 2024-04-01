@@ -183,8 +183,9 @@ namespace FindStuff.Indexing
                 if ( WorkingSet == null ) // It was cancelled mid-loop
                     yield return null;
 
-                if ( _prefabSearchQueue.TryDequeue( out var id ) )
+                if ( _prefabSearchQueue.Any() )
                 {
+                    var id = _prefabSearchQueue.Dequeue( );
                     WorkingSet.Add( id, ( search, orderByAscending ) =>
                     {
                         var stringSearch = StringSearch( search, id );
@@ -247,7 +248,7 @@ namespace FindStuff.Indexing
         {
             var filterPrefabs = _prefabs.Values
                 .Where( IsFilterPrefab )
-                .GroupBy( p => Enum.Parse<Filter>( p.Type ) )
+                .GroupBy( p => ( Filter ) Enum.Parse( typeof( Filter ), p.Type ) )
                 .ToDictionary( g => g.Key, g => g.Select( p => p.ID ).ToArray( ) );
 
             _filterPrefabs = new( filterPrefabs );
@@ -258,7 +259,7 @@ namespace FindStuff.Indexing
         {
             var subFilterPrefabs = _prefabs.Values
                 .Where( IsSubFilterPrefab )
-                .GroupBy( p => Enum.Parse<SubFilter>( p.Type ) )
+                .GroupBy( p => ( SubFilter ) Enum.Parse( typeof( SubFilter ), p.Type ) )
                 .ToDictionary( g => g.Key, g => g.Select( p => p.ID ).ToArray( ) );
 
             _subFilterPrefabs = new( subFilterPrefabs );
@@ -437,7 +438,7 @@ namespace FindStuff.Indexing
             if ( string.IsNullOrEmpty( search ) )
                 return (false, int.MinValue);
 
-            var words = search.Split( ' ', StringSplitOptions.RemoveEmptyEntries );
+            var words = search.Split( new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries );
             var hasMatch = false;
 
             var score = int.MinValue;
@@ -511,8 +512,8 @@ namespace FindStuff.Indexing
             else
                 curScore += LevenshteinDistance( typeName, search ) * 30;
 
-            var searchWords = search.Split( ' ', StringSplitOptions.RemoveEmptyEntries );
-            var displayNameWords = displayName.Split( ' ', StringSplitOptions.RemoveEmptyEntries );
+            var searchWords = search.Split( new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries );
+            var displayNameWords = displayName.Split( new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries );
 
             if ( searchWords?.Length > 1 && displayNameWords.Length > 1 )
             {

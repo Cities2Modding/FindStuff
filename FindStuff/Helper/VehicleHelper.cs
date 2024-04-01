@@ -6,23 +6,23 @@ using Unity.Entities;
 
 namespace FindStuff.Helper
 {
-    public class VehicleHelper( EntityManager entityManager ) : IBaseHelper
+    public class VehicleHelper( EntityManager entityManager ) : BaseHelper
     {
-        public string PrefabType => "Vehicle";
+        public override string PrefabType => "Vehicle";
 
-        public string CategoryType => "Props";
+        public override string CategoryType => "Props";
 
-        public Dictionary<string, object> CreateMeta( PrefabBase prefab, Entity entity )
+        public override Dictionary<string, object> CreateMeta( PrefabBase prefab, Entity entity )
         {
             Dictionary<string, object> meta = new Dictionary<string, object>( );
 
-            meta.Add( IBaseHelper.META_IS_DANGEROUS, true );
-            meta.Add( IBaseHelper.META_IS_DANGEROUS_REASON, "FindStuff.Dangerous.NoDelete" );
+            meta.Add( BaseHelper.META_IS_DANGEROUS, true );
+            meta.Add( BaseHelper.META_IS_DANGEROUS_REASON, "FindStuff.Dangerous.NoDelete" );
 
             return meta;
         }
 
-        public List<string> CreateTags( PrefabBase prefab, Entity entity )
+        public override List<string> CreateTags( PrefabBase prefab, Entity entity )
         {
             List<string> tags = new List<string>( );
 
@@ -143,7 +143,7 @@ namespace FindStuff.Helper
             return tags.OrderBy( t => t ).ToList( );
         }
 
-        public bool IsValidPrefab( PrefabBase prefab, Entity entity )
+        public override bool IsValidPrefab( PrefabBase prefab, Entity entity )
         {
             if ( entityManager == null || entity == Entity.Null )
                 return false;
@@ -151,7 +151,7 @@ namespace FindStuff.Helper
             return entityManager.HasComponent<VehicleData>( entity );
         }
 
-        public bool IsExpertMode( PrefabBase prefab, Entity entity )
+        public override bool IsExpertMode( PrefabBase prefab, Entity entity )
         {
             return true;
         }

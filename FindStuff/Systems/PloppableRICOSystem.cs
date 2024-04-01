@@ -17,7 +17,7 @@ using UnityEngine.Scripting;
 
 namespace FindStuff.Systems
 {
-    public class PloppableRICOSystem : GameSystemBase
+    public partial class PloppableRICOSystem : GameSystemBase
     {
         ModificationBarrier5 _barrier;
         IconCommandSystem _iconCommandSystem;

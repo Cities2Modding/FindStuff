@@ -16,7 +16,7 @@ using UnityEngine.Scripting;
 
 namespace FindStuff.Systems
 {
-    public class PickerToolSystem : ToolBaseSystem
+    public partial class PickerToolSystem : ToolBaseSystem
     {
         private PrefabSystem _prefabSystem;
         private PloppableRICOSystem _ploppableRICOSystem;

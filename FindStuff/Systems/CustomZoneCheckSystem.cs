@@ -18,7 +18,7 @@ using UnityEngine.Scripting;
 
 namespace Game.Buildings
 {
-    public class CustomZoneCheckSystem : GameSystemBase
+    public partial class CustomZoneCheckSystem : GameSystemBase
     {
         [Preserve]
         protected override void OnCreate()

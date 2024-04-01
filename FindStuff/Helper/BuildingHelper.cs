@@ -5,13 +5,13 @@ using Unity.Entities;
 
 namespace FindStuff.Helper
 {
-    internal class BuildingHelper( EntityManager entityManager ) : IBaseHelper
+    internal class BuildingHelper( EntityManager entityManager ) : BaseHelper
     {
-        public string PrefabType => "MiscBuilding";
+        public override string PrefabType => "MiscBuilding";
 
-        public string CategoryType => "Buildings";
+        public override string CategoryType => "Buildings";
 
-        public Dictionary<string, object> CreateMeta( PrefabBase prefab, Entity entity )
+        public override Dictionary<string, object> CreateMeta( PrefabBase prefab, Entity entity )
         {
             var meta = new Dictionary<string, object>( );
 
@@ -26,7 +26,7 @@ namespace FindStuff.Helper
             return meta;
         }
 
-        public List<string> CreateTags( PrefabBase prefab, Entity entity )
+        public override List<string> CreateTags( PrefabBase prefab, Entity entity )
         {
             List<string> tags = new List<string>( );
 
@@ -38,7 +38,7 @@ namespace FindStuff.Helper
             return tags;
         }
 
-        public bool IsValidPrefab( PrefabBase prefab, Entity entity )
+        public override bool IsValidPrefab( PrefabBase prefab, Entity entity )
         {
             if ( entityManager == null || entity == Entity.Null )
                 return false;
@@ -49,7 +49,7 @@ namespace FindStuff.Helper
                 !entityManager.HasComponent<ZoneData>( spawnableBuildingData.m_ZonePrefab ) );
         }
 
-        public bool IsExpertMode( PrefabBase prefab, Entity entity )
+        public override bool IsExpertMode( PrefabBase prefab, Entity entity )
         {
             return false;
         }

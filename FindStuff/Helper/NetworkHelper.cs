@@ -3,29 +3,28 @@ using Game.Prefabs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Unity.Entities;
 
 namespace FindStuff.Helper
 {
-    public class NetworkHelper( EntityManager entityManager ) : IBaseHelper
+    public class NetworkHelper( EntityManager entityManager ) : BaseHelper
     {
-        public string PrefabType
+        public override string PrefabType
         {
             get;
-            private set;
+            protected set;
         } = "OtherNetwork";
 
-        public string CategoryType => "Network";
+        public override string CategoryType => "Network";
 
-        public Dictionary<string, object> CreateMeta( PrefabBase prefab, Entity entity )
+        public override Dictionary<string, object> CreateMeta( PrefabBase prefab, Entity entity )
         {
             Dictionary<string, object> meta = new Dictionary<string, object>( );
 
             if ( prefab.name.ToLower( ).Contains( "invisible " ) )
             {
-                meta.Add( IBaseHelper.META_IS_DANGEROUS, true );
-                meta.Add( IBaseHelper.META_IS_DANGEROUS_REASON, "FindStuff.Dangerous.CorruptWarning" );
+                meta.Add( META_IS_DANGEROUS, true );
+                meta.Add( META_IS_DANGEROUS_REASON, "FindStuff.Dangerous.CorruptWarning" );
             }
 
             if ( entityManager.TryGetComponent<PlaceableNetData>( entity, out var placeableNetData ) )
@@ -37,9 +36,8 @@ namespace FindStuff.Helper
             return meta;
         }
 
-        public List<string> CreateTags( PrefabBase prefab, Entity entity )
+        public override List<string> CreateTags( PrefabBase prefab, Entity entity )
         {
-
             List<string> tags = new List<string>( );
 
             if ( entityManager == null )
@@ -203,12 +201,12 @@ namespace FindStuff.Helper
             return tags.OrderBy( t => t ).ToList( );
         }
 
-        public bool IsExpertMode( PrefabBase prefab, Entity entity )
+        public override bool IsExpertMode( PrefabBase prefab, Entity entity )
         {
             return prefab.name.ToLower( ).Contains( "invisible" );
         }
 
-        public bool IsValidPrefab( PrefabBase prefab, Entity entity )
+        public override bool IsValidPrefab( PrefabBase prefab, Entity entity )
         {
             if ( entityManager == null || entity == Entity.Null )
                 return false;

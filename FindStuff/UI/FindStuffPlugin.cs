@@ -9,7 +9,7 @@ namespace FindStuff.UI
     public class FindStuffPlugin : IGooeePluginWithControllers, IGooeeChangeLog, IGooeeSettings, IGooeeLanguages, IGooeeStyleSheet
     {
         public string Name => "FindStuff";
-        public string Version => MyPluginInfo.PLUGIN_VERSION;
+        public string Version => "1.1.1";
         public string ScriptResource => "FindStuff.Resources.ui.js";
         public string ChangeLogResource => "FindStuff.Resources.changelog.md";
         public string StyleResource => "FindStuff.Resources.ui.css";

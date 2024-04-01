@@ -6,14 +6,13 @@ using Unity.Entities;
 
 namespace FindStuff.Helper
 {
-    public class ZoneBuildingHelper( EntityManager entityManager, PrefabSystem prefabSystem ) : IBaseHelper
+    public class ZoneBuildingHelper( EntityManager entityManager, PrefabSystem prefabSystem ) : BaseHelper
     {
-        public string PrefabType => _PrefabType;
-        private string _PrefabType = "Unknown";
+        public override string PrefabType => "Unknown";
 
-        public string CategoryType => "Zones";
+        public override string CategoryType => "Zones";
 
-        public Dictionary<string, object> CreateMeta( PrefabBase prefab, Entity entity )
+        public override Dictionary<string, object> CreateMeta( PrefabBase prefab, Entity entity )
         {
             Dictionary<string, object> meta = new Dictionary<string, object>( );
 
@@ -22,10 +21,10 @@ namespace FindStuff.Helper
                 SpawnableBuildingData spawnableBuildingData = entityManager.GetComponentData<SpawnableBuildingData>( entity );
                 BuildingPrefab buildingPrefab = ( BuildingPrefab ) prefab;
 
-                meta.Add( IBaseHelper.META_ZONE_LEVEL, spawnableBuildingData.m_Level );
-                meta.Add( IBaseHelper.META_ZONE_LOT_DEPTH, buildingPrefab.m_LotDepth );
-                meta.Add( IBaseHelper.META_ZONE_LOT_WIDTH, buildingPrefab.m_LotWidth );
-                meta.Add( IBaseHelper.META_ZONE_LOT_SUM, buildingPrefab.m_LotDepth * buildingPrefab.m_LotWidth );
+                meta.Add( META_ZONE_LEVEL, spawnableBuildingData.m_Level );
+                meta.Add( META_ZONE_LOT_DEPTH, buildingPrefab.m_LotDepth );
+                meta.Add( META_ZONE_LOT_WIDTH, buildingPrefab.m_LotWidth );
+                meta.Add( META_ZONE_LOT_SUM, buildingPrefab.m_LotDepth * buildingPrefab.m_LotWidth );
 
                 var placeableObject = prefab.GetComponent<PlaceableObject>( );
 
@@ -43,7 +42,7 @@ namespace FindStuff.Helper
             return meta;
         }
 
-        public List<string> CreateTags( PrefabBase prefab, Entity entity )
+        public override List<string> CreateTags( PrefabBase prefab, Entity entity )
         {
             List<string> tags = new List<string>( );
 
@@ -63,15 +62,15 @@ namespace FindStuff.Helper
             switch ( zoneData.m_AreaType )
             {
                 case Game.Zones.AreaType.Commercial:
-                    _PrefabType = "ZoneCommercial";
+                    PrefabType = "ZoneCommercial";
                     tags.Add( "commercial" );
                     break;
                 case Game.Zones.AreaType.Residential:
-                    _PrefabType = "ZoneResidential";
+                    PrefabType = "ZoneResidential";
                     tags.Add( "residential" );
                     break;
                 case Game.Zones.AreaType.Industrial:
-                    _PrefabType = zonePrefab.m_Office ? "ZoneOffice" : "ZoneIndustrial";
+                    PrefabType = zonePrefab.m_Office ? "ZoneOffice" : "ZoneIndustrial";
                     tags.Add( zonePrefab.m_Office ? "office" : "industrial" );
                     break;
             }
@@ -80,7 +79,7 @@ namespace FindStuff.Helper
             var theme = "";
 
             if ( name.StartsWith( "EU " ) || name.StartsWith( "NA " ) )
-                theme = name[..2].ToLower( );
+                theme = name.Substring( 0, 3 ).ToLower( );
 
             if ( !string.IsNullOrEmpty( theme ) )
                 tags.Add( theme );
@@ -105,7 +104,7 @@ namespace FindStuff.Helper
             return tags;
         }
 
-        public bool IsValidPrefab( PrefabBase prefab, Entity entity )
+        public override bool IsValidPrefab( PrefabBase prefab, Entity entity )
         {
             if ( entityManager == null || entity == Entity.Null )
                 return false;
@@ -128,7 +127,7 @@ namespace FindStuff.Helper
                 var name = zonePrefab.name;
 
                 if ( name.StartsWith( "EU " ) || name.StartsWith( "NA " ) )
-                    name = name[3..];
+                    name = name.Substring( 0, 3 );
 
                 name = name.Replace( " ", "" );
 
@@ -146,7 +145,7 @@ namespace FindStuff.Helper
             return null;
         }
 
-        public bool IsExpertMode( PrefabBase prefab, Entity entity )
+        public override bool IsExpertMode( PrefabBase prefab, Entity entity )
         {
             return false;
         }

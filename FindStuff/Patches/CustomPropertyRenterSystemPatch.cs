@@ -15,7 +15,7 @@ namespace FindStuff.Patches
     {
         public static void Postfix()
         {
-            ComponentSystemBase __instance = World.DefaultGameObjectInjectionWorld?.GetOrCreateSystemManaged(Plugin.customPropertyRenterSystemType);
+            ComponentSystemBase __instance = World.DefaultGameObjectInjectionWorld?.GetOrCreateSystemManaged(Mod.customPropertyRenterSystemType);
             if (__instance == null)
                 return;
 

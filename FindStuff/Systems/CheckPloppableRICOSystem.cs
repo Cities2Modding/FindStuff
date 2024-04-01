@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace FindStuff.Systems
 {
-    public class CheckPloppableRICOSystem : GameSystemBase
+    public partial class CheckPloppableRICOSystem : GameSystemBase
     {
         EndFrameBarrier _barrier;
         IconCommandSystem _iconCommandSystem;

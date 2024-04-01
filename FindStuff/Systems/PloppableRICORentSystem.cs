@@ -18,7 +18,7 @@ using UnityEngine.Scripting;
 
 namespace FindStuff.Systems
 {
-    public class PloppableRICORentSystem : GameSystemBase
+    public partial class PloppableRICORentSystem : GameSystemBase
     {
         private PropertyRenterSystem _propertyRenterSystem;
         private CityStatisticsSystem _cityStatisticsSystem;

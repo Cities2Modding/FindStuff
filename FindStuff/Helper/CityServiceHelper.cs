@@ -7,23 +7,23 @@ using Unity.Entities;
 
 namespace FindStuff.Helper
 {
-    public class CityServiceHelper( EntityManager entityManager ) : IBaseHelper
+    public class CityServiceHelper( EntityManager entityManager ) : BaseHelper
     {
-        public string PrefabType
+        public override string PrefabType
         {
             get;
-            private set;
+            protected set;
         } = "ServiceBuilding";
 
-        public string CategoryType => "Buildings";
+        public override string CategoryType => "Buildings";
 
-        public Dictionary<string, object> CreateMeta( PrefabBase prefab, Entity entity )
+        public override Dictionary<string, object> CreateMeta( PrefabBase prefab, Entity entity )
         {
             var meta = new Dictionary<string, object>();
 
             if ( entityManager.HasComponent<ServiceUpgradeData>( entity ) && entityManager.HasComponent<StaticObjectData>( entity ) )
             {                
-                meta.Add( IBaseHelper.META_BUILDING_STATIC_UPGRADE, true );
+                meta.Add( BaseHelper.META_BUILDING_STATIC_UPGRADE, true );
             }
 
             var placeableObject = prefab.GetComponent<PlaceableObject>( );
@@ -42,7 +42,7 @@ namespace FindStuff.Helper
             return meta;
         }
 
-        public List<string> CreateTags( PrefabBase prefab, Entity entity )
+        public override List<string> CreateTags( PrefabBase prefab, Entity entity )
         {
             PrefabType = "ServiceBuilding";
 
@@ -161,7 +161,7 @@ namespace FindStuff.Helper
             return Tags;
         }
 
-        public bool IsValidPrefab( PrefabBase prefab, Entity entity )
+        public override bool IsValidPrefab( PrefabBase prefab, Entity entity )
         {
             if ( entityManager == null || entity == Entity.Null )
                 return false;
@@ -170,7 +170,7 @@ namespace FindStuff.Helper
                 entityManager.HasComponent<ServiceUpgradeData>( entity ) && entityManager.HasComponent<StaticObjectData>( entity ) );
         }
 
-        public bool IsExpertMode( PrefabBase prefab, Entity entity )
+        public override bool IsExpertMode( PrefabBase prefab, Entity entity )
         {
             return false;
         }

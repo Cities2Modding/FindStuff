@@ -5,13 +5,13 @@ using Unity.Entities;
 
 namespace FindStuff.Helper
 {
-    public class TreeHelper(EntityManager entityManager) : IBaseHelper
+    public class TreeHelper(EntityManager entityManager) : BaseHelper
     {
-        public string PrefabType => "Tree";
+        public override string PrefabType => "Tree";
 
-        public string CategoryType => "Foliage";
+        public override string CategoryType => "Foliage";
 
-        public Dictionary<string, object> CreateMeta(PrefabBase prefab, Entity entity)
+        public override Dictionary<string, object> CreateMeta(PrefabBase prefab, Entity entity)
         {
             var meta = new Dictionary<string, object>( );
             var placeableObject = prefab.GetComponent<PlaceableObject>( );
@@ -24,7 +24,7 @@ namespace FindStuff.Helper
             return meta;
         }
 
-        public List<string> CreateTags(PrefabBase prefab, Entity entity)
+        public override List<string> CreateTags(PrefabBase prefab, Entity entity)
         {
             List<string> tags = new List<string>();
 
@@ -36,7 +36,7 @@ namespace FindStuff.Helper
             return tags;
         }
 
-        public bool IsValidPrefab(PrefabBase prefab, Entity entity)
+        public override bool IsValidPrefab(PrefabBase prefab, Entity entity)
         {
             if (entityManager == null || entity == Entity.Null)
                 return false;
@@ -50,7 +50,7 @@ namespace FindStuff.Helper
             return entityManager.HasComponent<TreeData>(entity);
         }
 
-        public bool IsExpertMode( PrefabBase prefab, Entity entity )
+        public override bool IsExpertMode( PrefabBase prefab, Entity entity )
         {
             return false;
         }
