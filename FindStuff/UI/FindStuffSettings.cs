@@ -52,7 +52,7 @@ namespace FindStuff.UI
 
         public override void SetDefaults( )
         {
-            OperationMode = "HideFindStuff";
+            OperationMode = "HideAssetMenu";
             ExpertMode = false;
             EnableShortcut = false;
             SearchSpeed = "VeryHigh";

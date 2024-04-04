@@ -45,7 +45,7 @@ namespace FindStuff
             Assembly landValueOverhaulAssembly = assemblies.FirstOrDefault( a => a.GetName( ).Name == "LandValueOverhaul" );
             if ( landValueOverhaulAssembly != null )
             {
-                customPropertyRenterSystemType = landValueOverhaulAssembly.GetTypes( ).FirstOrDefault( a => a.Name == "CustomPropertyRenterSystem" );
+                customPropertyRenterSystemType = landValueOverhaulAssembly.GetTypes( ).FirstOrDefault( a => a.Name == "PropertyRenterSystem" );
                 return true;
             }
 
